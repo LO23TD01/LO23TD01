@@ -14,7 +14,8 @@ Si vous avez besoin d'information sur l'utilisation de git, consultez la cheat s
 Convention: Il est *INTERDIT* de push des commit sur les branches release et develop. Ce droit est réservé au resp. de chaque groupe Vous devrez effectuer des pull request c'est à dire demander au resp de rapatrier vos modifications sur la branche de développement. Pour qu'une modification soit accepté elle devrait répondre aux conventions suivante:
 
 ### Branche
-Une branche de dev devra être nommé selon la convention suivante: develop/XXX/YYYYYY avec:
+Une branche de dev devra être nommé selon la convention suivante: develop/GGGG/XXX/YYYYYY avec:
+- GGGG: votre groupe parmis les 4
 - XXX: un trigramme unique identifiant l'auteur de la branche composé idéalement (sauf doublon) de la première lettre de votre prénom suivi de la première lettre de votre nom de famille et enfin de la dernière lettre de votre nom de famille. Par exemple pour *Jean Dupont* le trigramme est *JDT*
 - YYYYYY: le nom du ticket trello correspondant à la tâche réalisé dans les commit. il est IMPERATIF de créer une tâche trello pour chaque branche de dev même si ce dernier n'existe pas à la base. S'il s'agit vraiment d'un bugfix très court on peut accépter bugfix
 
