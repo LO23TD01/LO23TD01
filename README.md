@@ -32,3 +32,4 @@ Un commit se doit d'être complet, lisible et traçable. Par cela on entend:
 L'intégration sur la branche release se fera régulièrement. Un rebase toute les 3 ou 4 features (branches de dev) est recommandé mais chaque groupe est libre de son mode de travail
 - La compatibilité d'une branche de dev avec la branche develop du groupe est à la responsabilité du programmeur travaillant sur cette branche
 - La compatibilité de la branche develop avec la branche release est à la responsabilité du responsable de la branche
+- Comme sous entendu plus haut les intégrations aux branches protégé se font par rebase de la branche de dev sur le dernier commit de de la branche protégé. 
