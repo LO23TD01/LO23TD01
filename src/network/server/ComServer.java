@@ -8,7 +8,7 @@ import java.util.Map;
 import java.util.UUID;
 
 import mocks.GameTable;
-import mocks.Profile;
+import data.Profile;
 import network.messages.IMessage;
 
 import java.net.ServerSocket;
