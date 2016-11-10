@@ -5,7 +5,7 @@ import java.net.Socket;
 import java.net.UnknownHostException;
 import java.util.UUID;
 
-import mocks.Profile;
+import data.Profile;
 import network.messages.IMessage;
 
 public class ComClient implements ComClientInterface{

@@ -2,7 +2,7 @@ package network.client;
 
 import java.util.UUID;
 
-import mocks.Profile;
+import data.Profile;
 
 public interface ComClientInterface {
 	
