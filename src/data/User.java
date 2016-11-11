@@ -1,3 +1,6 @@
+package data;
+
+import java.util.List;
 
 public class User {
 	private Profile publicData;
@@ -25,23 +28,23 @@ public class User {
 		
 		if (this.isEmptyVersion())
 			return this;
-		return new User(new Profile(this.publicData.getUUID()));
+		return new User(new Profile(this.publicData.getUuid()));
 	}
 	
 	public boolean isEmptyVersion(){
-		if(this.profile.getNickName()==null) //TOREVIEW : p-etre faire une condition complete ?
+		if(this.publicData.getNickName()==null) //TOREVIEW : p-etre faire une condition complete ?
 			return true;
 		return false;
 	}
 
-	public User getLightWeightVersion(){
+	public User getLightWeightVersion() throws Exception{
 		
 		if(this.isLightWeightVersion())
 			return this;
-		if(this.isEmpty())
-			throw(new Exception("User is Empty, can't get LightWeight"));
+		if(this.isEmptyVersion())
+			throw new Exception("User is Empty, can't get LightWeight");
 
-		return new User(new Profile(this.publicData.getUUID(),this.publicData.getNickName(),this.publicData.getfirstName(),this.getSurName(),this.publicData.getAge()),this.actualTable,this.isSpectating);
+		return new User(new Profile(this.publicData.getUuid(),this.publicData.getNickName(),this.publicData.getFirstName(),this.publicData.getSurName(),this.publicData.getAge()),this.actualTable,this.isSpectating);
 	}
 	
 	public boolean isLightWeightVersion(){
@@ -59,7 +62,7 @@ public class User {
 	}
 	
 	public boolean isSame(User u){
-		if(u.getPublicData().getUUID()==this.publicData.getUUID())
+		if(u.getPublicData().getUuid()==this.publicData.getUuid())
 			return true;
 		return false;
 	}
@@ -67,7 +70,7 @@ public class User {
 	public User getSame(List<User> l){
 		for(User u : l)
 		{
-			if(isSameUser(u))
+			if(isSame(u))
 				return u;
 		}
 		return null;

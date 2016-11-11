@@ -1,3 +1,5 @@
+package data;
+
 import java.util.List;
 
 public class Record {
@@ -5,7 +7,6 @@ public class Record {
 
 
 	public Record(List<GameState> data, GameTable parent) {
-		super();
 		this.data = data;
 	}
 

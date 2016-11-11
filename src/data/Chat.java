@@ -1,3 +1,6 @@
+package data;
+
+import java.util.ArrayList;
 import java.util.List;
 
 public class Chat {
@@ -13,7 +16,7 @@ public class Chat {
 	
 	public Chat(List<User> voicedUserList, List<User> listeningUserList) {
 		super();
-		this.messageList = new ArrayList<ChatMessage>;
+		this.messageList = new ArrayList<ChatMessage>();
 		this.voicedUserList = voicedUserList;
 		this.listeningUserList = listeningUserList;
 	}
