@@ -1,3 +1,5 @@
+package data;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
@@ -72,18 +74,18 @@ public class GameTable {
 		this.voteCasted = voteCasted;
 	}
 
-	public void initializeGame(){	
+	public void initializeGame() throws Exception{	
 		//TOREVIEW ajouter des conditions pour eviter de reinit pendant une partie commencée ?
 		this.gameState = new GameState(this.parameters, this.playerList);
 	}
 	
 	public boolean connect(User u, boolean isSpec){
-		if(isSpec && !this.parameters.getAuthorizeSpec())
+		if(isSpec && !this.parameters.isAuthorizeSpecToChat())
 			return false;
 		if(isSpec)
 		{
 			this.spectatorList.add(u);
-			this.localChat.add(u,this.parameters.getAuthorizeSpecToChat());
+			this.localChat.add(u,this.parameters.isAuthorizeSpecToChat());
 			return true;
 		}
 		if(!isSpec &&  this.parameters.getNbPlayerMax()<=this.playerList.size() && !(this.gameState.getState()==State.PRESTART || this.gameState.getState()==State.END))
@@ -121,11 +123,11 @@ public class GameTable {
 	}
 	
 	public void startVote(){
-		this.voteCasted = new ArrayList<Vote>;
+		this.voteCasted = new ArrayList<Vote>();
 	}
 	
 	public void castVote(Vote v){
-		if() //condiotn player et player pas deja casté
+		//if() TO-DO : condiotn player et player pas deja casté
 		this.voteCasted.add(v);
 	}
 	
@@ -150,11 +152,11 @@ public class GameTable {
 		return false;
 	}
 	
-	public GameTable getLightWeightVersion(){
+	public GameTable getLightWeightVersion() throws Exception{
 		if(isLightWeightVersion())
 			return this;
 		if(this.isEmptyVersion())
-			throw(new Exception("GameTable is Empty, can't get LightWeight"));
+			throw new Exception("GameTable is Empty, can't get LightWeight");
 		
 		return new GameTable(this.getUid(),this.name,this.creator,this.parameters,this.playerList,this.spectatorList,this.gameState);
 	}

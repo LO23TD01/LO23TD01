@@ -1,3 +1,5 @@
+package data;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -126,7 +128,7 @@ public class Rules {
 	{
 		List<DiceThrow> listDice = new ArrayList<DiceThrow>();
 		for(PlayerData p : l)
-			listDice.add(DiceThrow(p.getPlayer(),p.getDices()));
+			listDice.add(new DiceThrow(p.getPlayer(),p.getDices()));
 		Collections.sort(listDice);
 		
 		List<User> listWinners = new ArrayList<User>();
@@ -143,7 +145,7 @@ public class Rules {
 	{
 		List<DiceThrow> listDice = new ArrayList<DiceThrow>();
 		for(PlayerData p : l)
-			listDice.add(DiceThrow(p.getPlayer(),p.getDices()));
+			listDice.add(new DiceThrow(p.getPlayer(),p.getDices()));
 		Collections.sort(listDice);
 		
 		List<User> listLosers = new ArrayList<User>();
@@ -157,27 +159,27 @@ public class Rules {
 	
 	public int getChip(List<PlayerData> l)
 	{
-		List<DiceThrow> listDice = new List<DiceThrow>();
+		List<DiceThrow> listDice = new ArrayList<DiceThrow>();
 		for(PlayerData p : l)
-			listDice.add(DiceThrow(p.getPlayer(),p.getDices()));
+			listDice.add(new DiceThrow(p.getPlayer(),p.getDices()));
 		Collections.sort(listDice);
 		
 		return listDice.get(0).valeur(); // TODO rajouter nenette;
 	}
 	
-	public boolean canReroll(List<PlayerData> l, User actualPlayer, User firstPlayer)
+	public boolean canReroll(List<PlayerData> l, User actualPlayer, User firstPlayer) throws Exception
 	{
 		PlayerData actualPlayerData = null; 
 		PlayerData firstPlayerData = null; 
 		for(PlayerData p : l)
 		{
-			if(p.getUser.isSameUser(actualPlayer))
+			if(p.getPlayer().isSame(actualPlayer))
 				actualPlayerData=p;
-			if(p.getUser.isSameUser(firstPlayer))
+			if(p.getPlayer().isSame(firstPlayer))
 				firstPlayerData=p;
 		}
 		if(actualPlayerData==null || firstPlayerData==null)
-			throw(new Exception("Player not found."));
+			throw new Exception("Player not found.");
 		if(actualPlayerData.getRerollCount()==3 || actualPlayerData.getRerollCount()==firstPlayerData.getRerollCount()) //TODO implement ruleset
 			return false;
 		return true;

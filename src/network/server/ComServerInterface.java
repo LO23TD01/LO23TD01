@@ -3,7 +3,7 @@ package network.server;
 import java.util.List;
 import java.util.UUID;
 
-import mocks.GameTable;
+import data.GameTable;
 import data.Profile;
 
 public interface ComServerInterface {

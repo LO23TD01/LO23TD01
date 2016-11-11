@@ -1,3 +1,4 @@
+package data;
 
 public class Vote {
 	private User user;

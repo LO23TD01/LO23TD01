@@ -3,7 +3,7 @@ package data;
 import java.util.ArrayList;
 import java.util.List;
 
-import mocks.User;
+import data.User;
 
 public class Client {
 	private Rights defaultRight;
