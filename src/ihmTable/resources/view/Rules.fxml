@@ -3,7 +3,6 @@
 <?import javafx.scene.control.Accordion?>
 <?import javafx.scene.control.TitledPane?>
 <?import javafx.scene.layout.AnchorPane?>
-<?import javafx.scene.shape.SVGPath?>
 
 <AnchorPane prefHeight="800.0" prefWidth="300.0" xmlns="http://javafx.com/javafx/8.0.60" xmlns:fx="http://javafx.com/fxml/1">
    <children>
@@ -16,10 +15,7 @@
           </TitledPane>
           <TitledPane animated="false" text="Ordre">
             <content>
-              <AnchorPane>
-                     <children>
-                        <SVGPath content="M40,60 C42,48 44,30 25,32" styleClass="collapse-button-right" />
-                     </children></AnchorPane>
+              <AnchorPane />
             </content>
           </TitledPane>
         </panes>
