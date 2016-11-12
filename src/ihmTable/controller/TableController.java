@@ -7,7 +7,6 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.BorderPane;
-import javafx.scene.layout.Pane;
 
 public class TableController {
 
@@ -20,8 +19,6 @@ public class TableController {
 	public void initialize() throws IOException {
 		tableView.setRight(getCollapsiblePane("/ihmTable/resources/view/Chat.fxml", Position.right));
 		tableView.setLeft(getCollapsiblePane("/ihmTable/resources/view/Rules.fxml", Position.left));
-		Pane p = new Pane();
-		tableView.setCenter(p);
 	}
 
 	private AnchorPane getCollapsiblePane(String content, Position position) throws IOException {
