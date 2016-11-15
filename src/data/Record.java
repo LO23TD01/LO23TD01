@@ -1,11 +1,15 @@
 package data;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class Record {
 	private List<GameState> data;
 
-
+	public Record() {
+		this.data = new ArrayList<GameState>();
+	}
+	
 	public Record(List<GameState> data, GameTable parent) {
 		this.data = data;
 	}
