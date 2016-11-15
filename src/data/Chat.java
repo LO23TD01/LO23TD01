@@ -9,6 +9,15 @@ public class Chat {
 	private List<ChatMessage> messageList;
 	
 	//TODO
+	public void add(User user, boolean isVoiced)
+	{
+		//TODO;
+	}
+	
+	public void remove(User user)
+	{
+		//TODO;
+	}
 	//adduser
 	//removeUser
 	//chat a message
@@ -23,8 +32,7 @@ public class Chat {
 	
 	
 	
-	public Chat(List<User> voicedUserList, List<User> listeningUserList, List<ChatMessage> messageList,
-			GameTable parent) {
+	public Chat(List<User> voicedUserList, List<User> listeningUserList, List<ChatMessage> messageList) {
 		super();
 		this.voicedUserList = voicedUserList;
 		this.listeningUserList = listeningUserList;

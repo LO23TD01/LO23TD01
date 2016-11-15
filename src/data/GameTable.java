@@ -17,7 +17,7 @@ public class GameTable {
 	private List<Vote> voteCasted;
 	
 	public GameTable(String name, User creator, Parameters parameters, List<User> playerList,
-			List<User> spectatorList) {
+			List<User> spectatorList) throws Exception {
 		super();
 		this.Uid = UUID.randomUUID();
 		this.name = name;
@@ -25,8 +25,14 @@ public class GameTable {
 		this.parameters = parameters;
 		this.playerList = playerList;
 		this.spectatorList = spectatorList;
-		this.gameState = new GameState(this);
-		this.localChat = new Chat(this);
+		this.gameState = new GameState(parameters, playerList);
+		List <User> mergedList = playerList; 
+		mergedList.addAll(spectatorList);
+		if(parameters.isAuthorizeSpecToChat())
+			
+			this.localChat = new Chat(mergedList,mergedList);
+		else
+			this.localChat = new Chat(playerList,mergedList);
 		this.record = new Record();
 		this.voteCasted = new ArrayList<Vote>();
 	}
@@ -97,9 +103,10 @@ public class GameTable {
 			this.gameState.add(u);
 			return true;
 		}
+		return false;
 	}
 	
-	public void disconnect(User u){
+	public void disconnect(User u) throws Exception{
 		
 		if(this.spectatorList.remove(u)) //TOREWROK
 		{
@@ -110,7 +117,7 @@ public class GameTable {
 			this.localChat.remove(u);
 			this.gameState.remove(u);
 			if(this.creator.isSame(u))
-				throw(new Exception("User disconnecting from table is the creator."));
+				throw new Exception("User disconnecting from table is the creator.");
 		}
 	}
 	
