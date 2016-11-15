@@ -3,12 +3,20 @@ package data;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlRootElement;
+
 import data.User;
 
+@XmlRootElement
 public class Client {
 	private Rights defaultRight;
 	private List<Contact> contactList;
 	private List<ContactCategory> categoryList;
+	
+	public Client() {
+
+	}
 	
 	public Client(Rights defaultRight) {
 		this.defaultRight = defaultRight;
@@ -31,8 +39,41 @@ public class Client {
 			contactList.remove(contact);
 	}
 	
+	/*
+	 * 
+	 * Getters & Setters
+	 * 
+	 * 
+	 */
+	
 	public List<Contact> getContactList(){
 		return contactList;
 	}
+
+	public Rights getDefaultRight() {
+		return defaultRight;
+	}
+
+	@XmlElement
+	public void setDefaultRight(Rights defaultRight) {
+		this.defaultRight = defaultRight;
+	}
+
+	
+	public List<ContactCategory> getCategoryList() {
+		return categoryList;
+	}
+
+	@XmlElement
+	public void setCategoryList(List<ContactCategory> categoryList) {
+		this.categoryList = categoryList;
+	}
+
+	@XmlElement
+	public void setContactList(List<Contact> contactList) {
+		this.contactList = contactList;
+	}
+	
+	
 	
 }

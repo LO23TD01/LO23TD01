@@ -1,8 +1,15 @@
 package data;
 
 import java.awt.Image;
+import java.io.FileOutputStream;
 import java.util.UUID;
 
+import javax.xml.bind.JAXBContext;
+import javax.xml.bind.Marshaller;
+import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlRootElement;
+
+@XmlRootElement
 public class Profile {
 	private UUID uuid;
 	private String login;
@@ -22,6 +29,10 @@ public class Profile {
 	 * Constructors
 	 * 
 	 */
+	
+	public Profile() {
+		this.uuid = UUID.randomUUID();
+	}
 	
 	public Profile(UUID uuid) {
 		this.uuid = uuid;
@@ -60,9 +71,28 @@ public class Profile {
 	 */
 	
 	public void Xmlise(){
-		/*
-		 * TO-DO
-		 */
+		try {
+			
+		//create JAXB context
+		JAXBContext context = JAXBContext.newInstance(Profile.class);
+		
+		//Create Marshaller using JAXB context
+		Marshaller marshaller = context.createMarshaller();
+		marshaller.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, true);
+	 
+		//Do the marshal operation
+		marshaller.marshal(this, new FileOutputStream(".\\monProfile.xml"));
+		System.out.println("java object converted to xml successfully.");
+	    } catch (Exception e) {
+		e.printStackTrace();
+	    }
+		
+		
+		/* ATTANTION : ne fonctionne pas si le client du profile possède une liste de contact... (boucle)
+		 * 
+		 * Le problème sera bientôt réglé.
+		 *  
+		 *  */
 	}
 
 	
@@ -121,50 +151,62 @@ public class Profile {
 		return client;
 	}
 
+	@XmlElement
 	public void setUuid(UUID uuid) {
 		this.uuid = uuid;
 	}
 
+	@XmlElement
 	public void setLogin(String login) {
 		this.login = login;
 	}
 
+	@XmlElement
 	public void setNickName(String nickname) {
 		this.nickName = nickname;
 	}
 
+	@XmlElement
 	public void setPsw(String psw) {
 		this.psw = psw;
 	}
 
+	@XmlElement
 	public void setFirstName(String firstName) {
 		this.firstName = firstName;
 	}
 
+	@XmlElement
 	public void setSurName(String surName) {
 		this.surName = surName;
 	}
 
+	@XmlElement
 	public void setAge(int age) {
 		this.age = age;
 	}
 
+	@XmlElement
 	public void setAvatar(Image avatar) {
 		this.avatar = avatar;
 	}
 
+	@XmlElement
 	public void setNbGameWon(int nbGameWon) {
 		this.nbGameWon = nbGameWon;
 	}
 
+	@XmlElement
 	public void setNbGameLost(int nbGameLost) {
 		this.nbGameLost = nbGameLost;
 	}
 
+	@XmlElement
 	public void setNbGameAbandonned(int nbGameAbandonned) {
 		this.nbGameAbandonned = nbGameAbandonned;
 	}
 
+	@XmlElement
 	public void setClient(Client client) {
 		this.client = client;
 	}
