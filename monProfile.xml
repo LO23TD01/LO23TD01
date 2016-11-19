@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<profile>
+    <age>0</age>
+    <client>
+        <defaultRight>
+            <canJoinCreatedGame>true</canJoinCreatedGame>
+            <canSpectateCreatedGame>false</canSpectateCreatedGame>
+            <profVisibility>true</profVisibility>
+        </defaultRight>
+    </client>
+    <firstName>test</firstName>
+    <nbGameAbandonned>0</nbGameAbandonned>
+    <nbGameLost>0</nbGameLost>
+    <nbGameWon>0</nbGameWon>
+    <nickName>test</nickName>
+    <surName>test</surName>
+</profile>
