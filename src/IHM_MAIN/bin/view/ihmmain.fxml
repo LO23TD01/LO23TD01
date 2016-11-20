@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.lang.*?>
+<?import java.util.*?>
+<?import javafx.collections.*?>
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.image.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.paint.*?>
+<?scenebuilder-classpath-element .?>
+
+<BorderPane prefHeight="569.0" prefWidth="815.0" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/2.2" fx:controller="controller.ControllerApplication">
+  <bottom>
+    <HBox alignment="CENTER" prefHeight="76.0" prefWidth="815.0">
+      <children>
+        <TextField fx:id="gameSearch" prefWidth="276.0" text="Rechercher Partie">
+          <HBox.margin>
+            <Insets right="10.0" fx:id="x1" />
+          </HBox.margin>
+        </TextField>
+        <CheckBox fx:id="full" mnemonicParsing="false" text="Partie Pleine" HBox.margin="$x1" />
+        <CheckBox id="private" fx:id="privacy" mnemonicParsing="false" text="Partie Privée" HBox.margin="$x1" />
+        <ComboBox fx:id="nbpl" prefWidth="94.0" promptText="Nb. J.">
+          <items>
+            <FXCollections fx:factory="observableArrayList">
+              <String fx:value="Item 1" />
+              <String fx:value="Item 2" />
+              <String fx:value="Item 3" />
+            </FXCollections>
+          </items>
+        </ComboBox>
+      </children>
+    </HBox>
+  </bottom>
+  <center>
+    <TableView fx:id="currentGames" prefHeight="200.0" prefWidth="200.0">
+      <columns>
+        <TableColumn maxWidth="5000.0" minWidth="10.0" prefWidth="296.0" text="Nom de la partie" fx:id="gameName" />
+        <TableColumn maxWidth="5000.0" minWidth="10.0" prefWidth="150.0" text="Joueurs" fx:id="players" />
+        <TableColumn maxWidth="5000.0" minWidth="10.0" prefWidth="150.0" text="Spectateurs" fx:id="spectators" />
+        <TableColumn maxWidth="5000.0" minWidth="10.0" prefWidth="150.0" text="Créateur" fx:id="owner" />
+      </columns>
+    </TableView>
+  </center>
+  <right>
+    <ScrollBar orientation="VERTICAL" />
+  </right>
+  <top>
+    <HBox alignment="CENTER" prefHeight="88.0" prefWidth="815.0">
+      <children>
+        <Button fx:id="name" mnemonicParsing="false" onAction="#handleNameButton" prefHeight="47.0" prefWidth="204.0" text="Mon Pseudo" HBox.margin="$x1">
+          <graphic>
+            <ImageView fitHeight="32.0" fitWidth="32.0" mouseTransparent="true" pickOnBounds="true" preserveRatio="true">
+              <image>
+                <Image url="@uti.jpg" />
+              </image>
+            </ImageView>
+          </graphic>
+        </Button>
+        <Button fx:id="createGame" mnemonicParsing="false" onAction="#handleCreateButton" prefWidth="155.0" text="Créer Partie" HBox.margin="$x1" />
+        <TextField id="user" fx:id="userSearch" prefWidth="243.0" text="Rechercher Utilisateur" HBox.margin="$x1" />
+        <Button id="refresh" fx:id="search" contentDisplay="CENTER" minWidth="33.0" mnemonicParsing="false" onAction="#handleSearchButton" prefWidth="33.0" text="" HBox.margin="$x1">
+          <graphic>
+            <ImageView fitHeight="23.0" fitWidth="23.0" mouseTransparent="true" pickOnBounds="true" preserveRatio="true">
+              <image>
+                <Image url="@loupe.png" />
+              </image>
+            </ImageView>
+          </graphic>
+        </Button>
+        <Button fx:id="refresh" contentDisplay="CENTER" minWidth="33.0" mnemonicParsing="false" onAction="#handleRefreshButton" prefWidth="33.0" text="">
+          <graphic>
+            <ImageView fitHeight="24.0" fitWidth="27.555556640625" mouseTransparent="true" pickOnBounds="true" preserveRatio="true">
+              <image>
+                <Image url="@refresh.png" />
+              </image>
+            </ImageView>
+          </graphic>
+        </Button>
+      </children>
+    </HBox>
+  </top>
+</BorderPane>
