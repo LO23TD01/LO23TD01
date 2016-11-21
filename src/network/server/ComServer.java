@@ -8,6 +8,7 @@ import java.util.UUID;
 
 import data.GameTable;
 import data.Profile;
+import network.messages.SendProfileMessage;
 import data.User;
 
 import java.net.ServerSocket;
@@ -165,6 +166,13 @@ public class ComServer implements Runnable, ComServerInterface {
 	public void sendProfileUpdate(List<UUID> receivers, UUID userUpdated, Profile data) {
 		// TODO Auto-generated method stub
 		
+	}
+
+	@Override
+	public void sendProfile(UUID receivers, Profile data) {
+		SocketClientHandler handler = connectedClients.get(receivers);
+		if (handler != null)
+			handler.sendMessage(new SendProfileMessage(receivers, data));
 	}
 
 	@Override
