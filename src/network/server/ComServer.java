@@ -119,7 +119,17 @@ public class ComServer implements Runnable, ComServerInterface {
 		
 	}
 
+	@Override
+	public void showTimer(UUID user) {
+		// TODO Auto-generated method stub
+		
+	}
 
+	@Override
+	public void addNewTable(List<UUID> receivers, GameTable tableinfo) {
+		// TODO Auto-generated method stub
+		
+	}
 
 	@Override
 	public void sendSelection(List<UUID> receivers, UUID player, boolean d1, boolean d2, boolean d3) {
@@ -175,6 +185,11 @@ public class ComServer implements Runnable, ComServerInterface {
 		
 	}
 
+	@Override
+	public void refreshUserList(UUID user, List<UUID> receivers) {
+		// TODO Auto-generated method stub
+		
+	}
 
 	@Override
 	public void raiseException(UUID user, String msg) {
@@ -231,6 +246,12 @@ public class ComServer implements Runnable, ComServerInterface {
         }
         
     }
+	@Override
+	public void sendTablesUsers(List<User> userList, List<GameTable> tableList, Profile user) {
+		// TODO Auto-generated method stub
+		
+	}
+
 
 	@Override
 	public void addNewTable(UUID receiver, List<UUID> receivers, GameTable tableinfo) {
