@@ -37,12 +37,12 @@ public class User {
 		return false;
 	}
 
-	public User getLightWeightVersion() throws Exception{
+	public User getLightWeightVersion() {
 		
 		if(this.isLightWeightVersion())
 			return this;
-		if(this.isEmptyVersion())
-			throw new Exception("User is Empty, can't get LightWeight");
+//		if(this.isEmptyVersion())
+//			throw new Exception("User is Empty, can't get LightWeight");
 
 		return new User(new Profile(this.publicData.getUuid(),this.publicData.getNickName(),this.publicData.getFirstName(),this.publicData.getSurName(),this.publicData.getAge()),this.actualTable,this.isSpectating);
 	}
