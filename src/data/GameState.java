@@ -39,10 +39,10 @@ public class GameState {
 	 * @throws Exception 
 	 * 
 	 */
-	public GameState(Parameters param, List<User> playerList) throws Exception {
+	public GameState(Parameters param, List<User> playerList)  {
 		super();
-		if (playerList.isEmpty())
-			throw new Exception("Erreur création GameState, aucun user !");
+//		if (playerList.isEmpty())
+//			throw new Exception("Erreur création GameState, aucun user !");
 		this.chipStack = param.getNbChip();
 		this.playerList = playerList;
 		this.dataList = new ArrayList<PlayerData>();

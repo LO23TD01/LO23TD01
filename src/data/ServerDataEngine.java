@@ -4,10 +4,13 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
+import network.server.ComServer;
+
 public class ServerDataEngine implements InterfaceDataNetwork {
 	private List<User> usersList;
 	private List<GameTable> tableList;
 	
+	private ComServer comServer;
 	
 	/*
 	 * 
@@ -26,7 +29,7 @@ public class ServerDataEngine implements InterfaceDataNetwork {
 	 * 
 	 */
 	
-	public GameTable createTable (User user, String name, Parameters params) throws Exception{
+	private GameTable createTable (User user, String name, Parameters params){
 		
 		//Initialisation des joueurs de la table avec le joueur créant la table
 		List<User> playerList = new ArrayList<User>();
@@ -38,9 +41,24 @@ public class ServerDataEngine implements InterfaceDataNetwork {
 		return new GameTable(name, user, params, playerList, spectatorList);
 	}
 	
+	private void startLaunchTimer(GameTable table) //Edit : ajout de la GameTable. Il faut savoir quelle table lancer ...
+	{
+		GameTable tableFull = table.getSame(this.tableList);
+//		if(tableFull==null)
+//			throw new Exception("La table n'existe pas. Il faut que la table existe pour s'y connecter.");
+		tableFull.initializeGame();
+		
+		this.selectFirstPlayer(tableFull);
+	}
+	
 	public boolean closeTable (GameTable table){
 		//TO-DO : Fermeture de la table
 		return false;
+	}
+	
+	private void selectFirstPlayer(GameTable table) //Edit : ajout de la GameTable. Il faut savoir quelle table lancer ...
+	{
+		this.comServer.showTimer(getUuidList(table.getAllList()));
 	}
 	
 	public void connect (User user){
@@ -48,7 +66,8 @@ public class ServerDataEngine implements InterfaceDataNetwork {
 	}
 	
 	public void disconnect (User user){
-		//TO-DO : Deconnexion d'un user
+		user.getActualTable().disconnect(user);
+		this.usersList.remove(user.getSame(this.usersList));
 	}
 	
 	/*
@@ -59,13 +78,21 @@ public class ServerDataEngine implements InterfaceDataNetwork {
 	
 	@Override
 	public Profile getProfile(User user) {
-		// TODO Auto-generated method stub
-		return null;
+//		if(user.getSame(this.usersList)==null)
+//			throw new Exception("Utilisateur non connecté. Il faut qu'il soit connecté pour retrouver son profil.");
+		return user.getSame(this.usersList).getPublicData();
 	}
 	@Override
 	public void updateUserProfile(UUID uuid, Profile profile) {
-		// TODO Auto-generated method stub
+		//uuid useless (il est déjà dans le profile bande de bananes.)
 		
+		User compUser = new User(profile);
+//		if(!compUser.isFullVersion())
+//			throw new Exception("Profil non complet lors de la mise à jour. Il faut un profil complet");
+//		else if(compUser.getSame(this.usersList)==null)
+//			throw new Exception("Profil non connecté. Il faut que le profil soit connecté pour le mettre à jour.");
+		compUser.getSame(this.usersList).setPublicData(profile);
+		//La suite du diag de sequence a été overrided par l'avis du prof.
 	}
 	@Override
 	public void sendMessage(ChatMessage message) {
@@ -84,17 +111,56 @@ public class ServerDataEngine implements InterfaceDataNetwork {
 	}
 	@Override
 	public void askJoinTable(User user, GameTable table, boolean isPlayer) {
-		// TODO Auto-generated method stub
-		
+		GameTable tableFull = table.getSame(this.tableList);
+		User userFull = user.getSame(this.usersList);
+//		if(tableFull==null)
+//			throw new Exception("La table n'existe pas. Il faut que la table existe pour s'y connecter.");
+//		else if(userFull==null)
+//			throw new Exception("L'utilisateur n'est pas connecté. Il faut être connecté pour rejoindre une table.");
+
+		if(isPlayer && (tableFull.getGameState().getState()!=State.PRESTART))
+			this.comServer.raiseException(user.getPublicData().getUuid(), "Impossible de rejoindre une partie déjà commencée.");
+		else if(isPlayer && (tableFull.getParameters().getNbPlayerMax()>=tableFull.getPlayerList().size()))
+			this.comServer.raiseException(user.getPublicData().getUuid(), "Impossible de rejoindre une partie pleine.");
+		else if(!isPlayer && (!tableFull.getParameters().isAuthorizeSpec()))
+			this.comServer.raiseException(user.getPublicData().getUuid(), "Impossible de regarder cette partie. Non Autorisé par le Créateur.");
+		if(tableFull.connect(user,isPlayer))
+		{
+			//success
+			user.setActualTable(tableFull.getEmptyVersion());
+			user.setSpectating(!isPlayer);
+			if(isPlayer)
+				this.comServer.newPlayerOnTable(getUuidList(tableFull.getAllList()), user.getPublicData(), tableFull.getUid());
+			else
+				this.comServer.newPlayerOnTable(getUuidList(tableFull.getAllList()), user.getPublicData(), tableFull.getUid());
+		}
+		else
+		{
+			//la table n'a pas reussi à connecter le nouveau user malgré nos test en ammonts
+			//TOREVIEW est ce que c'est une bonne idée d'afficher l'erreur de cette manière au client ? Le fiat est que si on le fait pas, il attendra de manière infinie d'apres nos diag de sequence.
+			this.comServer.raiseException(user.getPublicData().getUuid(), "Erreur inconnue lors de la connexion à la table");
+			//TOREVIEW idealement on envoie l'excepetion à partir de la table car ici on n'a pas assez d'informations.
+//			throw new Exception("Erreur inconnue lors de la connexion à la table");
+		}
 	}
 	@Override
 	public void launchGame(User user) {
-		// TODO Auto-generated method stub
+		User userFull = user.getSame(this.usersList);
+//		if(userFull==null)
+//			throw new Exception("L'utilisateur n'est pas connecté. Il faut être connecté pour lancer une partie.");
+//		else if(userFull.getActualTable()==null)
+//			throw new Exception("L'utilisateur n'a rejoint aucune table. Il faut être assit à une table pour lancer une partie.")
+//		else if(!userFull.getActualTable().getCreator().isSame(user))
+//			throw new Exception("L'utilisateur n'est pas le createur de sa partie. Il faut être le createur pour lancer une partie.");
 		
 	}
 	@Override
 	public void createNewTable(User user, String name, Parameters params) {
-		// TODO Auto-generated method stub
+		GameTable newTable = createTable(user,name,params);
+		this.tableList.add(newTable);
+		user.setActualTable(newTable.getEmptyVersion());
+		user.setSpectating(false);
+		this.comServer.addNewTable(user.getPublicData().getUuid(),getUuidList(this.usersList), newTable);
 		
 	}
 	@Override
@@ -129,9 +195,43 @@ public class ServerDataEngine implements InterfaceDataNetwork {
 	}
 	@Override
 	public void askRefreshUsersList(User user) {
-		// TODO Auto-generated method stub
+		
+		//TOREVIEW : on pourrait tester d'abord que le user est connecté, mais j'imagine plus que le network va le faire car c'ets critique pour eux.
+		this.comServer.refreshUserList(user.getPublicData().getUuid(), getLightweightList(this.usersList)); 
 		
 	}
 	
+
+
+	public ComServer getComServer() {
+		return comServer;
+	}
+
+	public void setComServer(ComServer comServer) {
+		this.comServer = comServer;
+	}
 	
+	public static List<User> getEmptyList(List<User> userList)
+	{
+		List<User> newList = new ArrayList<User>();
+		for(User i : userList)
+			newList.add(i.getEmptyVersion());
+		return newList;
+	}
+	
+	public static List<User> getLightweightList(List<User> userList)
+	{
+		List<User> newList = new ArrayList<User>();
+				for(User i: userList)
+					newList.add(i.getLightWeightVersion());
+		return newList;
+	}
+
+	public static List<UUID> getUuidList(List<User> userList)
+	{
+		List<UUID> newList = new ArrayList<UUID>();
+		for(User i : userList)
+			newList.add(i.getPublicData().getUuid());
+		return newList;
+	}
 }
