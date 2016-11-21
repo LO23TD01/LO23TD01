@@ -8,6 +8,7 @@ import java.util.UUID;
 import data.Profile;
 import network.messages.GetProfileMessage;
 import network.messages.IMessage;
+import network.messages.UpdateProfileMessage;
 
 public class ComClient implements ComClientInterface{
 	private int 					serverPort;
@@ -100,8 +101,7 @@ public class ComClient implements ComClientInterface{
 
 	@Override
 	public void updateUserProfile(UUID user, Profile profile) {
-		// TODO Auto-generated method stub
-		
+		sendMessage(new UpdateProfileMessage(user,profile));
 	}
 
 	@Override
