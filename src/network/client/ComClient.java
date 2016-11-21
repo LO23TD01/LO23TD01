@@ -6,6 +6,7 @@ import java.net.UnknownHostException;
 import java.util.UUID;
 
 import data.Profile;
+import network.messages.GetProfileMessage;
 import network.messages.IMessage;
 
 public class ComClient implements ComClientInterface{
@@ -29,7 +30,7 @@ public class ComClient implements ComClientInterface{
 		try {
 			socketToServer = new Socket(ipAdress, serverPort);
 			
-			System.out.println("Client connecté au serveur");
+			System.out.println("Client connectï¿½ au serveur");
 			
 			SocketServerHandler server = new SocketServerHandler(socketToServer);
         	new Thread(server).start();
@@ -159,8 +160,7 @@ public class ComClient implements ComClientInterface{
 
 	@Override
 	public void getProfile(UUID user) {
-		// TODO Auto-generated method stub
-		
+		sendMessage(new GetProfileMessage(user));
 	}
 	
 	
