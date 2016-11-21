@@ -19,22 +19,39 @@ import network.client.ComClientInterface;
 
 public class InterfaceDataIHMLobby {
 
-	/*
+	/**
 	 * Variable qui permet de communiquer avec le serveur, initialisée lors du login
 	 */
-	private ComClientInterface comClientInterface;
+	private ComClientInterface comClientInterface = null;
+
+	/**
+	 * Variable qui contient le fichier XML parsé correspondant au profile du joueur
+	 */
+	private Document parsedProfileXML = null;
 
 	public void getListTable() {
 
 	}
 
+	/**
+	 * Cette méthode permet de vérifier si le login et le password sont corrects par rapport au fichier XML contenant le
+	 * profile du joueur. La variable met à jour l'attribut parsedProfileXML avec le fichier XML nouvellement parsé, ou
+	 * ne change pas l'attribut si le fichier à charger est le même.
+	 * 
+	 * @param login
+	 * @param password
+	 * @return true si correct, false sinon
+	 */
 	private boolean enterMyPassword(String login, String password) {
 		final DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
 		try {
 			final DocumentBuilder builder = factory.newDocumentBuilder();
-			final Document document = builder.parse(new File(login + ".xml"));
-			// TODO choisir un bon nom du fichier XML
-			final Element racine = document.getDocumentElement();
+			// TODO choisir un bon nom du fichier XML pour gérer le cas du doublon de profile. A voir quand la méthode
+			// createProfile sera implémentée
+			if (parsedProfileXML == null || !parsedProfileXML.getDocumentURI().equals(new File(login + ".xml").toURI().toString()))
+				parsedProfileXML = builder.parse(new File(login + ".xml"));
+
+			final Element racine = parsedProfileXML.getDocumentElement();
 			final NodeList racineNoeuds = racine.getChildNodes();
 
 			final int nbRacineNoeuds = racineNoeuds.getLength();
@@ -56,10 +73,19 @@ public class InterfaceDataIHMLobby {
 		return false;
 	}
 
+	/**
+	 * Cette méthode vérifie si le login/mot de passe est correct. Elle connecte ensuite le client au serveur de jeu.
+	 * 
+	 * @param login
+	 * @param password
+	 * @param ipd
+	 * @throws Exception
+	 */
 	public void login(String login, String password, IPData ipd) throws Exception {
 		if (!enterMyPassword(login, password))
 			throw new Exception("Mauvais mot de passe");
-		comClientInterface = new ComClient(ipd.getValue(), 4000); // TODO choisir un port
+		comClientInterface = new ComClient(ipd.getValue(), 4000);
+		// TODO choisir un port
 		comClientInterface.connection(this.getLocalProfile(login, password));
 	}
 
