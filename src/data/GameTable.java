@@ -17,7 +17,7 @@ public class GameTable {
 	private List<Vote> voteCasted;
 	
 	public GameTable(String name, User creator, Parameters parameters, List<User> playerList,
-			List<User> spectatorList) throws Exception {
+			List<User> spectatorList) {
 		super();
 		this.Uid = UUID.randomUUID();
 		this.name = name;
@@ -80,7 +80,7 @@ public class GameTable {
 		this.voteCasted = voteCasted;
 	}
 
-	public void initializeGame() throws Exception{	
+	public void initializeGame() {	
 		//TOREVIEW ajouter des conditions pour eviter de reinit pendant une partie commencée ?
 		this.gameState = new GameState(this.parameters, this.playerList);
 	}
@@ -106,7 +106,7 @@ public class GameTable {
 		return false;
 	}
 	
-	public void disconnect(User u) throws Exception{
+	public void disconnect(User u){
 		
 		if(this.spectatorList.remove(u)) //TOREWROK
 		{
@@ -116,8 +116,8 @@ public class GameTable {
 			this.playerList.remove(u);
 			this.localChat.remove(u);
 			this.gameState.remove(u);
-			if(this.creator.isSame(u))
-				throw new Exception("User disconnecting from table is the creator.");
+//			if(this.creator.isSame(u))
+//				throw new Exception("User disconnecting from table is the creator.");
 		}
 	}
 	
@@ -198,6 +198,13 @@ public class GameTable {
 		return null;
 	}
 
+	public List<User> getAllList()
+	{
+		List<User> newList = this.playerList;
+		newList.addAll(this.spectatorList);
+		return newList;
+	}
+	
 	public UUID getUid() {
 		return Uid;
 	}
