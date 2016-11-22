@@ -15,18 +15,14 @@ public class GameState {
 	private List<User> winners;
 	private List<User> losers;
 	private List<PlayerData> dataTieList;
+	private TurnState turnState;
 
-	/**
-	 * @param chipStack
-	 * @param playerList
-	 * @param dataList
-	 * @param firstPlayer
-	 * @param actualPlayer
-	 * @param state
-	 * @param rules
-	 */
+	
+	
+	
 	public GameState(int chipStack, List<User> playerList, List<PlayerData> dataList, User firstPlayer,
-			User actualPlayer, State state, Rules rules) {
+			User actualPlayer, State state, Rules rules, List<User> winners, List<User> losers,
+			List<PlayerData> dataTieList, TurnState turnState) {
 		super();
 		this.chipStack = chipStack;
 		this.playerList = playerList;
@@ -35,10 +31,12 @@ public class GameState {
 		this.actualPlayer = actualPlayer;
 		this.state = state;
 		this.rules = rules;
-		this.winners = null;
-		this.losers = null;
-		this.dataTieList = null;
+		this.winners = winners;
+		this.losers = losers;
+		this.dataTieList = dataTieList;
+		this.turnState = turnState;
 	}
+
 
 	/**
 	 * @param param
@@ -63,13 +61,15 @@ public class GameState {
 		this.winners = null;
 		this.losers = null;
 		this.dataTieList = null;
+		this.turnState = TurnState.INIT;
 	}
 
 	//methode pour faciliter la tache de l'engine
-	//il va remplacer la data du player par celle en arguement;
-	public void replaceData(PlayerData pData, boolean tie)
+	//Va automatiquement là où necessaire : dataList dans le premier tour de table, dataTieList dans les tours de Tie Breaker.
+	//il va remplacer la data du player par celle en argument;
+	public void replaceData(PlayerData pData)
 	{
-		if(!tie)
+		if(this.turnState==TurnState.INIT || this.turnState==TurnState.FIRST_ROUND)
 		{
 //		if(pData.getPlayer().getSame(this.playerList)==null)
 //			throw new Exception("Le joueur n'appartient pas à cette partie. Le joueur doit appartient à cette partie pour remplacer ses données.");
@@ -98,6 +98,7 @@ public class GameState {
 	
 	//methode pour faciliter la tache de l'engine
 		//il renvoie la data du player en argument;
+		//tie en argument spécifie quelle donnée on recherche
 		public PlayerData getData(User u, boolean tie)
 		{
 			if(!tie){
@@ -158,20 +159,20 @@ public class GameState {
 		}
 	}
 
+	//TODO
 	/*
+	 * //TODO
 	 * Permet de rÃ©cupÃ©rer le joueur suivant dans la suite. Renvoit le premier
 	 * joueur dans la liste si on est arrivÃ© Ã  la fin.
 	 */
 	public User getNextPlayer() {
+		//TODO
+		//Il doit donner les resultats suivant la phase du tour dans lequel il est.
+		//Actuellement les Tie ne sont pas codés
 		int nextIndex = (playerList.indexOf(this.actualPlayer) + 1) % playerList.size();
 		return playerList.get(nextIndex);
 	}
 	
-	//TODO
-	//renvoie le joueurSuivant qui est dans la liste des Winners
-	public User getNextPlayer() {
-		//TODO
-	}
 	
 	
 
@@ -331,6 +332,19 @@ public class GameState {
 	public void setDataTieList(List<PlayerData> dataTieList) {
 		this.dataTieList = dataTieList;
 	}
+
+	
+	
+	
+	public TurnState getTurnState() {
+		return turnState;
+	}
+
+
+	public void setTurnState(TurnState turnState) {
+		this.turnState = turnState;
+	}
+
 
 	/*
 	 * (non-Javadoc)
