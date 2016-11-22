@@ -228,34 +228,50 @@ public class ServerDataEngine implements InterfaceDataNetwork {
 		boolean tie = (tableFull.getGameState().getTurnState()==TurnState.LOSER_TIE_ROUND || tableFull.getGameState().getTurnState()==TurnState.WINNER_TIE_ROUND);
 		PlayerData pData = new PlayerData(tableFull.getGameState().getData(userFull,tie));
 		boolean isFirstRoll = (pData.getRerollCount()==0);
-		int r1,r2,r3;
-		if(d1 || isFirstRoll)
-			r1 = Dice();
+		boolean isStop = !(d1 || d2 || d3);
+		if (isFirstRoll || !isStop)
+		{
+			int r1,r2,r3;
+			if(d1 || isFirstRoll)
+				r1 = Dice();
+			else
+				r1 = pData.getDices()[0];
+			if(d2 || isFirstRoll)
+				r2 = Dice();
+			else
+				r2 = pData.getDices()[1];
+			if(d3 || isFirstRoll)
+				r3 = Dice();
+			else
+				r3 = pData.getDices()[2];
+			int[] tDice = {r1 , r2 ,r3};
+			pData.setDices(tDice);
+			pData.setRerollCount(pData.getRerollCount()+1);
+			tableFull.getGameState().replaceData(pData);
+			this.comServer.sendResult(getUuidList(tableFull.getAllList()), r1, r2, r3);
+			gameEngine(tableFull,false);
+		}
 		else
-			r1 = pData.getDices()[0];
-		if(d2 || isFirstRoll)
-			r2 = Dice();
-		else
-			r2 = pData.getDices()[1];
-		if(d3 || isFirstRoll)
-			r3 = Dice();
-		else
-			r3 = pData.getDices()[2];
-		int[] tDice = {r1 , r2 ,r3};
-		pData.setDices(tDice);
-		pData.setRerollCount(pData.getRerollCount()+1);
-		tableFull.getGameState().replaceData(pData);
-		this.comServer.sendResult(getUuidList(tableFull.getAllList()), r1, r2, r3);
-		
-		//TODO
-		//appeler une fonction qui va savoir quoi faire apres.
-		gameEngine(tableFull);
-		
+		{
+			this.comServer.sendResult(getUuidList(tableFull.getAllList()), pData.getDices()[0], pData.getDices()[1], pData.getDices()[2]);
+			gameEngine(tableFull,true);
+		}
 	}
+	
 	@Override
 	public void hasSelected(UUID uuid, boolean d1, boolean d2, boolean d3) {
-		// TODO Auto-generated method stub
-
+		User emptyUser = new User( new Profile(uuid));
+		User userFull = emptyUser.getSame(this.usersList);
+		//		if(userFull==null)
+		//			throw new Exception("L'utilisateur n'est pas connecté. Il faut être connecté pour selectionner des dés.");
+		GameTable tableFull = userFull.getActualTable().getSame(this.tableList);
+		//		if(tableFull==null)
+		//			throw new Exception("La table n'existe pas. Il faut que la table existe pour y selectionner des dés.");
+		
+//		if(!tableFull.getGameState().getActualPlayer().isSame(userFull))
+			//			throw new Exception("Le lanceur de dés n'est pas le joueur actuel. Il faut être le joueur actuel pour selectionner des dés.");
+		
+		this.comServer.sendSelection(getUuidList(tableFull.getAllList()), userFull.getPublicData().getUuid(), d1, d2, d3);
 	}
 	@Override
 	public void connectUser(Profile profile) {
@@ -284,7 +300,7 @@ public class ServerDataEngine implements InterfaceDataNetwork {
 	//pour commencer la partie, il necessite un gameState initialisé (sinon il ne peux pas savoir que c'ets le debut)
 	//à n'appeler que si il s'est passé quelquechose
 	//fonctionne iterativement.
-	private void gameEngine(GameTable table)
+	private void gameEngine(GameTable table, boolean isStop)
 	{
 		GameTable tableFull = table.getSame(this.tableList);
 		//exception et patatra
@@ -306,10 +322,10 @@ public class ServerDataEngine implements InterfaceDataNetwork {
 			switch (tableFull.getGameState().getTurnState())
 			{
 			case INIT:
-				initTurnRoutine(tableFull);
+				initTurnRoutine(tableFull, true, isStop);
 				break;
 			case FIRST_ROUND:
-				firstRoundRoutine(tableFull);
+				firstRoundRoutine(tableFull,true, isStop);
 				break;
 			case WINNER_TIE_ROUND:
 				winnerRoundRoutine(tableFull,true);
@@ -320,7 +336,7 @@ public class ServerDataEngine implements InterfaceDataNetwork {
 			case END:
 				tableFull.getGameState().setState(State.CHARGING);
 				tableFull.getGameState().nextTurn(tableFull.getGameState().getWinners().get(0));
-				gameEngine(tableFull);
+				gameEngine(tableFull,false);
 				break;	
 			default:
 				//TODO trhow exception
@@ -333,10 +349,10 @@ public class ServerDataEngine implements InterfaceDataNetwork {
 			switch (tableFull.getGameState().getTurnState())
 			{
 			case INIT:
-				initTurnRoutine(tableFull);
+				initTurnRoutine(tableFull,true,isStop);
 				break;
 			case FIRST_ROUND:
-				firstRoundRoutine(tableFull);
+				firstRoundRoutine(tableFull,true,isStop);
 				break;
 			case WINNER_TIE_ROUND:
 				winnerRoundRoutine(tableFull,false);
@@ -353,14 +369,21 @@ public class ServerDataEngine implements InterfaceDataNetwork {
 				tableFull.getGameState().setChipStack(tableFull.getGameState().getChipStack()-value);
 				pDataL.setChip(pDataL.getChip()+value);
 				tableFull.getGameState().replaceData(pDataL);
+				this.comServer.updateChips(getUuidList(tableFull.getAllList()), pDataL.getPlayer().getPublicData().getUuid(),value);
+				
+				
 				if(tableFull.getGameState().getChipStack()==0)	//on passe à la decharge
 				{
 					tableFull.getGameState().setState(State.DISCHARGING);
-					//TODO verifier gagnant en sec
+					//si qqun gagne sec
+					if(tableFull.getGameState().getDataList().stream()
+							.filter(d->d.getChip()==0)
+							.count()>0) 
+						tableFull.getGameState().setState(State.END); 
 					
 				}
 				tableFull.getGameState().nextTurn(pDataL.getPlayer());
-				gameEngine(tableFull);
+				gameEngine(tableFull,false);
 				
 				break;
 			default:
@@ -374,10 +397,10 @@ public class ServerDataEngine implements InterfaceDataNetwork {
 			switch (tableFull.getGameState().getTurnState())
 			{
 			case INIT:
-				initTurnRoutine(tableFull);
+				initTurnRoutine(tableFull,false,isStop);
 				break;
 			case FIRST_ROUND:
-				firstRoundRoutine(tableFull);
+				firstRoundRoutine(tableFull,false,isStop);
 				break;
 			case WINNER_TIE_ROUND:
 				winnerRoundRoutine(tableFull,true);
@@ -394,10 +417,12 @@ public class ServerDataEngine implements InterfaceDataNetwork {
 				pDataW.setChip(pDataW.getChip()-value);
 				pDataL.setChip(pDataL.getChip()+value);
 				tableFull.getGameState().replaceData(pDataL);
+				this.comServer.updateChips(getUuidList(tableFull.getAllList()), pDataW.getPlayer().getPublicData().getUuid(), pDataL.getPlayer().getPublicData().getUuid(),value);
+				
 				if(pDataW.getChip()==0)	//on passe à la fin //TOREVIEW ou pas ?
 					tableFull.getGameState().setState(State.END);
 				tableFull.getGameState().nextTurn(pDataL.getPlayer());
-				gameEngine(tableFull);
+				gameEngine(tableFull,false);
 				break;	
 			default:
 				//TODO trhow exception
@@ -408,6 +433,12 @@ public class ServerDataEngine implements InterfaceDataNetwork {
 
 		case END:
 			//fin partie
+			//TOREVIEW un gagnant ? plusieurs gagnants ? etc (pleins de questions)
+			PlayerData pDataWinner = tableFull.getGameState().getDataList().stream()
+					.filter(d->d.getChip()==0)
+					.findFirst()
+					.get();
+			this.comServer.hasWon(getUuidList(tableFull.getAllList()), pDataWinner.getPlayer().getPublicData().getUuid());
 			
 			break;
 			
@@ -464,27 +495,71 @@ public class ServerDataEngine implements InterfaceDataNetwork {
 	//Game engine factorisation :
 	//pour aller plus vite, étant donnée ces fonctions privées, on envoie une tableFull necessairement
 	
-	private void initTurnRoutine(GameTable tableFull)
+	private void initTurnRoutine(GameTable tableFull, boolean isSec, boolean isStop)
 	{
-		tableFull.getGameState().setTurnState(TurnState.FIRST_ROUND);
-		this.comServer.startTurn(getUuidList(tableFull.getAllList()), tableFull.getGameState().getActualPlayer().getPublicData().getUuid(), false);
+		if(isSec)
+		{
+			tableFull.getGameState().setTurnState(TurnState.FIRST_ROUND);
+			this.comServer.startTurn(getUuidList(tableFull.getAllList()), tableFull.getGameState().getActualPlayer().getPublicData().getUuid(), false);
+		
+		}
+		else
+		{
+			if (!(tableFull.getGameState().getData(tableFull.getGameState().getActualPlayer(), false).getRerollCount()==0) // si il a déjà commencé
+					&& (isStop || tableFull.getGameState().getData(tableFull.getGameState().getActualPlayer(), false).getRerollCount()==3)) // et qu'il veut ou doit arreter
+			{
+				// on change le joueur et l'état
+				tableFull.getGameState().setActualPlayer(tableFull.getGameState().getNextPlayer());
+				tableFull.getGameState().setTurnState(TurnState.FIRST_ROUND);
+			}
+			this.comServer.startTurn(getUuidList(tableFull.getAllList()), tableFull.getGameState().getActualPlayer().getPublicData().getUuid(), false);
+	
+		}
 	}
 	
-	private void firstRoundRoutine(GameTable tableFull)
+	private void firstRoundRoutine(GameTable tableFull, boolean isSec, boolean isStop)
 	{
-		//la fonction gameEngine est appelé de Onethrow , il faut cahnger de joueur
-		tableFull.getGameState().setActualPlayer(tableFull.getGameState().getNextPlayer());
-		if(tableFull.getGameState().getDataList().stream()
-				.filter(d->d.getRerollCount()!=0)
-				.count()!=0) //alors on n'a pas fini de distribuer
+		if(isSec)
 		{
-			this.comServer.startTurn(getUuidList(tableFull.getAllList()), tableFull.getGameState().getActualPlayer().getPublicData().getUuid(), false);
+			//la fonction gameEngine est appelé de Onethrow , il faut cahnger de joueur
+			tableFull.getGameState().setActualPlayer(tableFull.getGameState().getNextPlayer());
+			if(tableFull.getGameState().getDataList().stream()
+					.filter(d->d.getRerollCount()!=0)
+					.count()!=0) //alors on n'a pas fini de distribuer
+			{
+				this.comServer.startTurn(getUuidList(tableFull.getAllList()), tableFull.getGameState().getActualPlayer().getPublicData().getUuid(), false);
+			}
+			else // On a fini de dsitribuer
+			{
+				tableFull.getGameState().setTurnState(TurnState.WINNER_TIE_ROUND);
+				gameEngine(tableFull,false); //pour passer à la phase suivante sans trop de souci.
+			}
 		}
-		else // On a fini de dsitribuer
+		else
 		{
-			tableFull.getGameState().setTurnState(TurnState.WINNER_TIE_ROUND);
-			gameEngine(tableFull); //pour passer à la phase suivante sans trop de souci.
+			if (!(tableFull.getGameState().getData(tableFull.getGameState().getActualPlayer(), false).getRerollCount()==0) // si il a déjà commencé
+					&& (isStop || tableFull.getGameState().getData(tableFull.getGameState().getActualPlayer(), false).getRerollCount()==3)) // et qu'il veut ou doit arreter
+			{
+				if(tableFull.getGameState().getDataList().stream()
+						.filter(d->d.getRerollCount()!=0)
+						.count()!=0) //et que l' on n'a pas fini de distribuer
+				{
+					// on change le joueur
+					tableFull.getGameState().setActualPlayer(tableFull.getGameState().getNextPlayer());
+					this.comServer.startTurn(getUuidList(tableFull.getAllList()), tableFull.getGameState().getActualPlayer().getPublicData().getUuid(), false);
+				}
+				else
+				{
+					//sinon on change d'état
+					tableFull.getGameState().setTurnState(TurnState.WINNER_TIE_ROUND);
+					gameEngine(tableFull,false);
+				}
+				
+			}
+			else // ou alors on continue avec le meme joueur
+				this.comServer.startTurn(getUuidList(tableFull.getAllList()), tableFull.getGameState().getActualPlayer().getPublicData().getUuid(), false);
 		}
+
 	}
 	
 	private void winnerRoundRoutine(GameTable tableFull, boolean calculateWinners)
@@ -506,7 +581,7 @@ public class ServerDataEngine implements InterfaceDataNetwork {
 			if(tableFull.getGameState().getWinners().size()==1) //un seul winner la solution facile 
 			{
 				tableFull.getGameState().setTurnState(TurnState.LOSER_TIE_ROUND);
-				gameEngine(tableFull); //pour passer à la phase suivante sans trop de souci.
+				gameEngine(tableFull,false); //pour passer à la phase suivante sans trop de souci.
 				return;
 			}
 			if(tableFull.getGameState().getDataTieList().stream()
@@ -520,14 +595,14 @@ public class ServerDataEngine implements InterfaceDataNetwork {
 			{ 
 				//on recalcule les winners
 				tableFull.getGameState().setWinners(tableFull.getGameState().getRules().getWinner(tableFull.getGameState().getDataList()));
-				gameEngine(tableFull); 
+				gameEngine(tableFull,false); 
 				return;
 			}
 		}
 		else
 		{
 			tableFull.getGameState().setTurnState(TurnState.LOSER_TIE_ROUND);
-			gameEngine(tableFull); //pour passer à la phase suivante sans trop de souci.
+			gameEngine(tableFull,false); //pour passer à la phase suivante sans trop de souci.
 		}
 		
 	}
@@ -551,7 +626,7 @@ public class ServerDataEngine implements InterfaceDataNetwork {
 			if(tableFull.getGameState().getLosers().size()==1) //un seul winner la solution facile 
 			{
 				tableFull.getGameState().setTurnState(TurnState.END);
-				gameEngine(tableFull); //pour passer à la phase suivante sans trop de souci.
+				gameEngine(tableFull,false); //pour passer à la phase suivante sans trop de souci.
 				return;
 			}
 			if(tableFull.getGameState().getDataTieList().stream()
@@ -565,14 +640,14 @@ public class ServerDataEngine implements InterfaceDataNetwork {
 			{ 
 				//on recalcule les losers
 				tableFull.getGameState().setLosers(tableFull.getGameState().getRules().getLoser(tableFull.getGameState().getDataList()));
-				gameEngine(tableFull); 
+				gameEngine(tableFull,false); 
 				return;
 			}
 		}
 		else
 		{
 			tableFull.getGameState().setTurnState(TurnState.END);
-			gameEngine(tableFull); //pour passer à la phase suivante sans trop de souci.
+			gameEngine(tableFull,false); //pour passer à la phase suivante sans trop de souci.
 		}
 		
 	}
