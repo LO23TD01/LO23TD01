@@ -1,17 +1,52 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <profile>
-    <age>0</age>
+    <uuid>2b945f5d-a8b8-4910-b558-d9d746a174d2</uuid>
+    <login>login</login>
+    <nickName>nickname</nickName>
+    <psw>psw</psw>
+    <firstName>firstName</firstName>
+    <surName>surName</surName>
+    <age>12</age>
+    <avatar>iVBORw0KGgoAAAANSUhEUgAAAQAAAAEACAYAAABccqhmAAAL6ElEQVR42u3dWaxdVRnA8d2WROgDZSzKICgiMdoSLco8SBwSMQaBggaDA1CCJBaigEkVCAFJjD74Jm2iLQ5JsdBWEkKUtiDElpbEtjE+MIQWiolGacvQ5NYOrpWzTJrKZZ9z7xn2Wvv3Jf8XotCes77fveeeffep9u/fXzUp05c5MnRu6PrQvaEloSdCG0Mvh14P7Q3tT72Z/tmr6X+zKvSr9P+N/44L07/TTHIat28AyH6mhc4K3RZaFtp6wGL3uwjEI6HvJmAO8fADAADDn2ND14VWhHYMcOHriv/t5aF5oZmeFgAAYHAzI/SN0JrQnhEu/XjtSS8d5qU/qwEAAPownwj9IrSrgUs/XrvSzx3mePoAAIDeZ0roS6E/Z7T04/V06LL0dwIAAABQs/hzQ5sLWPyD2xS6vO0QAAAA483FoXUFLv7Bxe9qPg4AAACgMyeElrZg8Q8sXoPw89AxAABAWwGYGppfdS7C2d/S/h26KT0WAABAawA4NfRkixf/4P4Yeh8AANCGM3BFaKel/7/+GboUAAAodeJlsz8O7bPs4xYfm5+F3gMAAJQ08TLZ1Ra8654LHQ8AAJQw8Wq4bZa657ZVBV5JCIB2AfC50BuWecLFd0g+AwAA5DhXh8Ys8aSLj+GVAABATvO1qpm/sZdr8bG8CgAAyGHmWv6BITAXAABo8lzi2/6Bvxy4BAAAaOLE39t/y5IO5S5EZwEAAE2aE6vO/fIs6PDeIjwRAABowhwaetZSDr34mE8HAABGPQ9YxpG1CAAAGPXbfRZxtF0DAACMYk6pXOXXlKsFTwUAAIY58QYWT1m+xvRUlclNRQBQBgDfsXSNaz4AADCMOalq9228mvxS4AQAAGDQ85Bla2xLAQCAQc75lqzxXQQAAAxi4gdarLdgWVwgNAUAAOj3XG65smkuAADQ76/+myxWNm1u6ncBAMgTAF/98+syAACgX7PWQmXXWgAAoB9ztmXKtjMBAIDJzhKLlG1LAACAyczhlbv85Nzb6TkEAAAmNDdYouz7FgAAMNHxcV75twYAAJjIHFe5vXcptxOfCQAA9DrzLE8xXQcAAPQ6Sy1OMa0EAAB6nX9YnGLaGZoGAAB0Ox+xNMV1DgAA0O3cZGGK63YAAMDr//a2DAAA6Ha2WZjiegUAAOhmjrIsxXYkAABQNxdalGI7DwAAcAFQe7seAACom/stSrHdBwAA1M1vLUqxLQYAAOpmlUUpticAAIC6+YtFKbZNAACAawDa2xYAAKBudliUYtsOAADUjU/+LbcxAACg9jlS0QEAAAAAAAAA8M6z25IU21sAAEDdbLcoxbYDAAComy0WpdheAwAA6majRXEhEADaC8ATFqXYVgEAAHWz2KIU24MAAEDd3GtRim0BAABQN24IUm5XAwAAdeOWYOU2GwAAqJujLUqR7QtNBwAAuplXLIzbggOgvQAsszDF9TsAAKDbud3CFNfNAABAt3OOhSmujwIAAN1O/CjpnZammOJHvU8BAAB6mZUWp5iWNuVQASAfAK6zOMU0DwAA6HVmhvZYnuyLz+FxAADARGaNBcq+1U06UADICwAvA/LvRgAAYKJzeOhtS5Rtb6fnEAAAmPAssUjZtqRphwkA+QFwpkXKtrMBAIB+zFrLlF1rm3iQAJAnAJdZqOy6AgAA6NfEy0g3W6ps2lw15NJfAJQBQJyrLFY2XdnUQwSAfAGIX1HWW67Gt6GpX/0BkDcAcT5twRrfhU0+QADIG4A4D1myxvZw0w8PAPIH4ITQm5atcb0ROhEAABjG3GrhGtf8HA4OAMoAYGroT5auMcXnYhoAADDMOTV922kBR/+t/wdzOTQAKAeAKr3fvM8SjrRrczowACgLgDg/tYQja1FuhwUA5QEQX3s+aRmH3nOhwwAAgCZMvOfcNks5tF7N4S0/ALQHgDhnuT5gaHf5+WSuhwQA5QIQ55LQmCUdWPGx/WzOBwQAZQMQZ27lduKDur33V3M/HAAoH4A4X4GA5QdAewGIc5WXA31pd+jqUg4FANoDQJVer/rB4MSLj93nSzoQAGgXAHHmhF6zzD23Leef9gMAAAfO8VXnwhWL3V1Pht5b4kEAQDsBiHNo6AHL/a7F36v4SeiQUg8BANoLwP/mmspvEY73en9u6U8+AAAQ5wOV+wkc2B+qjH6lFwAA6MfEm4rMb/l3A/8Kfb1q8F18AQCAQU+8x+CyFi7/b0Iz2/ZkAwAA483FVTs+d2BD+ru2cgAAgHeb+K1w/Ey7Ej+G7K9V54q+KW1+ggEAgG4h+HLomQIWf13V+XDVqZ5WAACg94lXwy0O7cpo6eOf9cHQpzx9AABAf2ZGaF5oddXM3zTcW3Wu4JuX/qwGAAAY0MSfnt8YWhHaOcKlj29h/j4t/XGeFgAAYPgTL5s9P/S90CPVYO9NGO/FFz9/747QuVXBl+wCAAA5z1FV51Ny41fme0O/Dj0V+lvV+c3E19/hZwrbQ1vTOxCr02v4H4VuCF0QOtrDCgAAGAMAABgDAAAYAwAAGAMAABgDAAAYAwAAGAMAABgDAAAYAwAAGAAAAAAGAAAAgAEAAABgAAAAABgAAMAYAADAGAAAoKQ5InRe6Juhe0JLQo+Fng29XHVu0hFr4v3++tWeA/6eL6e/+2PpsbgnPTbnpccKAADIdg6rOnfkWVB17pm3pfL5f722JT128TG8KD2mAABAY2dW6LbQqtCYBe57Y+mxvS091gAAwMjnjNB9oRct6NB7MT32ZwAAAMOceM/7m0MbLWFj2piekxkAAMCg5vTQA1Ven9DTtnal5+h0AACgXzOn6twLf68Fy6b4XC1Pzx0AADDhH+rFxd9nobJtX3oOPwYAAHQ7x4QW+opf3HcEC9NzCwAAvONMC91SdT4hx9KU2fb0HE8DAAAOnNmh9RakNa1PzzkAWg5A/Erwg9BuS9G6dqfnfhoA2gnAKaFnLELri2fgZAC0C4Aveq2vg342cCkAygdgauhub+1pnHcK7k5nBAAFAnBYek/YYde79XA1wN88BMBoAJgZWudwq8vWpTMDgAIAeH/oeYdaPfZ8OjsAyBiAD1VuxqHJ3ZTkNADkCUBc/tccYk2yv6ezBICMADgptNXhVZ/ams4UADIA4NjQCw6t+twL6WwBoMEATPfTfg343YHpAGgmAFNCKx1SDbiV6awBoGEA3OVwakjdDYBmAfAFl/dqiO1LZw4ADQDgZL/YoxH9AtEpABgtAPF3uZ92GDWinq56vJ8AAPoLwA8dQo24OwEwGgDiLZ3cyUdNuLPQbAAMF4D4bZd7+Kkpbej2pQAA+gPALQ6dGtatABgOAPFyzB0OnBrWzm4uFQbA5AFY5LCpoS0CwGABiB/x5BN71OT7Cs4CwOAAWO6QqeEtB8BgAJjjcl9lcpnwHAD0H4AVDpcyaQUA+gvAaV77K7OfBXwYAP0DYKFDpcxaCID+AHBEaJcDpczalc4uACYJwLcdJmXazQCYPAAbHSRl2iYATA6A2Q6RMu8MAEwcgPscIGXe/QCYOAAvOkDKvJcAMDEAZjk8KqRZAOgdgDscHBXS9wHQOwCrHRwV0hoA9AZA/PilMQdHhTSWzjQAugTgIodGhXUxALoHYIEDo8JaAIDuAXjUgVFhPQqA7gHY6sCosLYCoDsAZjgsKrQjAFAPwPkOigrtAgDUA3Ctg6JCuxYA9QDc6aCo0O4CQD0Av3RQVGiLAVAPwOMOigrtcQDUA+BTf1VqGwBQD8BLDopKvTcAAOoB2O6gqNB2AKAeAB/9LQC0GID/OCgqtD0AqAfAQVGxAQAAAgAAACAAAAAAAgAAACAAAAAAAgAAJAAAQAIAACQAAEACAAAkAABAAgAAJAAAQAIAACQAAEACAAAkAABAAgAAJAAAQAIAACQAAEACAAAkAABAAgAAJAAAQAIAACQAAEACAAAkAABAAgAAJAAAQAIAACQAAEACAAAkAABAAgAAJAAAQAAAAAAEAAAAQAAAAAAEAAAAQAAAAAAEAABIAACABAAASAAAgAQAAEgAAIAEAABIAACABAAASAAAgAQAAEgAAIAEgPH6L8UC9KF2L26nAAAAAElFTkSuQmCC</avatar>
+    <nbGameWon>0</nbGameWon>
+    <nbGameLost>0</nbGameLost>
+    <nbGameAbandonned>0</nbGameAbandonned>
     <client>
+        <contactList>
+            <contact>
+                <nickName>c1</nickName>
+                <firstName>c1</firstName>
+                <surName>c1</surName>
+                <age>0</age>
+                <nbGameWon>0</nbGameWon>
+                <nbGameLost>0</nbGameLost>
+                <nbGameAbandonned>0</nbGameAbandonned>
+            </contact>
+            <contact>
+                <nickName>c2</nickName>
+                <firstName>c2</firstName>
+                <surName>c2</surName>
+                <age>0</age>
+                <nbGameWon>0</nbGameWon>
+                <nbGameLost>0</nbGameLost>
+                <nbGameAbandonned>0</nbGameAbandonned>
+            </contact>
+        </contactList>
         <defaultRight>
+            <profVisibility>true</profVisibility>
             <canJoinCreatedGame>true</canJoinCreatedGame>
             <canSpectateCreatedGame>false</canSpectateCreatedGame>
-            <profVisibility>true</profVisibility>
         </defaultRight>
+        <categoryList>
+            <categorie>
+                <name>categorie1</name>
+                <rights>
+                    <profVisibility>true</profVisibility>
+                    <canJoinCreatedGame>true</canJoinCreatedGame>
+                    <canSpectateCreatedGame>false</canSpectateCreatedGame>
+                </rights>
+                <contactList/>
+            </categorie>
+        </categoryList>
     </client>
-    <firstName>test</firstName>
-    <nbGameAbandonned>0</nbGameAbandonned>
-    <nbGameLost>0</nbGameLost>
-    <nbGameWon>0</nbGameWon>
-    <nickName>test</nickName>
-    <surName>test</surName>
 </profile>

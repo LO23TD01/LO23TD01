@@ -4,9 +4,12 @@ import java.util.ArrayList;
 import java.util.List;
 
 import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlElementWrapper;
 import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlType;
 
 @XmlRootElement
+@XmlType(propOrder = {"name", "rights", "contactList"})
 public class ContactCategory {
 	private String name;
 	private List<Contact> contactList;
@@ -52,7 +55,8 @@ public class ContactCategory {
 		return contactList;
 	}
 
-	@XmlElement
+	@XmlElementWrapper
+	@XmlElement (name = "contact")
 	public void setContactList(List<Contact> contactList) {
 		this.contactList = contactList;
 	}
