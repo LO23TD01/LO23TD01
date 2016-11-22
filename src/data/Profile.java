@@ -2,6 +2,7 @@ package data;
 
 import java.awt.Image;
 import java.io.FileOutputStream;
+import java.io.Serializable;
 import java.util.UUID;
 
 import javax.xml.bind.JAXBContext;
@@ -12,7 +13,7 @@ import javax.xml.bind.annotation.XmlType;
 
 @XmlRootElement
 @XmlType(propOrder = {"uuid", "login", "nickName", "psw", "firstName", "surName", "age", "avatar", "nbGameWon", "nbGameLost", "nbGameAbandonned", "client"})
-public class Profile {
+public class Profile implements Serializable {
 	private UUID uuid;
 	private String login;
 	private String nickName;
