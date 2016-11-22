@@ -4,6 +4,8 @@ import java.io.IOException;
 
 import ch.makery.editprofile.model.Person;
 import ch.makery.editprofile.view.PersonEditController;
+import data.Profile;
+import data.User;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
@@ -15,7 +17,8 @@ public class MainApp extends Application {
 
     private Stage primaryStage;
     private BorderPane rootLayout;
-    private Person person;
+    //private Person person;
+    private User user;
 
     @Override
     public void start(Stage primaryStage) {
@@ -58,7 +61,7 @@ public class MainApp extends Application {
 
             // Set person overview into the center of root layout.
             rootLayout.setCenter(personOverview);
-            
+
             // Give the controller access to the main app.
             PersonEditController controller = loader.getController();
             controller.setMainApp(this);
@@ -67,15 +70,20 @@ public class MainApp extends Application {
         }
     }
     public MainApp(){
-    	this.person = new Person("pseudo", "nom","age");
+    	Profile profil = new Profile(null, "pseudo", "nom", "prenom", 10);
+    	this.user= new User(profil);
+    	//this.person = new Person("pseudo", "nom","age");
     }
 
-    public Person getPerson(){
+    /*public Person getPerson(){
     	return person;
+    }*/
+    public User getUser(){
+    	return user;
     }
     /**
      * Returns the main stage.
-     * @return	
+     * @return
      */
     public Stage getPrimaryStage() {
         return primaryStage;

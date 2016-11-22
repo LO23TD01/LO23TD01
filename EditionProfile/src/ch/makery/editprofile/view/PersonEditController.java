@@ -13,6 +13,8 @@ import java.io.File;
 
 import ch.makery.editprofile.MainApp;
 import ch.makery.editprofile.model.Person;
+import data.Profile;
+import data.User;
 
 public class PersonEditController {
 	 @FXML
@@ -27,13 +29,14 @@ public class PersonEditController {
 	    @FXML
 		private ImageView imgField;
 
-	    private Person person;
+	   // private Person person;
 
 	    private boolean okClicked = false;
 
 	    private Stage dialogStage;
 
 	    private MainApp mainApp;
+	    private  User user;
 
 
 	    /**
@@ -49,7 +52,7 @@ public class PersonEditController {
 	     *
 	     * @param person
 	     */
-	    public void setPerson(Person person) {
+	/*    public void setPerson(Person person) {
 	        this.person = person;
 
 	        firstNameField.setText(person.getFirstName());
@@ -59,12 +62,23 @@ public class PersonEditController {
 	        Image imageObject = new Image("file:ressources/images/img_test.png");
 	        imgField.setImage(imageObject);
 
+	    }*/
+	    public void setUser(User user) {
+	        this.user = user;
+
+	        firstNameField.setText(user.getPublicData().getFirstName());
+	        lastNameField.setText(user.getPublicData().getSurName());
+	        pseudoField.setText(user.getPublicData().getNickName());
+	        ageField.setText(Integer.toString(user.getPublicData().getAge()));
+	        Image imageObject = new Image("file:ressources/images/img_test.png");
+	        imgField.setImage(imageObject);
+
 	    }
 	    public void setMainApp(MainApp mainApp) {
 	        this.mainApp = mainApp;
 
 	        // Add observable list data to the table
-	        setPerson(mainApp.getPerson()) ;
+	        setUser(mainApp.getUser()) ;
 
 	    }
 	    /**
@@ -127,12 +141,27 @@ public class PersonEditController {
 	     * Called when the user clicks ok.
 	     */
 	    @FXML
-	    private void handleOk() {
+	  /*  private void handleOk() {
 	        if (isInputValid()) {
 	            person.setFirstName(firstNameField.getText());
 	            person.setLastName(lastNameField.getText());
 	            person.setPseudo(pseudoField.getText());
 	            person.setAge(Integer.parseInt(ageField.getText()));
+
+	            okClicked = true;
+	            //dialogStage.close();
+
+	        }
+
+	    }*/
+	    private void handleOk() {
+	        if (isInputValid()) {
+	        	Profile profil = new Profile();
+	        	profil.setNickName(pseudoField.getText());
+	        	profil.setFirstName(firstNameField.getText());
+	        	profil.setSurName(lastNameField.getText());
+	        	profil.setAge(Integer.parseInt(ageField.getText()));
+
 
 	            okClicked = true;
 	            //dialogStage.close();
