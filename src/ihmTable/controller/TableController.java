@@ -30,14 +30,14 @@ public class TableController {
 		CollapsiblePanelController panelController = (CollapsiblePanelController) panelLoader.getController();
 
 		AnchorPane anchorPane = FXMLLoader.load(getClass().getResource(content));
-		if(position == Position.left || position == Position.right) {
+		if(position == Position.left || position == Position.right) { //right
 			panelController.setCollapsiblePanel(anchorPane, position, leftRightPanelWidth);
-		} else if (position == Position.bottom) {
+		} else if (position == Position.bottom) { //bottom
 			panelController.setCollapsiblePanel(anchorPane, position, BottomPanelHeight);
 		}
-		else
+		else //top
 		{
-			panelController.setCollapsiblePanel(anchorPane, position, BottomPanelHeight);
+			panelController.setCollapsiblePanel(anchorPane, position, TopPanelHeight);
 		}
 		return panel;
 	}

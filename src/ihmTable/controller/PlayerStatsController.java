@@ -9,6 +9,8 @@ import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
+import javafx.scene.paint.Color;
+import javafx.scene.paint.Paint;
 
 public class PlayerStatsController {
 
@@ -58,6 +60,12 @@ public class PlayerStatsController {
 	    private Label playerStats_LabelStats;
 
 	    @FXML
+	    private Label PlayerStats_Jeton_Score_Label;
+
+	    @FXML
+	    private Label PlayerStats_Jeton_Loss_Score_Label;
+
+	    @FXML
 	    private AnchorPane PlayerStats_StatsPane;
 
     //Création des images
@@ -67,7 +75,9 @@ public class PlayerStatsController {
     Image dice4 = new Image("/ihmTable/resources/png/4.png");
     Image dice5 = new Image("/ihmTable/resources/png/5.png");
     Image dice6 = new Image("/ihmTable/resources/png/6.png");
-    Image Jeton = new Image("/ihmTable/resources/png/Jeton.png");
+    Image Jeton = new Image("/ihmTable/resources/png/JetonOK.png");
+    Image JetonLoss = new Image("/ihmTable/resources/png/JetonLoss.png");
+
 
     public void initialize() throws IOException {
 
@@ -78,7 +88,10 @@ public class PlayerStatsController {
     	handleImage(PlayerStats_Dice2, dice2);
     	handleImage(PlayerStats_Dice3, dice3);
     	handleImage(PlayerStats_Jetons, Jeton);
-    	handleImage(PlayerStats_PartiesPerdues, Jeton);
+    	handleImage(PlayerStats_PartiesPerdues, JetonLoss);
+
+    	PlayerStats_Jeton_Loss_Score_Label.setText("0");
+    	PlayerStats_Jeton_Loss_Score_Label.setTextFill(Color.RED);
 
 
 

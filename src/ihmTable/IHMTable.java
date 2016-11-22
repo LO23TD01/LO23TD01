@@ -10,7 +10,7 @@ import javafx.stage.Stage;
 
 public class IHMTable extends Application {
 
-	public static void launch(String[] args) {
+	public static void main(String[] args) {
 		launch(args);
 	}
 
