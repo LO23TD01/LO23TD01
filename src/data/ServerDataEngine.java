@@ -268,17 +268,20 @@ public class ServerDataEngine implements InterfaceDataNetwork {
 	
 	public static List<User> getEmptyList(List<User> userList)
 	{
-		List<User> newList = new ArrayList<User>();
-		for(User i : userList)
-			newList.add(i.getEmptyVersion());
+		List<User> newList = userList.stream().map(u->u.getEmptyVersion()).collect(Collectors.toList());
+//		List<User> newList = new ArrayList<User>();
+//		for(User i : userList)
+//			newList.add(i.getEmptyVersion());
 		return newList;
 	}
 	
 	public static List<UUID> getUUIDList(List<User> userList)
 	{
-		List<UUID> newList = new ArrayList<UUID>();
-		for(User i : userList)
-			newList.add(i.getPublicData().getUuid());
+
+		List<UUID> newList = userList.stream().map(u->u.getPublicData().getUuid()).collect(Collectors.toList());
+//		List<UUID> newList = new ArrayList<UUID>();
+//		for(User i : userList)
+//			newList.add(i.getPublicData().getUuid());
 		return newList;
 	}
 }
