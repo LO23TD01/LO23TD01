@@ -35,6 +35,37 @@ public class PlayerData {
 		this.dices = dices;
 		this.rerollCount = rerollCount;
 	}
+	
+	/**
+	 * @param pdata
+	 * @param chip
+	 * @param dices
+	 * @param rerollCount
+	 */
+	public PlayerData(PlayerData pData) {
+		super();
+		this.player = pData.player;
+		this.chip =  pData.chip;
+		this.dices =  pData.dices;
+		this.rerollCount =  pData.rerollCount;
+	}
+	
+	/**
+	 * @param pdata
+	 * @param chip
+	 * @param dices
+	 * @param rerollCount
+	 */
+	public PlayerData(PlayerData pData, boolean isNewTurn) {
+		super();
+		this.player = pData.player;
+		this.chip =  pData.chip;
+		int[] newDices = new int[3];
+		for (int i = 0; i < newDices.length; i++)
+			newDices[i] = 0;
+		this.dices = (isNewTurn ? newDices : pData.dices );
+		this.rerollCount = (isNewTurn ? 0 : pData.rerollCount) ;
+	}
 
 	/*
 	 * Permet de reset le PlayerData pour un tour, c'est-à-dire que les dés et

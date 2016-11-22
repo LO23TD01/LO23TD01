@@ -28,7 +28,7 @@ public class User {
 		
 		if (this.isEmptyVersion())
 			return this;
-		return new User(new Profile(this.publicData.getUuid()));
+		return new User(new Profile(this.publicData.getUUID()));
 	}
 	
 	public boolean isEmptyVersion(){
@@ -44,7 +44,7 @@ public class User {
 //		if(this.isEmptyVersion())
 //			throw new Exception("User is Empty, can't get LightWeight");
 
-		return new User(new Profile(this.publicData.getUuid(),this.publicData.getNickName(),this.publicData.getFirstName(),this.publicData.getSurName(),this.publicData.getAge()),this.actualTable,this.isSpectating);
+		return new User(new Profile(this.publicData.getUUID(),this.publicData.getNickName(),this.publicData.getFirstName(),this.publicData.getSurName(),this.publicData.getAge()),this.actualTable,this.isSpectating);
 	}
 	
 	public boolean isLightWeightVersion(){
@@ -62,7 +62,7 @@ public class User {
 	}
 	
 	public boolean isSame(User u){
-		if(u.getPublicData().getUuid()==this.publicData.getUuid())
+		if(u.getPublicData().getUUID()==this.publicData.getUUID())
 			return true;
 		return false;
 	}

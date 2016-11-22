@@ -51,7 +51,7 @@ public class SocketClientHandler implements Runnable{
                 if(o != null){
                 	if(o.getClass() == ConnectionMessage.class){
                 		ConnectionMessage message = (ConnectionMessage) o;
-                		server.replaceWithUUID(clientSocket.getInetAddress().toString(), message.profile.getUuid());
+                		server.replaceWithUUID(clientSocket.getInetAddress().toString(), message.profile.getUUID());
                 	}
                 		
                 	
