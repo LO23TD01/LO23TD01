@@ -1,6 +1,7 @@
 package network.client;
 
 import java.io.IOException;
+
 import java.net.Socket;
 import java.net.UnknownHostException;
 import java.util.UUID;
@@ -9,6 +10,7 @@ import data.Profile;
 import network.messages.GetProfileMessage;
 import network.messages.IMessage;
 import network.messages.UpdateProfileMessage;
+import network.messages.LogoutUserRequestMessage;
 
 public class ComClient implements ComClientInterface{
 	private int 					serverPort;
@@ -31,7 +33,7 @@ public class ComClient implements ComClientInterface{
 		try {
 			socketToServer = new Socket(ipAdress, serverPort);
 			
-			System.out.println("Client connectï¿½ au serveur");
+			System.out.println("Client connecté au serveur");
 			
 			SocketServerHandler server = new SocketServerHandler(socketToServer);
         	new Thread(server).start();
@@ -154,8 +156,7 @@ public class ComClient implements ComClientInterface{
 
 	@Override
 	public void logoutUserRequest(UUID user) {
-		// TODO Auto-generated method stub
-		
+	    sendMessage(new LogoutUserRequestMessage(user));
 	}
 
 	@Override
