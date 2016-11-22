@@ -63,7 +63,7 @@ public class ServerDataEngine implements InterfaceDataNetwork {
 
 	private void selectFirstPlayer(GameTable table) //Edit : ajout de la GameTable. Il faut savoir quelle table lancer ...
 	{
-		this.comServer.showTimer(getUuidList(table.getAllList()));
+		this.comServer.showTimer(getUUIDList(table.getAllList()));
 	}
 
 	public void connect (User user){
@@ -133,9 +133,9 @@ public class ServerDataEngine implements InterfaceDataNetwork {
 			user.setActualTable(tableFull.getEmptyVersion());
 			user.setSpectating(!isPlayer);
 			if(isPlayer)
-				this.comServer.newPlayerOnTable(getUuidList(tableFull.getAllList()), user.getPublicData(), tableFull.getUid());
+				this.comServer.newPlayerOnTable(getUUIDList(tableFull.getAllList()), user.getPublicData(), tableFull.getUid());
 			else
-				this.comServer.newPlayerOnTable(getUuidList(tableFull.getAllList()), user.getPublicData(), tableFull.getUid());
+				this.comServer.newPlayerOnTable(getUUIDList(tableFull.getAllList()), user.getPublicData(), tableFull.getUid());
 		}
 		else if(isPlayer && isLaunched)
 			this.comServer.raiseException(user.getPublicData().getUuid(), "Impossible de rejoindre une partie déjà commencée.");
@@ -204,12 +204,17 @@ public class ServerDataEngine implements InterfaceDataNetwork {
 	}
 	@Override
 	public void createNewTable(User user, String name, Parameters params) {
-		GameTable newTable = createTable(user,name,params);
-		this.tableList.add(newTable);
-		user.setActualTable(newTable.getEmptyVersion());
-		user.setSpectating(false);
-		this.comServer.addNewTable(user.getPublicData().getUuid(),getUuidList(this.usersList), newTable);
-
+		GameTable newTable;
+        try {
+            newTable = createTable(user,name,params);
+            this.tableList.add(newTable);
+            user.setActualTable(newTable.getEmptyVersion());
+            user.setSpectating(false);
+            this.comServer.addNewTable(user.getPublicData().getUuid(),getUUIDList(this.usersList), newTable);
+        } catch (Exception e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
 	}
 	@Override
 	public void disconnectUser(User user) {
