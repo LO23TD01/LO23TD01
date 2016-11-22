@@ -6,6 +6,7 @@
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.Pane?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
@@ -32,22 +33,40 @@
                                  <children>
                                     <VBox fx:id="PlayerStats_PlayerInfoVBox1" layoutX="4.0" prefHeight="320.0" prefWidth="105.0" styleClass="border" stylesheets="@CSS/style1.css" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                                        <children>
-                                          <ImageView fx:id="PlayerStats_Jetons" fitHeight="100.0" fitWidth="100.0" pickOnBounds="true" preserveRatio="true">
-                                             <image>
-                                                <Image url="@../png/Jeton.png" />
-                                             </image>
+                                          <Pane>
                                              <VBox.margin>
                                                 <Insets bottom="2.0" left="2.0" right="2.0" top="2.0" />
                                              </VBox.margin>
-                                          </ImageView>
-                                          <ImageView fx:id="PlayerStats_PartiesPerdues" fitHeight="100.0" fitWidth="100.0" layoutX="10.0" layoutY="10.0" pickOnBounds="true" preserveRatio="true">
-                                             <image>
-                                                <Image url="@../png/Jeton.png" />
-                                             </image>
+                                             <children>
+                                                <ImageView fx:id="PlayerStats_Jetons" fitHeight="80.0" fitWidth="80.0" pickOnBounds="true" preserveRatio="true">
+                                                   <image>
+                                                      <Image url="@../png/JetonOk.png" />
+                                                   </image>
+                                                </ImageView>
+                                                <Label fx:id="PlayerStats_Jeton_Score_Label" alignment="CENTER_RIGHT" layoutX="23.0" layoutY="34.0" text="21">
+                                                   <font>
+                                                      <Font name="System Bold" size="12.0" />
+                                                   </font>
+                                                </Label>
+                                             </children>
+                                          </Pane>
+                                          <Pane>
                                              <VBox.margin>
                                                 <Insets bottom="2.0" left="2.0" right="2.0" top="2.0" />
                                              </VBox.margin>
-                                          </ImageView>
+                                             <children>
+                                                <ImageView fx:id="PlayerStats_PartiesPerdues" fitHeight="80.0" fitWidth="80.0" pickOnBounds="true" preserveRatio="true">
+                                                   <image>
+                                                      <Image url="@../png/JetonLoss.png" />
+                                                   </image>
+                                                </ImageView>
+                                                <Label fx:id="PlayerStats_Jeton_Loss_Score_Label" alignment="CENTER_RIGHT" layoutX="23.0" layoutY="34.0" text="21" textFill="RED">
+                                                   <font>
+                                                      <Font name="System Bold" size="12.0" />
+                                                   </font>
+                                                </Label>
+                                             </children>
+                                          </Pane>
                                        </children>
                                     </VBox>
                                  </children>
