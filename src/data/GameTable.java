@@ -3,6 +3,8 @@ package data;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 public class GameTable {
 	private UUID Uid;
@@ -200,8 +202,10 @@ public class GameTable {
 
 	public List<User> getAllList()
 	{
-		List<User> newList = this.playerList;
-		newList.addAll(this.spectatorList);
+		List<User> newList = Stream.concat(this.playerList.stream(), this.spectatorList.stream()).collect(Collectors.toList());
+//		List<User> newList = new ArrayList<User>();
+//		newList.addAll(this.playerList);
+//		newList.addAll(this.spectatorList);
 		return newList;
 	}
 	
