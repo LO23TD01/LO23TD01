@@ -213,9 +213,41 @@ public class ServerDataEngine implements InterfaceDataNetwork {
 
 	}
 	@Override
-	public int[] hasThrown(UUID uuid, boolean d1, boolean d2, boolean d3) {
-		// TODO Auto-generated method stub
-		return null;
+	//boolean true signifie relancer le dé
+	public void hasThrown(UUID uuid, boolean d1, boolean d2, boolean d3) {
+		User emptyUser = new User( new Profile(uuid));
+		User userFull = emptyUser.getSame(this.usersList);
+		//		if(userFull==null)
+		//			throw new Exception("L'utilisateur n'est pas connecté. Il faut être connecté pour lancer les dés.");
+		GameTable tableFull = userFull.getActualTable().getSame(this.tableList);
+		//		if(tableFull==null)
+		//			throw new Exception("La table n'existe pas. Il faut que la table existe pour y lancer les dés.");
+		
+//		if(!tableFull.getGameState().getActualPlayer().isSame(userFull))
+			//			throw new Exception("Le lanceur de dés n'est pas le joueur actuel. Il faut être le joueur actuel pour lancer les dés.");
+		PlayerData pData = new PlayerData(tableFull.getGameState().getData(userFull));
+		int r1,r2,r3;
+		if(d1)
+			r1 = Dice();
+		else
+			r1 = pData.getDices()[0];
+		if(d2)
+			r2 = Dice();
+		else
+			r2 = pData.getDices()[1];
+		if(d3)
+			r3 = Dice();
+		else
+			r3 = pData.getDices()[2];
+		int[] tDice = {r1 , r2 ,r3};
+		pData.setDices(tDice);
+		tableFull.getGameState().replaceData(pData);
+		this.comServer.sendResult(getUuidList(tableFull.getAllList()), r1, r2, r3);
+		
+		//TODO
+		//appeler une fonction qui va savoir quoi faire apres.
+		gameEngine();
+		
 	}
 	@Override
 	public void hasSelected(UUID uuid, boolean d1, boolean d2, boolean d3) {
@@ -245,7 +277,76 @@ public class ServerDataEngine implements InterfaceDataNetwork {
 
 	}
 
+	//pour commencer la partie, il necessite un gameState initialisé (sinon il ne peux pas savoir que c'ets le debut)
+	//à n'appeler que si il s'est passé quelquechose
+	//fonctionne iterativement.
+	private void gameEngine(GameTable table)
+	{
+		GameTable tableFull = table.getSame(this.tableList);
+		//exception et patatra
+		
+		//detecte la phase
+		switch (tableFull.getGameState().getState())
+		{
+		case PRESTART:
+			//il faut choisir le premier joueur en faisant un tour de dé.
+			//on lance les dés en commencant par le premier joueur. à la fin on calcule les gagnants.
+			//on cree et resoud le Tie.
+			//on passe à la charge.
+			if(tableFull.getGameState().getDataList().stream()
+					.filter(d->d.getRerollCount()!=0)
+					.count()!=0) //alors on n'a pas fini de distribuer
+			{
+				if(tableFull.getGameState().getActualPlayer().isSame(tableFull.getGameState().getFirstPlayer())) //alors on n'a pas encore commencé du tout
+				{
+					//Rien
+				}
+				else //la fonction gameEngine est appelé de Onethrow , il faut cahnger de joueur
+				{
+					tableFull.getGameState().setActualPlayer(tableFull.getGameState().getNextPlayer());
+				}
+				this.comServer.startTurn(getUuidList(tableFull.getAllList()), tableFull.getGameState().getActualPlayer(), false);
+			}
+			else // On a fini de dsitribuer
+			{
+				if(tableFull.getGameState().getWinners()==null) //alors on viens tout jsute de finir
+				{
+					//on les calcule
+					tableFull.getGameState().setWinners(tableFull.getGameState().getRules().getWinner(tableFull.getGameState().getDataList()));
+					if(tableFull.getGameState().getWinners().size()==1) //un seul winner la solution facile 
+					{
+						tableFull.getGameState().nextTurn(tableFull.getGameState().getWinners().get(0));
+						tableFull.getGameState().setState(State.CHARGING);
+						gameEngine(table); //pour passer à la phase suivante sans trop de souci.
+						break;
+					}
+					else{
+						//initialiser le Tie et commencer
+					}
+				}
+				else // on se trouve dans un tie
+				{
+					
+				}
+			}
+				
+			break;
 
+		case CHARGING:
+			break;
+
+		case DISCHARGING:
+			break;
+
+		case END:
+			break;
+			
+			default:
+				//exception
+				break;
+		}
+	}
+	
 
 	public ComServer getComServer() {
 		return comServer;
@@ -280,5 +381,13 @@ public class ServerDataEngine implements InterfaceDataNetwork {
 //		for(User i : userList)
 //			newList.add(i.getPublicData().getUuid());
 		return newList;
+	}
+	
+	private int Dice()
+	{
+		int number =-1;
+		while(number<0 && number>6) // méthode du rejet
+			number = (int)(Math.random()*6+1);
+		return number;
 	}
 }

@@ -2,6 +2,7 @@ package data;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class GameState {
 	private int chipStack;
@@ -11,6 +12,9 @@ public class GameState {
 	private User actualPlayer;
 	private State state;
 	private Rules rules;
+	private List<User> winners;
+	private List<User> losers;
+	private List<PlayerData> dataTieList;
 
 	/**
 	 * @param chipStack
@@ -31,6 +35,9 @@ public class GameState {
 		this.actualPlayer = actualPlayer;
 		this.state = state;
 		this.rules = rules;
+		this.winners = null;
+		this.losers = null;
+		this.dataTieList = null;
 	}
 
 	/**
@@ -52,9 +59,82 @@ public class GameState {
 		this.firstPlayer = playerList.get(0);
 		this.actualPlayer = playerList.get(0);
 		this.state = State.PRESTART;
-		this.rules = param.getRules();
+		this.rules = param.getRules(); //rÈfÈrence uniquement
+		this.winners = null;
+		this.losers = null;
+		this.dataTieList = null;
 	}
 
+	//methode pour faciliter la tache de l'engine
+	//il va remplacer la data du player par celle en arguement;
+	public void replaceData(PlayerData pData, boolean tie)
+	{
+		if(!tie)
+		{
+//		if(pData.getPlayer().getSame(this.playerList)==null)
+//			throw new Exception("Le joueur n'appartient pas ‡ cette partie. Le joueur doit appartient ‡ cette partie pour remplacer ses donnÈes.");
+//		else if(pData.getPlayer().getSame(this.dataList.stream().map(d->d.getPlayer()).collect(Collectors.toList()))==null)
+//			throw new Exception("La donnÈe du joueur n'existe pas. Le joueur doit avoir des donnÈes pour les remplacer.");
+		List<PlayerData> newList = this.dataList.stream()
+				.filter(d->!d.getPlayer().isSame(pData.getPlayer())) // on prends toutes les donnÈes n'appartenant pas ‡ notre joueur.
+				.collect(Collectors.toList());
+		newList.add(pData); 
+		this.dataList = newList;
+		}
+		else
+		{
+//			if(pData.getPlayer().getSame(this.playerList)==null)
+//			throw new Exception("Le joueur n'appartient pas ‡ cette partie. Le joueur doit appartient ‡ cette partie pour remplacer ses donnÈes.");
+			//TODO verifier que le Tie existe
+//		else if(pData.getPlayer().getSame(this.dataTielist.stream().map(d->d.getPlayer()).collect(Collectors.toList()))==null)
+//			throw new Exception("La donnÈe du joueur n'existe pas. Le joueur doit avoir des donnÈes pour les remplacer.");
+		List<PlayerData> newList = this.dataTieList.stream()
+				.filter(d->!d.getPlayer().isSame(pData.getPlayer())) // on prends toutes les donnÈes n'appartenant pas ‡ notre joueur.
+				.collect(Collectors.toList());
+		newList.add(pData); 
+		this.dataTieList = newList;
+		}
+	}
+	
+	//methode pour faciliter la tache de l'engine
+		//il renvoie la data du player en argument;
+		public PlayerData getData(User u, boolean tie)
+		{
+			if(!tie){
+//			if(u.getSame(this.playerList)==null)
+//				throw new Exception("Le joueur n'appartient pas ‡ cette partie. Le joueur doit appartient ‡ cette partie pour obtenir ses donnÈes.");
+//			else if(u.getSame(this.dataList.stream().map(d->d.getPlayer()).collect(Collectors.toList()))==null)
+//				throw new Exception("La donnÈe du joueur n'existe pas. Le joueur doit avoir des donnÈes pour les recuperer.");
+			PlayerData data = this.dataList.stream()
+			.filter(d->u.isSame(d.getPlayer()))
+			.findFirst()
+			.get();
+			return data;
+		}
+			else
+			{
+//					if(u.getSame(this.playerList)==null)
+//						throw new Exception("Le joueur n'appartient pas ‡ cette partie. Le joueur doit appartient ‡ cette partie pour obtenir ses donnÈes.");
+				//TODO verifier que le TIE existe
+//					else if(u.getSame(this.dataTieList.stream().map(d->d.getPlayer()).collect(Collectors.toList()))==null)
+//						throw new Exception("La donnÈe du joueur n'existe pas. Le joueur doit avoir des donnÈes pour les recuperer.");
+					PlayerData data = this.dataTieList.stream()
+					.filter(d->u.isSame(d.getPlayer()))
+					.findFirst()
+					.get();
+					return data;
+			}
+				
+		}
+	
+		//TODO
+		//remets ‡ null et ‡ 0 les valeurs de lancer de dÈs, winner,loser , etc ...
+		//mets le player actuel et first player ‡ la bonne valeur
+		public void nextTurn(User firstPlayer)
+		{
+			//TODO
+		}
+	
 	/*
 	 * TO REVIEW : v√©rification selon le state actuel, add user fonctionne
 	 * seulement en phase de prestart ? + v√©rifier l'unicit√©
@@ -86,30 +166,40 @@ public class GameState {
 		int nextIndex = (playerList.indexOf(this.actualPlayer) + 1) % playerList.size();
 		return playerList.get(nextIndex);
 	}
-
-	/*
-	 * TODO Le joueur demande lancer les d√©s. Renvoit une exception si le joueur
-	 * qui demande n'est pas le joueur actuel.
-	 */
-	public void askRoll(User user) {
-
+	
+	//TODO
+	//renvoie le joueurSuivant qui est dans la liste des Winners
+	public User getNextPlayer() {
+		//TODO
 	}
+	
+	
 
-	/*
-	 * TODO Le joueur demande relancer les d√©s. Renvoit une exception si le
-	 * joueur qui demande n'est pas le joueur actuel.
-	 */
-	public void askReroll(User user, boolean diceOne, boolean diceTwo, boolean diceThree) {
+	//OBSOLETE
+//	/*
+//	 * TODO Le joueur demande lancer les d√©s. Renvoit une exception si le joueur
+//	 * qui demande n'est pas le joueur actuel.
+//	 */
+//	public void askRoll(User user) {
+//
+//	}
+//
+//	/*
+//	 * TODO Le joueur demande relancer les d√©s. Renvoit une exception si le
+//	 * joueur qui demande n'est pas le joueur actuel.
+//	 */
+//	public void askReroll(User user, boolean diceOne, boolean diceTwo, boolean diceThree) {
+//
+//	}
 
-	}
-
-	/*
-	 * TODO Indique que le joueur √† lanc√© les d√©s, et met √† jour le playerData
-	 * avec les valeurs des d√©s.
-	 */
-	public void hasRolled(User user, int diceOne, int diceTwo, int DiceThree) {
-
-	}
+	//OBSOLETE : utiliser replaceData ‡ la place
+//	/*
+//	 * TODO Indique que le joueur √† lanc√© les d√©s, et met √† jour le playerData
+//	 * avec les valeurs des d√©s.
+//	 */
+//	public void hasRolled(User user, int diceOne, int diceTwo, int DiceThree) {
+//
+//	}
 
 	/**
 	 * @return the chipStack
@@ -214,6 +304,32 @@ public class GameState {
 	 */
 	public void setRules(Rules rules) {
 		this.rules = rules;
+	}
+
+	
+	
+	public List<User> getWinners() {
+		return winners;
+	}
+
+	public void setWinners(List<User> winners) {
+		this.winners = winners;
+	}
+
+	public List<User> getLosers() {
+		return losers;
+	}
+
+	public void setLosers(List<User> losers) {
+		this.losers = losers;
+	}
+
+	public List<PlayerData> getDataTieList() {
+		return dataTieList;
+	}
+
+	public void setDataTieList(List<PlayerData> dataTieList) {
+		this.dataTieList = dataTieList;
 	}
 
 	/*

@@ -12,7 +12,7 @@ public interface InterfaceDataNetwork {
 	public void launchGame (User user);
 	public void createNewTable (User user, String name, Parameters params);
 	public void disconnectUser (User user);
-	public int[] hasThrown (UUID uuid, boolean d1, boolean d2, boolean d3);
+	public void hasThrown (UUID uuid, boolean d1, boolean d2, boolean d3);
 	public void hasSelected(UUID uuid, boolean d1, boolean d2, boolean d3);
 	public void connectUser(Profile profile);
 	public void hasRefusedReplay (UUID uuid);
