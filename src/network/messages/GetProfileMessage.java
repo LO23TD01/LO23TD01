@@ -1,7 +1,8 @@
 package network.messages;
 
 import java.util.UUID;
-
+import data.ClientDataEngine;
+import data.ServerDataEngine;
 
 public class GetProfileMessage implements IMessage {
 
@@ -13,12 +14,15 @@ public class GetProfileMessage implements IMessage {
 	}
 	
 	@Override
-	public void process() {
-		/**
-		 * TODO
-		 * Use interface of DATA-Server 
-		 */ 
-		// getProfile(user);
+	public void process(ServerDataEngine dataEngine) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void process(ClientDataEngine dataEngine) {
+		// TODO Auto-generated method stub
+		
 	}
 
 }

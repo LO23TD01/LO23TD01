@@ -5,6 +5,7 @@ import java.net.Socket;
 import java.net.UnknownHostException;
 import java.util.UUID;
 
+import data.ClientDataEngine;
 import data.Profile;
 import network.messages.ConnectionMessage;
 import network.messages.GetProfileMessage;
@@ -13,89 +14,154 @@ import network.messages.LogoutUserRequestMessage;
 import network.messages.UpdateProfileMessage;
 
 public class ComClient implements ComClientInterface{
-    private Socket 					socketToServer;
-    private boolean 				isStopped = false;
-    private SocketServerHandler 	server;
+	private int 					serverPort;
+	private String 					ipAdress;
+	private Socket 					socketToServer;
+	private boolean 				isStopped = false;
+	private SocketServerHandler 	server;
+	private ClientDataEngine		clientData;
+	
+	
+	/*
+	 * 
+	 * Constructor
+	 * 
+	 */
 
+	public ComClient(String ipAdress, int serverPort) {
+		this.serverPort = serverPort;
+		this.ipAdress = ipAdress;
+		
+		try {
+			socketToServer = new Socket(ipAdress, serverPort);
+			
+			System.out.println("Client connecté au serveur");
+			
+			SocketServerHandler server = new SocketServerHandler(socketToServer, this);
+        	new Thread(server).start();
+        	this.server = server;
+			
+		} catch (UnknownHostException e) {
+			e.printStackTrace();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
+	
+	/*
+	 * 
+	 * Methods
+	 * 
+	 */
+	
+	public void sendMessage(IMessage message){
+		if(server != null)
+			server.sendMessage(message);
+	}
+	
+	
+	/*
+	 * 
+	 * Overridden methods
+	 * 	(ComClientInterface)
+	 */
+	
+	@Override
+	public void throwDice(UUID user) {
+		// TODO Auto-generated method stub
+		
+	}
 
-    /*
-     *
-     * Constructor
-     *
-     */
+	@Override
+	public void sendMessage(String msg) {
+		if(server != null) {
+            		server.sendMessage(message);
+        	}
+		
+	}
 
-    public ComClient(String ipAdress, int serverPort) {
-        try {
-            socketToServer = new Socket(ipAdress, serverPort);
+	@Override
+	public void launchGame(UUID user) {
+		// TODO Auto-generated method stub
+		
+	}
 
-            System.out.println("Client connectï¿½ au serveur");
+	@Override
+	public void createNewTable(UUID user, String name, String pwd, int min, int max, int token, boolean withSpec,
+			boolean withChat) {
+		// TODO Auto-generated method stub
+		
+	}
 
-            SocketServerHandler server = new SocketServerHandler(socketToServer);
-            new Thread(server).start();
-            this.server = server;
+	@Override
+	public void selectDice(UUID user, boolean d1, boolean d2, boolean d3) {
+		// TODO Auto-generated method stub
+		
+	}
 
-        } catch (UnknownHostException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
+	@Override
+	public void updateUserProfile(UUID user, Profile profile) {
+		sendMessage(new UpdateProfileMessage(user,profile));
+	}
 
-    /*
-     *
-     * Methods
-     *
-     */
+	@Override
+	public void dropTable(UUID tableId) {
+		// TODO Auto-generated method stub
+		
+	}
 
-    @Override
-    public void acceptReplay(UUID user) {
-        // TODO Auto-generated method stub
+	@Override
+	public void quit(UUID user) {
+		// TODO Auto-generated method stub
+		
+	}
 
-    }
+	@Override
+	public void updateUsersList(UUID user) {
+		// TODO Auto-generated method stub
+		
+	}
 
+	@Override
+	public void askQuitTable(UUID tableId, UUID user) {
+		// TODO Auto-generated method stub
+		
+	}
 
-    /*
-     *
-     * Overridden methods
-     * 	(ComClientInterface)
-     */
+	@Override
+	public void askRefreshUsersList(UUID user) {
+		// TODO Auto-generated method stub
+		
+	}
 
-    @Override
-    public void askJoinTable(UUID user, UUID tableId, boolean asPlayer) {
-        // TODO Auto-generated method stub
+	@Override
+	public void askJoinTable(UUID user, UUID tableId, boolean asPlayer) {
+		// TODO Auto-generated method stub
+		
+	}
 
-    }
+	@Override
+	public void acceptReplay(UUID user) {
+		// TODO Auto-generated method stub
+		
+	}
 
-    @Override
-    public void askQuitTable(UUID tableId, UUID user) {
-        // TODO Auto-generated method stub
+	@Override
+	public void refuseReplay(UUID user) {
+		// TODO Auto-generated method stub
+		
+	}
 
-    }
-
-    @Override
-    public void askRefreshUsersList(UUID user) {
-        // TODO Auto-generated method stub
-
-    }
+	@Override
+	public void logoutUserRequest(UUID user) {
+		sendMessage(new LogoutUserRequestMessage(user));
+		
+	}
 
     @Override
     public void connection(Profile user) {
         ConnectionMessage msg = new ConnectionMessage(user);
         sendMessage(msg);
-
-    }
-
-    @Override
-    public void createNewTable(UUID user, String name, String pwd, int min, int max, int token, boolean withSpec,
-            boolean withChat) {
-        // TODO Auto-generated method stub
-
-    }
-
-    @Override
-    public void dropTable(UUID tableId) {
-        // TODO Auto-generated method stub
-
     }
 
     @Override
@@ -103,81 +169,32 @@ public class ComClient implements ComClientInterface{
         sendMessage(new GetProfileMessage(user));
     }
 
-    public boolean isStopped() {
-        return isStopped;
-    }
+	
+	
+	/*
+	 * 
+	 * Getters & setters
+	 * 
+	 */
+	
+	public ClientDataEngine getClientData() {
+		return clientData;
+	}
 
-    @Override
-    public void launchGame(UUID user) {
-        // TODO Auto-generated method stub
-
-    }
-
-    @Override
-    public void logoutUserRequest(UUID user) {
-        sendMessage(new LogoutUserRequestMessage(user));
-    }
-
-    @Override
-    public void quit(UUID user) {
-        // TODO Auto-generated method stub
-
-    }
-
-    @Override
-    public void refuseReplay(UUID user) {
-        // TODO Auto-generated method stub
-
-    }
-
-    @Override
-    public void selectDice(UUID user, boolean d1, boolean d2, boolean d3) {
-        // TODO Auto-generated method stub
-
-    }
-
-    public void sendMessage(IMessage message){
-        if(server != null) {
-            server.sendMessage(message);
-        }
-    }
-
-    @Override
-    public void sendMessage(String msg) {
-        // TODO Auto-generated method stub
-
-    }
-
-    public void stop(){
+	public void setClientData(ClientDataEngine clientData) {
+		this.clientData = clientData;
+	}
+	
+	public boolean isStopped() {
+		return isStopped;
+	}
+	
+	public void stop(){
         this.isStopped = true;
         try {
             this.socketToServer.close();
         } catch (IOException e) {
             throw new RuntimeException("Error closing server", e);
         }
-    }
-
-    @Override
-    public void throwDice(UUID user) {
-        // TODO Auto-generated method stub
-
-    }
-
-
-    /*
-     *
-     * Getters & setters
-     *
-     */
-
-    @Override
-    public void updateUserProfile(UUID user, Profile profile) {
-        sendMessage(new UpdateProfileMessage(user,profile));
-    }
-
-    @Override
-    public void updateUsersList(UUID user) {
-        // TODO Auto-generated method stub
-
     }
 }

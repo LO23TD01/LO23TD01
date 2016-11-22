@@ -12,9 +12,11 @@ public class SocketServerHandler implements Runnable {
 	private Socket 				socket;
 	private ObjectInputStream 	inputStream;
 	private ObjectOutputStream 	outputStream;
+	private ComClient 			client;
 	
-	public SocketServerHandler(Socket socket){
+	public SocketServerHandler(Socket socket, ComClient client){
 		this.socket = socket;
+		this.client = client;
 		
 		try {
 			outputStream = new ObjectOutputStream(socket.getOutputStream());
@@ -34,7 +36,7 @@ public class SocketServerHandler implements Runnable {
                 IMessage o = (IMessage) inputStream.readObject();
                 
                 if(o != null)
-                	o.process();
+                	o.process(client.getClientData());
                 
             } catch(SocketException e){
             	try {
