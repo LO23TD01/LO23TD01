@@ -2,8 +2,10 @@ package data;
 
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlType;
 
 @XmlRootElement
+@XmlType(propOrder = {"profVisibility", "canJoinCreatedGame", "canSpectateCreatedGame"})
 public class Rights {
 	private boolean profVisibility;
 	private boolean canJoinCreatedGame;
