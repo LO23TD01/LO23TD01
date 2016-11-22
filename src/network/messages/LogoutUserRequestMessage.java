@@ -1,6 +1,9 @@
 package network.messages;
 
 import java.util.UUID;
+
+import data.ClientDataEngine;
+import data.ServerDataEngine;
 import network.server.SocketClientHandler;
 public class LogoutUserRequestMessage implements IMessage{
 
@@ -13,8 +16,14 @@ public class LogoutUserRequestMessage implements IMessage{
     }
 
     @Override
-    public void process() {
-        //Appel de disconnectUser du ServerDataEngine à partir de SocketClientHandler
+    public void process(ServerDataEngine dataEngine) {
+        // TODO Auto-generated method stub
+        
     }
 
+    @Override
+    public void process(ClientDataEngine dataEngine) {
+        // TODO Auto-generated method stub
+        
+    }
 }

@@ -73,14 +73,6 @@ public class ComClient implements ComClientInterface{
 	}
 
 	@Override
-	public void sendMessage(String msg) {
-		if(server != null) {
-            		server.sendMessage(message);
-        	}
-		
-	}
-
-	@Override
 	public void launchGame(UUID user) {
 		// TODO Auto-generated method stub
 		
@@ -196,5 +188,11 @@ public class ComClient implements ComClientInterface{
         } catch (IOException e) {
             throw new RuntimeException("Error closing server", e);
         }
+    }
+
+    @Override
+    public void sendMessage(String msg) {
+        // TODO Auto-generated method stub
+        
     }
 }

@@ -2,7 +2,9 @@ package network.messages;
 
 import java.util.UUID;
 
+import data.ClientDataEngine;
 import data.Profile;
+import data.ServerDataEngine;
 
 public class UpdateProfileMessage implements IMessage {
 
@@ -20,10 +22,16 @@ public class UpdateProfileMessage implements IMessage {
 		this.user = user;
 		this.profile = profile;
 	}
-	
-	@Override
-	public void process() {
-		// ? ServerDataEngine -> updateUserProfile (user, profile); ?
-	}
 
+    @Override
+    public void process(ServerDataEngine dataEngine) {
+        // TODO Auto-generated method stub
+        
+    }
+
+    @Override
+    public void process(ClientDataEngine dataEngine) {
+        // TODO Auto-generated method stub
+        
+    }
 }
