@@ -1,29 +1,26 @@
-package IHM_MAIN.src.controller;
+package IHM_MAIN.src.view;
 
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
-<<<<<<< HEAD
 import javafx.fxml.FXMLLoader;
-import javafx.scene.Parent;
 import javafx.scene.Scene;
-=======
 import javafx.scene.control.Alert;
->>>>>>> [IHM_LOBBY]alamrous : Integration edition profil + recuperations info du XML
 import javafx.scene.control.Button;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
-<<<<<<< HEAD
+import javafx.scene.layout.AnchorPane;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
-import javafx.stage.Window;
-=======
 import javafx.scene.control.Alert.AlertType;
+
+import java.io.File;
+import java.io.IOException;
+
 import IHM_MAIN.src.MainApp;
->>>>>>> [IHM_LOBBY]alamrous : Integration edition profil + recuperations info du XML
 import IHM_MAIN.src.model.Game;
 import IHM_MAIN.src.model.ModelApplication;
 import data.Profile;
@@ -83,35 +80,44 @@ public class ControllerApplication {
 	}
 
 	@FXML
-	private void handleNameButton() {
-	    Alert alert = new Alert(AlertType.WARNING);
-        alert.initOwner(mainApp.getPrimaryStage());
-        alert.setTitle("No Selection");
-        alert.setHeaderText("No Person Selected");
-        alert.setContentText("Please select a person in the table.");
+	private boolean handleNameButton() {
+		 try {
+		        // Load the fxml file and create a new stage for the popup dialog.
+		        FXMLLoader loader = new FXMLLoader();
+		        loader.setLocation(MainApp.class.getResource("view/GestionProfil.fxml"));
+		        AnchorPane page = (AnchorPane) loader.load();
 
-        alert.showAndWait();
+		        // Create the dialog Stage.
+		        Stage dialogStage = new Stage();
+		        dialogStage.setTitle("Edit Person");
+		        dialogStage.initModality(Modality.WINDOW_MODAL);
+		        Scene scene = new Scene(page);
+		        dialogStage.setScene(scene);
+
+		        // Set the person into the controller.
+		        PersonController controller = loader.getController();
+		        controller.setDialogStage(dialogStage);
+	        	File fXmlFile = new File("file:./../monProfile.xml");
+
+		       Profile profil= controller.loadPersonDataFromFile(fXmlFile);
+		        //Profile profil = new Profile(null,"test","test","test",25);
+		        User user= new User(profil);
+		        controller.setPerson(user);
+
+		        // Show the dialog and wait until the user closes it
+		        dialogStage.showAndWait();
+
+		        return controller.isOkClicked();
+		    } catch (IOException e) {
+		        e.printStackTrace();
+		        return false;
+		    }
 	}
 
 
 	@FXML
 	private void handleCreateButton() {
 		//ouverture fenetre creation nouvelle table
-				Parent root;
-				try {
-					root = FXMLLoader.load(getClass().getResource("../view/tableCreation.fxml"));
-					Window parent = createGame.getScene().getWindow();
-					Stage stage = new Stage();
-					stage.setScene(new Scene(root, 440, 408));
-					stage.initModality(Modality.WINDOW_MODAL);
-					stage.initOwner(parent);
-				    stage.setTitle("Création de Table");
-				    stage.setResizable(false);
-					stage.show();
-
-				} catch (Exception e1) {
-					e1.printStackTrace();
-				}
 	}
 
 	@FXML

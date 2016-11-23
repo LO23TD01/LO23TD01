@@ -1,15 +1,18 @@
 package IHM_MAIN.src;
 
+import data.User;
 import javafx.application.Application;
 import javafx.application.Platform;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.BorderPane;
+import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 
 import java.io.IOException;
+<<<<<<< HEAD
 import java.util.concurrent.Callable;
 
 import javafx.application.Application;
@@ -119,6 +122,27 @@ public class MainApp extends Application {
 	    editBtn.setOnAction(e -> editHandler(e));
 
 	    primaryStage.show();
+=======
+
+import IHM_MAIN.src.view.PersonController;
+
+public class MainApp extends Application {
+
+	private Stage primaryStage;
+
+
+	@Override
+	public void start(Stage stage) throws Exception {
+	FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("./view/ihmmain.fxml"));
+
+	BorderPane root = (BorderPane) fxmlLoader.load();
+	Scene scene = new Scene(root, 780, 500);
+
+	stage.setTitle("Main");
+	stage.setScene(scene);
+	this.primaryStage=stage;
+	stage.show();
+>>>>>>> [IHM_LOBBY]alamrous : Integration edition profil + recuperations info du XML
 	}
 	
 	private void openMain(){
@@ -134,6 +158,7 @@ public class MainApp extends Application {
 			Stage this_window = (Stage)scene.getWindow();
 			this_window.close();
 
+<<<<<<< HEAD
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -203,3 +228,42 @@ public class MainApp extends Application {
 		launch(args);
 	}
 }
+=======
+
+	public static void main(String[] args) {
+		launch(args);
+	}
+	public boolean EditProfile(User user){
+		try{
+			FXMLLoader loader = new FXMLLoader();
+			loader.setLocation(MainApp.class.getResource("view/GestionProfil.fxml"));
+			AnchorPane page= (AnchorPane) loader.load();
+
+			// Create the dialog Stage.
+	        Stage dialogStage = new Stage();
+	        dialogStage.setTitle("Edit Person");
+	        dialogStage.initModality(Modality.WINDOW_MODAL);
+	        dialogStage.initOwner(primaryStage);
+	        Scene scene = new Scene(page);
+	        dialogStage.setScene(scene);
+	     // Set the person into the controller.
+	        PersonController controller = loader.getController();
+	        controller.setDialogStage(dialogStage);
+	        controller.setPerson(user);
+
+	     // Show the dialog and wait until the user closes it
+	        dialogStage.showAndWait();
+
+	        return controller.isOkClicked();
+	    } catch (IOException e) {
+	        e.printStackTrace();
+	        return false;
+	    }
+	}
+	public Stage getPrimaryStage()
+	{
+		return primaryStage;
+	}
+
+}
+>>>>>>> [IHM_LOBBY]alamrous : Integration edition profil + recuperations info du XML
