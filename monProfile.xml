@@ -11,6 +11,7 @@
     <nbGameWon>0</nbGameWon>
     <nbGameLost>0</nbGameLost>
     <nbGameAbandonned>0</nbGameAbandonned>
+
     <client>
         <contactList>
             <contact>
@@ -50,3 +51,4 @@
         </categoryList>
     </client>
 </profile>
+
