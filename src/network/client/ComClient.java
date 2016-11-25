@@ -160,9 +160,12 @@ public class ComClient implements ComClientInterface{
         sendMessage(msg);
     }
 
+    
+    //Changement de l'interface pour recuperer le profile 
+    //getProfile(UUID user) --> getProfile(UUID user, UUID sender)
     @Override
-    public void getProfile(UUID user) {
-        sendMessage(new GetProfileMessage(user));
+    public void getProfile(UUID user, UUID sender) {
+        sendMessage(new GetProfileMessage(user, sender));
     }
 
 	

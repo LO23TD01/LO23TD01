@@ -23,5 +23,7 @@ public interface ComClientInterface {
 	public void acceptReplay(UUID user);
 	public void refuseReplay(UUID user);
 	public void logoutUserRequest(UUID user);
-	public void getProfile(UUID user);
+	//Changement de l'interface pour recuperer le profile 
+    //getProfile(UUID user) --> getProfile(UUID user, UUID sender)
+	public void getProfile(UUID user, UUID sender);
 }

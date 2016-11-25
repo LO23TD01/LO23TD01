@@ -26,7 +26,8 @@ public class SendProfileMessage implements IMessage{
 
     @Override
     public void process(ClientDataEngine dataEngine) {
-        // TODO Auto-generated method stub
+        //Appeler dataEngine.diplayProfile(profile);
+    	//Quand l'interface Data sera implemente
         
     }
 }

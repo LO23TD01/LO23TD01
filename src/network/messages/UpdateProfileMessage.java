@@ -25,7 +25,7 @@ public class UpdateProfileMessage implements IMessage {
 
     @Override
     public void process(ServerDataEngine dataEngine) {
-        // TODO Auto-generated method stub
+    	dataEngine.updateUserProfile(user, profile);
         
     }
 

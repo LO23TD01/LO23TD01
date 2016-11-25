@@ -4,24 +4,25 @@ import data.ClientDataEngine;
 import data.Profile;
 import data.ServerDataEngine;
 
-public class ConnectionMessage implements IMessage{
+public class NewUserMessage implements IMessage {
 
-	private static final long serialVersionUID = -2428194153289587089L;
+	private static final long serialVersionUID = 611407636768645351L;
 	
 	public Profile profile;
 	
-	public ConnectionMessage(Profile p){
+	public NewUserMessage(Profile p){
 		profile = p;
 	}
+		
 	@Override
 	public void process(ServerDataEngine dataEngine) {
-		dataEngine.connectUser(profile);
+		// TODO Auto-generated method stub
+		
 	}
 
 	@Override
 	public void process(ClientDataEngine dataEngine) {
-		// TODO Auto-generated method stub
-		
+		//Appeler dataEngine.updateUsers(Profile); quand l'interface data sera implementee
 	}
 
 }

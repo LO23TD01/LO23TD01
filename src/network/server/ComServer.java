@@ -10,6 +10,7 @@ import java.util.UUID;
 import data.GameTable;
 import data.Profile;
 import data.ServerDataEngine;
+import network.messages.NewUserMessage;
 import network.messages.HasSelectedMessage;
 import network.messages.IsTurnMessage;
 import network.messages.HasThrownMessage;
@@ -19,6 +20,7 @@ import network.messages.KickedMessage;
 import network.messages.LogoutUserRequestMessage;
 import network.messages.PlayerQuitGameMessage;
 import network.messages.SendProfileMessage;
+import network.messages.TablesUsersListMessage;
 import network.messages.refreshUserListMessage;
 import network.messages.SetSelectionMessage;
 import network.messages.StartTurnMessage;
@@ -270,8 +272,11 @@ public class ComServer implements Runnable, ComServerInterface {
 
 	@Override
 	public void newUser(List<UUID> receivers, Profile user) {
-		// TODO Auto-generated method stub
-		
+		for (UUID uuid : receivers) {
+			SocketClientHandler client = connectedClients.get(uuid);
+			if(client != null)
+				client.sendMessage(new NewUserMessage(user));
+		}
 	}
 	
 	/*
@@ -303,8 +308,9 @@ public class ComServer implements Runnable, ComServerInterface {
     }
 	@Override
 	public void sendTablesUsers(List<User> userList, List<GameTable> tableList, Profile user) {
-		// TODO Auto-generated method stub
-		
+			SocketClientHandler client = connectedClients.get(user.getUuid());
+			if(client != null)
+				client.sendMessage(new TablesUsersListMessage(userList, tableList));
 	}
 
 
