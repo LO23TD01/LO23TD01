@@ -10,28 +10,28 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8.0.60" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ihmTable.controller.PlayerStatsController">
+<AnchorPane xmlns="http://javafx.com/javafx/8.0.60" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ihmTable.controller.PlayerStatsController">
    <children>
-      <HBox AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+      <HBox prefHeight="236.0" prefWidth="534.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
          <children>
-            <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="400.0" prefWidth="400.0">
+            <AnchorPane>
                <children>
-                  <VBox fx:id="PLayerStats_VBoxLeft1" alignment="TOP_CENTER" layoutX="58.0" layoutY="51.0" prefHeight="200.0" prefWidth="360.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                  <VBox fx:id="PLayerStats_VBoxLeft1" alignment="TOP_CENTER" layoutX="58.0" layoutY="51.0" prefHeight="236.0" prefWidth="408.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                      <children>
-                        <AnchorPane fx:id="PlayerStats_TitlePane1" prefHeight="80.0" prefWidth="400.0">
+                        <AnchorPane fx:id="PlayerStats_TitlePane1">
                            <children>
-                              <Label fx:id="PlayerStats_TitleLabelPlayer" alignment="CENTER" layoutX="69.0" layoutY="30.0" prefHeight="84.0" prefWidth="400.0" styleClass="border" stylesheets="@CSS/style1.css" text="Player 1" AnchorPane.bottomAnchor="-0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                              <Label fx:id="PlayerStats_TitleLabelPlayer" alignment="CENTER" layoutX="69.0" layoutY="30.0" prefHeight="39.0" prefWidth="378.0" styleClass="border" stylesheets="@CSS/style1.css" text="Player 1" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                                  <font>
                                     <Font size="24.0" />
                                  </font>
                               </Label>
                            </children>
                         </AnchorPane>
-                        <HBox fx:id="PlayerStats_InfosHBoxParent1" prefHeight="320.0" prefWidth="400.0">
+                        <HBox fx:id="PlayerStats_InfosHBoxParent1">
                            <children>
                               <AnchorPane>
                                  <children>
-                                    <VBox fx:id="PlayerStats_PlayerInfoVBox1" layoutX="4.0" prefHeight="320.0" prefWidth="105.0" styleClass="border" stylesheets="@CSS/style1.css" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                                    <VBox fx:id="PlayerStats_PlayerInfoVBox1" prefHeight="200.0" prefWidth="88.0" styleClass="border" stylesheets="@CSS/style1.css">
                                        <children>
                                           <Pane>
                                              <VBox.margin>
@@ -71,13 +71,13 @@
                                     </VBox>
                                  </children>
                               </AnchorPane>
-                              <AnchorPane prefHeight="320.0" prefWidth="322.0" styleClass="border" stylesheets="@CSS/style1.css">
+                              <AnchorPane styleClass="border" stylesheets="@CSS/style1.css">
                                  <children>
-                                    <VBox prefHeight="320.0" prefWidth="240.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                                    <VBox layoutX="4.0" layoutY="4.0" prefHeight="200.0" prefWidth="316.0" AnchorPane.bottomAnchor="-2.0" AnchorPane.leftAnchor="2.0" AnchorPane.rightAnchor="2.0" AnchorPane.topAnchor="2.0">
                                        <children>
                                           <AnchorPane>
                                              <children>
-                                                <HBox fx:id="PlayerStats_DicesHBox1" prefHeight="80.0" prefWidth="240.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                                                <HBox fx:id="PlayerStats_DicesHBox1" prefHeight="90.0" prefWidth="320.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                                                    <children>
                                                       <ImageView fx:id="PlayerStats_Dice1" fitHeight="80.0" fitWidth="80.0" layoutX="10.0" layoutY="10.0" pickOnBounds="true" preserveRatio="true">
                                                          <HBox.margin>
@@ -107,9 +107,9 @@
                                                 </HBox>
                                              </children>
                                           </AnchorPane>
-                                          <AnchorPane fx:id="PLayersStats_ScoreNumberAnchorPane1" prefHeight="240.0" prefWidth="240.0">
+                                          <AnchorPane fx:id="PLayersStats_ScoreNumberAnchorPane1">
                                              <children>
-                                                <Label fx:id="PlayerStats_ScoreLabel" alignment="CENTER" layoutX="69.0" layoutY="59.0" prefHeight="17.0" prefWidth="73.0" text="Score : 123" textAlignment="CENTER" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="20.0">
+                                                <Label fx:id="PlayerStats_ScoreLabel" alignment="CENTER" layoutX="69.0" layoutY="59.0" prefHeight="55.0" prefWidth="282.0" text="Score : 123" textAlignment="CENTER" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                                                    <font>
                                                       <Font size="24.0" />
                                                    </font>
@@ -129,16 +129,16 @@
                   </VBox>
                </children>
             </AnchorPane>
-          <AnchorPane depthTest="DISABLE" minHeight="0.0" minWidth="0.0" prefHeight="400.0" prefWidth="200.0">
+          <AnchorPane depthTest="DISABLE">
                <children>
-                  <VBox fx:id="PLayerStats_StatsVBox" prefHeight="200.0" prefWidth="100.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                  <VBox fx:id="PLayerStats_StatsVBox">
                      <children>
-                        <Label fx:id="playerStats_LabelStats" alignment="CENTER" prefHeight="80.0" prefWidth="236.0" styleClass="border" stylesheets="@CSS/style1.css" text="Statistiques" textAlignment="CENTER">
+                        <Label fx:id="playerStats_LabelStats" alignment="CENTER" styleClass="border" stylesheets="@CSS/style1.css" text="Statistiques" textAlignment="CENTER">
                            <font>
                               <Font size="24.0" />
                            </font>
                         </Label>
-                        <AnchorPane fx:id="PlayerStats_StatsPane" prefHeight="320.0" prefWidth="236.0" styleClass="border" stylesheets="@CSS/style1.css">
+                        <AnchorPane fx:id="PlayerStats_StatsPane" prefHeight="200.0" prefWidth="126.0" styleClass="border" stylesheets="@CSS/style1.css">
                            <opaqueInsets>
                               <Insets />
                            </opaqueInsets>
