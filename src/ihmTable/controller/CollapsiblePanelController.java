@@ -25,14 +25,14 @@ public class CollapsiblePanelController {
 		this.opened = true;
 	}
 
-	public void setCollapsiblePanel(AnchorPane content, Position position, double defaultSize) throws IOException {
+	public void setContent(AnchorPane content, Position position, double defaultSize) throws IOException {
 		this.position = position;
 		this.content = content;
 		this.collapsiblePanel.setCenter(content);
 		this.collapseButton = getCollapseButton();
 		BorderPane.setAlignment(collapseButton, Pos.CENTER);
 		this.defaultSize = defaultSize;
-		this.collapsedSize = this.collapseButton.getPrefHeight();
+		this.collapsedSize = this.collapseButton.getPrefWidth();
 		setCollapsiblePanelSize();
 		setCollapseButtonPosition();
 	}
@@ -104,6 +104,6 @@ public class CollapsiblePanelController {
 	}
 
 	public enum Position {
-		top, bottom, left, right
+		top, bottom, left, right, center
 	}
 }
