@@ -12,8 +12,12 @@ import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
 
 @XmlRootElement
-@XmlType(propOrder = {"uuid", "login", "nickName", "psw", "firstName", "surName", "age", "avatar", "nbGameWon", "nbGameLost", "nbGameAbandonned", "client"})
+@XmlType(propOrder = { "uuid", "login", "nickName", "psw", "firstName", "surName", "age", "avatar", "nbGameWon", "nbGameLost", "nbGameAbandonned", "client" })
 public class Profile implements Serializable {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -8704008869575118912L;
 	private UUID uuid;
 	private String login;
 	private String nickName;
@@ -26,21 +30,21 @@ public class Profile implements Serializable {
 	private int nbGameLost;
 	private int nbGameAbandonned;
 	private Client client;
-	
+
 	/*
 	 * 
 	 * Constructors
 	 * 
 	 */
-	
+
 	public Profile() {
 		this.uuid = UUID.randomUUID();
 	}
-	
+
 	public Profile(UUID uuid) {
 		this.uuid = uuid;
 	}
-	
+
 	public Profile(UUID uuid, String nickname, String firstName, String surName, int age) {
 		this.uuid = uuid;
 		this.nickName = nickname;
@@ -48,9 +52,9 @@ public class Profile implements Serializable {
 		this.surName = surName;
 		this.age = age;
 	}
-	
-	public Profile(UUID uuid, String login, String nickname, String psw, String firstName, String surName, int age,
-			Image avatar, int nbGameWon, int nbGameLost, int nbGameAbandonned, Client client) {
+
+	public Profile(UUID uuid, String login, String nickname, String psw, String firstName, String surName, int age, Image avatar, int nbGameWon, int nbGameLost,
+			int nbGameAbandonned, Client client) {
 		super();
 		this.uuid = uuid;
 		this.login = login;
@@ -65,47 +69,46 @@ public class Profile implements Serializable {
 		this.nbGameAbandonned = nbGameAbandonned;
 		this.client = client;
 	}
-	
+
 	/*
 	 * 
 	 * Methods
 	 * 
 	 * 
 	 */
-	
-	public void Xmlise(){
+
+	public void Xmlise() {
 		try {
-			
-		//create JAXB context
-		JAXBContext context = JAXBContext.newInstance(Profile.class);
-		
-		//Create Marshaller using JAXB context
-		Marshaller marshaller = context.createMarshaller();
-		marshaller.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, true);
-	 
-		//Do the marshal operation
-		marshaller.marshal(this, new FileOutputStream(".\\monProfile.xml"));
-		System.out.println("java object converted to xml successfully.");
-	    } catch (Exception e) {
-		e.printStackTrace();
-	    }
-		
-		
-		/* ATTANTION : ne fonctionne pas si le client du profile possède une liste de contact... (boucle)
+
+			// create JAXB context
+			JAXBContext context = JAXBContext.newInstance(Profile.class);
+
+			// Create Marshaller using JAXB context
+			Marshaller marshaller = context.createMarshaller();
+			marshaller.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, true);
+
+			// Do the marshal operation
+			marshaller.marshal(this, new FileOutputStream(".\\monProfile.xml"));
+			System.out.println("java object converted to xml successfully.");
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+
+		/*
+		 * ATTANTION : ne fonctionne pas si le client du profile possï¿½de une liste de contact... (boucle)
 		 * 
-		 * Le problème sera bientôt réglé.
-		 *  
-		 *  */
+		 * Le problï¿½me sera bientï¿½t rï¿½glï¿½.
+		 * 
+		 */
 	}
 
-	
 	/*
 	 * 
 	 * Getters & Setters
 	 * 
 	 * 
 	 */
-	
+
 	public UUID getUuid() {
 		return uuid;
 	}
@@ -213,6 +216,5 @@ public class Profile implements Serializable {
 	public void setClient(Client client) {
 		this.client = client;
 	}
-	
-	
+
 }

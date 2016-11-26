@@ -4,7 +4,7 @@ import java.util.UUID;
 
 import data.ClientDataEngine;
 import data.Profile;
-import data.ServerDataEngine;
+import data.server.ServerDataEngine;
 
 public class SendProfileMessage implements IMessage{
 

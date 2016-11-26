@@ -2,7 +2,7 @@ package network.messages;
 
 import java.util.UUID;
 import data.ClientDataEngine;
-import data.ServerDataEngine;
+import data.server.ServerDataEngine;
 
 public class GetProfileMessage implements IMessage {
 

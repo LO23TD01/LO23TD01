@@ -1,7 +1,7 @@
 package network.messages;
 
 import data.ClientDataEngine;
-import data.ServerDataEngine;
+import data.server.ServerDataEngine;
 
 public class QuitGameMessage implements IMessage {
 
