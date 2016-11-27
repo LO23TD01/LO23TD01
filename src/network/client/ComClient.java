@@ -7,10 +7,14 @@ import java.util.UUID;
 
 import data.ClientDataEngine;
 import data.Profile;
+import network.messages.AcceptReplayMessage;
 import network.messages.ConnectionMessage;
+import network.messages.DropTableMessage;
 import network.messages.GetProfileMessage;
 import network.messages.IMessage;
 import network.messages.LogoutUserRequestMessage;
+import network.messages.QuitGameMessage;
+import network.messages.RefuseReplayMessage;
 import network.messages.UpdateProfileMessage;
 
 public class ComClient implements ComClientInterface{
@@ -98,14 +102,12 @@ public class ComClient implements ComClientInterface{
 
 	@Override
 	public void dropTable(UUID tableId) {
-		// TODO Auto-generated method stub
-		
+		sendMessage(new DropTableMessage(tableId));
 	}
 
 	@Override
 	public void quit(UUID user) {
-		// TODO Auto-generated method stub
-		
+		sendMessage(new QuitGameMessage(user));
 	}
 
 	@Override
@@ -134,14 +136,12 @@ public class ComClient implements ComClientInterface{
 
 	@Override
 	public void acceptReplay(UUID user) {
-		// TODO Auto-generated method stub
-		
+		sendMessage(new AcceptReplayMessage(user));
 	}
 
 	@Override
 	public void refuseReplay(UUID user) {
-		// TODO Auto-generated method stub
-		
+		sendMessage(new RefuseReplayMessage(user));
 	}
 
 	@Override

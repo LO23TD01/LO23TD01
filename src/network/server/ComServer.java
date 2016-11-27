@@ -9,6 +9,11 @@ import java.util.UUID;
 import data.GameTable;
 import data.Profile;
 import data.ServerDataEngine;
+import network.messages.HasAcceptedMessage;
+import network.messages.HasRefusedMessage;
+import network.messages.KickedMessage;
+import network.messages.LogoutUserRequestMessage;
+import network.messages.PlayerQuitGameMessage;
 import network.messages.SendProfileMessage;
 import data.User;
 
@@ -168,8 +173,13 @@ public class ComServer implements Runnable, ComServerInterface {
 
 	@Override
 	public void kick(List<UUID> receivers, String msg) {
-		// TODO Auto-generated method stub
-		
+		SocketClientHandler handler = connectedClients.get(receivers);
+		if (handler != null) {
+			for(UUID receiver : receivers) {
+				// Il faut pouvoir spécifier à qui on envoie ?
+				handler.sendMessage(new KickedMessage(msg));
+			}
+		}
 	}
 
 	@Override
@@ -204,14 +214,24 @@ public class ComServer implements Runnable, ComServerInterface {
 
 	@Override
 	public void hasAccepted(UUID user, List<UUID> receivers) {
-		// TODO Auto-generated method stub
-		
+		SocketClientHandler handler = connectedClients.get(receivers);
+		if (handler != null) {
+			for(UUID receiver : receivers) {
+				// Il faut pouvoir spécifier à qui on envoie ?
+				handler.sendMessage(new HasAcceptedMessage(user));
+			}
+		}
 	}
 
 	@Override
 	public void hasRefused(UUID user, List<UUID> receivers) {
-		// TODO Auto-generated method stub
-		
+		SocketClientHandler handler = connectedClients.get(receivers);
+		if (handler != null) {
+			for(UUID receiver : receivers) {
+				// Il faut pouvoir spécifier à qui on envoie ?
+				handler.sendMessage(new HasRefusedMessage(user));
+			}
+		}
 	}
 
 	@Override
@@ -271,4 +291,15 @@ public class ComServer implements Runnable, ComServerInterface {
         // TODO Auto-generated method stub
         
     }
+
+	@Override
+	public void playerQuitGame(List<UUID> receivers, UUID user) {
+		SocketClientHandler handler = connectedClients.get(receivers);
+		if (handler != null) {
+			for(UUID receiver : receivers) {
+				// Il faut pouvoir spécifier à qui on envoie ?
+				handler.sendMessage(new PlayerQuitGameMessage(user));
+			}
+		}
+	}
 }
