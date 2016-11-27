@@ -1,11 +1,12 @@
 package data;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
-public class Rules {
+public class Rules implements Serializable {
 	private boolean isRampoAmeliore;
 	private boolean isForcedToFollowFirst;
 	private boolean isNenetteFlat;
@@ -188,7 +189,7 @@ public class Rules {
 	public boolean hasToReroll(List<PlayerData> l, User actualPlayer, User firstPlayer)
 	{
 		//TODO implement ruleset
-		return false; //par rapport au regle de défaut que l'on a défini, ça suffit.
+		return false; //par rapport au regle de dï¿½faut que l'on a dï¿½fini, ï¿½a suffit.
 	}
 	
 	

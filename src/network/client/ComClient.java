@@ -7,9 +7,13 @@ import java.util.UUID;
 
 import data.ClientDataEngine;
 import data.Profile;
+import data.Rules;
+import data.User;
 import network.messages.ConnectionMessage;
+import network.messages.CreateTableMessage;
 import network.messages.GetProfileMessage;
 import network.messages.IMessage;
+import network.messages.LaunchGameMessage;
 import network.messages.LogoutUserRequestMessage;
 import network.messages.UpdateProfileMessage;
 
@@ -35,7 +39,7 @@ public class ComClient implements ComClientInterface{
 		try {
 			socketToServer = new Socket(ipAdress, serverPort);
 			
-			System.out.println("Client connecté au serveur");
+			System.out.println("Client connectï¿½ au serveur");
 			
 			SocketServerHandler server = new SocketServerHandler(socketToServer, this);
         	new Thread(server).start();
@@ -73,16 +77,16 @@ public class ComClient implements ComClientInterface{
 	}
 
 	@Override
-	public void launchGame(UUID user) {
-		// TODO Auto-generated method stub
-		
+	public void launchGame(UUID userUuid) {
+        LaunchGameMessage msg = new LaunchGameMessage(userUuid);
+        sendMessage(msg);
 	}
 
 	@Override
 	public void createNewTable(UUID user, String name, String pwd, int min, int max, int token, boolean withSpec,
-			boolean withChat) {
-		// TODO Auto-generated method stub
-		
+			boolean withChat, Rules rules) {
+		CreateTableMessage msg = new CreateTableMessage(user, name, pwd, min, max, token, withSpec, withChat, rules);
+		sendMessage(msg);
 	}
 
 	@Override
