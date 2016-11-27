@@ -11,6 +11,7 @@ import network.messages.ConnectionMessage;
 import network.messages.GetProfileMessage;
 import network.messages.IMessage;
 import network.messages.LogoutUserRequestMessage;
+import network.messages.ThrowDiceMessage;
 import network.messages.UpdateProfileMessage;
 
 public class ComClient implements ComClientInterface{
@@ -35,7 +36,7 @@ public class ComClient implements ComClientInterface{
 		try {
 			socketToServer = new Socket(ipAdress, serverPort);
 			
-			System.out.println("Client connecté au serveur");
+			System.out.println("Client connectï¿½ au serveur");
 			
 			SocketServerHandler server = new SocketServerHandler(socketToServer, this);
         	new Thread(server).start();
@@ -67,9 +68,8 @@ public class ComClient implements ComClientInterface{
 	 */
 	
 	@Override
-	public void throwDice(UUID user) {
-		// TODO Auto-generated method stub
-		
+	public void throwDice(UUID user, int d1, int d2, int d3) {
+		sendMessage(new ThrowDiceMessage(user, d1, d2, d3));
 	}
 
 	@Override

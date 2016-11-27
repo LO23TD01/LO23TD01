@@ -7,7 +7,7 @@ import data.Profile;
 public interface ComClientInterface {
 	
 	public void connection(Profile user);
-	public void throwDice(UUID user);
+	public void throwDice(UUID user, int d1, int d2, int d3);
 	public void sendMessage(String msg);
 	public void launchGame(UUID user);
 	public void createNewTable(UUID user, String name, String pwd, int min, int max, int token, boolean withSpec, boolean withChat);
