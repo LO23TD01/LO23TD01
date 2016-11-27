@@ -11,6 +11,11 @@ import data.GameTable;
 import data.Profile;
 import data.ServerDataEngine;
 import network.messages.HasThrownMessage;
+import network.messages.HasAcceptedMessage;
+import network.messages.HasRefusedMessage;
+import network.messages.KickedMessage;
+import network.messages.LogoutUserRequestMessage;
+import network.messages.PlayerQuitGameMessage;
 import network.messages.SendProfileMessage;
 import network.messages.refreshUserListMessage;
 import data.User;
@@ -67,7 +72,7 @@ public class ComServer implements Runnable, ComServerInterface {
 	/*
 	//Used to test client/server communication
 	public void sendMessage(int num, IMessage message){
-		//TO-DO : Changer ipAdress par UUID quand ils seront gï¿½rï¿½s par DATA
+		//TO-DO : Changer ipAdress par UUID quand ils seront gérés par DATA
 		
 		SocketClientHandler client = connectedClients.get(num);
 		
@@ -88,7 +93,7 @@ public class ComServer implements Runnable, ComServerInterface {
 	        try {
 	            clientSocket = this.serverSocket.accept();
 	            
-	            System.out.println("Nouveau client connectï¿½");
+	            System.out.println("Nouveau client connecté");
 	            
 	        } catch (IOException e) {
 	            if(isStopped()) {
@@ -177,8 +182,12 @@ public class ComServer implements Runnable, ComServerInterface {
 
 	@Override
 	public void kick(List<UUID> receivers, String msg) {
-		// TODO Auto-generated method stub
-		
+		for(UUID receiver : receivers) {		
+			SocketClientHandler handler = connectedClients.get(receiver);
+			if (handler != null) {
+				handler.sendMessage(new KickedMessage(msg));
+			}
+		}
 	}
 
 	@Override
@@ -213,14 +222,22 @@ public class ComServer implements Runnable, ComServerInterface {
 
 	@Override
 	public void hasAccepted(UUID user, List<UUID> receivers) {
-		// TODO Auto-generated method stub
-		
+		for(UUID receiver : receivers) {
+			SocketClientHandler handler = connectedClients.get(receiver);
+			if (handler != null) {
+				handler.sendMessage(new HasAcceptedMessage(user));
+			}
+		}
 	}
 
 	@Override
 	public void hasRefused(UUID user, List<UUID> receivers) {
-		// TODO Auto-generated method stub
-		
+		for(UUID receiver : receivers) {
+			SocketClientHandler handler = connectedClients.get(receiver);
+			if (handler != null) {
+				handler.sendMessage(new HasRefusedMessage(user));
+			}
+		}
 	}
 
 	@Override
@@ -282,4 +299,14 @@ public class ComServer implements Runnable, ComServerInterface {
 			handler.sendMessage(new refreshUserListMessage(userList));
         
     }
+
+	@Override
+	public void playerQuitGame(List<UUID> receivers, UUID user) {
+		for(UUID receiver : receivers) {
+			SocketClientHandler handler = connectedClients.get(receiver);
+			if (handler != null) {
+				handler.sendMessage(new PlayerQuitGameMessage(user));
+			}
+		}
+	}
 }
