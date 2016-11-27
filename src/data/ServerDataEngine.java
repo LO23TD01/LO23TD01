@@ -36,11 +36,11 @@ public class ServerDataEngine implements InterfaceDataNetwork {
 	
 	public GameTable createTable (User user, String name, Parameters params) throws Exception{
 		
-		//Initialisation des joueurs de la table avec le joueur créant la table
+		//Initialisation des joueurs de la table avec le joueur crï¿½ant la table
 		List<User> playerList = new ArrayList<User>();
 		playerList.add(user);
 		
-		//Initialisation spectateurs, vide au début
+		//Initialisation spectateurs, vide au dï¿½but
 		List<User> spectatorList = new ArrayList<User>();
 		
 		return new GameTable(name, user, params, playerList, spectatorList);
@@ -84,20 +84,20 @@ public class ServerDataEngine implements InterfaceDataNetwork {
 	@Override
 	public Profile getProfile(User user) {
 		//		if(user.getSame(this.usersList)==null)
-		//			throw new Exception("Utilisateur non connecté. Il faut qu'il soit connecté pour retrouver son profil.");
+		//			throw new Exception("Utilisateur non connectï¿½. Il faut qu'il soit connectï¿½ pour retrouver son profil.");
 		return user.getSame(this.usersList).getPublicData();
 	}
 	@Override
 	public void updateUserProfile(UUID uuid, Profile profile) {
-		//uuid useless (il est déjà dans le profile bande de bananes.)
+		//uuid useless (il est dï¿½jï¿½ dans le profile bande de bananes.)
 
 		User compUser = new User(profile);
 		//		if(!compUser.isFullVersion())
-		//			throw new Exception("Profil non complet lors de la mise à jour. Il faut un profil complet");
+		//			throw new Exception("Profil non complet lors de la mise ï¿½ jour. Il faut un profil complet");
 		//		else if(compUser.getSame(this.usersList)==null)
-		//			throw new Exception("Profil non connecté. Il faut que le profil soit connecté pour le mettre à jour.");
+		//			throw new Exception("Profil non connectï¿½. Il faut que le profil soit connectï¿½ pour le mettre ï¿½ jour.");
 		compUser.getSame(this.usersList).setPublicData(profile);
-		//La suite du diag de sequence a été overrided par l'avis du prof.
+		//La suite du diag de sequence a ï¿½tï¿½ overrided par l'avis du prof.
 	}
 	@Override
 	public void sendMessage(ChatMessage message) {
@@ -121,7 +121,7 @@ public class ServerDataEngine implements InterfaceDataNetwork {
 		//		if(tableFull==null)
 		//			throw new Exception("La table n'existe pas. Il faut que la table existe pour s'y connecter.");
 		//		else if(userFull==null)
-		//			throw new Exception("L'utilisateur n'est pas connecté. Il faut être connecté pour rejoindre une table.");
+		//			throw new Exception("L'utilisateur n'est pas connectï¿½. Il faut ï¿½tre connectï¿½ pour rejoindre une table.");
 
 		boolean isLaunched = tableFull.getGameState().getState()!=State.PRESTART;
 		boolean isFull = tableFull.getParameters().getNbPlayerMax()>=tableFull.getPlayerList().size();
@@ -138,17 +138,17 @@ public class ServerDataEngine implements InterfaceDataNetwork {
 				this.comServer.newPlayerOnTable(getUUIDList(tableFull.getAllList()), user.getPublicData(), tableFull.getUid());
 		}
 		else if(isPlayer && isLaunched)
-			this.comServer.raiseException(user.getPublicData().getUuid(), "Impossible de rejoindre une partie déjà commencée.");
+			this.comServer.raiseException(user.getPublicData().getUuid(), "Impossible de rejoindre une partie dï¿½jï¿½ commencï¿½e.");
 		else if(isPlayer && isFull)
 			this.comServer.raiseException(user.getPublicData().getUuid(), "Impossible de rejoindre une partie pleine.");
 		else if(!isPlayer && !isSpecAuthorized)
-			this.comServer.raiseException(user.getPublicData().getUuid(), "Impossible de regarder cette partie. Non Autorisé par le Créateur.");
+			this.comServer.raiseException(user.getPublicData().getUuid(), "Impossible de regarder cette partie. Non Autorisï¿½ par le Crï¿½ateur.");
 		else
 		{
-			//la table n'a pas reussi à connecter le nouveau user malgré nos test en ammonts
-			//TOREVIEW est ce que c'est une bonne idée d'afficher l'erreur de cette manière au client ? Le fiat est que si on le fait pas, il attendra de manière infinie d'apres nos diag de sequence.
-			this.comServer.raiseException(user.getPublicData().getUuid(), "Erreur inconnue lors de la connexion à la table");
-			//			throw new Exception("Erreur inconnue lors de la connexion à la table");
+			//la table n'a pas reussi ï¿½ connecter le nouveau user malgrï¿½ nos test en ammonts
+			//TOREVIEW est ce que c'est une bonne idï¿½e d'afficher l'erreur de cette maniï¿½re au client ? Le fiat est que si on le fait pas, il attendra de maniï¿½re infinie d'apres nos diag de sequence.
+			this.comServer.raiseException(user.getPublicData().getUuid(), "Erreur inconnue lors de la connexion ï¿½ la table");
+			//			throw new Exception("Erreur inconnue lors de la connexion ï¿½ la table");
 		}
 
 //		//seconde implementation possible :
@@ -162,13 +162,13 @@ public class ServerDataEngine implements InterfaceDataNetwork {
 //				this.comServer.newPlayerOnTable(getUuidList(tableFull.getAllList()), user.getPublicData(), tableFull.getUid());
 //			}
 //			else if(isLaunched)
-//				this.comServer.raiseException(user.getPublicData().getUuid(), "Impossible de rejoindre une partie déjà commencée.");
+//				this.comServer.raiseException(user.getPublicData().getUuid(), "Impossible de rejoindre une partie dï¿½jï¿½ commencï¿½e.");
 //			else if(isFull)
 //				this.comServer.raiseException(user.getPublicData().getUuid(), "Impossible de rejoindre une partie pleine.");
 //			else
 //			{
-//				this.comServer.raiseException(user.getPublicData().getUuid(), "Erreur inconnue lors de la connexion à la table");
-//				//				throw new Exception("Erreur inconnue lors de la connexion à la table");
+//				this.comServer.raiseException(user.getPublicData().getUuid(), "Erreur inconnue lors de la connexion ï¿½ la table");
+//				//				throw new Exception("Erreur inconnue lors de la connexion ï¿½ la table");
 //			}
 //		}
 //		else
@@ -181,11 +181,11 @@ public class ServerDataEngine implements InterfaceDataNetwork {
 //				this.comServer.newPlayerOnTable(getUuidList(tableFull.getAllList()), user.getPublicData(), tableFull.getUid());
 //			}
 //			else if(!isSpecAuthorized)
-//				this.comServer.raiseException(user.getPublicData().getUuid(), "Impossible de regarder cette partie. Non Autorisé par le Créateur.");
+//				this.comServer.raiseException(user.getPublicData().getUuid(), "Impossible de regarder cette partie. Non Autorisï¿½ par le Crï¿½ateur.");
 //			else
 //			{
-//				this.comServer.raiseException(user.getPublicData().getUuid(), "Erreur inconnue lors de la connexion à la table");
-//				//				throw new Exception("Erreur inconnue lors de la connexion à la table");
+//				this.comServer.raiseException(user.getPublicData().getUuid(), "Erreur inconnue lors de la connexion ï¿½ la table");
+//				//				throw new Exception("Erreur inconnue lors de la connexion ï¿½ la table");
 //			}
 //		}
 
@@ -195,11 +195,11 @@ public class ServerDataEngine implements InterfaceDataNetwork {
 	public void launchGame(User user) {
 		User userFull = user.getSame(this.usersList);
 		//		if(userFull==null)
-		//			throw new Exception("L'utilisateur n'est pas connecté. Il faut être connecté pour lancer une partie.");
+		//			throw new Exception("L'utilisateur n'est pas connectï¿½. Il faut ï¿½tre connectï¿½ pour lancer une partie.");
 		//		else if(userFull.getActualTable()==null)
-		//			throw new Exception("L'utilisateur n'a rejoint aucune table. Il faut être assit à une table pour lancer une partie.")
+		//			throw new Exception("L'utilisateur n'a rejoint aucune table. Il faut ï¿½tre assit ï¿½ une table pour lancer une partie.")
 		//		else if(!userFull.getActualTable().getCreator().isSame(user))
-		//			throw new Exception("L'utilisateur n'est pas le createur de sa partie. Il faut être le createur pour lancer une partie.");
+		//			throw new Exception("L'utilisateur n'est pas le createur de sa partie. Il faut ï¿½tre le createur pour lancer une partie.");
 
 	}
 	@Override
@@ -238,7 +238,7 @@ public class ServerDataEngine implements InterfaceDataNetwork {
 //		if(!newUser.isFullVersion())
 //			throw new Exception("Profil non complet lors de la connexion. Profil complet requis.");
 //		else if (newUser.getSame(this.usersList)!=null)
-//			throw new Exception("Profil déjà connecté. Veuillez réessayer dans X minutes");
+//			throw new Exception("Profil dï¿½jï¿½ connectï¿½. Veuillez rï¿½essayer dans X minutes");
 		
 		this.comServer.newUser(getUUIDList(this.usersList), newUser.getEmptyVersion().getPublicData());
 		this.usersList.add(newUser);

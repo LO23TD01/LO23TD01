@@ -15,6 +15,7 @@ import network.messages.GetProfileMessage;
 import network.messages.IMessage;
 import network.messages.LaunchGameMessage;
 import network.messages.LogoutUserRequestMessage;
+import network.messages.ThrowDiceMessage;
 import network.messages.UpdateProfileMessage;
 import network.messages.askRefreshUserListMessage;
 
@@ -72,9 +73,8 @@ public class ComClient implements ComClientInterface{
 	 */
 	
 	@Override
-	public void throwDice(UUID user) {
-		// TODO Auto-generated method stub
-		
+	public void throwDice(UUID user, boolean d1, boolean d2, boolean d3) {
+		sendMessage(new ThrowDiceMessage(user, d1, d2, d3));
 	}
 
 	@Override

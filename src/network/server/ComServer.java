@@ -1,5 +1,6 @@
 package network.server;
 
+import java.awt.HeadlessException;
 import java.io.IOException;
 import java.net.Socket;
 import java.util.HashMap;
@@ -9,6 +10,7 @@ import java.util.UUID;
 import data.GameTable;
 import data.Profile;
 import data.ServerDataEngine;
+import network.messages.HasThrownMessage;
 import network.messages.SendProfileMessage;
 import network.messages.refreshUserListMessage;
 import data.User;
@@ -114,7 +116,13 @@ public class ComServer implements Runnable, ComServerInterface {
 	
 	@Override
 	public void sendResult(List<UUID> receivers, int r1, int r2, int r3) {
-		// TODO Auto-generated method stub
+		SocketClientHandler handler;
+		for (UUID receiver : receivers) {
+			handler = connectedClients.get(receiver.toString());
+			if (handler != null) {
+				handler.sendMessage(new HasThrownMessage(receiver, r1, r2, r3));
+			}
+		}
 		
 	}
 
