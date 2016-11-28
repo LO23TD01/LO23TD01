@@ -610,12 +610,16 @@ public class ServerDataEngine implements InterfaceDataNetwork {
 				//on calcule les winners
 				tableFull.getGameState().setWinners(tableFull.getGameState().getRules().getWinner(tableFull.getGameState().getDataList()));
 				
-				//on preinit le tie
-				List<PlayerData> newList = new ArrayList<PlayerData>();
-				for(User u : tableFull.getGameState().getWinners())
-					newList.add(new PlayerData(u));
-				tableFull.getGameState().setActualPlayer(tableFull.getGameState().getWinners().get(0));
-				tableFull.getGameState().setFirstPlayer(tableFull.getGameState().getWinners().get(0));	
+				if(tableFull.getGameState().getWinners().size()!=1)
+				{
+					//on preinit le tie
+					List<PlayerData> newList = new ArrayList<PlayerData>();
+					for(User u : tableFull.getGameState().getWinners())
+						newList.add(new PlayerData(u));
+					tableFull.getGameState().setActualPlayer(tableFull.getGameState().getWinners().get(0));
+					tableFull.getGameState().setFirstPlayer(tableFull.getGameState().getWinners().get(0));	
+					//this.comServer.exAequoCase(getUuidList(tableFull.getAllList()), tableFull.getGameState().getWinners(),true);
+				}
 			}
 			if(tableFull.getGameState().getWinners().size()==1) //un seul winner la solution facile 
 			{
@@ -655,12 +659,16 @@ public class ServerDataEngine implements InterfaceDataNetwork {
 				//on calcule les losers
 				tableFull.getGameState().setLosers(tableFull.getGameState().getRules().getLoser(tableFull.getGameState().getDataList()));
 				
-				//on preinit le tie
-				List<PlayerData> newList = new ArrayList<PlayerData>();
-				for(User u : tableFull.getGameState().getWinners())
-					newList.add(new PlayerData(u));
-				tableFull.getGameState().setActualPlayer(tableFull.getGameState().getLosers().get(0));
-				tableFull.getGameState().setFirstPlayer(tableFull.getGameState().getLosers().get(0));	
+				if(tableFull.getGameState().getLosers().size()!=1)
+				{
+					//on preinit le tie
+					List<PlayerData> newList = new ArrayList<PlayerData>();
+					for(User u : tableFull.getGameState().getWinners())
+						newList.add(new PlayerData(u));
+					tableFull.getGameState().setActualPlayer(tableFull.getGameState().getLosers().get(0));
+					tableFull.getGameState().setFirstPlayer(tableFull.getGameState().getLosers().get(0));	
+					//this.comServer.exAequoCase(getUuidList(tableFull.getAllList()), tableFull.getGameState().getLosers(),false);
+				}
 			}
 			if(tableFull.getGameState().getLosers().size()==1) //un seul winner la solution facile 
 			{
