@@ -68,7 +68,7 @@ public class ComClient implements ComClientInterface{
 	 */
 	
 	@Override
-	public void throwDice(UUID user, int d1, int d2, int d3) {
+	public void throwDice(UUID user, boolean d1, boolean d2, boolean d3) {
 		sendMessage(new ThrowDiceMessage(user, d1, d2, d3));
 	}
 

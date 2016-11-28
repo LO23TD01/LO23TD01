@@ -10,11 +10,11 @@ public class ThrowDiceMessage implements IMessage{
 	private static final long serialVersionUID = 6487827669027387150L;
 
 	private UUID user;
-	private int d1;
-	private int d2;
-	private int d3;
+	private boolean d1;
+	private boolean d2;
+	private boolean d3;
 	
-	public ThrowDiceMessage(UUID user, int d1, int d2, int d3) {
+	public ThrowDiceMessage(UUID user, boolean d1, boolean d2, boolean d3) {
 		this.user = user;
 		this.d1 = d1;
 		this.d2 = d2;

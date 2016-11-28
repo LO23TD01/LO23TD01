@@ -222,7 +222,7 @@ public class ServerDataEngine implements InterfaceDataNetwork {
 		
 	}
 	@Override
-	public int[] hasThrown(UUID uuid, int d1, int d2, int d3) {
+	public int[] hasThrown(UUID uuid, boolean d1, boolean d2, boolean d3) {
 		// TODO Auto-generated method stub
 		return null;
 	}
