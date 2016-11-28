@@ -31,4 +31,5 @@ public interface ComServerInterface {
 	public void hasRefused(UUID user,List<UUID> receivers);
 	public void newUser(List<UUID> receivers, Profile user);
 	public void sendTablesUsers(List<User> userList, List<GameTable> tableList, Profile user);
+	public void playerQuitGame(List<UUID> receivers, UUID user);
 }
