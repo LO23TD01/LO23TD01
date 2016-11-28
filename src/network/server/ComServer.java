@@ -10,6 +10,8 @@ import java.util.UUID;
 import data.GameTable;
 import data.Profile;
 import data.ServerDataEngine;
+import network.messages.HasSelectedMessage;
+import network.messages.IsTurnMessage;
 import network.messages.HasThrownMessage;
 import network.messages.HasAcceptedMessage;
 import network.messages.HasRefusedMessage;
@@ -18,6 +20,10 @@ import network.messages.LogoutUserRequestMessage;
 import network.messages.PlayerQuitGameMessage;
 import network.messages.SendProfileMessage;
 import network.messages.refreshUserListMessage;
+import network.messages.SetSelectionMessage;
+import network.messages.StartTurnMessage;
+import network.messages.UpdateChipsChargeMessage;
+import network.messages.UpdateChipsDechargeMessage;
 import data.User;
 
 import java.net.ServerSocket;
@@ -139,20 +145,34 @@ public class ComServer implements Runnable, ComServerInterface {
 
 	@Override
 	public void sendSelection(List<UUID> receivers, UUID player, boolean d1, boolean d2, boolean d3) {
-		// TODO Auto-generated method stub
+		for (UUID uuid : receivers) {
+			SocketClientHandler handler = connectedClients.get(uuid);
+			if (handler != null)
+				handler.sendMessage(new HasSelectedMessage(player, d1, d2, d3));
+		}
+		
+		SocketClientHandler handler = connectedClients.get(player);
+		if (handler != null)
+			handler.sendMessage(new SetSelectionMessage(d1, d2, d3));
 		
 	}
 
 	@Override
 	public void updateChips(List<UUID> receivers, UUID player, int nb) {
-		// TODO Auto-generated method stub
-		
+		for (UUID uuid : receivers) {
+			SocketClientHandler handler = connectedClients.get(uuid);
+			if (handler != null)
+				handler.sendMessage(new UpdateChipsChargeMessage(player, nb));
+		}
 	}
 
 	@Override
 	public void updateChips(List<UUID> receivers, UUID win, UUID lose, int nb) {
-		// TODO Auto-generated method stub
-		
+		for (UUID uuid : receivers) {
+			SocketClientHandler handler = connectedClients.get(uuid);
+			if (handler != null)
+				handler.sendMessage(new UpdateChipsDechargeMessage(win, lose, nb));
+		}
 	}
 
 	@Override
@@ -163,7 +183,15 @@ public class ComServer implements Runnable, ComServerInterface {
 
 	@Override
 	public void startTurn(List<UUID> receivers, UUID player, boolean isLastLaunch) {
-		// TODO Auto-generated method stub
+		for (UUID uuid : receivers) {
+			SocketClientHandler handler = connectedClients.get(uuid);
+			if (handler != null)
+				handler.sendMessage(new IsTurnMessage(player));
+		}
+		
+		SocketClientHandler handler = connectedClients.get(player);
+		if (handler != null)
+			handler.sendMessage(new StartTurnMessage());
 		
 	}
 
@@ -299,14 +327,4 @@ public class ComServer implements Runnable, ComServerInterface {
 			handler.sendMessage(new refreshUserListMessage(userList));
         
     }
-
-	@Override
-	public void playerQuitGame(List<UUID> receivers, UUID user) {
-		for(UUID receiver : receivers) {
-			SocketClientHandler handler = connectedClients.get(receiver);
-			if (handler != null) {
-				handler.sendMessage(new PlayerQuitGameMessage(user));
-			}
-		}
-	}
 }

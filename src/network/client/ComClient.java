@@ -18,6 +18,7 @@ import network.messages.IMessage;
 import network.messages.LaunchGameMessage;
 import network.messages.LogoutUserRequestMessage;
 import network.messages.ThrowDiceMessage;
+import network.messages.SelectDiceMessage;
 import network.messages.QuitGameMessage;
 import network.messages.RefuseReplayMessage;
 import network.messages.UpdateProfileMessage;
@@ -96,8 +97,7 @@ public class ComClient implements ComClientInterface{
 
 	@Override
 	public void selectDice(UUID user, boolean d1, boolean d2, boolean d3) {
-		// TODO Auto-generated method stub
-		
+		sendMessage(new SelectDiceMessage(user, d1, d2, d3));
 	}
 
 	@Override
