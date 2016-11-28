@@ -16,7 +16,6 @@ public class IHMTable extends Application {
 
 	@Override
 	public void start(Stage stage) throws IOException {
-
 		FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/ihmTable/resources/view/Table.fxml"));
 		Pane root = (Pane) fxmlLoader.load();
 		Scene scene = new Scene(root);
