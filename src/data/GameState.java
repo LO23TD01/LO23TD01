@@ -16,13 +16,15 @@ public class GameState {
 	private List<User> losers;
 	private List<PlayerData> dataTieList;
 	private TurnState turnState;
+	private User winnerGame; //le premier avec des jetons qui n'en a plus
+	private User loserGame; //le dernier avec des jetons.
 
 	
 	
 	
 	public GameState(int chipStack, List<User> playerList, List<PlayerData> dataList, User firstPlayer,
 			User actualPlayer, State state, Rules rules, List<User> winners, List<User> losers,
-			List<PlayerData> dataTieList, TurnState turnState) {
+			List<PlayerData> dataTieList, TurnState turnState, User winnerGame, User loserGame) {
 		super();
 		this.chipStack = chipStack;
 		this.playerList = playerList;
@@ -35,6 +37,8 @@ public class GameState {
 		this.losers = losers;
 		this.dataTieList = dataTieList;
 		this.turnState = turnState;
+		this.winnerGame = winnerGame;
+		this.loserGame = loserGame;
 	}
 
 
@@ -62,6 +66,8 @@ public class GameState {
 		this.losers = null;
 		this.dataTieList = null;
 		this.turnState = TurnState.INIT;
+		this.winnerGame = null;
+		this.loserGame = null;
 	}
 
 	//methode pour faciliter la tache de l'engine
@@ -128,12 +134,20 @@ public class GameState {
 				
 		}
 	
-		//TODO
 		//remets à null et à 0 les valeurs de lancer de dés, winner,loser , etc ...
 		//mets le player actuel et first player à la bonne valeur
 		public void nextTurn(User firstPlayer)
 		{
-			//TODO
+			List<PlayerData> newList = new ArrayList<PlayerData>();
+			for(PlayerData pd : this.dataList)
+				newList.add(new PlayerData(pd,true));
+			this.dataList = newList;
+			this.firstPlayer = firstPlayer;
+			this.actualPlayer = firstPlayer;
+			this.winners = null;
+			this.losers = null;
+			this.dataTieList = null;
+			this.turnState = TurnState.INIT;
 		}
 	
 	/*
@@ -159,18 +173,46 @@ public class GameState {
 		}
 	}
 
-	//TODO
 	/*
-	 * //TODO
 	 * Permet de rÃ©cupÃ©rer le joueur suivant dans la suite. Renvoit le premier
 	 * joueur dans la liste si on est arrivÃ© Ã  la fin.
+	 * S'adapte au type de tour et à la pahse du tour.
 	 */
 	public User getNextPlayer() {
-		//TODO
-		//Il doit donner les resultats suivant la phase du tour dans lequel il est.
-		//Actuellement les Tie ne sont pas codés
-		int nextIndex = (playerList.indexOf(this.actualPlayer) + 1) % playerList.size();
-		return playerList.get(nextIndex);
+		int nextIndex;
+		if (this.turnState ==  TurnState.WINNER_TIE_ROUND)
+		{
+			nextIndex  = this.winners.indexOf(this.actualPlayer); //-1 si pas trouvé
+			nextIndex = (nextIndex + 1) % this.winners.size();
+			return this.winners.get(nextIndex);
+		}	
+		else if(this.turnState == TurnState.LOSER_TIE_ROUND){
+			nextIndex  = this.losers.indexOf(this.actualPlayer); //-1 si pas trouvé
+			nextIndex = (nextIndex + 1) % this.losers.size();
+			return this.losers.get(nextIndex);
+		}
+		else{
+			switch(this.state)
+			{
+			case PRESTART:
+			case SELECTION:
+			case CHARGING: //tous les 3 les mêmes
+				nextIndex = (this.playerList.indexOf(this.actualPlayer) + 1) % this.playerList.size();
+				return playerList.get(nextIndex);
+			case DISCHARGING:
+				nextIndex = (this.playerList.indexOf(this.actualPlayer) + 1) % this.playerList.size();
+				while(this.getData(this.playerList.get(nextIndex), false).getChip()!=0)
+					nextIndex = (nextIndex + 1) % this.playerList.size();
+				return this.playerList.get(nextIndex);
+			case END:
+				//TOREVIEW envoyer exception ? ca devrait pas être ici
+				default:
+					//TOREVIEW envoyer exception ? ca devrait pas être ici
+					nextIndex = (this.playerList.indexOf(this.actualPlayer) + 1) % this.playerList.size();
+					return this.playerList.get(nextIndex);
+			}
+		
+		}
 	}
 	
 	
@@ -346,81 +388,25 @@ public class GameState {
 	}
 
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see java.lang.Object#hashCode()
-	 */
-	@Override
-	public int hashCode() {
-		final int prime = 31;
-		int result = 1;
-		result = prime * result + ((actualPlayer == null) ? 0 : actualPlayer.hashCode());
-		result = prime * result + chipStack;
-		result = prime * result + ((dataList == null) ? 0 : dataList.hashCode());
-		result = prime * result + ((firstPlayer == null) ? 0 : firstPlayer.hashCode());
-		result = prime * result + ((playerList == null) ? 0 : playerList.hashCode());
-		result = prime * result + ((rules == null) ? 0 : rules.hashCode());
-		result = prime * result + ((state == null) ? 0 : state.hashCode());
-		return result;
+	public User getWinnerGame() {
+		return winnerGame;
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see java.lang.Object#equals(java.lang.Object)
-	 */
-	@Override
-	public boolean equals(Object obj) {
-		if (this == obj)
-			return true;
-		if (obj == null)
-			return false;
-		if (getClass() != obj.getClass())
-			return false;
-		GameState other = (GameState) obj;
-		if (actualPlayer == null) {
-			if (other.actualPlayer != null)
-				return false;
-		} else if (!actualPlayer.equals(other.actualPlayer))
-			return false;
-		if (chipStack != other.chipStack)
-			return false;
-		if (dataList == null) {
-			if (other.dataList != null)
-				return false;
-		} else if (!dataList.equals(other.dataList))
-			return false;
-		if (firstPlayer == null) {
-			if (other.firstPlayer != null)
-				return false;
-		} else if (!firstPlayer.equals(other.firstPlayer))
-			return false;
-		if (playerList == null) {
-			if (other.playerList != null)
-				return false;
-		} else if (!playerList.equals(other.playerList))
-			return false;
-		if (rules == null) {
-			if (other.rules != null)
-				return false;
-		} else if (!rules.equals(other.rules))
-			return false;
-		if (state != other.state)
-			return false;
-		return true;
+
+	public void setWinnerGame(User winnerGame) {
+		this.winnerGame = winnerGame;
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see java.lang.Object#toString()
-	 */
-	@Override
-	public String toString() {
-		return "GameState [chipStack=" + chipStack + ", playerList=" + playerList + ", dataList=" + dataList
-				+ ", firstPlayer=" + firstPlayer + ", actualPlayer=" + actualPlayer + ", state=" + state + ", rules="
-				+ rules + "]";
+
+	public User getLoserGame() {
+		return loserGame;
 	}
+
+
+	public void setLoserGame(User loserGame) {
+		this.loserGame = loserGame;
+	}
+
+	
 
 }

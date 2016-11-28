@@ -45,11 +45,12 @@ public class ServerDataEngine implements InterfaceDataNetwork {
 	private void startLaunchTimer(GameTable table) //Edit : ajout de la GameTable. Il faut savoir quelle table lancer ...
 	{
 		GameTable tableFull = table.getSame(this.tableList);
+
 		//		if(tableFull==null)
-		//			throw new Exception("La table n'existe pas. Il faut que la table existe pour s'y connecter.");
-		tableFull.initializeGame();
+		//			throw new Exception("La table n'existe pas. Il faut que la table existe pour lancer la partie.");
 
 		this.selectFirstPlayer(tableFull);
+		this.comServer.showTimer(getUuidList(table.getAllList()));
 	}
 
 	public boolean closeTable (GameTable table){
@@ -57,9 +58,10 @@ public class ServerDataEngine implements InterfaceDataNetwork {
 		return false;
 	}
 
+	//Deprecated : Executé dans le GameEngine, ne jamais apeller
 	private void selectFirstPlayer(GameTable table) //Edit : ajout de la GameTable. Il faut savoir quelle table lancer ...
 	{
-		this.comServer.showTimer(getUuidList(table.getAllList()));
+		//throw new Exception("Deprecated function");
 	}
 
 	public void connect (User user){
@@ -196,6 +198,12 @@ public class ServerDataEngine implements InterfaceDataNetwork {
 		//			throw new Exception("L'utilisateur n'a rejoint aucune table. Il faut être assit à une table pour lancer une partie.")
 		//		else if(!userFull.getActualTable().getCreator().isSame(user))
 		//			throw new Exception("L'utilisateur n'est pas le createur de sa partie. Il faut être le createur pour lancer une partie.");
+		GameTable tableFull = userFull.getActualTable().getSame(this.tableList);
+		//		if(tableFull==null)
+		//			throw new Exception("La table n'existe pas. Il faut que la table existe pour s'y connecter.");
+		tableFull.initializeGame();
+		this.startLaunchTimer(userFull.getActualTable());
+		gameEngine(tableFull,false);
 
 	}
 	@Override
@@ -229,6 +237,17 @@ public class ServerDataEngine implements InterfaceDataNetwork {
 		PlayerData pData = new PlayerData(tableFull.getGameState().getData(userFull,tie));
 		boolean isFirstRoll = (pData.getRerollCount()==0);
 		boolean isStop = !(d1 || d2 || d3);
+		boolean canReroll = tableFull.getGameState().getRules().canReroll(tableFull.getGameState().getDataList(), userFull, tableFull.getGameState().getFirstPlayer());
+		boolean hasToReroll = tableFull.getGameState().getRules().hasToReroll(tableFull.getGameState().getDataList(), userFull, tableFull.getGameState().getFirstPlayer());
+//		if(!canReroll && !isFirstRoll)
+//		{
+//			throw new Exception("Le joueur ne peux pas rejouer. Il doit pouvoir rejouer pour rejouer.");
+//		}
+//		if(hasToReroll && isStop)
+//		{
+//			throw new Exception("Le joueur ne peux pas s'arreter. Il est obligé de rejouer.");
+//		}
+		
 		if (isFirstRoll || !isStop)
 		{
 			int r1,r2,r3;
@@ -303,7 +322,8 @@ public class ServerDataEngine implements InterfaceDataNetwork {
 	private void gameEngine(GameTable table, boolean isStop)
 	{
 		GameTable tableFull = table.getSame(this.tableList);
-		//exception et patatra
+//		if(tableFull == null)
+//			throw new Exception("La table n'existe pas. La table doit exister pour jouer dessus.");
 		
 		//detecte la phase
 		switch (tableFull.getGameState().getState())
@@ -339,7 +359,7 @@ public class ServerDataEngine implements InterfaceDataNetwork {
 				gameEngine(tableFull,false);
 				break;	
 			default:
-				//TODO trhow exception
+				//throw new Exception("Etat incohérent. Le système ne devrait être dans cet état");
 				break;
 				
 			}	
@@ -375,10 +395,10 @@ public class ServerDataEngine implements InterfaceDataNetwork {
 				if(tableFull.getGameState().getChipStack()==0)	//on passe à la decharge
 				{
 					tableFull.getGameState().setState(State.DISCHARGING);
-					//si qqun gagne sec
+					//si qqun perd sec
 					if(tableFull.getGameState().getDataList().stream()
-							.filter(d->d.getChip()==0)
-							.count()>0) 
+							.filter(d->d.getChip()!=0)
+							.count()==1) 
 						tableFull.getGameState().setState(State.END); 
 					
 				}
@@ -387,7 +407,7 @@ public class ServerDataEngine implements InterfaceDataNetwork {
 				
 				break;
 			default:
-				//TODO trhow exception
+				//throw new Exception("Etat incohérent. Le système ne devrait être dans cet état");
 				break;
 				
 			}
@@ -419,13 +439,21 @@ public class ServerDataEngine implements InterfaceDataNetwork {
 				tableFull.getGameState().replaceData(pDataL);
 				this.comServer.updateChips(getUuidList(tableFull.getAllList()), pDataW.getPlayer().getPublicData().getUuid(), pDataL.getPlayer().getPublicData().getUuid(),value);
 				
-				if(pDataW.getChip()==0)	//on passe à la fin //TOREVIEW ou pas ?
-					tableFull.getGameState().setState(State.END);
+				if(pDataW.getChip()==0)	
+				{
+					if(tableFull.getGameState().getWinnerGame()==null)
+						tableFull.getGameState().setWinnerGame(pDataW.getPlayer());
+					
+					if(tableFull.getGameState().getDataList().stream()
+							.filter(d->d.getChip()!=0)
+							.count()==1) 
+						tableFull.getGameState().setState(State.END);
+				}
 				tableFull.getGameState().nextTurn(pDataL.getPlayer());
 				gameEngine(tableFull,false);
 				break;	
 			default:
-				//TODO trhow exception
+				//throw new Exception("Etat incohérent. Le système ne devrait être dans cet état");
 				break;
 				
 			}
@@ -433,17 +461,22 @@ public class ServerDataEngine implements InterfaceDataNetwork {
 
 		case END:
 			//fin partie
-			//TOREVIEW un gagnant ? plusieurs gagnants ? etc (pleins de questions)
-			PlayerData pDataWinner = tableFull.getGameState().getDataList().stream()
-					.filter(d->d.getChip()==0)
+
+			if(tableFull.getGameState().getWinnerGame()!=null)
+				this.comServer.hasWon(getUuidList(tableFull.getAllList()),tableFull.getGameState().getWinnerGame().getPublicData().getUuid() );
+			else
+				this.comServer.hasWon(getUuidList(tableFull.getAllList()),null);
+			
+			PlayerData pDataLoser = tableFull.getGameState().getDataList().stream()
+					.filter(d->d.getChip()!=0)
 					.findFirst()
 					.get();
-			this.comServer.hasWon(getUuidList(tableFull.getAllList()), pDataWinner.getPlayer().getPublicData().getUuid());
-			
+			//TODO : coder hasLost
+			//this.comServer.hasLost(getUuidList(tableFull.getAllList()),pDataLoser.getPlayer().getPublicData().getUuid());
 			break;
 			
 			default:
-				//exception
+				//throw new Exception("Etat incohérent. Le système ne devrait être dans cet état");
 				break;
 		}
 	}
@@ -493,7 +526,7 @@ public class ServerDataEngine implements InterfaceDataNetwork {
 	}
 	
 	//Game engine factorisation :
-	//pour aller plus vite, étant donnée ces fonctions privées, on envoie une tableFull necessairement
+	//pour aller plus vite, étant donné ces fonctions privées, on envoie une tableFull necessairement
 	
 	private void initTurnRoutine(GameTable tableFull, boolean isSec, boolean isStop)
 	{
@@ -505,8 +538,11 @@ public class ServerDataEngine implements InterfaceDataNetwork {
 		}
 		else
 		{
+			boolean canReroll = tableFull.getGameState().getRules().canReroll(tableFull.getGameState().getDataList(), tableFull.getGameState().getActualPlayer(), tableFull.getGameState().getFirstPlayer());
+			boolean hasToReroll = tableFull.getGameState().getRules().hasToReroll(tableFull.getGameState().getDataList(), tableFull.getGameState().getActualPlayer(), tableFull.getGameState().getFirstPlayer());
+			
 			if (!(tableFull.getGameState().getData(tableFull.getGameState().getActualPlayer(), false).getRerollCount()==0) // si il a déjà commencé
-					&& (isStop || tableFull.getGameState().getData(tableFull.getGameState().getActualPlayer(), false).getRerollCount()==3)) // et qu'il veut ou doit arreter
+					&& ((isStop && !hasToReroll) || !canReroll)) // et qu'il veut ou doit arreter
 			{
 				// on change le joueur et l'état
 				tableFull.getGameState().setActualPlayer(tableFull.getGameState().getNextPlayer());
@@ -537,8 +573,11 @@ public class ServerDataEngine implements InterfaceDataNetwork {
 		}
 		else
 		{
+			boolean canReroll = tableFull.getGameState().getRules().canReroll(tableFull.getGameState().getDataList(), tableFull.getGameState().getActualPlayer(), tableFull.getGameState().getFirstPlayer());
+			boolean hasToReroll = tableFull.getGameState().getRules().hasToReroll(tableFull.getGameState().getDataList(), tableFull.getGameState().getActualPlayer(), tableFull.getGameState().getFirstPlayer());
+			
 			if (!(tableFull.getGameState().getData(tableFull.getGameState().getActualPlayer(), false).getRerollCount()==0) // si il a déjà commencé
-					&& (isStop || tableFull.getGameState().getData(tableFull.getGameState().getActualPlayer(), false).getRerollCount()==3)) // et qu'il veut ou doit arreter
+					&& ((isStop && !hasToReroll) || !canReroll)) // et qu'il veut ou doit arreter
 			{
 				if(tableFull.getGameState().getDataList().stream()
 						.filter(d->d.getRerollCount()!=0)
