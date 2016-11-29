@@ -242,27 +242,27 @@ public class ComServer implements Runnable, ComServerInterface {
 	}
 
 	@Override
-	public void newPlayerOnTable(List<UUID> receivers, Profile user, UUID tableID) {
+	public void newPlayerOnTable(List<UUID> receivers, Profile user, GameTable tableInfo) {
         for(UUID receiver : receivers) {
-            SocketClientHandler handler = connectedClients.get(receivers);
+            SocketClientHandler handler = connectedClients.get(receiver);
             if (handler != null) {
                 handler.sendMessage(new NewPlayerOnTableMessage(user));
             }
         }
         SocketClientHandler handler = connectedClients.get(user.getUuid());
-        handler.sendMessage(new UpdateTableInfoMessage(tableID));
+        handler.sendMessage(new UpdateTableInfoMessage(tableInfo));
 	}
 
 	@Override
-	public void newSpectatorOnTable(List<UUID> receivers, Profile user, UUID tableID) {
+	public void newSpectatorOnTable(List<UUID> receivers, Profile user, GameTable tableInfo) {
 	    for(UUID receiver : receivers) {
-            SocketClientHandler handler = connectedClients.get(receivers);
+            SocketClientHandler handler = connectedClients.get(receiver);
             if (handler != null) {
                 handler.sendMessage(new NewSpectatorOnTableMessage(user));
             }
         }
 	    SocketClientHandler handler = connectedClients.get(user.getUuid());
-        handler.sendMessage(new UpdateTableInfoMessage(tableID));
+        handler.sendMessage(new UpdateTableInfoMessage(tableInfo));
 	}
 
 	@Override

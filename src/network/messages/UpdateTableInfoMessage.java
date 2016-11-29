@@ -1,16 +1,16 @@
 package network.messages;
 
-import java.util.UUID;
 import data.ClientDataEngine;
 import data.ServerDataEngine;
+import data.GameTable;
 
 public class UpdateTableInfoMessage implements IMessage {
 
     private static final long serialVersionUID = 3379374689137731613L;
-    private UUID tableID;
+    private GameTable tableInfo;
 
-    public UpdateTableInfoMessage(UUID tableID) {
-        this.tableID = tableID;
+    public UpdateTableInfoMessage(GameTable tableInfo) {
+        this.tableInfo = tableInfo;
     }
 
     @Override
