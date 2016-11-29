@@ -22,6 +22,7 @@ import network.messages.SelectDiceMessage;
 import network.messages.QuitGameMessage;
 import network.messages.RefuseReplayMessage;
 import network.messages.UpdateProfileMessage;
+import network.messages.AskJoinTableMessage;
 import network.messages.askRefreshUserListMessage;
 
 public class ComClient implements ComClientInterface{
@@ -134,8 +135,7 @@ public class ComClient implements ComClientInterface{
 
 	@Override
 	public void askJoinTable(UUID user, UUID tableId, boolean asPlayer) {
-		// TODO Auto-generated method stub
-		
+		sendMessage(new AskJoinTableMessage(user, tableId, asPlayer));
 	}
 
 	@Override

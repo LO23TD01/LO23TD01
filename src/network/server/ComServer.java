@@ -27,6 +27,9 @@ import network.messages.StartTurnMessage;
 import network.messages.UpdateChipsChargeMessage;
 import network.messages.UpdateChipsDechargeMessage;
 import data.User;
+import network.messages.NewPlayerOnTableMessage;
+import network.messages.NewSpectatorOnTableMessage;
+import network.messages.UpdateTableInfoMessage;
 
 import java.net.ServerSocket;
 
@@ -240,14 +243,26 @@ public class ComServer implements Runnable, ComServerInterface {
 
 	@Override
 	public void newPlayerOnTable(List<UUID> receivers, Profile user, UUID tableID) {
-		// TODO Auto-generated method stub
-		
+        for(UUID receiver : receivers) {
+            SocketClientHandler handler = connectedClients.get(receivers);
+            if (handler != null) {
+                handler.sendMessage(new NewPlayerOnTableMessage(user));
+            }
+        }
+        SocketClientHandler handler = connectedClients.get(user.getUuid());
+        handler.sendMessage(new UpdateTableInfoMessage(tableID));
 	}
 
 	@Override
 	public void newSpectatorOnTable(List<UUID> receivers, Profile user, UUID tableID) {
-		// TODO Auto-generated method stub
-		
+	    for(UUID receiver : receivers) {
+            SocketClientHandler handler = connectedClients.get(receivers);
+            if (handler != null) {
+                handler.sendMessage(new NewSpectatorOnTableMessage(user));
+            }
+        }
+	    SocketClientHandler handler = connectedClients.get(user.getUuid());
+        handler.sendMessage(new UpdateTableInfoMessage(tableID));
 	}
 
 	@Override
@@ -255,6 +270,7 @@ public class ComServer implements Runnable, ComServerInterface {
 		for(UUID receiver : receivers) {
 			SocketClientHandler handler = connectedClients.get(receiver);
 			if (handler != null) {
+				// Il faut pouvoir spécifier à qui on envoie ?
 				handler.sendMessage(new HasAcceptedMessage(user));
 			}
 		}
@@ -265,6 +281,7 @@ public class ComServer implements Runnable, ComServerInterface {
 		for(UUID receiver : receivers) {
 			SocketClientHandler handler = connectedClients.get(receiver);
 			if (handler != null) {
+				// Il faut pouvoir spécifier à qui on envoie ?
 				handler.sendMessage(new HasRefusedMessage(user));
 			}
 		}
