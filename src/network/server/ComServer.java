@@ -17,6 +17,9 @@ import network.messages.LogoutUserRequestMessage;
 import network.messages.PlayerQuitGameMessage;
 import network.messages.SendProfileMessage;
 import network.messages.HasThrownMessage;
+import network.messages.NewPlayerOnTableMessage;
+import network.messages.NewSpectatorOnTableMessage;
+import network.messages.UpdateTableInfoMessage;
 import data.User;
 
 import java.net.ServerSocket;
@@ -28,25 +31,25 @@ public class ComServer implements Runnable, ComServerInterface {
 	private boolean			isStopped    = false;
 	private static			HashMap<String, SocketClientHandler> connectedClients = new HashMap<String, SocketClientHandler>();
 	private ServerDataEngine dataEngine;
-	
+
 	/*
-	 * 
+	 *
 	 * Constructor
-	 * 
+	 *
 	 */
-	
+
 	public ComServer(int serverPort) {
 		this.serverPort = serverPort;
 		this.serverSocket = startServer();
 		this.dataEngine = null;
 	}
-	
+
 	/*
-	 * 
+	 *
 	 * Methods
-	 * 
+	 *
 	 */
-	
+
 	public ServerSocket startServer() {
 
 	    try {
@@ -62,25 +65,25 @@ public class ComServer implements Runnable, ComServerInterface {
 	    }
 	    return null;
 	}
-	
+
 	public void replaceWithUUID (String adresse, UUID uuid){
 		connectedClients.put(uuid.toString(), connectedClients.get(adresse));
 		connectedClients.remove(adresse);
 	}
-	
+
 	/*
 	//Used to test client/server communication
 	public void sendMessage(int num, IMessage message){
 		//TO-DO : Changer ipAdress par UUID quand ils seront gérés par DATA
-		
+
 		SocketClientHandler client = connectedClients.get(num);
-		
+
 		if(client != null)
 			client.sendMessage(message);
 	}*/
-	
+
 	/*
-	 * 
+	 *
 	 * Overridden methods
 	 * 	(Runnable)
 	 */
@@ -91,9 +94,9 @@ public class ComServer implements Runnable, ComServerInterface {
 	        Socket clientSocket = null;
 	        try {
 	            clientSocket = this.serverSocket.accept();
-	            
+
 	            System.out.println("Nouveau client connecté");
-	            
+
 	        } catch (IOException e) {
 	            if(isStopped()) {
 	                System.out.println("Server Stopped.") ;
@@ -101,23 +104,23 @@ public class ComServer implements Runnable, ComServerInterface {
 	            }
 	            e.printStackTrace();
 	        }
-	        
+
 	        	SocketClientHandler client = new SocketClientHandler(clientSocket, this);
 	        	new Thread(client).start();
 	            connectedClients.put(clientSocket.getInetAddress().toString(), client);
-	            
+
 	            //Used to test client/server communication on local
 	        	//connectedClients.put(i, client);
 	        	//i++;
 	    }
 	}
-	
+
 	/*
-	 * 
+	 *
 	 * Overridden methods
 	 * 	(ComServerInterface)
 	 */
-	
+
 	@Override
 	public void sendResult(List<UUID> receivers, int r1, int r2, int r3) {
 		SocketClientHandler handler;
@@ -127,49 +130,49 @@ public class ComServer implements Runnable, ComServerInterface {
 				handler.sendMessage(new HasThrownMessage(receiver, r1, r2, r3));
 			}
 		}
-		
+
 	}
 
 	@Override
 	public void sendMessage(List<UUID> receivers, String senderLogin, String msg) {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	@Override
 	public void sendSelection(List<UUID> receivers, UUID player, boolean d1, boolean d2, boolean d3) {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	@Override
 	public void updateChips(List<UUID> receivers, UUID player, int nb) {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	@Override
 	public void updateChips(List<UUID> receivers, UUID win, UUID lose, int nb) {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	@Override
 	public void hasWon(List<UUID> receivers, UUID winner) {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	@Override
 	public void startTurn(List<UUID> receivers, UUID player, boolean isLastLaunch) {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	@Override
 	public void sendProfileUpdate(List<UUID> receivers, UUID userUpdated, Profile data) {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	@Override
@@ -181,7 +184,7 @@ public class ComServer implements Runnable, ComServerInterface {
 
 	@Override
 	public void kick(List<UUID> receivers, String msg) {
-		for(UUID receiver : receivers) {		
+		for(UUID receiver : receivers) {
 			SocketClientHandler handler = connectedClients.get(receivers);
 			if (handler != null) {
 				// Il faut pouvoir spécifier à qui on envoie ?
@@ -193,31 +196,43 @@ public class ComServer implements Runnable, ComServerInterface {
 	@Override
 	public void askStopGameEveryUser(List<UUID> receivers) {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	@Override
 	public void stopGameAccepted(List<UUID> receivers) {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	@Override
 	public void raiseException(UUID user, String msg) {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	@Override
 	public void newPlayerOnTable(List<UUID> receivers, Profile user, UUID tableID) {
-		// TODO Auto-generated method stub
-		
+        for(UUID receiver : receivers) {
+            SocketClientHandler handler = connectedClients.get(receivers);
+            if (handler != null) {
+                handler.sendMessage(new NewPlayerOnTableMessage(user));
+            }
+        }
+        SocketClientHandler handler = connectedClients.get(user.getUuid());
+        handler.sendMessage(new UpdateTableInfoMessage(tableID));
 	}
 
 	@Override
 	public void newSpectatorOnTable(List<UUID> receivers, Profile user, UUID tableID) {
-		// TODO Auto-generated method stub
-		
+	    for(UUID receiver : receivers) {
+            SocketClientHandler handler = connectedClients.get(receivers);
+            if (handler != null) {
+                handler.sendMessage(new NewSpectatorOnTableMessage(user));
+            }
+        }
+	    SocketClientHandler handler = connectedClients.get(user.getUuid());
+        handler.sendMessage(new UpdateTableInfoMessage(tableID));
 	}
 
 	@Override
@@ -245,15 +260,15 @@ public class ComServer implements Runnable, ComServerInterface {
 	@Override
 	public void newUser(List<UUID> receivers, Profile user) {
 		// TODO Auto-generated method stub
-		
+
 	}
-	
+
 	/*
-	 * 
+	 *
 	 * Getters & setters
-	 * 
+	 *
 	 */
-	
+
 	public ServerDataEngine getDataEngine() {
 		return dataEngine;
 	}
@@ -261,11 +276,11 @@ public class ComServer implements Runnable, ComServerInterface {
 	public void setDataEngine(ServerDataEngine dataEngine) {
 		this.dataEngine = dataEngine;
 	}
-	
+
 	public synchronized boolean isStopped() {
 		return isStopped;
 	}
-	
+
 	public synchronized void stop(){
         this.isStopped = true;
         try {
@@ -273,12 +288,12 @@ public class ComServer implements Runnable, ComServerInterface {
         } catch (IOException e) {
             throw new RuntimeException("Error closing server", e);
         }
-        
+
     }
 	@Override
 	public void sendTablesUsers(List<User> userList, List<GameTable> tableList, Profile user) {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 
@@ -291,12 +306,12 @@ public class ComServer implements Runnable, ComServerInterface {
 	@Override
 	public void showTimer(List<UUID> receivers) {
 		// TODO Auto-generated method stub
-		
+
 	}
 
     @Override
     public void refreshUserList(UUID user, List<User> userList) {
         // TODO Auto-generated method stub
-        
+
     }
 }
