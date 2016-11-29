@@ -19,7 +19,7 @@
 <?import javafx.scene.layout.GridPane?>
 <?import javafx.scene.layout.RowConstraints?>
 
-<AnchorPane xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="IHM_MAIN.src.view.PersonController">
+<AnchorPane xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="IHM_MAIN.src.controller.PersonController">
    <children>
       <AnchorPane prefHeight="400.0" prefWidth="600.0">
          <children>
@@ -44,7 +44,7 @@
                               <Image url="@../../../../../ressources/images/user_picture.png" />
                            </image>
                         </ImageView>
-                        <Button mnemonicParsing="false" prefHeight="25.0" prefWidth="103.0" text="Choisir Photo" GridPane.columnIndex="1">
+                        <Button mnemonicParsing="false" onAction="#handleChangePhoto" prefHeight="25.0" prefWidth="103.0" text="Choisir Photo" GridPane.columnIndex="1">
                            <GridPane.margin>
                               <Insets left="20.0" right="10.0" />
                            </GridPane.margin>

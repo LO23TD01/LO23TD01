@@ -12,7 +12,7 @@ import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 
 import java.io.IOException;
-<<<<<<< HEAD
+
 import java.util.concurrent.Callable;
 
 import javafx.application.Application;
@@ -40,12 +40,15 @@ import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import IHM_MAIN.src.controller.PersonController;
 
 public class MainApp extends Application {
 	Scene scene;
-		
+	private Stage primaryStage;
+
+
 	@Override
-	public void start(Stage primaryStage) {	
+	public void start(Stage primaryStage) {
 		GridPane grid = new GridPane();
 		grid.setAlignment(Pos.CENTER);
 		grid.setMinWidth(380);
@@ -55,10 +58,10 @@ public class MainApp extends Application {
 		grid.setPadding(new Insets(25, 25, 25, 25));
 		//grid.setGridLinesVisible(true);
 		ImageView logo = new ImageView(new Image("http://img1.wikia.nocookie.net/__cb20121230054000/logopedia/images/6/66/NASA_logo.svg.png", 100, 100, true, true));
-				
+
 		Text scenetitle = new Text("Connexion");
 		scenetitle.setFont(Font.font("Tahoma", FontWeight.NORMAL, 20));
-		
+
 		Label userName = new Label("Identifiant:");
 		TextField userTextField = new TextField();
 
@@ -67,20 +70,20 @@ public class MainApp extends Application {
 
 		Label serverName = new Label("Adresse du serveur:");
 		TextField serverTextField = new TextField();
-		
+
 		Button connectionBtn = new Button("Connexion");
 		Button registerBtn = new Button("Inscription");
 		Button editBtn = new Button("Editer Profil");
 		Button tableCreationBtn = new Button("Créer une Table");
-		
+
 		HBox hbBtn = new HBox();
 		hbBtn.setAlignment(Pos.BOTTOM_RIGHT);
 		hbBtn.getChildren().add(connectionBtn);
-		
+
 		HBox hbBtn2 = new HBox();
 		hbBtn2.setAlignment(Pos.BOTTOM_RIGHT);
 		hbBtn2.getChildren().add(registerBtn);
-		
+
 		HBox hbLogo = new HBox();
 		hbLogo.setAlignment(Pos.CENTER);
 		hbLogo.getChildren().add(logo);
@@ -88,7 +91,7 @@ public class MainApp extends Application {
 		HBox hbBtn3 = new HBox();
 		hbBtn3.setAlignment(Pos.BOTTOM_RIGHT);
 		hbBtn3.getChildren().add(editBtn);
-		
+
 		HBox hbBtn4 = new HBox();
 		hbBtn4.setAlignment(Pos.BOTTOM_RIGHT);
 		hbBtn4.getChildren().add(tableCreationBtn);
@@ -105,11 +108,11 @@ public class MainApp extends Application {
 		grid.add(hbBtn2, 1, 5);
 		grid.add(hbBtn3, 1, 6);
 		grid.add(hbBtn4, 1, 8);
-		
+
 		scene = new Scene(grid, 380, 400);
 		primaryStage.setScene(scene);
 	    primaryStage.setResizable(false);
-	    
+
 	    connectionBtn.setOnAction(e -> {
 			try {
 				connectionHandler(e);
@@ -122,29 +125,9 @@ public class MainApp extends Application {
 	    editBtn.setOnAction(e -> editHandler(e));
 
 	    primaryStage.show();
-=======
 
-import IHM_MAIN.src.view.PersonController;
-
-public class MainApp extends Application {
-
-	private Stage primaryStage;
-
-
-	@Override
-	public void start(Stage stage) throws Exception {
-	FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("./view/ihmmain.fxml"));
-
-	BorderPane root = (BorderPane) fxmlLoader.load();
-	Scene scene = new Scene(root, 780, 500);
-
-	stage.setTitle("Main");
-	stage.setScene(scene);
-	this.primaryStage=stage;
-	stage.show();
->>>>>>> [IHM_LOBBY]alamrous : Integration edition profil + recuperations info du XML
 	}
-	
+
 	private void openMain(){
 		try {
 			FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("./view/ihmmain.fxml"));
@@ -158,13 +141,12 @@ public class MainApp extends Application {
 			Stage this_window = (Stage)scene.getWindow();
 			this_window.close();
 
-<<<<<<< HEAD
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}
-	
+
 	private void connectionHandler(ActionEvent e) throws InterruptedException{
 			Waiting t = new Waiting(((Node) e.getSource()).getScene().getWindow());
 			DataConnection data = new DataConnection(t);
@@ -191,22 +173,21 @@ public class MainApp extends Application {
 			e.printStackTrace();
 		}
 	}
-	
 	private void registerHandler(ActionEvent e){
 		//Alert alert = new Alert(AlertType.INFORMATION, "Signal sent to data, preparing next window");
 		//alert.showAndWait();
 		openRegister();
 	}
-	
+
 	private void editHandler(ActionEvent e){
 		Alert alert = new Alert(AlertType.INFORMATION, "Open Edit Profile Window");
 		alert.showAndWait();
 	}
-	
-	
+
+
 	private class DataConnection extends Thread{
 		Waiting waitingWindow;
-		
+
 		public void run(){
 			try {
 				for(int i=0;i<5;i++){
@@ -223,16 +204,11 @@ public class MainApp extends Application {
 			waitingWindow = t;
 		}
 	}
-	
-	public static void main(String[] args) {
-		launch(args);
-	}
-}
-=======
 
 	public static void main(String[] args) {
 		launch(args);
 	}
+
 	public boolean EditProfile(User user){
 		try{
 			FXMLLoader loader = new FXMLLoader();
@@ -266,4 +242,3 @@ public class MainApp extends Application {
 	}
 
 }
->>>>>>> [IHM_LOBBY]alamrous : Integration edition profil + recuperations info du XML

@@ -1,7 +1,8 @@
-package IHM_MAIN.src.view;
+package IHM_MAIN.src.controller;
 
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
+import javafx.embed.swing.SwingFXUtils;
 import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Label;
@@ -13,9 +14,12 @@ import jdk.internal.org.xml.sax.SAXException;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.image.Image;
 
+import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 
+import javax.imageio.ImageIO;
+import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.Unmarshaller;
@@ -220,6 +224,32 @@ System.out.print(wonField);
 	            dialogStage.close();
 
 	        }
+	    @FXML
+	    public void handleChangePhoto(){
+	    	 FileChooser fileChooser = new FileChooser();
+
+	            //Set extension filter
+	            FileChooser.ExtensionFilter extFilterJPG = new FileChooser.ExtensionFilter("JPG files (*.jpg)", "*.JPG");
+	            FileChooser.ExtensionFilter extFilterPNG = new FileChooser.ExtensionFilter("PNG files (*.png)", "*.PNG");
+	            fileChooser.getExtensionFilters().addAll(extFilterJPG, extFilterPNG);
+
+	            //Show open file dialog
+	            File file = fileChooser.showOpenDialog(null);
+
+	            try {
+
+	                BufferedImage bufferedImage = ImageIO.read(file);
+	                Image image = SwingFXUtils.toFXImage(bufferedImage, null);
+	                imgField.setImage(image);
+	            } catch (IOException ex) {
+	            	   Alert alert = new Alert(AlertType.ERROR);
+	   	            alert.setTitle("Error");
+	   	            alert.setHeaderText("Could not load image");
+	   	            alert.setContentText("Could not load image");
+
+	   	            alert.showAndWait();
+	            }
+	    }
 
 
 	    public void setDialogStage(Stage dialogStage) {

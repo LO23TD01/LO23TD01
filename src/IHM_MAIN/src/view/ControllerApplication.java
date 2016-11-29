@@ -21,6 +21,7 @@ import java.io.File;
 import java.io.IOException;
 
 import IHM_MAIN.src.MainApp;
+import IHM_MAIN.src.controller.PersonController;
 import IHM_MAIN.src.model.Game;
 import IHM_MAIN.src.model.ModelApplication;
 import data.Profile;
