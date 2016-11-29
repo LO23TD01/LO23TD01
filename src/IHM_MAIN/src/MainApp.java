@@ -156,7 +156,7 @@ public class MainApp extends Application {
 			t.showAndWait();
 			openMain();
 	}
-	
+
 	private void openRegister(){
 		try {
 			FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("./view/registerWindow.fxml"));
@@ -175,6 +175,7 @@ public class MainApp extends Application {
 			e.printStackTrace();
 		}
 	}
+
 	private void registerHandler(ActionEvent e){
 		//Alert alert = new Alert(AlertType.INFORMATION, "Signal sent to data, preparing next window");
 		//alert.showAndWait();
@@ -213,6 +214,7 @@ public class MainApp extends Application {
 		        er.printStackTrace();
 		        return false;
 		    }
+
 	}
 
 
