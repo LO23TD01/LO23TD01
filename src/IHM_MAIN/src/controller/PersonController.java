@@ -192,11 +192,6 @@ System.out.print(wonField);
 		        	        setTagValue("firstName",eElement,profil.getFirstName());
 		        	        setTagValue("age",eElement,Integer.toString(profil.getAge()));
 
-
-
-
-
-
 		        	     }
 		        	     }
 		        		// write the content into xml file
