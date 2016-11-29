@@ -1,13 +1,16 @@
 package IHM_MAIN.src;
 
 import javafx.application.Application;
+import javafx.application.Platform;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
+import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.BorderPane;
 import javafx.stage.Stage;
-
+import javafx.stage.StageStyle;
 
 import java.io.IOException;
+import java.util.concurrent.Callable;
 
 import javafx.application.Application;
 import javafx.event.ActionEvent;
@@ -17,6 +20,7 @@ import javafx.geometry.Pos;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.stage.Window;
+import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.layout.BorderPane;
@@ -103,10 +107,16 @@ public class MainApp extends Application {
 		primaryStage.setScene(scene);
 	    primaryStage.setResizable(false);
 	    
-	    connectionBtn.setOnAction(e -> connectionHandler(e));
+	    connectionBtn.setOnAction(e -> {
+			try {
+				connectionHandler(e);
+			} catch (InterruptedException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			}
+		});
 	    registerBtn.setOnAction(e -> registerHandler(e));
 	    editBtn.setOnAction(e -> editHandler(e));
-	    tableCreationBtn.setOnAction(e -> tableCreationHandler(e));
 
 	    primaryStage.show();
 	}
@@ -129,10 +139,13 @@ public class MainApp extends Application {
 			e.printStackTrace();
 		}
 	}
-	private void connectionHandler(ActionEvent e){
-		Alert alert = new Alert(AlertType.INFORMATION, "Signal sent to data, preparing next window");
-		alert.showAndWait();
-		openMain();
+	
+	private void connectionHandler(ActionEvent e) throws InterruptedException{
+			Waiting t = new Waiting(((Node) e.getSource()).getScene().getWindow());
+			DataConnection data = new DataConnection(t);
+			data.start();
+			t.showAndWait();
+			openMain();
 	}
 	
 	private void registerHandler(ActionEvent e){
@@ -145,28 +158,25 @@ public class MainApp extends Application {
 		alert.showAndWait();
 	}
 	
-	private void tableCreationHandler(ActionEvent e){
-		//Alert alert = new Alert(AlertType.INFORMATION, "Open Edit Profile Window");
-		//alert.showAndWait();
+	
+	private class DataConnection extends Thread{
+		Waiting waitingWindow;
 		
-		///////////// CREE NOUVELLE FENETRE ET BLOQUE L'ANCIENNE ///////////////////
-		Parent root;
-		try {
-			root = FXMLLoader.load(getClass().getResource("./view/tableCreation.fxml"));
-			Window parent = scene.getWindow();
-			Stage stage = new Stage();
-			stage.setScene(new Scene(root, 440, 408));
-			stage.initModality(Modality.WINDOW_MODAL);
-			stage.initOwner(parent);
-		    stage.setTitle("Création de Table");
-		    stage.setResizable(false);
-			stage.show();
-
-		} catch (Exception e1) {
-			e1.printStackTrace();
+		public void run(){
+			try {
+				for(int i=0;i<5;i++){
+					Thread.sleep(1000);
+					System.out.println("-");
+				}
+				waitingWindow.close();
+			} catch (InterruptedException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 		}
-		
- 
+		public DataConnection(Waiting t){
+			waitingWindow = t;
+		}
 	}
 	
 	public static void main(String[] args) {
