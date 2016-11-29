@@ -1,5 +1,6 @@
 package IHM_MAIN.src;
 
+import data.Profile;
 import data.User;
 import javafx.application.Application;
 import javafx.application.Platform;
@@ -11,6 +12,7 @@ import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 
+import java.io.File;
 import java.io.IOException;
 
 import java.util.concurrent.Callable;
@@ -179,9 +181,38 @@ public class MainApp extends Application {
 		openRegister();
 	}
 
-	private void editHandler(ActionEvent e){
-		Alert alert = new Alert(AlertType.INFORMATION, "Open Edit Profile Window");
-		alert.showAndWait();
+	private boolean editHandler(ActionEvent e){
+		 try {
+		        // Load the fxml file and create a new stage for the popup dialog.
+		        FXMLLoader loader = new FXMLLoader();
+		        loader.setLocation(MainApp.class.getResource("view/GestionProfil.fxml"));
+		        AnchorPane page = (AnchorPane) loader.load();
+
+		        // Create the dialog Stage.
+		        Stage dialogStage = new Stage();
+		        dialogStage.setTitle("Edit Person");
+		        dialogStage.initModality(Modality.WINDOW_MODAL);
+		        Scene scene = new Scene(page);
+		        dialogStage.setScene(scene);
+
+		        // Set the person into the controller.
+		        PersonController controller = loader.getController();
+		        controller.setDialogStage(dialogStage);
+	        	File fXmlFile = new File("file:./../monProfile.xml");
+
+		       Profile profil= controller.loadPersonDataFromFile(fXmlFile);
+		        //Profile profil = new Profile(null,"test","test","test",25);
+		        User user= new User(profil);
+		        controller.setPerson(user);
+
+		        // Show the dialog and wait until the user closes it
+		        dialogStage.showAndWait();
+
+		        return controller.isOkClicked();
+		    } catch (IOException er) {
+		        er.printStackTrace();
+		        return false;
+		    }
 	}
 
 
@@ -190,7 +221,7 @@ public class MainApp extends Application {
 
 		public void run(){
 			try {
-				for(int i=0;i<5;i++){
+				for(int i=0;i<2;i++){
 					Thread.sleep(1000);
 					System.out.println("-");
 				}
