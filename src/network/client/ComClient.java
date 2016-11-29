@@ -16,6 +16,7 @@ import network.messages.IMessage;
 import network.messages.LaunchGameMessage;
 import network.messages.LogoutUserRequestMessage;
 import network.messages.UpdateProfileMessage;
+import network.messages.askRefreshUserListMessage;
 
 public class ComClient implements ComClientInterface{
 	private int 					serverPort;
@@ -126,8 +127,7 @@ public class ComClient implements ComClientInterface{
 
 	@Override
 	public void askRefreshUsersList(UUID user) {
-		// TODO Auto-generated method stub
-		
+		sendMessage(new askRefreshUserListMessage(user));
 	}
 
 	@Override
