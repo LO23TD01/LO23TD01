@@ -175,9 +175,16 @@ public class MainApp extends Application {
 			e.printStackTrace();
 		}
 	}
+<<<<<<< HEAD
 	private void registerHandler(ActionEvent e){
 		//Alert alert = new Alert(AlertType.INFORMATION, "Signal sent to data, preparing next window");
 		//alert.showAndWait();
+=======
+	
+	private void registerHandler(ActionEvent e){
+		Alert alert = new Alert(AlertType.INFORMATION, "Signal sent to data, preparing next window");
+		alert.showAndWait();
+>>>>>>> viotaugu : created register window
 		openRegister();
 	}
 
