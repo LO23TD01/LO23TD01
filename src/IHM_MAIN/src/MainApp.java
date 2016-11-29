@@ -168,8 +168,8 @@ public class MainApp extends Application {
 	}
 	
 	private void registerHandler(ActionEvent e){
-		Alert alert = new Alert(AlertType.INFORMATION, "Signal sent to data, preparing next window");
-		alert.showAndWait();
+		//Alert alert = new Alert(AlertType.INFORMATION, "Signal sent to data, preparing next window");
+		//alert.showAndWait();
 		openRegister();
 	}
 	
