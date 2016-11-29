@@ -9,7 +9,7 @@ public class NewPlayerOnTableMessage implements IMessage {
     private static final long serialVersionUID = 3379374689137731613L;
     private Profile userProfile;
 
-    public NewPlayerOnTableMessage(Profile user) {
+    public NewPlayerOnTableMessage(Profile userProfile) {
         this.userProfile = userProfile;
     }
 

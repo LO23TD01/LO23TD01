@@ -9,7 +9,7 @@ public class NewSpectatorOnTableMessage implements IMessage {
     private static final long serialVersionUID = 3379374689137731613L;
     private Profile userProfile;
 
-    public NewSpectatorOnTableMessage(Profile user) {
+    public NewSpectatorOnTableMessage(Profile userProfile) {
         this.userProfile = userProfile;
     }
 
