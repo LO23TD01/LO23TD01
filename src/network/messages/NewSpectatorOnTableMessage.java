@@ -1,6 +1,5 @@
 package network.messages;
 
-import java.util.UUID;
 import data.ClientDataEngine;
 import data.ServerDataEngine;
 import data.Profile;
@@ -8,7 +7,7 @@ import data.Profile;
 public class NewSpectatorOnTableMessage implements IMessage {
 
     private static final long serialVersionUID = 3379374689137731613L;
-    private UUID userProfile;
+    private Profile userProfile;
 
     public NewSpectatorOnTableMessage(Profile user) {
         this.userProfile = userProfile;
