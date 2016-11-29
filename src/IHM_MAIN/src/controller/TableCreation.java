@@ -1,5 +1,7 @@
 package IHM_MAIN.src.controller;
 
+import IHM_MAIN.src.WaitingWindow;
+import IHM_MAIN.src.MainApp.DataConnection;
 import javafx.event.ActionEvent;
 import javafx.fxml.*;
 import javafx.scene.Node;
@@ -41,7 +43,7 @@ public class TableCreation{
 	
 	public void send_create_table_signal(){
 		// data.createNewTable(name, pwd, min, max, max_token, withSpec, withChat);
-		Alert alert = new Alert(AlertType.INFORMATION, "Signal sent to data, preparing party:\n"
+		/*Alert alert = new Alert(AlertType.INFORMATION, "Signal sent to data, preparing party:\n"
 				+ "Table Name:"+tableName.getText()+"\n" 
 				+ "Password:"+tablePassword.getText()+"\n"
 				+ "Max Players:"+maxPlayers.getValue()+"\n"
@@ -51,8 +53,14 @@ public class TableCreation{
 				+ "With Spec:"+spectatorsAllowed.isSelected()+"\n");
 		alert.showAndWait();
 		Stage stage = (Stage) tableName.getScene().getWindow();
+		stage.close();*/
+		
+		Stage stage = (Stage) tableName.getScene().getWindow();
+		WaitingWindow t = new WaitingWindow(stage);
+		DataConnection data = new DataConnection(t);
+		data.start();
+		t.showAndWait();
 		stage.close();
-
 
 	}
 	public void open_table(){
@@ -64,4 +72,21 @@ public class TableCreation{
 		open_table();
 	}
 	
+	private class DataConnection extends Thread{
+		WaitingWindow waitingWindow;
+		
+		public void run(){
+			try {
+					Thread.sleep(1000);
+					waitingWindow.close();
+			} catch (InterruptedException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
+		public DataConnection(WaitingWindow t){
+			waitingWindow = t;
+		}
+	}
+
 }

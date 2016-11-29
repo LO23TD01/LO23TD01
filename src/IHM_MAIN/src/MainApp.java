@@ -150,7 +150,7 @@ public class MainApp extends Application {
 	}
 
 	private void connectionHandler(ActionEvent e) throws InterruptedException{
-			Waiting t = new Waiting(((Node) e.getSource()).getScene().getWindow());
+			WaitingWindow t = new WaitingWindow(((Node) e.getSource()).getScene().getWindow());
 			DataConnection data = new DataConnection(t);
 			data.start();
 			t.showAndWait();
@@ -214,24 +214,20 @@ public class MainApp extends Application {
 		        return false;
 		    }
 	}
-
-
-	private class DataConnection extends Thread{
-		Waiting waitingWindow;
-
+	
+	public class DataConnection extends Thread{
+		WaitingWindow waitingWindow;
+		
 		public void run(){
 			try {
-				for(int i=0;i<2;i++){
 					Thread.sleep(1000);
-					System.out.println("-");
-				}
-				waitingWindow.close();
+					waitingWindow.close();
 			} catch (InterruptedException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
 		}
-		public DataConnection(Waiting t){
+		public DataConnection(WaitingWindow t){
 			waitingWindow = t;
 		}
 	}
