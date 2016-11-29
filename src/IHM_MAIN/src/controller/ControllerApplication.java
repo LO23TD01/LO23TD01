@@ -3,12 +3,18 @@ package IHM_MAIN.src.controller;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
+import javafx.stage.Modality;
+import javafx.stage.Stage;
+import javafx.stage.Window;
 import IHM_MAIN.src.model.Game;
 import IHM_MAIN.src.model.ModelApplication;
 
@@ -71,6 +77,21 @@ public class ControllerApplication {
 	@FXML
 	private void handleCreateButton() {
 		//ouverture fenetre creation nouvelle table
+				Parent root;
+				try {
+					root = FXMLLoader.load(getClass().getResource("../view/tableCreation.fxml"));
+					Window parent = createGame.getScene().getWindow();
+					Stage stage = new Stage();
+					stage.setScene(new Scene(root, 440, 408));
+					stage.initModality(Modality.WINDOW_MODAL);
+					stage.initOwner(parent);
+				    stage.setTitle("Création de Table");
+				    stage.setResizable(false);
+					stage.show();
+
+				} catch (Exception e1) {
+					e1.printStackTrace();
+				}
 	}
 	
 	@FXML

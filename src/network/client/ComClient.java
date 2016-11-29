@@ -7,11 +7,22 @@ import java.util.UUID;
 
 import data.ClientDataEngine;
 import data.Profile;
+import network.messages.AcceptReplayMessage;
+import data.Rules;
+import data.User;
 import network.messages.ConnectionMessage;
+import network.messages.CreateTableMessage;
 import network.messages.GetProfileMessage;
 import network.messages.IMessage;
+import network.messages.LaunchGameMessage;
 import network.messages.LogoutUserRequestMessage;
+import network.messages.ThrowDiceMessage;
+import network.messages.SelectDiceMessage;
+import network.messages.QuitGameMessage;
+import network.messages.RefuseReplayMessage;
 import network.messages.UpdateProfileMessage;
+import network.messages.AskJoinTableMessage;
+import network.messages.askRefreshUserListMessage;
 
 public class ComClient implements ComClientInterface{
 	private int 					serverPort;
@@ -67,28 +78,26 @@ public class ComClient implements ComClientInterface{
 	 */
 	
 	@Override
-	public void throwDice(UUID user) {
-		// TODO Auto-generated method stub
-		
+	public void throwDice(UUID user, boolean d1, boolean d2, boolean d3) {
+		sendMessage(new ThrowDiceMessage(user, d1, d2, d3));
 	}
 
 	@Override
-	public void launchGame(UUID user) {
-		// TODO Auto-generated method stub
-		
+	public void launchGame(UUID userUuid) {
+        LaunchGameMessage msg = new LaunchGameMessage(userUuid);
+        sendMessage(msg);
 	}
 
 	@Override
 	public void createNewTable(UUID user, String name, String pwd, int min, int max, int token, boolean withSpec,
-			boolean withChat) {
-		// TODO Auto-generated method stub
-		
+			boolean withChat, Rules rules) {
+		CreateTableMessage msg = new CreateTableMessage(user, name, pwd, min, max, token, withSpec, withChat, rules);
+		sendMessage(msg);
 	}
 
 	@Override
 	public void selectDice(UUID user, boolean d1, boolean d2, boolean d3) {
-		// TODO Auto-generated method stub
-		
+		sendMessage(new SelectDiceMessage(user, d1, d2, d3));
 	}
 
 	@Override
@@ -98,14 +107,13 @@ public class ComClient implements ComClientInterface{
 
 	@Override
 	public void dropTable(UUID tableId) {
-		// TODO Auto-generated method stub
-		
+		//TODO: ATTENTION DropTable supprimé
+		//sendMessage(new DropTableMessage(tableId));
 	}
 
 	@Override
 	public void quit(UUID user) {
-		// TODO Auto-generated method stub
-		
+		sendMessage(new QuitGameMessage(user));
 	}
 
 	@Override
@@ -122,26 +130,22 @@ public class ComClient implements ComClientInterface{
 
 	@Override
 	public void askRefreshUsersList(UUID user) {
-		// TODO Auto-generated method stub
-		
+		sendMessage(new askRefreshUserListMessage(user));
 	}
 
 	@Override
 	public void askJoinTable(UUID user, UUID tableId, boolean asPlayer) {
-		// TODO Auto-generated method stub
-		
+		sendMessage(new AskJoinTableMessage(user, tableId, asPlayer));
 	}
 
 	@Override
 	public void acceptReplay(UUID user) {
-		// TODO Auto-generated method stub
-		
+		sendMessage(new AcceptReplayMessage(user));
 	}
 
 	@Override
 	public void refuseReplay(UUID user) {
-		// TODO Auto-generated method stub
-		
+		sendMessage(new RefuseReplayMessage(user));
 	}
 
 	@Override
@@ -156,9 +160,12 @@ public class ComClient implements ComClientInterface{
         sendMessage(msg);
     }
 
+    
+    //Changement de l'interface pour recuperer le profile 
+    //getProfile(UUID user) --> getProfile(UUID user, UUID sender)
     @Override
-    public void getProfile(UUID user) {
-        sendMessage(new GetProfileMessage(user));
+    public void getProfile(UUID user, UUID sender) {
+        sendMessage(new GetProfileMessage(user, sender));
     }
 
 	

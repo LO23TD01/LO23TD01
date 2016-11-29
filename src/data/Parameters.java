@@ -1,6 +1,8 @@
 package data;
 
-public class Parameters {
+import java.io.Serializable;
+
+public class Parameters implements Serializable {
 	private int nbPlayerMin;
 	private int nbPlayerMax;
 	private int nbChip;

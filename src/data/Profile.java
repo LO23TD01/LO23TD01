@@ -12,8 +12,12 @@ import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
 
 @XmlRootElement
-@XmlType(propOrder = {"uuid", "login", "nickName", "psw", "firstName", "surName", "age", "avatar", "nbGameWon", "nbGameLost", "nbGameAbandonned", "client"})
+@XmlType(propOrder = { "uuid", "login", "nickName", "psw", "firstName", "surName", "age", "avatar", "nbGameWon", "nbGameLost", "nbGameAbandonned", "client" })
 public class Profile implements Serializable {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -8704008869575118912L;
 	private UUID uuid;
 	private String login;
 	private String nickName;
@@ -106,7 +110,7 @@ public class Profile implements Serializable {
 	 * 
 	 */
 	
-	public UUID getUuid() {
+	public UUID getUUID() {
 		return uuid;
 	}
 
@@ -155,7 +159,7 @@ public class Profile implements Serializable {
 	}
 
 	@XmlElement
-	public void setUuid(UUID uuid) {
+	public void setUUID(UUID uuid) {
 		this.uuid = uuid;
 	}
 

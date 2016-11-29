@@ -4,7 +4,7 @@ import java.util.UUID;
 
 import data.ClientDataEngine;
 import data.Profile;
-import data.ServerDataEngine;
+import data.server.ServerDataEngine;
 
 public class UpdateProfileMessage implements IMessage {
 
@@ -25,7 +25,7 @@ public class UpdateProfileMessage implements IMessage {
 
     @Override
     public void process(ServerDataEngine dataEngine) {
-        // TODO Auto-generated method stub
+    	dataEngine.updateUserProfile(user, profile);
         
     }
 

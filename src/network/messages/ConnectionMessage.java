@@ -2,7 +2,7 @@ package network.messages;
 
 import data.ClientDataEngine;
 import data.Profile;
-import data.ServerDataEngine;
+import data.server.ServerDataEngine;
 
 public class ConnectionMessage implements IMessage{
 
@@ -15,8 +15,7 @@ public class ConnectionMessage implements IMessage{
 	}
 	@Override
 	public void process(ServerDataEngine dataEngine) {
-		// TODO Auto-generated method stub
-		
+		dataEngine.connectUser(profile);
 	}
 
 	@Override

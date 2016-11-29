@@ -3,7 +3,9 @@ package network.messages;
 import java.util.UUID;
 
 import data.ClientDataEngine;
-import data.ServerDataEngine;
+import data.Profile;
+import data.server.ServerDataEngine;
+import data.User;
 import network.server.SocketClientHandler;
 public class LogoutUserRequestMessage implements IMessage{
 
@@ -17,8 +19,7 @@ public class LogoutUserRequestMessage implements IMessage{
 
     @Override
     public void process(ServerDataEngine dataEngine) {
-        // TODO Auto-generated method stub
-        
+    	dataEngine.disconnect(new User(new Profile(user)));   
     }
 
     @Override

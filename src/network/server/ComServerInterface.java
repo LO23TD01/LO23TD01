@@ -8,7 +8,7 @@ import data.Profile;
 import data.User;
 
 public interface ComServerInterface {
-	
+
 	public void sendResult(List<UUID> receivers, int r1, int r2, int r3);
 	public void sendMessage(List<UUID> receivers, String senderLogin, String msg);
 	public void showTimer(List<UUID> receivers); // ajouté List<UUID> au lieu de UUID : corrigé avec le diagramme de sequence "Commencer Partie"
@@ -25,10 +25,11 @@ public interface ComServerInterface {
 	public void stopGameAccepted(List<UUID> receivers);
 	public void refreshUserList(UUID user, List<User> userList);
 	public void raiseException(UUID user, String msg);
-	public void newPlayerOnTable(List<UUID> receivers, Profile user, UUID tableID);
-	public void newSpectatorOnTable(List<UUID> receivers, Profile user, UUID tableID);
+	public void newPlayerOnTable(List<UUID> receivers, Profile user, GameTable tableInfo);
+	public void newSpectatorOnTable(List<UUID> receivers, Profile user, GameTable tableInfo);
 	public void hasAccepted(UUID user,List<UUID> receivers);
 	public void hasRefused(UUID user,List<UUID> receivers);
 	public void newUser(List<UUID> receivers, Profile user);
 	public void sendTablesUsers(List<User> userList, List<GameTable> tableList, Profile user);
+	public void playerQuitGame(List<UUID> receivers, UUID user);
 }

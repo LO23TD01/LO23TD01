@@ -10,7 +10,7 @@
 <?import javafx.scene.paint.*?>
 <?scenebuilder-classpath-element .?>
 
-<BorderPane prefHeight="569.0" prefWidth="815.0" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/2.2" fx:controller="controller.ControllerApplication">
+<BorderPane prefHeight="569.0" prefWidth="815.0" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/2.2" fx:controller="IHM_MAIN.src.controller.ControllerApplication">
   <bottom>
     <HBox alignment="CENTER" prefHeight="76.0" prefWidth="815.0">
       <children>
