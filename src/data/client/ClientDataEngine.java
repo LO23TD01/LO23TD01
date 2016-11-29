@@ -1,6 +1,5 @@
 package data.client;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
@@ -11,106 +10,32 @@ import data.IPData;
 import data.Profile;
 import data.User;
 import data.UserRole;
+import javafx.beans.property.ObjectProperty;
+import javafx.beans.property.SimpleObjectProperty;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import network.client.ComClient;
 import network.client.ComClientInterface;
 
 public class ClientDataEngine implements InterfaceDataIHMLobby, InterfaceDataIHMTable, InterfaceDataNetwork {
 
-	private ProfileManager profileManager;
-	private List<User> userList;
-	private List<GameTable> tableList;
-	private GameTable actualTable;
-	private UserRole actualRole;
+	private final ObjectProperty<ProfileManager> profileManager;
+	private final ObservableList<User> userList = FXCollections.observableArrayList();
+	private final ObservableList<GameTable> tableList = FXCollections.observableArrayList();
+	private final ObjectProperty<GameTable> actualTable;
+	private final ObjectProperty<UserRole> actualRole;
 	/**
-	 * Variable qui permet de communiquer avec le serveur, initialisée lors du login
+	 * Variable qui permet de communiquer avec le serveur, initialisÃ©e lors du login
 	 */
 	private ComClientInterface comClientInterface = null;
 
 	/**
-	 * 
+	 *
 	 */
 	public ClientDataEngine() {
-		super();
-		this.profileManager = new ProfileManager();
-		this.userList = new ArrayList<User>();
-		this.tableList = new ArrayList<GameTable>();
-		this.actualTable = null;
-		this.actualRole = null;
-	}
-
-	/**
-	 * @return the profileManager
-	 */
-	public ProfileManager getProfileManager() {
-		return profileManager;
-	}
-
-	/**
-	 * @param profileManager
-	 *            the profileManager to set
-	 */
-	public void setProfileManager(ProfileManager profileManager) {
-		this.profileManager = profileManager;
-	}
-
-	/**
-	 * @return the userList
-	 */
-	public List<User> getUserList() {
-		return userList;
-	}
-
-	/**
-	 * @param userList
-	 *            the userList to set
-	 */
-	public void setUserList(List<User> userList) {
-		this.userList = userList;
-	}
-
-	/**
-	 * @return the tableList
-	 */
-	public List<GameTable> getTableList() {
-		return tableList;
-	}
-
-	/**
-	 * @param tableList
-	 *            the tableList to set
-	 */
-	public void setTableList(List<GameTable> tableList) {
-		this.tableList = tableList;
-	}
-
-	/**
-	 * @return the actualTable
-	 */
-	public GameTable getActualTable() {
-		return actualTable;
-	}
-
-	/**
-	 * @param actualTable
-	 *            the actualTable to set
-	 */
-	public void setActualTable(GameTable actualTable) {
-		this.actualTable = actualTable;
-	}
-
-	/**
-	 * @return the actualRole
-	 */
-	public UserRole getActualRole() {
-		return actualRole;
-	}
-
-	/**
-	 * @param actualRole
-	 *            the actualRole to set
-	 */
-	public void setActualRole(UserRole actualRole) {
-		this.actualRole = actualRole;
+		this.profileManager = new SimpleObjectProperty<ProfileManager>();
+		this.actualTable = new SimpleObjectProperty<GameTable>();
+		this.actualRole = new SimpleObjectProperty<UserRole>();
 	}
 
 	@Override
@@ -162,8 +87,8 @@ public class ClientDataEngine implements InterfaceDataIHMLobby, InterfaceDataIHM
 	}
 
 	/**
-	 * Cette méthode vérifie si le login/mot de passe est correct. Elle connecte ensuite le client au serveur de jeu.
-	 * 
+	 * Cette mÃ©thode vÃ©rifie si le login/mot de passe est correct. Elle connecte ensuite le client au serveur de jeu.
+	 *
 	 * @param login
 	 * @param password
 	 * @param ipd
@@ -171,7 +96,7 @@ public class ClientDataEngine implements InterfaceDataIHMLobby, InterfaceDataIHM
 	 */
 	@Override
 	public void login(String login, String password, IPData ipd) throws Exception {
-		if (!profileManager.checkPassword(login, password))
+		if (!profileManager.get().checkPassword(login, password))
 			throw new Exception("Mauvais mot de passe");
 		comClientInterface = new ComClient(ipd.getValue(), 4000);
 		// TODO choisir un port
@@ -452,6 +377,60 @@ public class ClientDataEngine implements InterfaceDataIHMLobby, InterfaceDataIHM
 	public void newSpectatorOnTable(User u) {
 		// TODO Auto-generated method stub
 
+	}
+
+	public final ObjectProperty<ProfileManager> profileManagerProperty() {
+		return this.profileManager;
+	}
+
+	public final ProfileManager getProfileManager() {
+		return this.profileManagerProperty().get();
+	}
+
+	public final void setProfileManager(final ProfileManager profileManager) {
+		this.profileManagerProperty().set(profileManager);
+	}
+
+	public final ObjectProperty<GameTable> actualTableProperty() {
+		return this.actualTable;
+	}
+
+	public final GameTable getActualTable() {
+		return this.actualTableProperty().get();
+	}
+
+	public final void setActualTable(final GameTable actualTable) {
+		this.actualTableProperty().set(actualTable);
+	}
+
+	public final ObjectProperty<UserRole> actualRoleProperty() {
+		return this.actualRole;
+	}
+
+	public final UserRole getActualRole() {
+		return this.actualRoleProperty().get();
+	}
+
+	public final void setActualRole(final UserRole actualRole) {
+		this.actualRoleProperty().set(actualRole);
+	}
+
+	public ObservableList<User> getUserList() {
+		return userList;
+	}
+
+	public void setUserList(List<User> users) {
+		this.userList.clear();
+		this.userList.addAll(users);
+	}
+
+	public ObservableList<GameTable> getTableList() {
+		return tableList;
+	}
+
+	public void setTableList(List<GameTable> gameTables) {
+		this.tableList.clear();
+		this.tableList.addAll(gameTables);
 	}
 
 }

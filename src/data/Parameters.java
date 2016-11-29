@@ -1,14 +1,19 @@
 package data;
 
-import java.io.Serializable;
+import javafx.beans.property.BooleanProperty;
+import javafx.beans.property.IntegerProperty;
+import javafx.beans.property.ObjectProperty;
+import javafx.beans.property.SimpleBooleanProperty;
+import javafx.beans.property.SimpleIntegerProperty;
+import javafx.beans.property.SimpleObjectProperty;
 
-public class Parameters implements Serializable {
-	private int nbPlayerMin;
-	private int nbPlayerMax;
-	private int nbChip;
-	private boolean authorizeSpec;
-	private boolean authorizeSpecToChat;
-	private Rules rules;
+public class Parameters {
+	private final IntegerProperty nbPlayerMin;
+	private final IntegerProperty nbPlayerMax;
+	private final IntegerProperty nbChip;
+	private final BooleanProperty authorizeSpec;
+	private final BooleanProperty authorizeSpecToChat;
+	private final ObjectProperty<Rules> rules;
 
 	/**
 	 * @param nbPlayerMin
@@ -18,105 +23,100 @@ public class Parameters implements Serializable {
 	 * @param authorizeSpecToChat
 	 * @param rules
 	 */
-	public Parameters(int nbPlayerMin, int nbPlayerMax, int nbChip, boolean authorizeSpec, boolean authorizeSpecToChat,
-			Rules rules) {
+	public Parameters(int nbPlayerMin, int nbPlayerMax, int nbChip, boolean authorizeSpec, boolean authorizeSpecToChat, Rules rules) {
 		super();
-		this.nbPlayerMin = nbPlayerMin;
-		this.nbPlayerMax = nbPlayerMax;
-		this.nbChip = nbChip;
-		this.authorizeSpec = authorizeSpec;
-		this.authorizeSpecToChat = authorizeSpecToChat;
-		this.rules = rules;
+		this.nbPlayerMin = new SimpleIntegerProperty(nbPlayerMin);
+		this.nbPlayerMax = new SimpleIntegerProperty(nbPlayerMax);
+		this.nbChip = new SimpleIntegerProperty(nbChip);
+		this.authorizeSpec = new SimpleBooleanProperty(authorizeSpec);
+		this.authorizeSpecToChat = new SimpleBooleanProperty(authorizeSpecToChat);
+		this.rules = new SimpleObjectProperty<Rules>(rules);
 	}
 
-	/**
-	 * @return the nbPlayerMin
-	 */
-	public int getNbPlayerMin() {
-		return nbPlayerMin;
-	}
-
-	/**
-	 * @param nbPlayerMin
-	 *            the nbPlayerMin to set
-	 */
-	public void setNbPlayerMin(int nbPlayerMin) {
-		this.nbPlayerMin = nbPlayerMin;
-	}
-
-	/**
-	 * @return the nbPlayerMax
-	 */
-	public int getNbPlayerMax() {
-		return nbPlayerMax;
-	}
-
-	/**
-	 * @param nbPlayerMax
-	 *            the nbPlayerMax to set
-	 */
-	public void setNbPlayerMax(int nbPlayerMax) {
-		this.nbPlayerMax = nbPlayerMax;
-	}
-
-	/**
-	 * @return the nbChip
-	 */
-	public int getNbChip() {
-		return nbChip;
-	}
-
-	/**
-	 * @param nbChip
-	 *            the nbChip to set
-	 */
-	public void setNbChip(int nbChip) {
-		this.nbChip = nbChip;
+	public final BooleanProperty authorizeSpecProperty() {
+		return this.authorizeSpec;
 	}
 
 	/**
 	 * @return the authorizeSpec
 	 */
-	public boolean isAuthorizeSpec() {
-		return authorizeSpec;
+	public final boolean isAuthorizeSpec() {
+		return authorizeSpec.get();
 	}
 
 	/**
 	 * @param authorizeSpec
 	 *            the authorizeSpec to set
 	 */
-	public void setAuthorizeSpec(boolean authorizeSpec) {
-		this.authorizeSpec = authorizeSpec;
+	public final void setAuthorizeSpec(boolean authorizeSpec) {
+		this.authorizeSpec.set(authorizeSpec);
+	}
+
+	public final BooleanProperty authorizeSpecToChatProperty() {
+		return this.authorizeSpecToChat;
 	}
 
 	/**
 	 * @return the authorizeSpecToChat
 	 */
-	public boolean isAuthorizeSpecToChat() {
-		return authorizeSpecToChat;
+	public final boolean isAuthorizeSpecToChat() {
+		return this.authorizeSpecToChat.get();
 	}
 
 	/**
 	 * @param authorizeSpecToChat
 	 *            the authorizeSpecToChat to set
 	 */
-	public void setAuthorizeSpecToChat(boolean authorizeSpecToChat) {
-		this.authorizeSpecToChat = authorizeSpecToChat;
+	public final void setAuthorizeSpecToChat(boolean authorizeSpecToChat) {
+		this.authorizeSpecToChat.set(authorizeSpecToChat);
 	}
 
-	/**
-	 * @return the rules
-	 */
-	public Rules getRules() {
-		return rules;
+	public final IntegerProperty nbPlayerMinProperty() {
+		return this.nbPlayerMin;
 	}
 
-	/**
-	 * @param rules
-	 *            the rules to set
-	 */
-	public void setRules(Rules rules) {
-		this.rules = rules;
+	public final int getNbPlayerMin() {
+		return this.nbPlayerMinProperty().get();
+	}
+
+	public final void setNbPlayerMin(final int nbPlayerMin) {
+		this.nbPlayerMinProperty().set(nbPlayerMin);
+	}
+
+	public final IntegerProperty nbPlayerMaxProperty() {
+		return this.nbPlayerMax;
+	}
+
+	public final int getNbPlayerMax() {
+		return this.nbPlayerMaxProperty().get();
+	}
+
+	public final void setNbPlayerMax(final int nbPlayerMax) {
+		this.nbPlayerMaxProperty().set(nbPlayerMax);
+	}
+
+	public final IntegerProperty nbChipProperty() {
+		return this.nbChip;
+	}
+
+	public final int getNbChip() {
+		return this.nbChipProperty().get();
+	}
+
+	public final void setNbChip(final int nbChip) {
+		this.nbChipProperty().set(nbChip);
+	}
+
+	public final ObjectProperty<Rules> rulesProperty() {
+		return this.rules;
+	}
+
+	public final Rules getRules() {
+		return this.rulesProperty().get();
+	}
+
+	public final void setRules(final Rules rules) {
+		this.rulesProperty().set(rules);
 	}
 
 	/*
@@ -176,9 +176,12 @@ public class Parameters implements Serializable {
 	 */
 	@Override
 	public String toString() {
+		return "";
+		//TODO again
+		/*
 		return "Parameters [nbPlayerMin=" + nbPlayerMin + ", nbPlayerMax=" + nbPlayerMax + ", nbChip=" + nbChip
 				+ ", authorizeSpec=" + authorizeSpec + ", authorizeSpecToChat=" + authorizeSpecToChat + ", rules="
-				+ rules + "]";
+				+ rules + "]";*/
 	}
 
 }

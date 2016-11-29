@@ -7,143 +7,195 @@ import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
 
+import javafx.beans.property.IntegerProperty;
+import javafx.beans.property.ObjectProperty;
+import javafx.beans.property.SimpleIntegerProperty;
+import javafx.beans.property.SimpleObjectProperty;
+import javafx.beans.property.SimpleStringProperty;
+import javafx.beans.property.StringProperty;
+
 @XmlRootElement
-@XmlType(propOrder = {"uuid", "login", "nickName", "firstName", "surName", "age", "avatar", "nbGameWon", "nbGameLost", "nbGameAbandonned"})
+@XmlType(propOrder = { "uuid", "login", "nickName", "firstName", "surName", "age", "avatar", "nbGameWon", "nbGameLost", "nbGameAbandonned" })
 public class Contact {
-	private UUID uuid;
-	private String login;
-	private String nickName;
-	private String firstName;
-	private String surName;
-	private int age;
-	private Image avatar;
-	private int nbGameWon;
-	private int nbGameLost;
-	private int nbGameAbandonned;
-	
-	
-	public Contact(){
-		
+	private final ObjectProperty<UUID> uuid;
+	private final StringProperty login;
+	private final StringProperty nickName;
+	private final StringProperty firstName;
+	private final StringProperty surName;
+	private final IntegerProperty age;
+	private final ObjectProperty<Image> avatar;
+	private final IntegerProperty nbGameWon;
+	private final IntegerProperty nbGameLost;
+	private final IntegerProperty nbGameAbandonned;
+
+	public Contact() {
+		this.uuid = new SimpleObjectProperty<UUID>(UUID.randomUUID());
+		this.login = new SimpleStringProperty();
+		this.nickName = new SimpleStringProperty();
+		this.firstName = new SimpleStringProperty();
+		this.surName = new SimpleStringProperty();
+		this.age = new SimpleIntegerProperty();
+		this.avatar = new SimpleObjectProperty<Image>();
+		this.nbGameWon = new SimpleIntegerProperty();
+		this.nbGameLost = new SimpleIntegerProperty();
+		this.nbGameAbandonned = new SimpleIntegerProperty();
 	}
-	
+
 	public Contact(UUID uuid, String nickname, String firstName, String surName, int age) {
-		this.uuid = uuid;
-		this.nickName = nickname;
-		this.firstName = firstName;
-		this.surName = surName;
-		this.age = age;
-	}
-	
-	public Contact(UUID uuid, String login, String nickname, String firstName, String surName, int age,
-			Image avatar, int nbGameWon, int nbGameLost, int nbGameAbandonned) {
-		super();
-		this.uuid = uuid;
-		this.login = login;
-		this.nickName = nickname;
-		this.firstName = firstName;
-		this.surName = surName;
-		this.age = age;
-		this.avatar = avatar;
-		this.nbGameWon = nbGameWon;
-		this.nbGameLost = nbGameLost;
-		this.nbGameAbandonned = nbGameAbandonned;
-	}
-	
-	/*
-	 * 
-	 * Getters & Setters
-	 * 
-	 * 
-	 */
-
-	public UUID getUuid() {
-		return uuid;
+		this.uuid = new SimpleObjectProperty<UUID>(uuid);
+		this.login = new SimpleStringProperty();
+		this.nickName = new SimpleStringProperty(nickname);
+		this.firstName = new SimpleStringProperty(firstName);
+		this.surName = new SimpleStringProperty(surName);
+		this.age = new SimpleIntegerProperty(age);
+		this.avatar = new SimpleObjectProperty<Image>();
+		this.nbGameWon = new SimpleIntegerProperty();
+		this.nbGameLost = new SimpleIntegerProperty();
+		this.nbGameAbandonned = new SimpleIntegerProperty();
 	}
 
-	@XmlElement
-	public void setUuid(UUID uuid) {
-		this.uuid = uuid;
+	public Contact(UUID uuid, String login, String nickname, String firstName, String surName, int age, Image avatar, int nbGameWon, int nbGameLost,
+			int nbGameAbandonned) {
+		this.uuid = new SimpleObjectProperty<UUID>(uuid);
+		this.login = new SimpleStringProperty(login);
+		this.nickName = new SimpleStringProperty(nickname);
+		this.firstName = new SimpleStringProperty(firstName);
+		this.surName = new SimpleStringProperty(surName);
+		this.age = new SimpleIntegerProperty(age);
+		this.avatar = new SimpleObjectProperty<Image>(avatar);
+		this.nbGameWon = new SimpleIntegerProperty(nbGameWon);
+		this.nbGameLost = new SimpleIntegerProperty(nbGameLost);
+		this.nbGameAbandonned = new SimpleIntegerProperty(nbGameAbandonned);
 	}
 
-	public String getLogin() {
-		return login;
+	public final ObjectProperty<UUID> uuidProperty() {
+		return this.uuid;
+	}
+
+	public final UUID getUuid() {
+		return this.uuidProperty().get();
 	}
 
 	@XmlElement
-	public void setLogin(String login) {
-		this.login = login;
+	public final void setUuid(final UUID uuid) {
+		this.uuidProperty().set(uuid);
 	}
 
-	public String getNickName() {
-		return nickName;
+	public final StringProperty loginProperty() {
+		return this.login;
 	}
 
-	@XmlElement
-	public void setNickName(String nickName) {
-		this.nickName = nickName;
-	}
-
-	public String getFirstName() {
-		return firstName;
+	public final String getLogin() {
+		return this.loginProperty().get();
 	}
 
 	@XmlElement
-	public void setFirstName(String firstName) {
-		this.firstName = firstName;
+	public final void setLogin(final String login) {
+		this.loginProperty().set(login);
 	}
 
-	public String getSurName() {
-		return surName;
+	public final StringProperty nickNameProperty() {
+		return this.nickName;
 	}
 
-	@XmlElement
-	public void setSurName(String surName) {
-		this.surName = surName;
-	}
-
-	public int getAge() {
-		return age;
+	public final String getNickName() {
+		return this.nickNameProperty().get();
 	}
 
 	@XmlElement
-	public void setAge(int age) {
-		this.age = age;
+	public final void setNickName(final String nickName) {
+		this.nickNameProperty().set(nickName);
 	}
 
-	public Image getAvatar() {
-		return avatar;
+	public final StringProperty firstNameProperty() {
+		return this.firstName;
 	}
 
-	@XmlElement
-	public void setAvatar(Image avatar) {
-		this.avatar = avatar;
-	}
-
-	public int getNbGameWon() {
-		return nbGameWon;
+	public final String getFirstName() {
+		return this.firstNameProperty().get();
 	}
 
 	@XmlElement
-	public void setNbGameWon(int nbGameWon) {
-		this.nbGameWon = nbGameWon;
+	public final void setFirstName(final String firstName) {
+		this.firstNameProperty().set(firstName);
 	}
 
-	public int getNbGameLost() {
-		return nbGameLost;
+	public final StringProperty surNameProperty() {
+		return this.surName;
 	}
 
-	@XmlElement
-	public void setNbGameLost(int nbGameLost) {
-		this.nbGameLost = nbGameLost;
-	}
-
-	public int getNbGameAbandonned() {
-		return nbGameAbandonned;
+	public final String getSurName() {
+		return this.surNameProperty().get();
 	}
 
 	@XmlElement
-	public void setNbGameAbandonned(int nbGameAbandonned) {
-		this.nbGameAbandonned = nbGameAbandonned;
+	public final void setSurName(final String surName) {
+		this.surNameProperty().set(surName);
+	}
+
+	public final IntegerProperty ageProperty() {
+		return this.age;
+	}
+
+	public final int getAge() {
+		return this.ageProperty().get();
+	}
+
+	@XmlElement
+	public final void setAge(final int age) {
+		this.ageProperty().set(age);
+	}
+
+	public final ObjectProperty<Image> avatarProperty() {
+		return this.avatar;
+	}
+
+	public final Image getAvatar() {
+		return this.avatarProperty().get();
+	}
+
+	@XmlElement
+	public final void setAvatar(final Image avatar) {
+		this.avatarProperty().set(avatar);
+	}
+
+	public final IntegerProperty nbGameWonProperty() {
+		return this.nbGameWon;
+	}
+
+	public final int getNbGameWon() {
+		return this.nbGameWonProperty().get();
+	}
+
+	@XmlElement
+	public final void setNbGameWon(final int nbGameWon) {
+		this.nbGameWonProperty().set(nbGameWon);
+	}
+
+	public final IntegerProperty nbGameLostProperty() {
+		return this.nbGameLost;
+	}
+
+	public final int getNbGameLost() {
+		return this.nbGameLostProperty().get();
+	}
+
+	@XmlElement
+	public final void setNbGameLost(final int nbGameLost) {
+		this.nbGameLostProperty().set(nbGameLost);
+	}
+
+	public final IntegerProperty nbGameAbandonnedProperty() {
+		return this.nbGameAbandonned;
+	}
+
+	public final int getNbGameAbandonned() {
+		return this.nbGameAbandonnedProperty().get();
+	}
+
+	@XmlElement
+	public final void setNbGameAbandonned(final int nbGameAbandonned) {
+		this.nbGameAbandonnedProperty().set(nbGameAbandonned);
 	}
 
 }

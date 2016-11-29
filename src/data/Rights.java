@@ -4,56 +4,65 @@ import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
 
+import javafx.beans.property.BooleanProperty;
+import javafx.beans.property.SimpleBooleanProperty;
+
 @XmlRootElement
-@XmlType(propOrder = {"profVisibility", "canJoinCreatedGame", "canSpectateCreatedGame"})
+@XmlType(propOrder = { "profVisibility", "canJoinCreatedGame", "canSpectateCreatedGame" })
 public class Rights {
-	private boolean profVisibility;
-	private boolean canJoinCreatedGame;
-	private boolean canSpectateCreatedGame;
-	
-	public Rights(){
-		
+	private final BooleanProperty profVisibility;
+	private final BooleanProperty canJoinCreatedGame;
+	private final BooleanProperty canSpectateCreatedGame;
+
+	public Rights() {
+		this.profVisibility = new SimpleBooleanProperty();
+		this.canJoinCreatedGame = new SimpleBooleanProperty();
+		this.canSpectateCreatedGame = new SimpleBooleanProperty();
 	}
-	
+
 	public Rights(boolean profVisibility, boolean canJoinCreatedGame, boolean canSpectateCreatedGame) {
-		this.profVisibility = profVisibility;
-		this.canJoinCreatedGame = canJoinCreatedGame;
-		this.canSpectateCreatedGame = canSpectateCreatedGame;
+		this.profVisibility = new SimpleBooleanProperty(profVisibility);
+		this.canJoinCreatedGame = new SimpleBooleanProperty(canJoinCreatedGame);
+		this.canSpectateCreatedGame = new SimpleBooleanProperty(canSpectateCreatedGame);
 	}
-	
-	/*
-	 * 
-	 * Getters & Setters
-	 * 
-	 * 
-	 */
 
-	public boolean isProfVisibility() {
-		return profVisibility;
+	public final BooleanProperty profVisibilityProperty() {
+		return this.profVisibility;
+	}
+
+	public final boolean isProfVisibility() {
+		return this.profVisibilityProperty().get();
 	}
 
 	@XmlElement
-	public void setProfVisibility(boolean profVisibility) {
-		this.profVisibility = profVisibility;
+	public final void setProfVisibility(final boolean profVisibility) {
+		this.profVisibilityProperty().set(profVisibility);
 	}
 
-	public boolean isCanJoinCreatedGame() {
-		return canJoinCreatedGame;
+	public final BooleanProperty canJoinCreatedGameProperty() {
+		return this.canJoinCreatedGame;
 	}
 
-	@XmlElement
-	public void setCanJoinCreatedGame(boolean canJoinCreatedGame) {
-		this.canJoinCreatedGame = canJoinCreatedGame;
-	}
-
-	public boolean isCanSpectateCreatedGame() {
-		return canSpectateCreatedGame;
+	public final boolean isCanJoinCreatedGame() {
+		return this.canJoinCreatedGameProperty().get();
 	}
 
 	@XmlElement
-	public void setCanSpectateCreatedGame(boolean canSpectateCreatedGame) {
-		this.canSpectateCreatedGame = canSpectateCreatedGame;
+	public final void setCanJoinCreatedGame(final boolean canJoinCreatedGame) {
+		this.canJoinCreatedGameProperty().set(canJoinCreatedGame);
 	}
-	
-	
+
+	public final BooleanProperty canSpectateCreatedGameProperty() {
+		return this.canSpectateCreatedGame;
+	}
+
+	public final boolean isCanSpectateCreatedGame() {
+		return this.canSpectateCreatedGameProperty().get();
+	}
+
+	@XmlElement
+	public final void setCanSpectateCreatedGame(final boolean canSpectateCreatedGame) {
+		this.canSpectateCreatedGameProperty().set(canSpectateCreatedGame);
+	}
+
 }

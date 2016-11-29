@@ -13,24 +13,29 @@ import org.w3c.dom.NodeList;
 import org.xml.sax.SAXException;
 
 import data.Profile;
+import javafx.beans.property.BooleanProperty;
+import javafx.beans.property.ObjectProperty;
+import javafx.beans.property.SimpleBooleanProperty;
+import javafx.beans.property.SimpleObjectProperty;
 
 public class ProfileManager {
-	private Boolean hasProfileOpened;
-	private Profile currentProfile;
+	private final BooleanProperty hasProfileOpened = new SimpleBooleanProperty();
+	private final ObjectProperty<Profile> currentProfile = new SimpleObjectProperty<Profile>();
 	/**
 	 * Variable qui contient le fichier XML parsé le plus récemment
 	 */
-	private Document parsedProfileXML = null;
+	private ObjectProperty<Document> parsedProfileXML = new SimpleObjectProperty<Document>();
 
 	public Profile createProfile(Object... args) {
 		return null;
 	}
 
 	/**
-	 * Cette méthode permet de vérifier si le login et le password sont corrects par rapport au fichier XML contenant le
-	 * profile du joueur. La variable met à jour l'attribut parsedProfileXML avec le fichier XML nouvellement parsé, ou
-	 * ne change pas l'attribut si le fichier à charger est le même.
-	 * 
+	 * Cette méthode permet de vérifier si le login et le password sont corrects
+	 * par rapport au fichier XML contenant le profile du joueur. La variable
+	 * met à jour l'attribut parsedProfileXML avec le fichier XML nouvellement
+	 * parsé, ou ne change pas l'attribut si le fichier à charger est le même.
+	 *
 	 * @param login
 	 * @param psw
 	 * @return true si correct, false sinon
@@ -39,12 +44,14 @@ public class ProfileManager {
 		final DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
 		try {
 			final DocumentBuilder builder = factory.newDocumentBuilder();
-			// TODO choisir un bon nom du fichier XML pour gérer le cas du doublon de profile. A voir quand la méthode
+			// TODO choisir un bon nom du fichier XML pour gérer le cas du
+			// doublon de profile. A voir quand la méthode
 			// createProfile sera implémentée
-			if (parsedProfileXML == null || !parsedProfileXML.getDocumentURI().equals(new File(login + ".xml").toURI().toString()))
-				parsedProfileXML = builder.parse(new File(login + ".xml"));
+			if (parsedProfileXML == null
+					|| !parsedProfileXML.get().getDocumentURI().equals(new File(login + ".xml").toURI().toString()))
+				this.setParsedProfileXML(builder.parse(new File(login + ".xml")));
 
-			final Element racine = parsedProfileXML.getDocumentElement();
+			final Element racine = parsedProfileXML.get().getDocumentElement();
 			final NodeList racineNoeuds = racine.getChildNodes();
 
 			final int nbRacineNoeuds = racineNoeuds.getLength();
@@ -78,34 +85,40 @@ public class ProfileManager {
 		return null;
 	}
 
-	/**
-	 * @return the hasProfileOpened
-	 */
-	public Boolean getHasProfileOpened() {
-		return hasProfileOpened;
+	public final BooleanProperty hasProfileOpenedProperty() {
+		return this.hasProfileOpened;
 	}
 
-	/**
-	 * @param hasProfileOpened
-	 *            the hasProfileOpened to set
-	 */
-	public void setHasProfileOpened(Boolean hasProfileOpened) {
-		this.hasProfileOpened = hasProfileOpened;
+	public final boolean isHasProfileOpened() {
+		return this.hasProfileOpenedProperty().get();
 	}
 
-	/**
-	 * @return the currentProfile
-	 */
-	public Profile getCurrentProfile() {
-		return currentProfile;
+	public final void setHasProfileOpened(final boolean hasProfileOpened) {
+		this.hasProfileOpenedProperty().set(hasProfileOpened);
 	}
 
-	/**
-	 * @param currentProfile
-	 *            the currentProfile to set
-	 */
-	public void setCurrentProfile(Profile currentProfile) {
-		this.currentProfile = currentProfile;
+	public final ObjectProperty<Profile> currentProfileProperty() {
+		return this.currentProfile;
+	}
+
+	public final Profile getCurrentProfile() {
+		return this.currentProfileProperty().get();
+	}
+
+	public final void setCurrentProfile(final Profile currentProfile) {
+		this.currentProfileProperty().set(currentProfile);
+	}
+
+	public final ObjectProperty<Document> parsedProfileXMLProperty() {
+		return this.parsedProfileXML;
+	}
+
+	public final Document getParsedProfileXML() {
+		return this.parsedProfileXMLProperty().get();
+	}
+
+	public final void setParsedProfileXML(final Document parsedProfileXML) {
+		this.parsedProfileXMLProperty().set(parsedProfileXML);
 	}
 
 }

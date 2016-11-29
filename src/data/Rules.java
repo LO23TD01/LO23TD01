@@ -5,6 +5,11 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
+import javafx.beans.property.IntegerProperty;
+import javafx.beans.property.ObjectProperty;
+import javafx.beans.property.SimpleIntegerProperty;
+import javafx.beans.property.SimpleObjectProperty;
+
 public class Rules {
 
 	//Regles :
@@ -20,24 +25,18 @@ public class Rules {
 	//2 Décharge obligatoirement le nombre du premier joueur.
 	//3 Décharge au plus le nombre du premier joueur.
 	
-	private boolean isRampoAmeliore;
-	private boolean isForcedToFollowFirst;
-	private boolean isNenetteFlat;
 	private Variant variant;
 	private int throwMax;
 
+	private final ObjectProperty<Variant> variant;
+	private final IntegerProperty throwMax;
 
 	public Rules(Variant variant, int throwMax) {
-		super();
-		this.variant = variant;
-		this.throwMax = throwMax;
+		this.variant = new SimpleObjectProperty<Variant>(variant);
+		this.throwMax = new SimpleIntegerProperty(throwMax);
 	}
 
-
-	
-
-	private static class DiceThrow
-	implements Comparable<DiceThrow> {
+	private static class DiceThrow implements Comparable<DiceThrow> {
 
 		public User user;
 		public int[] dice;
@@ -139,8 +138,6 @@ public class Rules {
 	}
 
 
-
-
 	public List<User> getWinner(List<PlayerData> l)
 	{
 		List<DiceThrow> listDice = new ArrayList<DiceThrow>();
@@ -211,47 +208,45 @@ public class Rules {
 		
 		switch(this.variant){
 		case FREE_DISCHARGE:
-			if(actualPlayerData.getRerollCount()==this.throwMax || (actualPlayerData.getRerollCount()==firstPlayerData.getRerollCount() && !actualPlayer.isSame(firstPlayer)))
+			if (actualPlayerData.getRerollCount() == this.throwMax.get()
+					|| (actualPlayerData.getRerollCount() == firstPlayerData.getRerollCount() && !actualPlayer.isSame(firstPlayer)))
 				return false;
 			return true;
 		case FIXED_DISCHARGE:
-			if(actualPlayerData.getRerollCount()==this.throwMax)
+			if (actualPlayerData.getRerollCount() == this.throwMax.get())
 				return false;
 			return true;
 		case CONSTRAINED_DISCHARGE:
-			if(actualPlayerData.getRerollCount()==this.throwMax || (actualPlayerData.getRerollCount()==firstPlayerData.getRerollCount() && !actualPlayer.isSame(firstPlayer)))
+			if (actualPlayerData.getRerollCount() == this.throwMax.get()
+					|| (actualPlayerData.getRerollCount() == firstPlayerData.getRerollCount() && !actualPlayer.isSame(firstPlayer)))
 				return false;
 			return true;
-			default :
-//				throw new Exception("Etat Incoherent : Rules.java");
+		default:
+			// throw new Exception("Etat Incoherent : Rules.java");
 			return false;
 		}
 		
 		
 		
 	}
-	
-	public boolean hasToReroll(List<PlayerData> l, User actualPlayer, User firstPlayer)
-	{
-		switch(this.variant){
+
+	public boolean hasToReroll(List<PlayerData> l, User actualPlayer, User firstPlayer) {
+		switch (this.variant.get()) {
 		case FREE_DISCHARGE:
 			return false;
 		case FIXED_DISCHARGE:
 			return true;
 		case CONSTRAINED_DISCHARGE:
 			return !actualPlayer.isSame(firstPlayer);
-			default :
-//				throw new Exception("Etat Incoherent : Rules.java");
+		default:
+			// throw new Exception("Etat Incoherent : Rules.java");
 			return false;
 		}
 	}
 	
-	
-	
 	public boolean isRampoAmeliore() {
 		return isRampoAmeliore;
 	}
-
 
 	public void setRampoAmeliore(boolean isRampoAmeliore) {
 		this.isRampoAmeliore = isRampoAmeliore;
@@ -277,5 +272,28 @@ public class Rules {
 		this.isNenetteFlat = isNenetteFlat;
 	}
 
-	
+	public final ObjectProperty<Variant> variantProperty() {
+		return this.variant;
+	}
+
+	public final Variant getVariant() {
+		return this.variantProperty().get();
+	}
+
+	public final void setVariant(final Variant variant) {
+		this.variantProperty().set(variant);
+	}
+
+	public final IntegerProperty throwMaxProperty() {
+		return this.throwMax;
+	}
+
+	public final int getThrowMax() {
+		return this.throwMaxProperty().get();
+	}
+
+	public final void setThrowMax(final int throwMax) {
+		this.throwMaxProperty().set(throwMax);
+	}
+
 }

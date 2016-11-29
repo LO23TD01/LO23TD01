@@ -1,77 +1,32 @@
 package data;
 
+import javafx.beans.property.SimpleStringProperty;
+import javafx.beans.property.StringProperty;
+
 public class IPData {
-	private String value;
+	private final StringProperty value;
 
 	/**
-	 * 
+	 *
 	 */
 	public IPData() {
-		super();
+		this.value = new SimpleStringProperty();
 	}
 
 	public IPData(String value) {
-		this.value = value;
+		this.value = new SimpleStringProperty(value);
 	}
 
-	/**
-	 * @return the value
-	 */
-	public String getValue() {
-		return value;
+	public final StringProperty valueProperty() {
+		return this.value;
 	}
 
-	/**
-	 * @param value
-	 *            the value to set
-	 */
-	public void setValue(String value) {
-		this.value = value;
+	public final String getValue() {
+		return this.valueProperty().get();
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see java.lang.Object#hashCode()
-	 */
-	@Override
-	public int hashCode() {
-		final int prime = 31;
-		int result = 1;
-		result = prime * result + ((value == null) ? 0 : value.hashCode());
-		return result;
-	}
-
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see java.lang.Object#equals(java.lang.Object)
-	 */
-	@Override
-	public boolean equals(Object obj) {
-		if (this == obj)
-			return true;
-		if (obj == null)
-			return false;
-		if (getClass() != obj.getClass())
-			return false;
-		IPData other = (IPData) obj;
-		if (value == null) {
-			if (other.value != null)
-				return false;
-		} else if (!value.equals(other.value))
-			return false;
-		return true;
-	}
-
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see java.lang.Object#toString()
-	 */
-	@Override
-	public String toString() {
-		return "IPData [value=" + value + "]";
+	public final void setValue(final String value) {
+		this.valueProperty().set(value);
 	}
 
 }

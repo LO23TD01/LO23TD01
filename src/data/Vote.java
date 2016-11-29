@@ -1,34 +1,56 @@
 package data;
 
+import javafx.beans.property.BooleanProperty;
+import javafx.beans.property.ObjectProperty;
+import javafx.beans.property.SimpleBooleanProperty;
+import javafx.beans.property.SimpleObjectProperty;
+
 public class Vote {
-	private User user;
-	private boolean value;
-	private GameTable parent;
-	
+	private final ObjectProperty<User> user;
+	private final BooleanProperty value;
+	private final ObjectProperty<GameTable> parent;
+
 	public Vote(User user, boolean value, GameTable parent) {
 		super();
-		this.user = user;
-		this.value = value;
-		this.parent = parent;
+		this.user = new SimpleObjectProperty<User>(user);
+		this.value = new SimpleBooleanProperty(value);
+		this.parent = new SimpleObjectProperty<GameTable>(parent);
 	}
-	public User getUser() {
-		return user;
+
+	public final ObjectProperty<User> userProperty() {
+		return this.user;
 	}
-	public void setUser(User user) {
-		this.user = user;
+
+	public final User getUser() {
+		return this.userProperty().get();
 	}
-	public boolean isValue() {
-		return value;
+
+	public final void setUser(final User user) {
+		this.userProperty().set(user);
 	}
-	public void setValue(boolean value) {
-		this.value = value;
+
+	public final BooleanProperty valueProperty() {
+		return this.value;
 	}
-	public GameTable getParent() {
-		return parent;
+
+	public final boolean isValue() {
+		return this.valueProperty().get();
 	}
-	public void setParent(GameTable parent) {
-		this.parent = parent;
+
+	public final void setValue(final boolean value) {
+		this.valueProperty().set(value);
 	}
-	
-	
+
+	public final ObjectProperty<GameTable> parentProperty() {
+		return this.parent;
+	}
+
+	public final GameTable getParent() {
+		return this.parentProperty().get();
+	}
+
+	public final void setParent(final GameTable parent) {
+		this.parentProperty().set(parent);
+	}
+
 }

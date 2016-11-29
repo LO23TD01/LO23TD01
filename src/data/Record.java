@@ -1,31 +1,31 @@
 package data;
 
-import java.util.ArrayList;
 import java.util.List;
 
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
+
 public class Record {
-	private List<GameState> data;
+	private final ObservableList<GameState> data = FXCollections.observableArrayList();
 
 	public Record() {
-		this.data = new ArrayList<GameState>();
-	}
-	
-	public Record(List<GameState> data, GameTable parent) {
-		this.data = data;
 	}
 
-	public void addState(GameState s){
+	public Record(List<GameState> data) {
+		this.data.addAll(data);
+	}
+
+	public void addState(GameState s) {
 		this.data.add(s);
 	}
 
-	public List<GameState> getData() {
+	public ObservableList<GameState> getData() {
 		return data;
 	}
 
 	public void setData(List<GameState> data) {
-		this.data = data;
+		this.data.clear();
+		this.data.addAll(data);
 	}
 
-	
-	
 }

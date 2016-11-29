@@ -4,155 +4,139 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import javafx.beans.property.IntegerProperty;
+import javafx.beans.property.ObjectProperty;
+import javafx.beans.property.SimpleIntegerProperty;
+import javafx.beans.property.SimpleObjectProperty;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
+
 public class GameState {
-	private int chipStack;
-	private List<User> playerList;
-	private List<PlayerData> dataList;
-	private User firstPlayer;
-	private User actualPlayer;
-	private State state;
-	private Rules rules;
-	private List<User> winners;
-	private List<User> losers;
-	private List<PlayerData> dataTieList;
-	private TurnState turnState;
-	private User winnerGame; //le premier avec des jetons qui n'en a plus
-	private User loserGame; //le dernier avec des jetons.
+	private final IntegerProperty chipStack;
+	private final ObservableList<User> playerList = FXCollections.observableArrayList();
+	private final ObservableList<PlayerData> dataList = FXCollections.observableArrayList();
+	private final ObjectProperty<User> firstPlayer;
+	private final ObjectProperty<User> actualPlayer;
+	private final ObjectProperty<State> state;
+	private final ObjectProperty<Rules> rules;
+	private ObservableList<User> winners = FXCollections.observableArrayList();
+	private ObservableList<User> losers = FXCollections.observableArrayList();
+	private ObservableList<PlayerData> dataTieList = FXCollections.observableArrayList();
+	private ObjectProperty<TurnState> turnState;
+	private ObjectProperty<User> winnerGame; // le premier avec des jetons qui n'en a plus
+	private ObjectProperty<User> loserGame; // le dernier avec des jetons.
 
-	
-	
-	
-	public GameState(int chipStack, List<User> playerList, List<PlayerData> dataList, User firstPlayer,
-			User actualPlayer, State state, Rules rules, List<User> winners, List<User> losers,
-			List<PlayerData> dataTieList, TurnState turnState, User winnerGame, User loserGame) {
-		super();
-		this.chipStack = chipStack;
-		this.playerList = playerList;
-		this.dataList = dataList;
-		this.firstPlayer = firstPlayer;
-		this.actualPlayer = actualPlayer;
-		this.state = state;
-		this.rules = rules;
-		this.winners = winners;
-		this.losers = losers;
-		this.dataTieList = dataTieList;
-		this.turnState = turnState;
-		this.winnerGame = winnerGame;
-		this.loserGame = loserGame;
+	public GameState(int chipStack, List<User> playerList, List<PlayerData> dataList, User firstPlayer, User actualPlayer, State state, Rules rules,
+			List<User> winners, List<User> losers, List<PlayerData> dataTieList, TurnState turnState, User winnerGame, User loserGame) {
+		this.chipStack = new SimpleIntegerProperty(chipStack);
+		this.playerList.addAll(playerList);
+		this.dataList.addAll(dataList);
+		this.firstPlayer = new SimpleObjectProperty<User>(firstPlayer);
+		this.actualPlayer = new SimpleObjectProperty<User>(actualPlayer);
+		this.state = new SimpleObjectProperty<State>(state);
+		this.rules = new SimpleObjectProperty<Rules>(rules);
+		this.winners.addAll(winners);
+		this.losers.addAll(losers);
+		this.dataTieList.addAll(dataTieList);
+		this.turnState = new SimpleObjectProperty<TurnState>(turnState);
+		this.winnerGame = new SimpleObjectProperty<User>(winnerGame);
+		this.loserGame = new SimpleObjectProperty<User>(loserGame);
 	}
-
 
 	/**
 	 * @param param
 	 * @param playerList
-	 * @throws Exception 
-	 * 
+	 * @throws Exception
+	 *
 	 */
-	public GameState(Parameters param, List<User> playerList)  {
-		super();
-//		if (playerList.isEmpty())
-//			throw new Exception("Erreur crÃ©ation GameState, aucun user !");
-		this.chipStack = param.getNbChip();
-		this.playerList = playerList;
-		this.dataList = new ArrayList<PlayerData>();
+	public GameState(Parameters param, List<User> playerList) {
+		// if (playerList.isEmpty())
+		// throw new Exception("Erreur crÃ©ation GameState, aucun user !");
+
+		this.chipStack = new SimpleIntegerProperty(param.getNbChip());
+		this.playerList.addAll(playerList);
+		this.firstPlayer = new SimpleObjectProperty<User>(playerList.get(0));
+		this.actualPlayer = new SimpleObjectProperty<User>(playerList.get(0));
+		this.state = new SimpleObjectProperty<State>(State.PRESTART);
+		this.rules = new SimpleObjectProperty<Rules>(param.getRules());
+		this.turnState = new SimpleObjectProperty<TurnState>(TurnState.INIT);
+		this.winnerGame = new SimpleObjectProperty<User>();
+		this.loserGame = new SimpleObjectProperty<User>();
+
 		for (User player : playerList) {
 			dataList.add(new PlayerData(player));
 		}
-		this.firstPlayer = playerList.get(0);
-		this.actualPlayer = playerList.get(0);
-		this.state = State.PRESTART;
-		this.rules = param.getRules(); //référence uniquement
+
+	}
+
+	// methode pour faciliter la tache de l'engine
+	// Va automatiquement lï¿½ oï¿½ necessaire : dataList dans le premier tour de table, dataTieList dans les tours de Tie Breaker.
+	// il va remplacer la data du player par celle en argument;
+	public void replaceData(PlayerData pData) {
+		if (this.turnState.get() == TurnState.INIT || this.turnState.get() == TurnState.FIRST_ROUND) {
+			// if(pData.getPlayer().getSame(this.playerList)==null)
+			// throw new Exception("Le joueur n'appartient pas ï¿½ cette partie. Le joueur doit appartient ï¿½ cette partie pour remplacer ses donnï¿½es.");
+			// else if(pData.getPlayer().getSame(this.dataList.stream().map(d->d.getPlayer()).collect(Collectors.toList()))==null)
+			// throw new Exception("La donnï¿½e du joueur n'existe pas. Le joueur doit avoir des donnï¿½es pour les remplacer.");
+			List<PlayerData> newList = this.dataList.stream().filter(d -> !d.getPlayer().isSame(pData.getPlayer())) // on prends toutes les donnï¿½es
+																													// n'appartenant pas ï¿½ notre joueur.
+					.collect(Collectors.toList());
+			newList.add(pData);
+			this.setDataList(newList);
+		} else {
+			// if(pData.getPlayer().getSame(this.playerList)==null)
+			// throw new Exception("Le joueur n'appartient pas ï¿½ cette partie. Le joueur doit appartient ï¿½ cette partie pour remplacer ses donnï¿½es.");
+			// TODO verifier que le Tie existe
+			// else if(pData.getPlayer().getSame(this.dataTielist.stream().map(d->d.getPlayer()).collect(Collectors.toList()))==null)
+			// throw new Exception("La donnï¿½e du joueur n'existe pas. Le joueur doit avoir des donnï¿½es pour les remplacer.");
+			List<PlayerData> newList = this.dataTieList.stream().filter(d -> !d.getPlayer().isSame(pData.getPlayer())) // on prends toutes les donnï¿½es
+																														// n'appartenant pas ï¿½ notre joueur.
+					.collect(Collectors.toList());
+			newList.add(pData);
+			this.setDataTieList(newList);
+		}
+	}
+
+	// methode pour faciliter la tache de l'engine
+	// il renvoie la data du player en argument;
+	// tie en argument spï¿½cifie quelle donnï¿½e on recherche
+	public PlayerData getData(User u, boolean tie) {
+		if (!tie) {
+			// if(u.getSame(this.playerList)==null)
+			// throw new Exception("Le joueur n'appartient pas ï¿½ cette partie. Le joueur doit appartient ï¿½ cette partie pour obtenir ses donnï¿½es.");
+			// else if(u.getSame(this.dataList.stream().map(d->d.getPlayer()).collect(Collectors.toList()))==null)
+			// throw new Exception("La donnï¿½e du joueur n'existe pas. Le joueur doit avoir des donnï¿½es pour les recuperer.");
+			PlayerData data = this.dataList.stream().filter(d -> u.isSame(d.getPlayer())).findFirst().get();
+			return data;
+		} else {
+			// if(u.getSame(this.playerList)==null)
+			// throw new Exception("Le joueur n'appartient pas ï¿½ cette partie. Le joueur doit appartient ï¿½ cette partie pour obtenir ses donnï¿½es.");
+			// TODO verifier que le TIE existe
+			// else if(u.getSame(this.dataTieList.stream().map(d->d.getPlayer()).collect(Collectors.toList()))==null)
+			// throw new Exception("La donnï¿½e du joueur n'existe pas. Le joueur doit avoir des donnï¿½es pour les recuperer.");
+			PlayerData data = this.dataTieList.stream().filter(d -> u.isSame(d.getPlayer())).findFirst().get();
+			return data;
+		}
+
+	}
+
+	// remets ï¿½ null et ï¿½ 0 les valeurs de lancer de dï¿½s, winner,loser , etc ...
+	// mets le player actuel et first player ï¿½ la bonne valeur
+	public void nextTurn(User firstPlayer) {
+		List<PlayerData> newList = new ArrayList<PlayerData>();
+		for (PlayerData pd : this.dataList)
+			newList.add(new PlayerData(pd, true));
+		this.setDataList(newList);
+		this.setFirstPlayer(firstPlayer);
+		this.setActualPlayer(firstPlayer);
 		this.winners = null;
 		this.losers = null;
 		this.dataTieList = null;
-		this.turnState = TurnState.INIT;
-		this.winnerGame = null;
-		this.loserGame = null;
+		this.setTurnState(TurnState.INIT);
 	}
 
-	//methode pour faciliter la tache de l'engine
-	//Va automatiquement là où necessaire : dataList dans le premier tour de table, dataTieList dans les tours de Tie Breaker.
-	//il va remplacer la data du player par celle en argument;
-	public void replaceData(PlayerData pData)
-	{
-		if(this.turnState==TurnState.INIT || this.turnState==TurnState.FIRST_ROUND)
-		{
-//		if(pData.getPlayer().getSame(this.playerList)==null)
-//			throw new Exception("Le joueur n'appartient pas à cette partie. Le joueur doit appartient à cette partie pour remplacer ses données.");
-//		else if(pData.getPlayer().getSame(this.dataList.stream().map(d->d.getPlayer()).collect(Collectors.toList()))==null)
-//			throw new Exception("La donnée du joueur n'existe pas. Le joueur doit avoir des données pour les remplacer.");
-		List<PlayerData> newList = this.dataList.stream()
-				.filter(d->!d.getPlayer().isSame(pData.getPlayer())) // on prends toutes les données n'appartenant pas à notre joueur.
-				.collect(Collectors.toList());
-		newList.add(pData); 
-		this.dataList = newList;
-		}
-		else
-		{
-//			if(pData.getPlayer().getSame(this.playerList)==null)
-//			throw new Exception("Le joueur n'appartient pas à cette partie. Le joueur doit appartient à cette partie pour remplacer ses données.");
-			//TODO verifier que le Tie existe
-//		else if(pData.getPlayer().getSame(this.dataTielist.stream().map(d->d.getPlayer()).collect(Collectors.toList()))==null)
-//			throw new Exception("La donnée du joueur n'existe pas. Le joueur doit avoir des données pour les remplacer.");
-		List<PlayerData> newList = this.dataTieList.stream()
-				.filter(d->!d.getPlayer().isSame(pData.getPlayer())) // on prends toutes les données n'appartenant pas à notre joueur.
-				.collect(Collectors.toList());
-		newList.add(pData); 
-		this.dataTieList = newList;
-		}
-	}
-	
-	//methode pour faciliter la tache de l'engine
-		//il renvoie la data du player en argument;
-		//tie en argument spécifie quelle donnée on recherche
-		public PlayerData getData(User u, boolean tie)
-		{
-			if(!tie){
-//			if(u.getSame(this.playerList)==null)
-//				throw new Exception("Le joueur n'appartient pas à cette partie. Le joueur doit appartient à cette partie pour obtenir ses données.");
-//			else if(u.getSame(this.dataList.stream().map(d->d.getPlayer()).collect(Collectors.toList()))==null)
-//				throw new Exception("La donnée du joueur n'existe pas. Le joueur doit avoir des données pour les recuperer.");
-			PlayerData data = this.dataList.stream()
-			.filter(d->u.isSame(d.getPlayer()))
-			.findFirst()
-			.get();
-			return data;
-		}
-			else
-			{
-//					if(u.getSame(this.playerList)==null)
-//						throw new Exception("Le joueur n'appartient pas à cette partie. Le joueur doit appartient à cette partie pour obtenir ses données.");
-				//TODO verifier que le TIE existe
-//					else if(u.getSame(this.dataTieList.stream().map(d->d.getPlayer()).collect(Collectors.toList()))==null)
-//						throw new Exception("La donnée du joueur n'existe pas. Le joueur doit avoir des données pour les recuperer.");
-					PlayerData data = this.dataTieList.stream()
-					.filter(d->u.isSame(d.getPlayer()))
-					.findFirst()
-					.get();
-					return data;
-			}
-				
-		}
-	
-		//remets à null et à 0 les valeurs de lancer de dés, winner,loser , etc ...
-		//mets le player actuel et first player à la bonne valeur
-		public void nextTurn(User firstPlayer)
-		{
-			List<PlayerData> newList = new ArrayList<PlayerData>();
-			for(PlayerData pd : this.dataList)
-				newList.add(new PlayerData(pd,true));
-			this.dataList = newList;
-			this.firstPlayer = firstPlayer;
-			this.actualPlayer = firstPlayer;
-			this.winners = null;
-			this.losers = null;
-			this.dataTieList = null;
-			this.turnState = TurnState.INIT;
-		}
-	
 	/*
-	 * TO REVIEW : vÃ©rification selon le state actuel, add user fonctionne
-	 * seulement en phase de prestart ? + vÃ©rifier l'unicitÃ©
+	 * TO REVIEW : vÃ©rification selon le state actuel, add user fonctionne seulement en phase de prestart ? + vÃ©rifier l'unicitÃ©
 	 */
 	public void add(User user) {
 		playerList.add(user);
@@ -160,7 +144,7 @@ public class GameState {
 	}
 
 	/*
-	 * 
+	 *
 	 */
 	public void remove(User user) {
 		for (User player : playerList) {
@@ -174,239 +158,208 @@ public class GameState {
 	}
 
 	/*
-	 * Permet de rÃ©cupÃ©rer le joueur suivant dans la suite. Renvoit le premier
-	 * joueur dans la liste si on est arrivÃ© Ã  la fin.
-	 * S'adapte au type de tour et à la pahse du tour.
+	 * Permet de rÃ©cupÃ©rer le joueur suivant dans la suite. Renvoit le premier joueur dans la liste si on est arrivÃ© Ã  la fin. S'adapte au type de tour et ï¿½ la
+	 * pahse du tour.
 	 */
 	public User getNextPlayer() {
 		int nextIndex;
-		if (this.turnState ==  TurnState.WINNER_TIE_ROUND)
-		{
-			nextIndex  = this.winners.indexOf(this.actualPlayer); //-1 si pas trouvé
+		if (this.turnState.get() == TurnState.WINNER_TIE_ROUND) {
+			nextIndex = this.winners.indexOf(this.actualPlayer); // -1 si pas trouvï¿½
 			nextIndex = (nextIndex + 1) % this.winners.size();
 			return this.winners.get(nextIndex);
-		}	
-		else if(this.turnState == TurnState.LOSER_TIE_ROUND){
-			nextIndex  = this.losers.indexOf(this.actualPlayer); //-1 si pas trouvé
+		} else if (this.turnState.get() == TurnState.LOSER_TIE_ROUND) {
+			nextIndex = this.losers.indexOf(this.actualPlayer); // -1 si pas trouvï¿½
 			nextIndex = (nextIndex + 1) % this.losers.size();
 			return this.losers.get(nextIndex);
-		}
-		else{
-			switch(this.state)
-			{
+		} else {
+			switch (this.state.get()) {
 			case PRESTART:
 			case SELECTION:
-			case CHARGING: //tous les 3 les mêmes
+			case CHARGING: // tous les 3 les mï¿½mes
 				nextIndex = (this.playerList.indexOf(this.actualPlayer) + 1) % this.playerList.size();
 				return playerList.get(nextIndex);
 			case DISCHARGING:
 				nextIndex = (this.playerList.indexOf(this.actualPlayer) + 1) % this.playerList.size();
-				while(this.getData(this.playerList.get(nextIndex), false).getChip()!=0)
+				while (this.getData(this.playerList.get(nextIndex), false).getChip() != 0)
 					nextIndex = (nextIndex + 1) % this.playerList.size();
 				return this.playerList.get(nextIndex);
 			case END:
-				//TOREVIEW envoyer exception ? ca devrait pas être ici
-				default:
-					//TOREVIEW envoyer exception ? ca devrait pas être ici
-					nextIndex = (this.playerList.indexOf(this.actualPlayer) + 1) % this.playerList.size();
-					return this.playerList.get(nextIndex);
+				// TOREVIEW envoyer exception ? ca devrait pas ï¿½tre ici
+			default:
+				// TOREVIEW envoyer exception ? ca devrait pas ï¿½tre ici
+				nextIndex = (this.playerList.indexOf(this.actualPlayer) + 1) % this.playerList.size();
+				return this.playerList.get(nextIndex);
 			}
-		
+
 		}
 	}
-	
-	
-	
 
-	//OBSOLETE
-//	/*
-//	 * TODO Le joueur demande lancer les dÃ©s. Renvoit une exception si le joueur
-//	 * qui demande n'est pas le joueur actuel.
-//	 */
-//	public void askRoll(User user) {
-//
-//	}
-//
-//	/*
-//	 * TODO Le joueur demande relancer les dÃ©s. Renvoit une exception si le
-//	 * joueur qui demande n'est pas le joueur actuel.
-//	 */
-//	public void askReroll(User user, boolean diceOne, boolean diceTwo, boolean diceThree) {
-//
-//	}
-
-	//OBSOLETE : utiliser replaceData à la place
-//	/*
-//	 * TODO Indique que le joueur Ã  lancÃ© les dÃ©s, et met Ã  jour le playerData
-//	 * avec les valeurs des dÃ©s.
-//	 */
-//	public void hasRolled(User user, int diceOne, int diceTwo, int DiceThree) {
-//
-//	}
-
-	/**
-	 * @return the chipStack
-	 */
-	public int getChipStack() {
-		return chipStack;
-	}
-
-	/**
-	 * @param chipStack
-	 *            the chipStack to set
-	 */
-	public void setChipStack(int chipStack) {
-		this.chipStack = chipStack;
-	}
-
-	/**
-	 * @return the playerList
-	 */
-	public List<User> getPlayerList() {
+	public ObservableList<User> getPlayerList() {
 		return playerList;
 	}
 
-	/**
-	 * @param playerList
-	 *            the playerList to set
-	 */
-	public void setPlayerList(List<User> playerList) {
-		this.playerList = playerList;
+	public void setPlayerList(List<User> playerList){
+		this.playerList.clear();
+		this.playerList.addAll(playerList);
 	}
 
-	/**
-	 * @return the dataList
-	 */
-	public List<PlayerData> getDataList() {
+	public ObservableList<PlayerData> getDataList() {
 		return dataList;
 	}
 
-	/**
-	 * @param dataList
-	 *            the dataList to set
-	 */
-	public void setDataList(List<PlayerData> dataList) {
-		this.dataList = dataList;
+	public void setDataList(List<PlayerData> dataList){
+		this.dataList.clear();
+		this.dataList.addAll(dataList);
 	}
 
-	/**
-	 * @return the firstPlayer
-	 */
-	public User getFirstPlayer() {
-		return firstPlayer;
-	}
-
-	/**
-	 * @param firstPlayer
-	 *            the firstPlayer to set
-	 */
-	public void setFirstPlayer(User firstPlayer) {
-		this.firstPlayer = firstPlayer;
-	}
-
-	/**
-	 * @return the actualPlayer
-	 */
-	public User getActualPlayer() {
-		return actualPlayer;
-	}
-
-	/**
-	 * @param actualPlayer
-	 *            the actualPlayer to set
-	 */
-	public void setActualPlayer(User actualPlayer) {
-		this.actualPlayer = actualPlayer;
-	}
-
-	/**
-	 * @return the state
-	 */
-	public State getState() {
-		return state;
-	}
-
-	/**
-	 * @param state
-	 *            the state to set
-	 */
-	public void setState(State state) {
-		this.state = state;
-	}
-
-	/**
-	 * @return the rules
-	 */
-	public Rules getRules() {
-		return rules;
-	}
-
-	/**
-	 * @param rules
-	 *            the rules to set
-	 */
-	public void setRules(Rules rules) {
-		this.rules = rules;
-	}
-
-	
-	
-	public List<User> getWinners() {
+	public ObservableList<User> getWinners() {
 		return winners;
 	}
 
-	public void setWinners(List<User> winners) {
-		this.winners = winners;
+	public void setWinners(List<User> winnersList){
+		this.winners.clear();
+		this.winners.addAll(winnersList);
 	}
 
-	public List<User> getLosers() {
+	public ObservableList<User> getLosers() {
 		return losers;
 	}
 
-	public void setLosers(List<User> losers) {
-		this.losers = losers;
+	public void setLosers(List<User> losersList){
+		this.losers.clear();
+		this.losers.addAll(losersList);
 	}
 
-	public List<PlayerData> getDataTieList() {
+	public ObservableList<PlayerData> getDataTieList() {
 		return dataTieList;
 	}
 
-	public void setDataTieList(List<PlayerData> dataTieList) {
-		this.dataTieList = dataTieList;
-	}
-
-	
-	
-	
-	public TurnState getTurnState() {
-		return turnState;
+	public void setDataTieList(List<PlayerData> dataTieList){
+		this.dataTieList.clear();
+		this.dataTieList.addAll(dataTieList);
 	}
 
 
-	public void setTurnState(TurnState turnState) {
-		this.turnState = turnState;
+	public final IntegerProperty chipStackProperty() {
+		return this.chipStack;
 	}
 
-
-	public User getWinnerGame() {
-		return winnerGame;
+	public final int getChipStack() {
+		return this.chipStackProperty().get();
 	}
 
-
-	public void setWinnerGame(User winnerGame) {
-		this.winnerGame = winnerGame;
+	public final void setChipStack(final int chipStack) {
+		this.chipStackProperty().set(chipStack);
 	}
 
-
-	public User getLoserGame() {
-		return loserGame;
+	public final ObjectProperty<User> firstPlayerProperty() {
+		return this.firstPlayer;
 	}
 
-
-	public void setLoserGame(User loserGame) {
-		this.loserGame = loserGame;
+	public final User getFirstPlayer() {
+		return this.firstPlayerProperty().get();
 	}
 
-	
+	public final void setFirstPlayer(final User firstPlayer) {
+		this.firstPlayerProperty().set(firstPlayer);
+	}
+
+	public final ObjectProperty<User> actualPlayerProperty() {
+		return this.actualPlayer;
+	}
+
+	public final User getActualPlayer() {
+		return this.actualPlayerProperty().get();
+	}
+
+	public final void setActualPlayer(final User actualPlayer) {
+		this.actualPlayerProperty().set(actualPlayer);
+	}
+
+	public final ObjectProperty<State> stateProperty() {
+		return this.state;
+	}
+
+	public final State getState() {
+		return this.stateProperty().get();
+	}
+
+	public final void setState(final State state) {
+		this.stateProperty().set(state);
+	}
+
+	public final ObjectProperty<Rules> rulesProperty() {
+		return this.rules;
+	}
+
+	public final Rules getRules() {
+		return this.rulesProperty().get();
+	}
+
+	public final void setRules(final Rules rules) {
+		this.rulesProperty().set(rules);
+	}
+
+	public final ObjectProperty<TurnState> turnStateProperty() {
+		return this.turnState;
+	}
+
+	public final TurnState getTurnState() {
+		return this.turnStateProperty().get();
+	}
+
+	public final void setTurnState(final TurnState turnState) {
+		this.turnStateProperty().set(turnState);
+	}
+
+	public final ObjectProperty<User> winnerGameProperty() {
+		return this.winnerGame;
+	}
+
+	public final User getWinnerGame() {
+		return this.winnerGameProperty().get();
+	}
+
+	public final void setWinnerGame(final User winnerGame) {
+		this.winnerGameProperty().set(winnerGame);
+	}
+
+	public final ObjectProperty<User> loserGameProperty() {
+		return this.loserGame;
+	}
+
+	public final User getLoserGame() {
+		return this.loserGameProperty().get();
+	}
+
+	public final void setLoserGame(final User loserGame) {
+		this.loserGameProperty().set(loserGame);
+	}
+
+	// OBSOLETE
+	// /*
+	// * TODO Le joueur demande lancer les dÃ©s. Renvoit une exception si le joueur
+	// * qui demande n'est pas le joueur actuel.
+	// */
+	// public void askRoll(User user) {
+	//
+	// }
+	//
+	// /*
+	// * TODO Le joueur demande relancer les dÃ©s. Renvoit une exception si le
+	// * joueur qui demande n'est pas le joueur actuel.
+	// */
+	// public void askReroll(User user, boolean diceOne, boolean diceTwo, boolean diceThree) {
+	//
+	// }
+
+	// OBSOLETE : utiliser replaceData ï¿½ la place
+	// /*
+	// * TODO Indique que le joueur Ã  lancÃ© les dÃ©s, et met Ã  jour le playerData
+	// * avec les valeurs des dÃ©s.
+	// */
+	// public void hasRolled(User user, int diceOne, int diceTwo, int DiceThree) {
+	//
+	// }
 
 }

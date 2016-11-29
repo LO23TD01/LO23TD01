@@ -1,62 +1,52 @@
 package data;
 
-import java.util.ArrayList;
 import java.util.List;
 
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
+
 public class Chat {
-	private List<User> voicedUserList ;
-	private List<User> listeningUserList;
-	private List<ChatMessage> messageList;
-	
-	//TODO
-	public void add(User user, boolean isVoiced)
-	{
-		//TODO;
+	private final ObservableList<User> voicedUserList = FXCollections.observableArrayList();
+	private final ObservableList<User> listeningUserList = FXCollections.observableArrayList();
+	private final ObservableList<ChatMessage> messageList = FXCollections.observableArrayList();
+
+	// TODO
+	public void add(User user, boolean isVoiced) {
+		// TODO;
 	}
-	
-	public void remove(User user)
-	{
-		//TODO;
+
+	public void remove(User user) {
+		// TODO;
 	}
-	//adduser
-	//removeUser
-	//chat a message
-	
-	
+	// adduser
+	// removeUser
+	// chat a message
+
+	public Chat() {
+	}
+
 	public Chat(List<User> voicedUserList, List<User> listeningUserList) {
-		super();
-		this.messageList = new ArrayList<ChatMessage>();
-		this.voicedUserList = voicedUserList;
-		this.listeningUserList = listeningUserList;
+		this.voicedUserList.addAll(voicedUserList);
+		this.listeningUserList.addAll(listeningUserList);
 	}
-	
-	
-	
+
 	public Chat(List<User> voicedUserList, List<User> listeningUserList, List<ChatMessage> messageList) {
 		super();
-		this.voicedUserList = voicedUserList;
-		this.listeningUserList = listeningUserList;
-		this.messageList = messageList;
+		this.voicedUserList.addAll(voicedUserList);
+		this.listeningUserList.addAll(listeningUserList);
+		this.messageList.addAll(messageList);
 	}
 
-
-
-	public List<User> getVoicedUserList() {
+	public ObservableList<User> getVoicedUserList() {
 		return voicedUserList;
 	}
-	public void setVoicedUserList(List<User> voicedUserList) {
-		this.voicedUserList = voicedUserList;
-	}
-	public List<User> getListeningUserList() {
+
+	public ObservableList<User> getListeningUserList() {
 		return listeningUserList;
 	}
-	public void setListeningUserList(List<User> listeningUserList) {
-		this.listeningUserList = listeningUserList;
-	}
-	public List<ChatMessage> getMessageList() {
+
+	public ObservableList<ChatMessage> getMessageList() {
 		return messageList;
 	}
-	public void setMessageList(List<ChatMessage> messageList) {
-		this.messageList = messageList;
-	}
+
 }

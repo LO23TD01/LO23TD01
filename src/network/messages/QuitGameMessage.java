@@ -17,8 +17,8 @@ public class QuitGameMessage implements IMessage {
 	
 	@Override
 	public void process(ServerDataEngine dataEngine) {
-		// dataEngine.quit(user, table); problème je n'ai pas de table, la méthode est quit(UUID user), conformément au diagramme de séquence
-		// conformément au même diagramme la méthode de l'interface Data devrait prendre uniquement un User
+		// dataEngine.quit(user, table); problÃ¨me je n'ai pas de table, la mÃ©thode est quit(UUID user), conformÃ©ment au diagramme de sÃ©quence
+		// conformÃ©ment au mÃªme diagramme la mÃ©thode de l'interface Data devrait prendre uniquement un User
 	}
 
 	@Override
