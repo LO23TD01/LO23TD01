@@ -148,9 +148,29 @@ public class MainApp extends Application {
 			openMain();
 	}
 	
+	private void openRegister(){
+		try {
+			FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("./view/registerWindow.fxml"));
+			AnchorPane root;
+			root = (AnchorPane) fxmlLoader.load();
+			Scene new_scene = new Scene(root, 400, 500);
+			Stage stage = new Stage();
+			stage.setTitle("Register");
+			stage.setScene(new_scene);
+			stage.show();
+			Stage this_window = (Stage)scene.getWindow();
+			this_window.close();
+
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+	
 	private void registerHandler(ActionEvent e){
 		Alert alert = new Alert(AlertType.INFORMATION, "Signal sent to data, preparing next window");
 		alert.showAndWait();
+		openRegister();
 	}
 	
 	private void editHandler(ActionEvent e){
