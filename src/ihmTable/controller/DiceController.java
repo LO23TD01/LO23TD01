@@ -3,61 +3,50 @@ package ihmTable.controller;
 import java.util.Random;
 
 import javafx.fxml.FXML;
-import javafx.scene.layout.AnchorPane;
-import javafx.scene.layout.Border;
-import javafx.scene.layout.BorderStroke;
-import javafx.scene.layout.BorderStrokeStyle;
-import javafx.scene.layout.BorderWidths;
-import javafx.scene.layout.CornerRadii;
-import javafx.scene.layout.GridPane;
-import javafx.scene.paint.Color;
-import javafx.scene.shape.Circle;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
+import javafx.scene.layout.StackPane;
 
 public class DiceController {
 
-	private static final BorderWidths BORDER_WIDTHS = new BorderWidths(2);
-	private static final CornerRadii CORNER_RADII = new CornerRadii(5);
+	private static final String SELECTED_CLASS = "selected";
+	private static final Image DICE1 = new Image("/ihmTable/resources/png/1.png");
+	private static final Image DICE2 = new Image("/ihmTable/resources/png/2.png");
+	private static final Image DICE3 = new Image("/ihmTable/resources/png/3.png");
+	private static final Image DICE4 = new Image("/ihmTable/resources/png/4.png");
+	private static final Image DICE5 = new Image("/ihmTable/resources/png/5.png");
+	private static final Image DICE6 = new Image("/ihmTable/resources/png/6.png");
 
     @FXML
-    private AnchorPane diceContainer;
+    private StackPane diceContainer;
 
-	@FXML
-	private GridPane dice;
+    @FXML
+    private ImageView dice;
 
 	private Random random;
-	private boolean selected;
-	private Border selectedBorder, unselectedBorder;
-
+	private boolean selected, selectable;
+	private int value;
 
 	public void initialize() {
-		selectedBorder = new Border(new BorderStroke(Color.GREEN, BorderStrokeStyle.SOLID, CORNER_RADII, BORDER_WIDTHS));
-		unselectedBorder = new Border(new BorderStroke(Color.BLACK, BorderStrokeStyle.SOLID, CORNER_RADII, BORDER_WIDTHS));
 		random = new Random();
-		setDiceValue();
+		setValue();
 		dice.setOnMouseClicked(event -> clicked());
 		selected = false;
+		selectable = true;
+		dice.setPreserveRatio(true);
+		dice.setSmooth(true);
+		dice.setCache(true);
 	}
 
-	private AnchorPane getDot() {
-		AnchorPane anchorPane = new AnchorPane();
-		Circle circle = new Circle(12, 12, 5);
-		circle.setFill(Color.BLACK);
-		anchorPane.getChildren().add(circle);
-		return anchorPane;
+	public void setValue() {
+		setValue(1 + random.nextInt(6 - 1 + 1));
 	}
 
-	public void clicked() {
-		selected = !selected;
-		if(selected) {
-			diceContainer.setBorder(selectedBorder);
-		} else {
-			diceContainer.setBorder(unselectedBorder);
-		}
+	public int getValue() {
+		return this.value;
 	}
 
-	public void setDiceValue() {
-		dice.getChildren().clear();
-		int value = 1 + random.nextInt(6 - 1 + 1);
+	public void setValue(int value) {
 		switch (value) {
 		case 1:
 			setOne();
@@ -80,44 +69,57 @@ public class DiceController {
 		default:
 			break;
 		}
+		this.value = value;
+	}
+
+	public void setDice(boolean selectable, int size) {
+	    setSelectable(selectable);
+	    setSize(size);
+	}
+
+	public void setSelectable(boolean selectable) {
+		this.selectable = selectable;
+	}
+
+	public void setSize(int size) {
+	    diceContainer.setPrefSize(size, size);
+	    dice.setFitHeight(size);
+	    dice.setFitWidth(size);
+	}
+
+	private void clicked() {
+		if(selectable) {
+			selected = !selected;
+			if(selected) {
+			    diceContainer.getStyleClass().add(SELECTED_CLASS);
+			} else {
+			    diceContainer.getStyleClass().remove(SELECTED_CLASS);
+			}
+		}
 	}
 
 	private void setOne() {
-		dice.add(getDot(), 1, 1);
+		dice.setImage(DICE1);
 	}
 
 	private void setTwo() {
-		dice.add(getDot(), 0, 0);
-		dice.add(getDot(), 2, 2);
+		dice.setImage(DICE2);
 	}
 
 	private void setThree() {
-		dice.add(getDot(), 1, 0);
-		dice.add(getDot(), 1, 1);
-		dice.add(getDot(), 1, 2);
+		dice.setImage(DICE3);
 	}
 
 	private void setFour() {
-		dice.add(getDot(), 0, 0);
-		dice.add(getDot(), 2, 0);
-		dice.add(getDot(), 0, 2);
-		dice.add(getDot(), 2, 2);
+		dice.setImage(DICE4);
 	}
 
 	private void setFive() {
-		dice.add(getDot(), 0, 0);
-		dice.add(getDot(), 2, 0);
-		dice.add(getDot(), 0, 2);
-		dice.add(getDot(), 2, 2);
-		dice.add(getDot(), 1, 1);
+		dice.setImage(DICE5);
 	}
 
 	private void setSix() {
-		dice.add(getDot(), 0, 0);
-		dice.add(getDot(), 2, 0);
-		dice.add(getDot(), 0, 1);
-		dice.add(getDot(), 2, 1);
-		dice.add(getDot(), 0, 2);
-		dice.add(getDot(), 2, 2);
+		dice.setImage(DICE6);
 	}
+
 }

@@ -34,8 +34,8 @@ public class DiceLauncherController {
 	}
 
 	private void launch() {
-		dice1.setDiceValue();
-		dice2.setDiceValue();
-		dice3.setDiceValue();
+		dice1.setValue();
+		dice2.setValue();
+		dice3.setValue();
 	}
 }
