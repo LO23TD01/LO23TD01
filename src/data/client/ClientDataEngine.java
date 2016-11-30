@@ -182,8 +182,8 @@ public class ClientDataEngine implements InterfaceDataIHMLobby, InterfaceDataIHM
 	public void logout() {
 		comClientInterface.logoutUserRequest(profileManager.getCurrentProfile().getUUID());
 		profileManager.logout(getLocalProfile());
-		this.setTableList(null);
-		this.setUserList(null);
+		this.tableList.clear();
+		this.userList.clear();
 	}
 
 	@Override
@@ -201,13 +201,12 @@ public class ClientDataEngine implements InterfaceDataIHMLobby, InterfaceDataIHM
 	@Override
 	public void addNewTable(GameTable g) {
 		// TODO Auto-generated method stub
-
+		// A voir avec la team IHM Lobby
 	}
 
 	@Override
 	public void askJoinTable(GameTable g, boolean b) {
-		// TODO Auto-generated method stub
-
+		comClientInterface.askJoinTable(this.getProfileManager().getCurrentProfile().getUUID(), g.getUid(), b);
 	}
 
 	@Override
@@ -242,14 +241,12 @@ public class ClientDataEngine implements InterfaceDataIHMLobby, InterfaceDataIHM
 
 	@Override
 	public void askRefreshUsersList() {
-		// TODO Auto-generated method stub
-
+		comClientInterface.askRefreshUsersList(this.getProfileManager().getCurrentProfile().getUUID());
 	}
 
 	@Override
 	public void getProfileFromOtherUser(User other) {
-		// TODO Auto-generated method stub
-
+		comClientInterface.getProfile(other.getPublicData().getUUID(), this.getProfileManager().getCurrentProfile().getUUID());
 	}
 
 	@Override
@@ -320,37 +317,37 @@ public class ClientDataEngine implements InterfaceDataIHMLobby, InterfaceDataIHM
 	@Override
 	public void refreshUsersList(List<User> l) {
 		// TODO Auto-generated method stub
-
+		// A voir avec IHM Main (observer)
 	}
 
 	@Override
 	public void updateUsersList(List<User> l) {
 		// TODO Auto-generated method stub
-
+		// A voir avec IHM Main (observer)
 	}
 
 	@Override
 	public void updateTablesList(List<GameTable> l) {
 		// TODO Auto-generated method stub
-
+		// A voir avec IHM Main (observer)
 	}
 
 	@Override
 	public void updateUsers(User u) {
 		// TODO Auto-generated method stub
-
+		// A voir avec IHM Main (observer)
 	}
 
 	@Override
 	public void updateUserProfile(User u) {
-		// TODO Auto-generated method stub
+		comClientInterface.updateUserProfile(u.getPublicData().getUUID(), u.getPublicData());
 
 	}
 
 	@Override
 	public void sendTableInfo(GameTable g) {
 		// TODO Auto-generated method stub
-
+		// A voir avec IHM Main (observer)
 	}
 
 	@Override
@@ -362,91 +359,91 @@ public class ClientDataEngine implements InterfaceDataIHMLobby, InterfaceDataIHM
 	@Override
 	public void setDice(int a, int b, int c) {
 		// TODO Auto-generated method stub
-
+		// A voir avec IHM Table : showDice(1, 2, 3)
 	}
 
 	@Override
 	public void hasSelected(User u, boolean a, boolean b, boolean c) {
 		// TODO Auto-generated method stub
-
+		// A voir avec IHM Table : updateSelection(UUID, 1, 2, 3)
 	}
 
 	@Override
 	public void hasThrown(User u, int a, int b, int c) {
 		// TODO Auto-generated method stub
-
+		// A voir avec IHM Table : updateResult(UUID, 1, 2, 3)
 	}
 
 	@Override
 	public void updateChips(User u, int a) {
 		// TODO Auto-generated method stub
-
+		// A voir avec IHM Table : updateChips(Profile, nb)
 	}
 
 	@Override
 	public void updateChips(User u1, User u2, int a) {
 		// TODO Auto-generated method stub
-
+		// A voir avec IHM Table : updateChips(Profile_winner, Profile_loser, nb)
 	}
 
 	@Override
 	public void startTurn() {
 		// TODO Auto-generated method stub
-
+		// A voir avec IHM Table : showDice()
 	}
 
 	@Override
 	public void isTurn(User u) {
 		// TODO Auto-generated method stub
-
+		// A voir avec IHM Table : showTurn(Profile)
 	}
 
 	@Override
 	public void stopGame(boolean a) {
 		// TODO Auto-generated method stub
-
+		// A voir avec IHM Table : showStopGame(a)
 	}
 
 	@Override
 	public void askStopGame() {
 		// TODO Auto-generated method stub
-
+		// A voir avec IHM Table : askStopGame()
 	}
 
 	@Override
 	public void playerQuitGame(User u) {
 		// TODO Auto-generated method stub
-
+		// A voir avec IHM Table : updateView()
 	}
 
 	@Override
 	public void hasAcceptedReplay(User u) {
 		// TODO Auto-generated method stub
-
+		// A voir avec IHM Table : updateViewReplay(UUID)
 	}
 
 	@Override
 	public void hasRefusedReplay(User u) {
 		// TODO Auto-generated method stub
-
+		// A voir avec IHM Table : removeViewReplay(UUID)
 	}
 
 	@Override
 	public void hasWon(User u) {
 		// TODO Auto-generated method stub
-
+		// A voir avec IHM Table : gameWon() / hasWon(Profile)
 	}
 
 	@Override
 	public void showTimer() {
 		// TODO Auto-generated method stub
-
+		// A voir avec IHM Table : showTimer()
 	}
 
 	@Override
 	public void newPlayerOnTable(User u) {
 		// TODO Auto-generated method stub
-
+		// A voir avec IHM Table : newPlayerOnTable(Profile)
 	}
 
 	@Override
