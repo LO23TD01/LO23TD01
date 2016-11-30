@@ -20,7 +20,7 @@ import network.client.ComClientInterface;
 
 public class ClientDataEngine implements InterfaceDataIHMLobby, InterfaceDataIHMTable, InterfaceDataNetwork {
 
-	private final ObjectProperty<ProfileManager> profileManager;
+	private final ObjectProperty<ProfileManager> profileManager = new SimpleObjectProperty<ProfileManager>();
 	private final ObservableList<User> userList = FXCollections.observableArrayList();
 	private final ObservableList<GameTable> tableList = FXCollections.observableArrayList();
 	private final ObjectProperty<GameTable> actualTable;
@@ -35,108 +35,31 @@ public class ClientDataEngine implements InterfaceDataIHMLobby, InterfaceDataIHM
 	 */
 	public ClientDataEngine() {
 		super();
-		this.profileManager = new ProfileManager();
-		this.userList = new ArrayList<User>();
-		this.tableList = new ArrayList<GameTable>();
+		this.profileManager.set(new ProfileManager());;
 		this.actualTable = null;
 		this.actualRole = null;
 	}
 
-	/**
-	 * @return the profileManager
-	 */
-	public ProfileManager getProfileManager() {
-		return profileManager;
-	}
-
-	/**
-	 * @param profileManager
-	 *            the profileManager to set
-	 */
-	public void setProfileManager(ProfileManager profileManager) {
-		this.profileManager = profileManager;
-	}
-
-	/**
-	 * @return the userList
-	 */
-	public List<User> getUserList() {
-		return userList;
-	}
-
-	/**
-	 * @param userList
-	 *            the userList to set
-	 */
-	public void setUserList(List<User> userList) {
-		this.userList = userList;
-	}
-
-	/**
-	 * @return the tableList
-	 */
-	public List<GameTable> getTableList() {
-		return tableList;
-	}
-
-	/**
-	 * @param tableList
-	 *            the tableList to set
-	 */
-	public void setTableList(List<GameTable> tableList) {
-		this.tableList = tableList;
-	}
-
-	/**
-	 * @return the actualTable
-	 */
-	public GameTable getActualTable() {
-		return actualTable;
-	}
-
-	/**
-	 * @param actualTable
-	 *            the actualTable to set
-	 */
-	public void setActualTable(GameTable actualTable) {
-		this.actualTable = actualTable;
-	}
-
-	/**
-	 * @return the actualRole
-	 */
-	public UserRole getActualRole() {
-		return actualRole;
-	}
-
-	/**
-	 * @param actualRole
-	 *            the actualRole to set
-	 */
-	public void setActualRole(UserRole actualRole) {
-		this.actualRole = actualRole;
-	}
-
 	@Override
 	public void throwDice(boolean a, boolean b, boolean c) {
-		comClientInterface.throwDice(profileManager.getCurrentProfile().getUUID(), a, b, c);
+		comClientInterface.throwDice(profileManager.get().getCurrentProfile().getUUID(), a, b, c);
 
 	}
 
 	@Override
 	public void selectDice(boolean a, boolean b, boolean c) {
-		comClientInterface.selectDice(profileManager.getCurrentProfile().getUUID(), a, b, c);
+		comClientInterface.selectDice(profileManager.get().getCurrentProfile().getUUID(), a, b, c);
 	}
 
 	@Override
 	public void launchGame() {
-		comClientInterface.launchGame(profileManager.getCurrentProfile().getUUID());
+		comClientInterface.launchGame(profileManager.get().getCurrentProfile().getUUID());
 
 	}
 
 	@Override
 	public void quitGame() {
-		comClientInterface.quit(profileManager.getCurrentProfile().getUUID());
+		comClientInterface.quit(profileManager.get().getCurrentProfile().getUUID());
 
 	}
 
@@ -147,12 +70,12 @@ public class ClientDataEngine implements InterfaceDataIHMLobby, InterfaceDataIHM
 
 	@Override
 	public void acceptReplay() {
-		comClientInterface.acceptReplay(profileManager.getCurrentProfile().getUUID());
+		comClientInterface.acceptReplay(profileManager.get().getCurrentProfile().getUUID());
 	}
 
 	@Override
 	public void refuseReplay() {
-		comClientInterface.refuseReplay(profileManager.getCurrentProfile().getUUID());
+		comClientInterface.refuseReplay(profileManager.get().getCurrentProfile().getUUID());
 	}
 
 	@Override
@@ -180,8 +103,8 @@ public class ClientDataEngine implements InterfaceDataIHMLobby, InterfaceDataIHM
 
 	@Override
 	public void logout() {
-		comClientInterface.logoutUserRequest(profileManager.getCurrentProfile().getUUID());
-		profileManager.logout(getLocalProfile());
+		comClientInterface.logoutUserRequest(profileManager.get().getCurrentProfile().getUUID());
+		profileManager.get().logout(getLocalProfile());
 		this.tableList.clear();
 		this.userList.clear();
 	}
@@ -305,7 +228,7 @@ public class ClientDataEngine implements InterfaceDataIHMLobby, InterfaceDataIHM
 
 	@Override
 	public UserRole getUserRole() {
-		return this.actualRole;
+		return this.actualRole.get();
 	}
 
 	@Override

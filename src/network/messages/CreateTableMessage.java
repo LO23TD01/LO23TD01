@@ -2,7 +2,7 @@ package network.messages;
 
 import java.util.UUID;
 
-import data.ClientDataEngine;
+import data.client.ClientDataEngine;
 import data.Parameters;
 import data.Profile;
 import data.Rules;

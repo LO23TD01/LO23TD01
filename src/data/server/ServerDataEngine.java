@@ -39,7 +39,7 @@ public class ServerDataEngine implements InterfaceDataNetwork {
 	 *
 	 */
 
-	private GameTable createTable(User user, String name, Parameters params) {
+	public GameTable createTable(User user, String name, Parameters params) {
 
 		// Initialisation des joueurs de la table avec le joueur cr�ant la table
 		List<User> playerList = new ArrayList<User>();
@@ -155,10 +155,10 @@ public class ServerDataEngine implements InterfaceDataNetwork {
 			user.setSpectating(!isPlayer);
 			if (isPlayer)
 				this.comServer.newPlayerOnTable(getUUIDList(tableFull.getAllList()), user.getPublicData(),
-						tableFull.getUid());
+						tableFull);
 			else
 				this.comServer.newPlayerOnTable(getUUIDList(tableFull.getAllList()), user.getPublicData(),
-						tableFull.getUid());
+						tableFull);
 		} else if (isPlayer && isLaunched)
 			this.comServer.raiseException(user.getPublicData().getUUID(),
 					"Impossible de rejoindre une partie d�j� commenc�e.");

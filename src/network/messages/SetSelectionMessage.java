@@ -1,6 +1,6 @@
 package network.messages;
 
-import data.ClientDataEngine;
+import data.client.ClientDataEngine;
 import data.server.ServerDataEngine;
 
 public class SetSelectionMessage implements IMessage {

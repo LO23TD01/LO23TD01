@@ -128,11 +128,11 @@ public class Parameters {
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
-		result = prime * result + (authorizeSpec ? 1231 : 1237);
-		result = prime * result + (authorizeSpecToChat ? 1231 : 1237);
-		result = prime * result + nbChip;
-		result = prime * result + nbPlayerMax;
-		result = prime * result + nbPlayerMin;
+		result = prime * result + (authorizeSpec.get() ? 1231 : 1237);
+		result = prime * result + (authorizeSpecToChat.get() ? 1231 : 1237);
+		result = prime * result + nbChip.get();
+		result = prime * result + nbPlayerMax.get();
+		result = prime * result + nbPlayerMin.get();
 		result = prime * result + ((rules == null) ? 0 : rules.hashCode());
 		return result;
 	}

@@ -24,12 +24,12 @@ public class Rules {
 	//1 Décharge à nombre fixe de coup.
 	//2 Décharge obligatoirement le nombre du premier joueur.
 	//3 Décharge au plus le nombre du premier joueur.
-	
-	private Variant variant;
-	private int throwMax;
 
 	private final ObjectProperty<Variant> variant;
 	private final IntegerProperty throwMax;
+	private boolean isRampoAmeliore;
+	private boolean isForcedToFollowFirst;
+	private boolean isNenetteFlat;
 
 	public Rules(Variant variant, int throwMax) {
 		this.variant = new SimpleObjectProperty<Variant>(variant);
@@ -206,7 +206,7 @@ public class Rules {
 //		if(actualPlayerData==null || firstPlayerData==null)
 //			throw new Exception("Player not found.");
 		
-		switch(this.variant){
+		switch(this.variant.get()){
 		case FREE_DISCHARGE:
 			if (actualPlayerData.getRerollCount() == this.throwMax.get()
 					|| (actualPlayerData.getRerollCount() == firstPlayerData.getRerollCount() && !actualPlayer.isSame(firstPlayer)))

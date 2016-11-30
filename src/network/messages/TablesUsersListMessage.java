@@ -2,7 +2,7 @@ package network.messages;
 
 import java.util.List;
 
-import data.ClientDataEngine;
+import data.client.ClientDataEngine;
 import data.GameTable;
 import data.server.ServerDataEngine;
 import data.User;
