@@ -8,6 +8,7 @@ import data.Contact;
 import data.ContactCategory;
 import data.GameTable;
 import data.IPData;
+import data.PlayerData;
 import data.Profile;
 import data.User;
 import data.UserRole;
@@ -239,26 +240,24 @@ public class ClientDataEngine implements InterfaceDataIHMLobby, InterfaceDataIHM
 
 	@Override
 	public void refreshUsersList(List<User> l) {
-		// TODO Auto-generated method stub
-		// A voir avec IHM Main (observer)
+		userList.setAll(l);
 	}
 
 	@Override
 	public void updateUsersList(List<User> l) {
-		// TODO Auto-generated method stub
-		// A voir avec IHM Main (observer)
+		//Appeler lorsqu'un nouveau joueur se connecte
+		//Action similaire à refreshUsersList mais dans le doute d'une autre utilité je laisse les deux
+		userList.setAll(l);
 	}
 
 	@Override
 	public void updateTablesList(List<GameTable> l) {
-		// TODO Auto-generated method stub
-		// A voir avec IHM Main (observer)
+		tableList.setAll(l);
 	}
 
 	@Override
 	public void updateUsers(User u) {
-		// TODO Auto-generated method stub
-		// A voir avec IHM Main (observer)
+		userList.add(u);
 	}
 
 	@Override
@@ -269,62 +268,65 @@ public class ClientDataEngine implements InterfaceDataIHMLobby, InterfaceDataIHM
 
 	@Override
 	public void sendTableInfo(GameTable g) {
-		// TODO Auto-generated method stub
-		// A voir avec IHM Main (observer)
+		actualTable.set(g);
 	}
 
 	@Override
 	public void setSelection(boolean a, boolean b, boolean c) {
-		// TODO Auto-generated method stub
-
+		//TODO : Pas sûr de ce qu'il faut modifier dans le modèle de données
 	}
 
 	@Override
 	public void setDice(int a, int b, int c) {
-		// TODO Auto-generated method stub
-		// A voir avec IHM Table : showDice(1, 2, 3)
+		int[] dices = {a,b,c};
+		getActualTable().getGameState().getData(getActualTable().getGameState().getActualPlayer(), false).setDices(dices);
 	}
 
 	@Override
 	public void hasSelected(User u, boolean a, boolean b, boolean c) {
-		// TODO Auto-generated method stub
-		// A voir avec IHM Table : updateSelection(UUID, 1, 2, 3)
+		//TODO : Pas sûr de ce qu'il faut modifier dans le modèle de données
 	}
 
 	@Override
 	public void hasThrown(User u, int a, int b, int c) {
-		// TODO Auto-generated method stub
-		// A voir avec IHM Table : updateResult(UUID, 1, 2, 3)
+		int[] dices = {a,b,c};
+		getActualTable().getGameState().getData(u, false).setDices(dices);
 	}
 
 	@Override
 	public void updateChips(User u, int a) {
-		// TODO Auto-generated method stub
-		// A voir avec IHM Table : updateChips(Profile, nb)
+		getActualTable().getGameState().getData(u, false).setChip(a);
 	}
 
 	@Override
 	public void updateChips(User u1, User u2, int a) {
-		// TODO Auto-generated method stub
-		// A voir avec IHM Table : updateChips(Profile_winner, Profile_loser, nb)
+		PlayerData p1 = actualTable.get().getGameState().getData(u1, false);
+		PlayerData p2 = actualTable.get().getGameState().getData(u2, false);
+		
+		p1.setChip(p1.getChip()-a);
+		p2.setChip(p2.getChip()+a);
 	}
 
 	@Override
 	public void startTurn() {
-		// TODO Auto-generated method stub
-		// A voir avec IHM Table : showDice()
+		// TODO : Vérifier que ce soit la bonne méthode appelée car il y a aussi GameState.nextTurn(User)
+		//
+		User currentUser = new User(getProfileManager().getCurrentProfile());
+		getActualTable().getGameState().getData(currentUser, false).newTurn();
 	}
 
 	@Override
 	public void isTurn(User u) {
-		// TODO Auto-generated method stub
-		// A voir avec IHM Table : showTurn(Profile)
+		// TODO : Idem méthode précédente vérifier que ce soit la bonne méthode appelée
+		//
+		getActualTable().getGameState().getData(u, false).newTurn();
 	}
 
 	@Override
 	public void stopGame(boolean a) {
-		// TODO Auto-generated method stub
-		// A voir avec IHM Table : showStopGame(a)
+		// TODO : Méthode stopGame non implémentée : En attente ? ou Une autre méthode est à appeler ?
+		//
+		getActualTable().stopGame();
 	}
 
 	@Override
@@ -335,8 +337,7 @@ public class ClientDataEngine implements InterfaceDataIHMLobby, InterfaceDataIHM
 
 	@Override
 	public void playerQuitGame(User u) {
-		// TODO Auto-generated method stub
-		// A voir avec IHM Table : updateView()
+		getActualTable().disconnect(u);
 	}
 
 	@Override
@@ -353,26 +354,23 @@ public class ClientDataEngine implements InterfaceDataIHMLobby, InterfaceDataIHM
 
 	@Override
 	public void hasWon(User u) {
-		// TODO Auto-generated method stub
-		// A voir avec IHM Table : gameWon() / hasWon(Profile)
+		getActualTable().getGameState().setWinnerGame(u);
 	}
 
 	@Override
 	public void showTimer() {
-		// TODO Auto-generated method stub
-		// A voir avec IHM Table : showTimer()
+		//TODO : A vérifier qu'il n'y ai pas d'autres action à faire
+		getActualTable().initializeGame();
 	}
 
 	@Override
 	public void newPlayerOnTable(User u) {
-		// TODO Auto-generated method stub
-		// A voir avec IHM Table : newPlayerOnTable(Profile)
+		getActualTable().connect(u, false);
 	}
 
 	@Override
 	public void newSpectatorOnTable(User u) {
-		// TODO Auto-generated method stub
-
+		getActualTable().connect(u, true);
 	}
 
 	public final ObjectProperty<ProfileManager> profileManagerProperty() {
