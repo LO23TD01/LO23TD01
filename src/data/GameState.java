@@ -336,30 +336,6 @@ public class GameState {
 		this.loserGameProperty().set(loserGame);
 	}
 
-	// OBSOLETE
-	// /*
-	// * TODO Le joueur demande lancer les dés. Renvoit une exception si le joueur
-	// * qui demande n'est pas le joueur actuel.
-	// */
-	// public void askRoll(User user) {
-	//
-	// }
-	//
-	// /*
-	// * TODO Le joueur demande relancer les dés. Renvoit une exception si le
-	// * joueur qui demande n'est pas le joueur actuel.
-	// */
-	// public void askReroll(User user, boolean diceOne, boolean diceTwo, boolean diceThree) {
-	//
-	// }
-
-	// OBSOLETE : utiliser replaceData � la place
-	// /*
-	// * TODO Indique que le joueur à lancé les dés, et met à jour le playerData
-	// * avec les valeurs des dés.
-	// */
-	// public void hasRolled(User user, int diceOne, int diceTwo, int DiceThree) {
-	//
-	// }
+	
 
 }
