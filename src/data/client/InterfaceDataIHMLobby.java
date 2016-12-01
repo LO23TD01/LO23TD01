@@ -27,7 +27,7 @@ public interface InterfaceDataIHMLobby {
 	public void logout();
 
 	// TODO argument
-	public void createProfile(Object... args);
+	public void createProfile(String login, String psw);
 
 	public void getTableInfo(GameTable g);
 
@@ -43,7 +43,7 @@ public interface InterfaceDataIHMLobby {
 	public Profile getLocalProfile(UUID id);
 
 	// TODO args
-	public Profile changeMyProfile(Object... args);
+	public Profile changeMyProfile(Profile new_profile);
 
 	public void getListUsers();
 
