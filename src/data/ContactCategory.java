@@ -43,7 +43,7 @@ public class ContactCategory {
 
 	@XmlElementWrapper
 	@XmlElement(name = "contact")
-	public ObservableList<Contact> getDataList() {
+	public ObservableList<Contact> getContactList() {
 		return contactList;
 	}
 

@@ -1,6 +1,6 @@
 package data.client;
 
-import java.util.ArrayList;
+import java.io.File;
 import java.util.List;
 import java.util.UUID;
 
@@ -110,11 +110,11 @@ public class ClientDataEngine implements InterfaceDataIHMLobby, InterfaceDataIHM
 	}
 
 	@Override
-	public void createProfile(Object... args) {
-		// TODO Auto-generated method stub
-
+	// Cette fonction est appelée par IHM lobby lors de la création d'un profil c'est pour cela que l'on xmlise ce profile.
+	public void createProfile(String login, String psw) {
+		getProfileManager().createProfile(login,psw).Xmlise();
 	}
-
+	
 	@Override
 	public void getTableInfo(GameTable g) {
 		// TODO Auto-generated method stub
@@ -134,26 +134,31 @@ public class ClientDataEngine implements InterfaceDataIHMLobby, InterfaceDataIHM
 
 	@Override
 	public Profile getLocalProfile() {
-		// TODO Auto-generated method stub
-		return null;
+		return this.getProfileManager().getCurrentProfile();
 	}
 
 	@Override
 	public Profile getLocalProfile(String login, String password) {
-		// TODO Auto-generated method stub
-		return null;
+		return this.getProfileManager().getLocalProfile(login,password);
 	}
 
 	@Override
 	public Profile getLocalProfile(UUID id) {
-		// TODO Auto-generated method stub
-		return null;
+		return this.getProfileManager().getLocalProfile(id);
 	}
 
 	@Override
-	public Profile changeMyProfile(Object... args) {
-		// TODO Auto-generated method stub
-		return null;
+	// Cette fonction est appelée par IHM lobby lors de la modification d'un profil c'est pour cela que l'on xmlise ce profile.
+	public Profile changeMyProfile(Profile new_profile) {
+		// Si jamais l'utilisateur veut changer son mdp/login on supprime l'ancien profile XML et on en crée un nouveau.
+		if (getLocalProfile().getLogin() != new_profile.getLogin() || getLocalProfile().getPsw() != new_profile.getPsw()){
+			String path = "MesProfiles\\"+getLocalProfile().getLogin()+"-"+getLocalProfile().getPsw()+".xml";
+			File file = new File(path);
+			file.delete();
+		}
+		Profile p = this.getProfileManager().modifyProfile(getLocalProfile(), new_profile);
+		p.Xmlise();
+		return p;
 	}
 
 	@Override
@@ -186,8 +191,7 @@ public class ClientDataEngine implements InterfaceDataIHMLobby, InterfaceDataIHM
 
 	@Override
 	public List<Contact> getContactList() {
-		// TODO Auto-generated method stub
-		return null;
+		return this.getProfileManager().getCurrentProfile().getClient().getContactList();
 	}
 
 	@Override
@@ -204,8 +208,7 @@ public class ClientDataEngine implements InterfaceDataIHMLobby, InterfaceDataIHM
 
 	@Override
 	public List<ContactCategory> getCategoryList() {
-		// TODO Auto-generated method stub
-		return null;
+		return this.getProfileManager().getCurrentProfile().getClient().getCategoryList();
 	}
 
 	@Override
