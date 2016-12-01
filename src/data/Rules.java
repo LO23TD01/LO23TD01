@@ -27,9 +27,6 @@ public class Rules {
 
 	private final ObjectProperty<Variant> variant;
 	private final IntegerProperty throwMax;
-	private boolean isRampoAmeliore;
-	private boolean isForcedToFollowFirst;
-	private boolean isNenetteFlat;
 
 	public Rules(Variant variant, int throwMax) {
 		this.variant = new SimpleObjectProperty<Variant>(variant);
@@ -244,33 +241,6 @@ public class Rules {
 		}
 	}
 	
-	public boolean isRampoAmeliore() {
-		return isRampoAmeliore;
-	}
-
-	public void setRampoAmeliore(boolean isRampoAmeliore) {
-		this.isRampoAmeliore = isRampoAmeliore;
-	}
-
-
-	public boolean isForcedToFollowFirst() {
-		return isForcedToFollowFirst;
-	}
-
-
-	public void setForcedToFollowFirst(boolean isForcedToFollowFirst) {
-		this.isForcedToFollowFirst = isForcedToFollowFirst;
-	}
-
-
-	public boolean isNenetteFlat() {
-		return isNenetteFlat;
-	}
-
-
-	public void setNenetteFlat(boolean isNenetteFlat) {
-		this.isNenetteFlat = isNenetteFlat;
-	}
 
 	public final ObjectProperty<Variant> variantProperty() {
 		return this.variant;

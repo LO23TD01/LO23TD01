@@ -16,6 +16,7 @@ public class PlayerData {
 	/**
 	 * @param player
 	 */
+	//constructeur pour nouvelle partie
 	public PlayerData(User player) {
 		this.player = new SimpleObjectProperty<User>(player);
 		this.chip = new SimpleIntegerProperty(0);
@@ -28,6 +29,7 @@ public class PlayerData {
 	 * @param dices
 	 * @param rerollCount
 	 */
+	//constructeur en copie
 	public PlayerData(User player, int chip, int[] dices, int rerollCount) {
 		this.player = new SimpleObjectProperty<User>(player);
 		this.chip = new SimpleIntegerProperty(chip);
@@ -41,6 +43,7 @@ public class PlayerData {
 	 * @param dices
 	 * @param rerollCount
 	 */
+	//aucune idée ???
 	public PlayerData(PlayerData pData) {
 		this.player = new SimpleObjectProperty<User>(pData.getPlayer());
 		this.chip = new SimpleIntegerProperty(pData.getChip());
@@ -54,6 +57,7 @@ public class PlayerData {
 	 * @param dices
 	 * @param rerollCount
 	 */
+	// constructeur pour les nouveaux tours
 	public PlayerData(PlayerData pData, boolean isNewTurn) {
 		this.player = new SimpleObjectProperty<User>(pData.getPlayer());
 		this.chip = new SimpleIntegerProperty(pData.getChip());

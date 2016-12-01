@@ -16,21 +16,23 @@ import javafx.collections.ObservableList;
 @XmlRootElement
 @XmlType(propOrder = { "contactList", "defaultRight", "categoryList" })
 public class Client {
+	private final ObjectProperty<Profile> profile;
 	private final ObjectProperty<Rights> defaultRight;
 	private final ObservableList<Contact> contactList = FXCollections.observableArrayList();;
 	private final ObservableList<ContactCategory> categoryList = FXCollections.observableArrayList();;
 
 	public Client() {
 		this.defaultRight = new SimpleObjectProperty<Rights>();
+		this.profile = new SimpleObjectProperty<Profile>();
 	}
 
 	public Client(Rights defaultRight) {
 		this.defaultRight = new SimpleObjectProperty<Rights>(defaultRight);
+		this.profile = new SimpleObjectProperty<Profile>();
 	}
 
 	public Profile giveProfileData(User user) {
-		// TO-DO : Pas sï¿½r de ce que doit faire cette fonction
-		return null;
+		return this.profile.get();
 	}
 
 	public void addContact(Contact contact) {
@@ -40,7 +42,15 @@ public class Client {
 
 	public void removeContact(Contact contact) {
 		if (contact != null)
-			contactList.remove(contact);
+		{
+			this.contactList.remove(contact);
+			for(int i= 0;i<this.categoryList.size();i++)
+			{
+				this.categoryList.get(i).removeContact(contact);
+			}
+		}
+			
+		
 	}
 
 	/*
