@@ -1,6 +1,7 @@
 package data;
 
 import java.util.List;
+import java.util.UUID;
 
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlElementWrapper;
@@ -15,30 +16,63 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 
 @XmlRootElement
-@XmlType(propOrder = { "name", "rights", "contactList" })
+@XmlType(propOrder = { "uuid","name", "rights", "contactList" })
 public class ContactCategory {
+	private final ObjectProperty<UUID> uuid;
 	private final StringProperty name;
 	private final ObservableList<Contact> contactList = FXCollections.observableArrayList();;
 	private final ObjectProperty<Rights> rights;
 
 	public ContactCategory() {
+		this.uuid = new SimpleObjectProperty<UUID>(UUID.randomUUID());
 		this.name = new SimpleStringProperty();
 		this.rights = new SimpleObjectProperty<Rights>();
 	}
 
 	public ContactCategory(String name, Rights rights) {
+		this.uuid = new SimpleObjectProperty<UUID>(UUID.randomUUID());
 		this.name = new SimpleStringProperty(name);
 		this.rights = new SimpleObjectProperty<Rights>(rights);
 	}
 
-	public void addContact(Contact contact) {
-		if (contact != null)
-			contactList.add(contact);
+	public boolean modifyCategory(String name, Rights rights) {
+		this.setName(name);
+		this.setRights(rights);
+		return true;
 	}
 
-	public void removeContact(Contact contact) {
+	public boolean addContact(Contact contact) {
 		if (contact != null)
-			contactList.remove(contact);
+			return contactList.add(contact);
+		else
+			return false;
+	}
+
+	public boolean removeContact(Contact contact) {
+		if (contact != null)
+			return contactList.remove(contact);
+		else
+			return false;
+	}
+
+	public boolean removeContact(UUID contact) {
+		if (contact != null)
+			return contactList.removeIf(c -> c.getUuid().equals(contact));
+		else
+			return false;
+	}
+
+	public final ObjectProperty<UUID> uuidProperty() {
+		return this.uuid;
+	}
+
+	public final UUID getUuid() {
+		return this.uuidProperty().get();
+	}
+
+	@XmlElement
+	public final void setUuid(final UUID uuid) {
+		this.uuidProperty().set(uuid);
 	}
 
 	@XmlElementWrapper
