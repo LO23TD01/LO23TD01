@@ -1,6 +1,5 @@
 package data.client;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
@@ -9,6 +8,7 @@ import data.ContactCategory;
 import data.GameTable;
 import data.IPData;
 import data.Profile;
+import data.Rights;
 import data.User;
 import data.UserRole;
 import javafx.beans.property.ObjectProperty;
@@ -26,16 +26,18 @@ public class ClientDataEngine implements InterfaceDataIHMLobby, InterfaceDataIHM
 	private final ObjectProperty<GameTable> actualTable;
 	private final ObjectProperty<UserRole> actualRole;
 	/**
-	 * Variable qui permet de communiquer avec le serveur, initialisée lors du login
+	 * Variable qui permet de communiquer avec le serveur, initialisée lors du
+	 * login
 	 */
 	private ComClientInterface comClientInterface = null;
 
 	/**
-	 * 
+	 *
 	 */
 	public ClientDataEngine() {
 		super();
-		this.profileManager.set(new ProfileManager());;
+		this.profileManager.set(new ProfileManager());
+		;
 		this.actualTable = null;
 		this.actualRole = null;
 	}
@@ -85,8 +87,9 @@ public class ClientDataEngine implements InterfaceDataIHMLobby, InterfaceDataIHM
 	}
 
 	/**
-	 * Cette méthode vérifie si le login/mot de passe est correct. Elle connecte ensuite le client au serveur de jeu.
-	 * 
+	 * Cette méthode vérifie si le login/mot de passe est correct. Elle connecte
+	 * ensuite le client au serveur de jeu.
+	 *
 	 * @param login
 	 * @param password
 	 * @param ipd
@@ -123,8 +126,10 @@ public class ClientDataEngine implements InterfaceDataIHMLobby, InterfaceDataIHM
 
 	@Override
 	public void addNewTable(GameTable g) {
-		// TODO Auto-generated method stub
-		// A voir avec la team IHM Lobby
+		comClientInterface.createNewTable(this.getProfileManager().getCurrentProfile().getUUID(), g.getName(), null,
+				g.getParameters().getNbPlayerMin(), g.getParameters().getNbPlayerMax(), g.getParameters().getNbChip(),
+				g.getParameters().isAuthorizeSpec(), g.getParameters().isAuthorizeSpecToChat(),
+				g.getParameters().getRules());
 	}
 
 	@Override
@@ -158,7 +163,7 @@ public class ClientDataEngine implements InterfaceDataIHMLobby, InterfaceDataIHM
 
 	@Override
 	public void getListUsers() {
-		// TODO Auto-generated method stub
+		comClientInterface.updateUsersList(this.getProfileManager().getCurrentProfile().getUUID());
 
 	}
 
@@ -169,61 +174,55 @@ public class ClientDataEngine implements InterfaceDataIHMLobby, InterfaceDataIHM
 
 	@Override
 	public void getProfileFromOtherUser(User other) {
-		comClientInterface.getProfile(other.getPublicData().getUUID(), this.getProfileManager().getCurrentProfile().getUUID());
+		comClientInterface.getProfile(other.getPublicData().getUUID(),
+				this.getProfileManager().getCurrentProfile().getUUID());
 	}
 
 	@Override
 	public boolean addContact(UUID uuid) {
-		// TODO Auto-generated method stub
-		return false;
+		return this.getProfileManager().getCurrentProfile().getClient()
+				.addContact(new Contact(uuid, null, null, null, 0));
 	}
 
 	@Override
 	public boolean deleteContact(UUID uuid) {
-		// TODO Auto-generated method stub
-		return false;
+		return this.getProfileManager().getCurrentProfile().getClient().removeContact(uuid);
 	}
 
 	@Override
 	public List<Contact> getContactList() {
-		// TODO Auto-generated method stub
-		return null;
+		return this.getProfileManager().getCurrentProfile().getClient().getContactList();
 	}
 
 	@Override
 	public boolean addCategory(String name, Object... rights) {
-		// TODO Auto-generated method stub
-		return false;
+		return this.getProfileManager().getCurrentProfile().getClient().addCategory(name, (Rights) rights[0]);
 	}
 
 	@Override
 	public boolean deleteCategory(UUID uuid) {
-		// TODO Auto-generated method stub
-		return false;
+		return this.getProfileManager().getCurrentProfile().getClient().deleteCategoryByUuid(uuid);
 	}
 
 	@Override
 	public List<ContactCategory> getCategoryList() {
-		// TODO Auto-generated method stub
-		return null;
+		return this.getProfileManager().getCurrentProfile().getClient().getCategoryList();
 	}
 
 	@Override
 	public boolean modifyCategory(UUID uuid, String name, Object... rights) {
-		// TODO Auto-generated method stub
-		return false;
+		return this.getProfileManager().getCurrentProfile().getClient().modifyCategory(uuid, name, (Rights) rights[0]);
 	}
 
 	@Override
 	public boolean addContactToCategory(UUID uuidContact, UUID uuidCategory) {
-		// TODO Auto-generated method stub
-		return false;
+		return this.getProfileManager().getCurrentProfile().getClient().addContactToCategory(uuidContact, uuidCategory);
 	}
 
 	@Override
 	public boolean removeContactFromCategory(UUID uuidContact, UUID uuidCategory) {
-		// TODO Auto-generated method stub
-		return false;
+		return this.getProfileManager().getCurrentProfile().getClient().removeContactFromCategory(uuidContact,
+				uuidCategory);
 	}
 
 	@Override
@@ -306,7 +305,8 @@ public class ClientDataEngine implements InterfaceDataIHMLobby, InterfaceDataIHM
 	@Override
 	public void updateChips(User u1, User u2, int a) {
 		// TODO Auto-generated method stub
-		// A voir avec IHM Table : updateChips(Profile_winner, Profile_loser, nb)
+		// A voir avec IHM Table : updateChips(Profile_winner, Profile_loser,
+		// nb)
 	}
 
 	@Override
