@@ -186,7 +186,7 @@ public class ComServer implements Runnable, ComServerInterface {
 		for (UUID user : receivers) {
 			handler = connectedClients.get(user.toString());
 			if (handler != null)
-				handler.sendMessage(new HasWonMessage(user));
+				handler.sendMessage(new HasWonMessage(winner));
 		}
 	}
 
