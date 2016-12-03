@@ -14,6 +14,7 @@ import network.messages.NewUserMessage;
 import network.messages.HasSelectedMessage;
 import network.messages.IsTurnMessage;
 import network.messages.HasThrownMessage;
+import network.messages.HasWonMessage;
 import network.messages.HasAcceptedMessage;
 import network.messages.HasRefusedMessage;
 import network.messages.KickedMessage;
@@ -37,7 +38,7 @@ public class ComServer implements Runnable, ComServerInterface {
 	private int				serverPort;
 	private ServerSocket	serverSocket;
 	private boolean			isStopped    = false;
-	private 				HashMap<String, SocketClientHandler> connectedClients = new HashMap<String, SocketClientHandler>();
+	private 		HashMap<String, SocketClientHandler> connectedClients = new HashMap<String, SocketClientHandler>();
 	private ServerDataEngine dataEngine;
 	
 	/*
@@ -167,8 +168,12 @@ public class ComServer implements Runnable, ComServerInterface {
 
 	@Override
 	public void hasWon(List<UUID> receivers, UUID winner) {
-		// TODO Auto-generated method stub
-		
+		SocketClientHandler  handler;
+		for (UUID user : receivers) {
+			handler = connectedClients.get(user.toString());
+			if (handler != null)
+				handler.sendMessage(new HasWonMessage(user));
+		}
 	}
 
 	@Override
