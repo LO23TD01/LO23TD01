@@ -2,6 +2,8 @@ package network.messages;
 
 import java.util.UUID;
 
+import org.hildan.fxgson.FxGson;
+
 import data.client.ClientDataEngine;
 import data.Profile;
 import data.server.ServerDataEngine;
@@ -10,12 +12,12 @@ public class SendProfileMessage implements IMessage{
 
 	private static final long serialVersionUID = 5676541305074045177L;
 	
-	private Profile profile;
+	private String profile;
 	private UUID receiver;
 	
 	public SendProfileMessage(UUID receiver, Profile profile) {
 		this.receiver = receiver;
-		this.profile = profile;
+		this.profile = FxGson.create().toJson(profile);
 	}
 
     @Override
@@ -26,8 +28,7 @@ public class SendProfileMessage implements IMessage{
 
     @Override
     public void process(ClientDataEngine dataEngine) {
-        //Appeler dataEngine.diplayProfile(profile);
-    	//Quand l'interface Data sera implemente
-        
+    	//Méthode inexistante
+        //Appeler dataEngine.diplayProfile(FxGson.create().fromJson(profile, Profile.class));
     }
 }

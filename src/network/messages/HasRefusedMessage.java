@@ -2,6 +2,8 @@ package network.messages;
 
 import java.util.UUID;
 
+import data.Profile;
+import data.User;
 import data.client.ClientDataEngine;
 import data.server.ServerDataEngine;
 
@@ -23,7 +25,7 @@ public class HasRefusedMessage implements IMessage {
 
 	@Override
 	public void process(ClientDataEngine dataEngine) {
-		// Appeler dataEngine.hasRefused(user)
+		dataEngine.hasRefusedReplay(new User(new Profile(user)));
 	}
 
 }

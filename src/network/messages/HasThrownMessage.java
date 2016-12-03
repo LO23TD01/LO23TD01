@@ -2,6 +2,8 @@ package network.messages;
 
 import java.util.UUID;
 
+import data.Profile;
+import data.User;
 import data.client.ClientDataEngine;
 import data.server.ServerDataEngine;
 
@@ -29,11 +31,7 @@ public class HasThrownMessage implements IMessage{
 
 	@Override
 	public void process(ClientDataEngine dataEngine) {
-		/*
-		 * TODO
-		 * Need Interface of ClientDataEngine
-		 * hasThrown(this.user, this.result1, this.result2, this.result3); 
-		 */	
+		dataEngine.hasThrown(new User(new Profile(user)), this.result1, this.result2, this.result3); 
 	}
 	
 }
