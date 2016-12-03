@@ -67,13 +67,24 @@ public class PlayerStatsController {
     Image JetonLoss = new Image("/ihmTable/resources/png/JetonLoss.png");
 
     public void initialize() throws IOException {
+    	//Gestion des erreurs
         handleAsserts();
-
+        //Gestion des images
         handleImage(PlayerStats_Jetons, Jeton);
         handleImage(PlayerStats_PartiesPerdues, JetonLoss);
 
         PlayerStats_Jeton_Loss_Score_Label.setText("0");
         PlayerStats_Jeton_Loss_Score_Label.setTextFill(Color.RED);
+
+        //Bindings
+        //titlelableplayer
+        //scorelabel
+        //scorelabel
+        //scoreloss
+
+
+
+
 
         setPlayerDice();
     }

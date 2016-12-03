@@ -2,6 +2,7 @@ package ihmTable.controller;
 
 import java.io.IOException;
 
+import data.GameTable;
 import ihmTable.controller.CollapsiblePanelController.Position;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
@@ -20,7 +21,11 @@ public class TableController {
 	@FXML
 	private BorderPane tableCenterView;
 
+	public GameTable gameTableInstance;
+
 	public void initialize() throws IOException {
+
+		//Initialisation des Panels et de la vue
 	    setPosition(getCollapsiblePane(FXMLLoader.load(getClass().getResource("/ihmTable/resources/view/Chat.fxml")), Position.right), Position.right);
         setPosition(getCollapsiblePane(FXMLLoader.load(getClass().getResource("/ihmTable/resources/view/Rules.fxml")), Position.left), Position.left);
 
@@ -40,6 +45,9 @@ public class TableController {
         });
         bottomContainer.getChildren().addAll(playerStats, gameStats);
         setPosition(getCollapsiblePane(bottomContainer, Position.bottom), Position.bottom);
+
+        //todo passer gametabelInstance à chaque sous controller.
+
 	}
 
 	private void setPosition(AnchorPane anchorPane, Position position) {
