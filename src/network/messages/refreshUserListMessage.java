@@ -1,6 +1,10 @@
 package network.messages;
 
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
+
+import org.hildan.fxgson.FxGson;
 
 import data.client.ClientDataEngine;
 import data.server.ServerDataEngine;
@@ -10,10 +14,11 @@ public class refreshUserListMessage implements IMessage{
 
 	private static final long serialVersionUID = 2537929372539873650L;
 
-	private List<User> usersToRefresh;
+	private String usersToRefresh;
 	
 	public refreshUserListMessage(List<User> usersToRefresh) {
-		this.usersToRefresh = usersToRefresh;
+		User[] users = usersToRefresh.toArray(new User[1]);
+		this.usersToRefresh = FxGson.create().toJson(users);
 	}
 
     @Override
@@ -24,9 +29,7 @@ public class refreshUserListMessage implements IMessage{
 
     @Override
     public void process(ClientDataEngine dataEngine) {
-    	/*
-    	 * TODO
-    	 * Need interface of ClientDataEngine
-    	 */
+    	User[] users = FxGson.create().fromJson(usersToRefresh, User[].class);
+    	dataEngine.refreshUsersList(Arrays.asList(users));
     }
 }

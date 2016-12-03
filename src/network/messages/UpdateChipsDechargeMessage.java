@@ -2,6 +2,8 @@ package network.messages;
 
 import java.util.UUID;
 
+import data.Profile;
+import data.User;
 import data.client.ClientDataEngine;
 import data.server.ServerDataEngine;
 
@@ -27,8 +29,7 @@ public class UpdateChipsDechargeMessage implements IMessage{
 
 	@Override
 	public void process(ClientDataEngine dataEngine) {
-		//Quand l'interface Data client sera implémenté appeler
-		//dataEngine.updateChips(winner, loser, nb);
+		dataEngine.updateChips(new User(new Profile(winner)), new User(new Profile(loser)), nb);
 	}
 
 }
