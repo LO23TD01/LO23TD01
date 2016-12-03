@@ -2,6 +2,7 @@ package network.client;
 
 import java.util.UUID;
 
+import data.GameTable;
 import data.Profile;
 import data.Rules;
 
@@ -14,8 +15,8 @@ public interface ComClientInterface {
 	public void createNewTable(UUID user, String name, String pwd, int min, int max, int token, boolean withSpec, boolean withChat, Rules rules);
 	public void selectDice(UUID user, boolean d1, boolean d2, boolean d3);
 	public void updateUserProfile(UUID user, Profile profile);
-	public void dropTable(UUID tableId);
-	public void quit(UUID user);
+	//DropTable supprimé
+	public void quit(UUID user, GameTable table);
 	public void updateUsersList(UUID user);
 	public void askQuitTable(UUID tableId, UUID user);
 	public void askRefreshUsersList(UUID user);

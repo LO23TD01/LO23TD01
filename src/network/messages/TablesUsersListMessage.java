@@ -1,6 +1,9 @@
 package network.messages;
 
+import java.util.Arrays;
 import java.util.List;
+
+import org.hildan.fxgson.FxGson;
 
 import data.client.ClientDataEngine;
 import data.GameTable;
@@ -11,12 +14,15 @@ public class TablesUsersListMessage implements IMessage {
 
 	private static final long serialVersionUID = 7188120721853249541L;
 	
-	List<User> userList;
-	List<GameTable> tableList;
+	String userList;
+	String tableList;
 	
 	public TablesUsersListMessage(List<User> userList, List<GameTable> tableList) {
-		this.userList = userList;
-		this.tableList = tableList;
+		User[] users = userList.toArray(new User[1]);
+		GameTable[] tables = tableList.toArray(new GameTable[1]);
+		
+		this.userList = FxGson.create().toJson(users);
+		this.tableList = FxGson.create().toJson(tables);
 	}
 
 	@Override
@@ -27,9 +33,11 @@ public class TablesUsersListMessage implements IMessage {
 
 	@Override
 	public void process(ClientDataEngine dataEngine) {
-		//Appeler dataEngine.updateUsersList(usersList);
-		//Appeler dataEngine.updateTablesList(tableList);
-		//Quand les interface de Data seront implementes
+		User[] users = FxGson.create().fromJson(userList, User[].class);
+		dataEngine.updateUsersList(Arrays.asList(users));
+		
+		GameTable[] tables = FxGson.create().fromJson(userList, GameTable[].class);
+		dataEngine.updateTablesList(Arrays.asList(tables));
 	}
 
 }

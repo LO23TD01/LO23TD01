@@ -6,6 +6,7 @@ import java.net.UnknownHostException;
 import java.util.UUID;
 
 import data.client.ClientDataEngine;
+import data.GameTable;
 import data.Profile;
 import network.messages.AcceptReplayMessage;
 import data.Rules;
@@ -105,15 +106,11 @@ public class ComClient implements ComClientInterface{
 		sendMessage(new UpdateProfileMessage(user,profile));
 	}
 
-	@Override
-	public void dropTable(UUID tableId) {
-		//TODO: ATTENTION DropTable supprimé
-		//sendMessage(new DropTableMessage(tableId));
-	}
+	//DropTable supprimé
 
 	@Override
-	public void quit(UUID user) {
-		sendMessage(new QuitGameMessage(user));
+	public void quit(UUID user, GameTable table) {
+		sendMessage(new QuitGameMessage(user, table));
 	}
 
 	@Override

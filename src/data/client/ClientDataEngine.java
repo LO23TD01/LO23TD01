@@ -59,7 +59,7 @@ public class ClientDataEngine implements InterfaceDataIHMLobby, InterfaceDataIHM
 
 	@Override
 	public void quitGame() {
-		comClientInterface.quit(profileManager.get().getCurrentProfile().getUUID());
+		comClientInterface.quit(profileManager.get().getCurrentProfile().getUUID(), getActualTable());
 
 	}
 
