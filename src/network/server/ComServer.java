@@ -14,6 +14,7 @@ import network.messages.NewUserMessage;
 import network.messages.HasSelectedMessage;
 import network.messages.IsTurnMessage;
 import network.messages.HasThrownMessage;
+import network.messages.HasWonMessage;
 import network.messages.HasAcceptedMessage;
 import network.messages.HasRefusedMessage;
 import network.messages.KickedMessage;
@@ -82,7 +83,7 @@ public class ComServer implements Runnable, ComServerInterface {
 	/*
 	//Used to test client/server communication
 	public void sendMessage(int num, IMessage message){
-		//TO-DO : Changer ipAdress par UUID quand ils seront gérés par DATA
+		//TO-DO : Changer ipAdress par UUID quand ils seront gï¿½rï¿½s par DATA
 		
 		SocketClientHandler client = connectedClients.get(num);
 		
@@ -103,7 +104,7 @@ public class ComServer implements Runnable, ComServerInterface {
 	        try {
 	            clientSocket = this.serverSocket.accept();
 	            
-	            System.out.println("Nouveau client connecté");
+	            System.out.println("Nouveau client connectï¿½");
 	            
 	        } catch (IOException e) {
 	            if(isStopped()) {
@@ -181,8 +182,12 @@ public class ComServer implements Runnable, ComServerInterface {
 
 	@Override
 	public void hasWon(List<UUID> receivers, UUID winner) {
-		// TODO Auto-generated method stub
-		
+		SocketClientHandler  handler;
+		for (UUID user : receivers) {
+			handler = connectedClients.get(user.toString());
+			if (handler != null)
+				handler.sendMessage(new HasWonMessage(user));
+		}
 	}
 
 	@Override
@@ -269,7 +274,7 @@ public class ComServer implements Runnable, ComServerInterface {
 		for(UUID receiver : receivers) {
 			SocketClientHandler handler = connectedClients.get(receiver);
 			if (handler != null) {
-				// Il faut pouvoir spécifier à qui on envoie ?
+				// Il faut pouvoir spï¿½cifier ï¿½ qui on envoie ?
 				handler.sendMessage(new HasAcceptedMessage(user));
 			}
 		}
@@ -280,7 +285,7 @@ public class ComServer implements Runnable, ComServerInterface {
 		for(UUID receiver : receivers) {
 			SocketClientHandler handler = connectedClients.get(receiver);
 			if (handler != null) {
-				// Il faut pouvoir spécifier à qui on envoie ?
+				// Il faut pouvoir spï¿½cifier ï¿½ qui on envoie ?
 				handler.sendMessage(new HasRefusedMessage(user));
 			}
 		}
