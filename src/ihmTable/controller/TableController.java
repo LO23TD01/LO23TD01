@@ -45,9 +45,32 @@ public class TableController {
         });
         bottomContainer.getChildren().addAll(playerStats, gameStats);
         setPosition(getCollapsiblePane(bottomContainer, Position.bottom), Position.bottom);
+        
+        //todo passer gametabelInstance à chaque sous controller
 
-        //todo passer gametabelInstance à chaque sous controller.
-
+	}
+	
+	private void giveModel() //transmet le modèle pour les sous controlleurs
+	{
+		//on récupère les différents controlleurs
+		FXMLLoader loader = new FXMLLoader(getClass().getResource("/ihmTable/resources/view/Chat.fxml"));
+		ChatController chatController = (ChatController)loader.getController();
+		
+		//todo rules controller
+		
+		loader = new FXMLLoader(getClass().getResource("/ihmTable/resources/view/TableCenterView.fxml"));
+		TableCenterViewController tableCenterViewController= (TableCenterViewController)loader.getController();
+		
+		loader = new FXMLLoader(getClass().getResource("/ihmTable/resources/view/PlayerStats.fxml"));		
+		PlayerStatsController playerStatsController = (PlayerStatsController)loader.getController();
+		
+		loader = new FXMLLoader(getClass().getResource("/ihmTable/resources/view/GameStats.fxml"));
+		GameStatsController gameStatsController = (GameStatsController)loader.getController();
+		
+		//On passe donne l'objet adéquat : 
+		
+		//todo pour chaque
+		playerStatsController.gameTableInstance = this.gameTableInstance;
 	}
 
 	private void setPosition(AnchorPane anchorPane, Position position) {
