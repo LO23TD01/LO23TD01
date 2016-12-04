@@ -16,6 +16,7 @@ import network.messages.IsTurnMessage;
 import network.messages.HasThrownMessage;
 import network.messages.AddNewTableMessage;
 import network.messages.HasWonMessage;
+import network.messages.AskStopGameMessage;
 import network.messages.HasAcceptedMessage;
 import network.messages.HasRefusedMessage;
 import network.messages.KickedMessage;
@@ -42,7 +43,7 @@ public class ComServer implements Runnable, ComServerInterface {
 	private int				serverPort;
 	private ServerSocket	serverSocket;
 	private boolean			isStopped    = false;
-	private 				HashMap<String, SocketClientHandler> connectedClients = new HashMap<String, SocketClientHandler>();
+	private 			HashMap<String, SocketClientHandler> connectedClients = new HashMap<String, SocketClientHandler>();
 	private ServerDataEngine dataEngine;
 	
 	/*
@@ -219,8 +220,12 @@ public class ComServer implements Runnable, ComServerInterface {
 
 	@Override
 	public void askStopGameEveryUser(List<UUID> receivers) {
-		// TODO Auto-generated method stub
-		
+		for(UUID receiver : receivers) {		
+			SocketClientHandler handler = connectedClients.get(receiver);
+			if (handler != null) {
+				handler.sendMessage(new AskStopGameMessage());
+			}
+		}
 	}
 
 	@Override

@@ -9,6 +9,7 @@ import data.client.ClientDataEngine;
 import data.GameTable;
 import data.Profile;
 import network.messages.AcceptReplayMessage;
+import network.messages.AnswerStopGameMessage;
 import data.Rules;
 import data.User;
 import network.messages.ConnectionMessage;
@@ -23,6 +24,7 @@ import network.messages.QuitGameMessage;
 import network.messages.RefuseReplayMessage;
 import network.messages.UpdateProfileMessage;
 import network.messages.AskJoinTableMessage;
+import network.messages.AskQuitTableMessage;
 import network.messages.askRefreshUserListMessage;
 
 public class ComClient implements ComClientInterface{
@@ -109,8 +111,15 @@ public class ComClient implements ComClientInterface{
 	//DropTable supprimé
 
 	@Override
-	public void quit(UUID user, GameTable table) {
-		sendMessage(new QuitGameMessage(user, table));
+	public void quit(UUID user) {
+		// Quit pour le diagramme Quitter Partie (avant/après)
+		sendMessage(new QuitGameMessage(user, null));
+	}
+
+	@Override
+	public void quit(UUID user, UUID tableId) {
+		// Quit pour le diagramme Quitter Partie (en cours de jeu)
+		sendMessage(new QuitGameMessage(user, tableId));
 	}
 
 	@Override
@@ -121,8 +130,7 @@ public class ComClient implements ComClientInterface{
 
 	@Override
 	public void askQuitTable(UUID tableId, UUID user) {
-		// TODO Auto-generated method stub
-		
+		sendMessage(new AskQuitTableMessage(tableId,user));
 	}
 
 	@Override
@@ -196,4 +204,10 @@ public class ComClient implements ComClientInterface{
         // TODO Auto-generated method stub
         
     }
+
+	@Override
+	public void answerStopGame(UUID tableId, boolean answer, UUID user) {
+		sendMessage(new AnswerStopGameMessage(tableId, answer, user));
+	}
+
 }

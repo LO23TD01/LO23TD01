@@ -14,17 +14,31 @@ public class QuitGameMessage implements IMessage {
 
 	private static final long serialVersionUID = -506628116565819592L;
 	private UUID user;
-	private String table;
+	private UUID tableId;
 	
-	public QuitGameMessage(UUID user, GameTable table) {
+	public QuitGameMessage(UUID user) {
 		this.user = user;
-		this.table = FxGson.create().toJson(table);
+	}
+	
+	public QuitGameMessage(UUID user, UUID tableId) {
+		this.user = user;
+		this.tableId = tableId;
 	}
 	
 	
 	@Override
 	public void process(ServerDataEngine dataEngine) {
-		dataEngine.quit(new User(new Profile(user)), FxGson.create().fromJson(table, GameTable.class));
+		// dataEngine.quit(user, table); problème je n'ai pas de table, la méthode est quit(UUID user), conformément au diagramme de sÃ©quence
+		// conformément au même diagramme la méthode de l'interface Data devrait prendre uniquement un User
+		
+		// Quitter partie (avant/après) -> quit(user) => la méthode quit(user) n'existe pas
+		// Quitter partie en cours -> quit(user,table)
+		if( tableId != null )
+			dataEngine.quit(new User(new Profile(user)), new GameTable(tableId));
+		
+		// Attente de méthode quit de DATA si besoin
+		//else
+		//	dataEngine.quit(new User(new Profile(user)));			
 	}
 
 	@Override

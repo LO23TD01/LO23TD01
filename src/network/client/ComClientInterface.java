@@ -27,4 +27,6 @@ public interface ComClientInterface {
 	//Changement de l'interface pour recuperer le profile 
     //getProfile(UUID user) --> getProfile(UUID user, UUID sender)
 	public void getProfile(UUID user, UUID sender);
+	public void answerStopGame(UUID tableId, boolean answer, UUID user);
+	public void quit(UUID user, UUID tableId);
 }
