@@ -14,6 +14,7 @@ import network.messages.NewUserMessage;
 import network.messages.HasSelectedMessage;
 import network.messages.IsTurnMessage;
 import network.messages.HasThrownMessage;
+import network.messages.AskStopGameMessage;
 import network.messages.HasAcceptedMessage;
 import network.messages.HasRefusedMessage;
 import network.messages.KickedMessage;
@@ -224,8 +225,12 @@ public class ComServer implements Runnable, ComServerInterface {
 
 	@Override
 	public void askStopGameEveryUser(List<UUID> receivers) {
-		// TODO Auto-generated method stub
-		
+		for(UUID receiver : receivers) {		
+			SocketClientHandler handler = connectedClients.get(receiver);
+			if (handler != null) {
+				handler.sendMessage(new AskStopGameMessage());
+			}
+		}
 	}
 
 	@Override
