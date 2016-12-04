@@ -32,4 +32,5 @@ public interface ComServerInterface {
 	public void newUser(List<UUID> receivers, Profile user);
 	public void sendTablesUsers(List<User> userList, List<GameTable> tableList, Profile user);
 	public void playerQuitGame(List<UUID> receivers, UUID user);
+	public void stopGame(List<UUID> receivers, boolean answer);
 }
