@@ -23,6 +23,7 @@ public class UpdateTableInfoMessage implements IMessage {
 
     @Override
     public void process(ClientDataEngine dataEngine) {
+    	//UpdateTableInfo équivaut à sendTableInfo
         dataEngine.sendTableInfo((FxGson.create().fromJson(tableInfo, GameTable.class)));
     }
 

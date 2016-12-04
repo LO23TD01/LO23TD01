@@ -22,8 +22,7 @@ public class KickedMessage implements IMessage {
 
 	@Override
 	public void process(ClientDataEngine dataEngine) {
-		// Méthode inexistante dans ClientDataEngine
-		// Appeler dataEngine.kicked(msg)
+		dataEngine.kicked(msg);
 	}
 
 }

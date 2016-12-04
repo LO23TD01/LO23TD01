@@ -6,6 +6,7 @@ import org.hildan.fxgson.FxGson;
 
 import data.client.ClientDataEngine;
 import data.Profile;
+import data.User;
 import data.server.ServerDataEngine;
 
 public class SendProfileMessage implements IMessage{
@@ -28,7 +29,7 @@ public class SendProfileMessage implements IMessage{
 
     @Override
     public void process(ClientDataEngine dataEngine) {
-    	//Méthode inexistante
-        //Appeler dataEngine.diplayProfile(FxGson.create().fromJson(profile, Profile.class));
+    	//Display profile peut utiliser updateUsers pour afficher le profile
+        dataEngine.updateUsers(new User(FxGson.create().fromJson(profile, Profile.class)));
     }
 }
