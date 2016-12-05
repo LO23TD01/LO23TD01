@@ -7,6 +7,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.UUID;
 
+import data.ChatMessage;
 import data.GameTable;
 import data.Profile;
 import data.server.ServerDataEngine;
@@ -21,6 +22,7 @@ import network.messages.HasAcceptedMessage;
 import network.messages.HasRefusedMessage;
 import network.messages.KickedMessage;
 import network.messages.LogoutUserRequestMessage;
+import network.messages.NetworkChatMessage;
 import network.messages.PlayerQuitGameMessage;
 import network.messages.SendProfileMessage;
 import network.messages.SendTableInfoMessage;
@@ -99,7 +101,7 @@ public class ComServer implements Runnable, ComServerInterface {
 	        try {
 	            clientSocket = this.serverSocket.accept();
 	            
-	            System.out.println("Nouveau client connecté");
+	            System.out.println("Nouveau client connectï¿½");
 	            
 	        } catch (IOException e) {
 	            if(isStopped()) {
@@ -133,11 +135,15 @@ public class ComServer implements Runnable, ComServerInterface {
 		
 	}
 
-	@Override
-	public void sendMessage(List<UUID> receivers, String senderLogin, String msg) {
-		// TODO Auto-generated method stub
-		
-	}
+    @Override                                                                                                                                  
+    public void writeMessage(List<UUID> receivers, ChatMessage chatMsg) {                                                                      
+        for (UUID receiver : receivers) {                                                                                                      
+            SocketClientHandler handler = connectedClients.get(receiver);                                                                      
+            if (handler != null) {                                                                                                             
+                handler.sendMessage(new NetworkChatMessage(chatMsg));                                                                          
+            }                                                                                                                                  
+        }                                                                                                                                      
+    }  
 
 	@Override
 	public void sendSelection(List<UUID> receivers, UUID player, boolean d1, boolean d2, boolean d3) {
@@ -269,7 +275,7 @@ public class ComServer implements Runnable, ComServerInterface {
 		for(UUID receiver : receivers) {
 			SocketClientHandler handler = connectedClients.get(receiver.toString());
 			if (handler != null) {
-				// Il faut pouvoir spécifier à qui on envoie ?
+				// Il faut pouvoir spï¿½cifier ï¿½ qui on envoie ?
 				handler.sendMessage(new HasAcceptedMessage(user));
 			}
 		}
@@ -280,7 +286,7 @@ public class ComServer implements Runnable, ComServerInterface {
 		for(UUID receiver : receivers) {
 			SocketClientHandler handler = connectedClients.get(receiver.toString());
 			if (handler != null) {
-				// Il faut pouvoir spécifier à qui on envoie ?
+				// Il faut pouvoir spï¿½cifier ï¿½ qui on envoie ?
 				handler.sendMessage(new HasRefusedMessage(user));
 			}
 		}
