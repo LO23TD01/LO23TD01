@@ -14,6 +14,7 @@ import network.messages.NewUserMessage;
 import network.messages.HasSelectedMessage;
 import network.messages.IsTurnMessage;
 import network.messages.HasThrownMessage;
+import network.messages.AddNewTableMessage;
 import network.messages.HasWonMessage;
 import network.messages.HasAcceptedMessage;
 import network.messages.HasRefusedMessage;
@@ -21,10 +22,13 @@ import network.messages.KickedMessage;
 import network.messages.LogoutUserRequestMessage;
 import network.messages.PlayerQuitGameMessage;
 import network.messages.SendProfileMessage;
+import network.messages.SendTableInfoMessage;
 import network.messages.TablesUsersListMessage;
 import network.messages.refreshUserListMessage;
 import network.messages.SetSelectionMessage;
+import network.messages.ShowTimerMessage;
 import network.messages.StartTurnMessage;
+import network.messages.StopGameMessage;
 import network.messages.UpdateChipsChargeMessage;
 import network.messages.UpdateChipsDechargeMessage;
 import data.User;
@@ -38,7 +42,7 @@ public class ComServer implements Runnable, ComServerInterface {
 	private int				serverPort;
 	private ServerSocket	serverSocket;
 	private boolean			isStopped    = false;
-	private 		HashMap<String, SocketClientHandler> connectedClients = new HashMap<String, SocketClientHandler>();
+	private 				HashMap<String, SocketClientHandler> connectedClients = new HashMap<String, SocketClientHandler>();
 	private ServerDataEngine dataEngine;
 	
 	/*
@@ -323,14 +327,25 @@ public class ComServer implements Runnable, ComServerInterface {
 
 	@Override
 	public void addNewTable(UUID receiver, List<UUID> receivers, GameTable tableinfo) {
-		// TODO Auto-generated method stub
 		//la table du receiver unique doit etre complete, mais pas celle des receivers multiples, on peux la mettre en lightweight.
+		SocketClientHandler client = connectedClients.get(receiver.toString());
+		if(client != null)
+			client.sendMessage(new SendTableInfoMessage(tableinfo));
+		
+		for (UUID uuid : receivers) {
+			client = connectedClients.get(uuid.toString());
+			if(client != null)
+				client.sendMessage(new AddNewTableMessage(tableinfo));
+		}
 	}
 
 	@Override
 	public void showTimer(List<UUID> receivers) {
-		// TODO Auto-generated method stub
-		
+		for (UUID uuid : receivers) {
+			SocketClientHandler client = connectedClients.get(uuid.toString());
+			if(client != null)
+				client.sendMessage(new ShowTimerMessage());
+		}
 	}
 
     @Override
@@ -343,7 +358,19 @@ public class ComServer implements Runnable, ComServerInterface {
 
 	@Override
 	public void playerQuitGame(List<UUID> receivers, UUID user) {
-		// TODO IMPORTANT
-		
+		for (UUID uuid : receivers) {
+			SocketClientHandler client = connectedClients.get(uuid.toString());
+			if(client != null)
+				client.sendMessage(new PlayerQuitGameMessage(user));
+		}
+	}
+
+	@Override
+	public void stopGame(List<UUID> receivers, boolean answer) {
+		for (UUID uuid : receivers) {
+			SocketClientHandler client = connectedClients.get(uuid.toString());
+			if(client != null)
+				client.sendMessage(new StopGameMessage(answer));
+		}
 	}
 }
