@@ -2,6 +2,7 @@ package network.client;
 
 import java.util.UUID;
 
+import data.ChatMessage;
 import data.GameTable;
 import data.Profile;
 import data.Rules;
@@ -10,7 +11,7 @@ public interface ComClientInterface {
 	
 	public void connection(Profile user);
 	public void throwDice(UUID user, boolean d1, boolean d2, boolean d3);
-	public void sendMessage(String msg);
+	public void sendMessage(ChatMessage msg);
 	public void launchGame(UUID user);
 	public void createNewTable(UUID user, String name, String pwd, int min, int max, int token, boolean withSpec, boolean withChat, Rules rules);
 	public void selectDice(UUID user, boolean d1, boolean d2, boolean d3);

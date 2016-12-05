@@ -6,6 +6,7 @@ import java.net.UnknownHostException;
 import java.util.UUID;
 
 import data.client.ClientDataEngine;
+import data.ChatMessage;
 import data.GameTable;
 import data.Profile;
 import network.messages.AcceptReplayMessage;
@@ -18,6 +19,7 @@ import network.messages.GetProfileMessage;
 import network.messages.IMessage;
 import network.messages.LaunchGameMessage;
 import network.messages.LogoutUserRequestMessage;
+import network.messages.NetworkChatMessage;
 import network.messages.ThrowDiceMessage;
 import network.messages.SelectDiceMessage;
 import network.messages.QuitGameMessage;
@@ -49,7 +51,7 @@ public class ComClient implements ComClientInterface{
 		try {
 			socketToServer = new Socket(ipAdress, serverPort);
 			
-			System.out.println("Client connecté au serveur");
+			System.out.println("Client connectï¿½ au serveur");
 			
 			SocketServerHandler server = new SocketServerHandler(socketToServer, this);
         	new Thread(server).start();
@@ -108,11 +110,11 @@ public class ComClient implements ComClientInterface{
 		sendMessage(new UpdateProfileMessage(user,profile));
 	}
 
-	//DropTable supprimé
+	//DropTable supprimï¿½
 
 	@Override
 	public void quit(UUID user) {
-		// Quit pour le diagramme Quitter Partie (avant/après)
+		// Quit pour le diagramme Quitter Partie (avant/aprï¿½s)
 		sendMessage(new QuitGameMessage(user, null));
 	}
 
@@ -200,9 +202,8 @@ public class ComClient implements ComClientInterface{
     }
 
     @Override
-    public void sendMessage(String msg) {
-        // TODO Auto-generated method stub
-        
+    public void sendMessage(ChatMessage msg) {
+		sendMessage(new NetworkChatMessage(msg));
     }
 
 	@Override
