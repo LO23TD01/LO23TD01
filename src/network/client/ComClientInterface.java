@@ -15,8 +15,7 @@ public interface ComClientInterface {
 	public void createNewTable(UUID user, String name, String pwd, int min, int max, int token, boolean withSpec, boolean withChat, Rules rules);
 	public void selectDice(UUID user, boolean d1, boolean d2, boolean d3);
 	public void updateUserProfile(UUID user, Profile profile);
-	//DropTable supprim�
-	public void quit(UUID user, GameTable table);
+	//DropTable supprimé
 	public void updateUsersList(UUID user);
 	public void askQuitTable(UUID tableId, UUID user);
 	public void askRefreshUsersList(UUID user);
@@ -28,5 +27,6 @@ public interface ComClientInterface {
     //getProfile(UUID user) --> getProfile(UUID user, UUID sender)
 	public void getProfile(UUID user, UUID sender);
 	public void answerStopGame(UUID tableId, boolean answer, UUID user);
-	public void quit(UUID user, UUID tableId);
+	public void quit(UUID user); // Pour phases d'avant/après la partie (BESOIN A VERIFIER PAR DATA)
+	public void quit(UUID user, UUID tableId); // Pendant une partie
 }

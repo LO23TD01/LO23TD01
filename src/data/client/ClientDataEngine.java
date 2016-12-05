@@ -59,7 +59,9 @@ public class ClientDataEngine implements InterfaceDataIHMLobby, InterfaceDataIHM
 
 	@Override
 	public void quitGame() {
-		comClientInterface.quit(profileManager.get().getCurrentProfile().getUUID(), getActualTable());
+		comClientInterface.quit(profileManager.get().getCurrentProfile().getUUID());
+		//	A voir avec team Reseau, pas de méthode quit(user) sur serverDataEngine
+		//comClientInterface.quit(profileManager.get().getCurrentProfile().getUUID(), getActualTable().getUid());
 
 	}
 
