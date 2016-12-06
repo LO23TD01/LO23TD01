@@ -110,11 +110,7 @@ public class ComClient implements ComClientInterface{
 
 	//DropTable supprimé
 
-	@Override
-	public void quit(UUID user) {
-		// Quit pour le diagramme Quitter Partie (avant/après)
-		sendMessage(new QuitGameMessage(user, null));
-	}
+	//quit(user) supprimé, seul quit(user, table) sera utilisé
 
 	@Override
 	public void quit(UUID user, UUID tableId) {
