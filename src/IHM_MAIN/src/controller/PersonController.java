@@ -6,6 +6,7 @@ import javafx.embed.swing.SwingFXUtils;
 import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Label;
+import javafx.scene.control.ListView;
 import javafx.scene.control.TextField;
 import javafx.scene.image.ImageView;
 import javafx.stage.FileChooser;
@@ -17,6 +18,7 @@ import javafx.scene.image.Image;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
+import java.util.Collection;
 
 import javax.imageio.ImageIO;
 import javax.swing.JFrame;
@@ -61,6 +63,8 @@ public class PersonController {
 	   private  Label lostField;
 	   @FXML
 	   private  Label leaveField;
+	   @FXML
+	   private ListView<String> friendsList;
 
 
 
@@ -255,6 +259,7 @@ System.out.print(wonField);
        	 Profile profil = new Profile();
 
 	        try {
+	        	System.out.print("dqlksdlksjdkqlj");
 
 	        	  DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
 	        	  DocumentBuilder dBuilder = dbFactory.newDocumentBuilder();
@@ -276,9 +281,9 @@ System.out.print(wonField);
 	        	 profil.setNbGameWon(Integer.parseInt(getTagValue("nbGameWon", eElement)));
 	        	 profil.setNbGameLost(Integer.parseInt(getTagValue("nbGameLost", eElement)));
 	        	 profil.setNbGameAbandonned(Integer.parseInt(getTagValue("nbGameAbandonned", eElement)));
-
-
-
+	        	 getFriendsList(eElement);
+	        	 friendsList.getItems().setAll("test1");
+	        	 friendsList.getItems().add(friendsList.getItems().size(), "test2");
 
 	        	     }
 	        	     }
@@ -311,6 +316,13 @@ System.out.print(wonField);
 
 	        	        nValue.setTextContent(value);
 
+	        	  }
+	        	  private static Node getFriendsList( Element eElement){
+	        			 NodeList nlList = eElement.getElementsByTagName("client").item(0).getChildNodes();
+
+		        	        Node nValue = (Node) nlList.item(0);
+		        	        System.out.print(nValue);
+		        	 return nValue;
 	        	  }
 
 
