@@ -385,4 +385,14 @@ public class ComServer implements Runnable, ComServerInterface {
 				client.sendMessage(new StopGameMessage(answer));
 		}
 	}
+
+	@Override
+    public void hasLost(List<UUID> receivers, UUID loser) {
+        SocketClientHandler  handler;
+        for (UUID user : receivers) {
+            handler = connectedClients.get(user.toString());
+            if (handler != null)
+                handler.sendMessage(new HasLostMessage(loser));
+        }
+    }
 }
