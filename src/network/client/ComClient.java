@@ -51,7 +51,7 @@ public class ComClient implements ComClientInterface{
 		try {
 			socketToServer = new Socket(ipAdress, serverPort);
 			
-			System.out.println("Client connectï¿½ au serveur");
+			System.out.println("Client connecté au serveur");
 			
 			SocketServerHandler server = new SocketServerHandler(socketToServer, this);
         	new Thread(server).start();
@@ -110,13 +110,9 @@ public class ComClient implements ComClientInterface{
 		sendMessage(new UpdateProfileMessage(user,profile));
 	}
 
-	//DropTable supprimï¿½
+	//DropTable supprimé
 
-	@Override
-	public void quit(UUID user) {
-		// Quit pour le diagramme Quitter Partie (avant/aprï¿½s)
-		sendMessage(new QuitGameMessage(user, null));
-	}
+	//quit(user) supprimé, seul quit(user, table) sera utilisé
 
 	@Override
 	public void quit(UUID user, UUID tableId) {
@@ -158,7 +154,7 @@ public class ComClient implements ComClientInterface{
 	@Override
 	public void logoutUserRequest(UUID user) {
 		sendMessage(new LogoutUserRequestMessage(user));
-		
+		stop();
 	}
 
     @Override

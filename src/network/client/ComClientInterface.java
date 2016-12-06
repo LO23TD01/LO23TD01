@@ -29,7 +29,7 @@ public interface ComClientInterface {
     //getProfile(UUID user) --> getProfile(UUID user, UUID sender)
 	public void getProfile(UUID user, UUID sender);
 	public void answerStopGame(UUID tableId, boolean answer, UUID user);
-	public void quit(UUID user); // Pour phases d'avant/aprÃ¨s la partie (BESOIN A VERIFIER PAR DATA)
+	//quit(user) supprimé, seul quit(user, table) sera utilisé
 	public void quit(UUID user, UUID tableId); // Pendant une partie
 	public void setClientData(ClientDataEngine clientData);
 }
