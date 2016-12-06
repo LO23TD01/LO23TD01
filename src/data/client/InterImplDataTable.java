@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import data.GameTable;
+<<<<<<< HEAD
 import data.Parameters;
 import data.PlayerData;
 import data.Profile;
@@ -14,6 +15,13 @@ import data.Variant;
 import data.Vote;
 import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.SimpleObjectProperty;
+=======
+import data.PlayerData;
+import data.User;
+import data.UserRole;
+import data.Vote;
+import javafx.beans.property.ObjectProperty;
+>>>>>>> 516ab4195242c3be60b4c23c1cd42e33a94ab269
 
 public class InterImplDataTable implements InterfaceDataIHMTable{
 	private final ObjectProperty<GameTable> actualTable;
@@ -23,6 +31,7 @@ public class InterImplDataTable implements InterfaceDataIHMTable{
 	//constructeur  de test pour ihm table
 	public InterImplDataTable() {
 		super();
+<<<<<<< HEAD
 
 		this.actualTable = new SimpleObjectProperty<GameTable>();
 		User u1 = new User(new Profile("lol","Jeanlaque","AHAH","Pro","Gamer",42));
@@ -32,6 +41,10 @@ public class InterImplDataTable implements InterfaceDataIHMTable{
 		uList.add(u2);
 		this.setActualTable(new GameTable("Table Test pour Ihm", u1, new Parameters(2,6,21,true,true,new Rules(Variant.CONSTRAINED_DISCHARGE,3)), uList, new ArrayList<User>()));
 		this.actualRole = new SimpleObjectProperty<UserRole>();
+=======
+		this.actualTable = null;
+		this.actualRole = null;
+>>>>>>> 516ab4195242c3be60b4c23c1cd42e33a94ab269
 	}
 
 	/**
@@ -41,6 +54,7 @@ public class InterImplDataTable implements InterfaceDataIHMTable{
 	public InterImplDataTable(ClientDataEngine dataEngine) {
 		super();
 		this.dataEngine = dataEngine;
+<<<<<<< HEAD
 		this.actualTable = new SimpleObjectProperty<GameTable>();
 		this.actualRole = new SimpleObjectProperty<UserRole>();
 		if(this.dataEngine.getActualTable()==null)
@@ -49,23 +63,38 @@ public class InterImplDataTable implements InterfaceDataIHMTable{
 			;//thwor new Escpetion
 		this.setActualTable(this.dataEngine.getActualTable());
 		this.setActualRole(this.dataEngine.getActualRole());
+=======
+		this.actualTable = null;
+		this.actualRole = null;
+>>>>>>> 516ab4195242c3be60b4c23c1cd42e33a94ab269
 	}
 
 	/**
 	 * @param actualTable
 	 * @param actualRole
 	 */
+<<<<<<< HEAD
 	//Constructeur en copie
 	public InterImplDataTable(GameTable actualTable, UserRole actualRole) {
 		super();
 		this.actualTable = new SimpleObjectProperty<GameTable>(actualTable);
 		this.actualRole = new SimpleObjectProperty<UserRole>(actualRole);
+=======
+	public InterImplDataTable(ObjectProperty<GameTable> actualTable, ObjectProperty<UserRole> actualRole) {
+		super();
+		this.actualTable = actualTable;
+		this.actualRole = actualRole;
+>>>>>>> 516ab4195242c3be60b4c23c1cd42e33a94ab269
 	}
 
 
 
+<<<<<<< HEAD
 ///IMPLEMENTATION INTERFACE ICI
 /////////////////////////////////////////////////////////////
+=======
+
+>>>>>>> 516ab4195242c3be60b4c23c1cd42e33a94ab269
 
 	@Override
 	public UserRole getUserRole() {
@@ -108,11 +137,17 @@ public class InterImplDataTable implements InterfaceDataIHMTable{
 
 	@Override
 	public void refuseReplay() {
+<<<<<<< HEAD
 		this.dataEngine.getComClientInterface().refuseReplay(this.dataEngine.getProfileManager().getCurrentProfile().getUUID());
 	}
 
 /////////////////////////////////////////////////////////////
 
+=======
+		this.dataEngine.getComClientInterface().refuseReplay(profileManager.get().getCurrentProfile().getUUID());
+	}
+
+>>>>>>> 516ab4195242c3be60b4c23c1cd42e33a94ab269
 
 
 	public final ObjectProperty<GameTable> actualTableProperty() {
@@ -141,4 +176,10 @@ public class InterImplDataTable implements InterfaceDataIHMTable{
 		this.actualRoleProperty().set(actualRole);
 	}
 
+<<<<<<< HEAD
+=======
+
+
+
+>>>>>>> 516ab4195242c3be60b4c23c1cd42e33a94ab269
 }
