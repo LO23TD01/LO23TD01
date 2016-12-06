@@ -1,8 +1,7 @@
-<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<profile>
+<?xml version="1.0" encoding="UTF-8" standalone="no"?><profile>
     <uuid>2b945f5d-a8b8-4910-b558-d9d746a174d2</uuid>
     <login>login</login>
-    <nickName>nickname</nickName>
+    <nickName>nom1</nickName>
     <psw>psw</psw>
     <firstName>firstName</firstName>
     <surName>surName</surName>
@@ -11,6 +10,8 @@
     <nbGameWon>0</nbGameWon>
     <nbGameLost>0</nbGameLost>
     <nbGameAbandonned>0</nbGameAbandonned>
+
+
     <client>
         <contactList>
             <contact>
