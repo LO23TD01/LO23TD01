@@ -2,15 +2,18 @@ package network.messages;
 
 import data.client.ClientDataEngine;
 import data.server.ServerDataEngine;
+
+import org.hildan.fxgson.FxGson;
+
 import data.GameTable;
 
 public class UpdateTableInfoMessage implements IMessage {
 
     private static final long serialVersionUID = 3379374689137731613L;
-    private GameTable tableInfo;
+    private String tableInfo;
 
     public UpdateTableInfoMessage(GameTable tableInfo) {
-        this.tableInfo = tableInfo;
+        this.tableInfo = FxGson.create().toJson(tableInfo);
     }
 
     @Override
@@ -20,8 +23,8 @@ public class UpdateTableInfoMessage implements IMessage {
 
     @Override
     public void process(ClientDataEngine dataEngine) {
-        //Décommenter quand clientDataEngine sera fini
-        //dataEngine.updateTableInfo(this.tableID);
+    	//UpdateTableInfo équivaut à sendTableInfo
+        dataEngine.sendTableInfo((FxGson.create().fromJson(tableInfo, GameTable.class)));
     }
 
 }

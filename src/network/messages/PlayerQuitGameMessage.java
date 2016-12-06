@@ -2,6 +2,8 @@ package network.messages;
 
 import java.util.UUID;
 
+import data.Profile;
+import data.User;
 import data.client.ClientDataEngine;
 import data.server.ServerDataEngine;
 
@@ -22,7 +24,7 @@ public class PlayerQuitGameMessage implements IMessage {
 
 	@Override
 	public void process(ClientDataEngine dataEngine) {
-		// Appeler dataEngine.playerQuitGame(user)
+		dataEngine.playerQuitGame(new User(new Profile(user)));
 	}
 
 }

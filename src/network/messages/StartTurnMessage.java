@@ -15,8 +15,7 @@ public class StartTurnMessage implements IMessage {
 
 	@Override
 	public void process(ClientDataEngine dataEngine) {
-		//Quand l'interface Data client sera implémenté appeler
-		//dataEngine.startTurn();
+		dataEngine.startTurn();
 	}
 	
 }

@@ -5,14 +5,12 @@ import java.util.UUID;
 import data.client.ClientDataEngine;
 import data.server.ServerDataEngine;
 
-public class KickedMessage implements IMessage {
+public class AskStopGameMessage implements IMessage {
 
-	private static final long serialVersionUID = 6709711021661501877L;
-	private String msg;
-	
-	public KickedMessage(String msg) {
-		this.msg = msg;
-	}
+	private static final long serialVersionUID = 3413708401686105382L;
+
+	public AskStopGameMessage() {
+    }
 	
 	@Override
 	public void process(ServerDataEngine dataEngine) {
@@ -22,7 +20,7 @@ public class KickedMessage implements IMessage {
 
 	@Override
 	public void process(ClientDataEngine dataEngine) {
-		dataEngine.kicked(msg);
+		dataEngine.askStopGame();
 	}
 
 }

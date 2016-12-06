@@ -59,13 +59,16 @@ public class ClientDataEngine implements InterfaceDataIHMLobby, InterfaceDataIHM
 
 	@Override
 	public void quitGame() {
-		comClientInterface.quit(profileManager.get().getCurrentProfile().getUUID());
-
+		comClientInterface.quit(profileManager.get().getCurrentProfile().getUUID(), getActualTable().getUid());
+		//	Vu avec team Reseau, pas de mÃ©thode quit(user) --> utilisation quit(user, table)
 	}
 
 	@Override
 	public void sendMessage(String msg) {
-		comClientInterface.sendMessage(msg);
+		//Modification de l'interface de ComClient à la demande de Data
+		//sendMessage(string) -> sendMessage(ChatMessage)
+		//TO-DO : Créer le ChatMessage et appeler correctement la méthode sendMessage
+		//comClientInterface.sendMessage(msg);
 	}
 
 	@Override

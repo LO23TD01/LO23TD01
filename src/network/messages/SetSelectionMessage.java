@@ -25,8 +25,7 @@ public class SetSelectionMessage implements IMessage {
 
 	@Override
 	public void process(ClientDataEngine dataEngine) {
-		//Quand l'interface Data client sera implémenté appeler
-		//dataEngine.setSelection(dice1, dice2, dice3);
+		dataEngine.setSelection(dice1, dice2, dice3);
 	}
 
 }

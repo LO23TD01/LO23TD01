@@ -1,19 +1,18 @@
 package network.messages;
 
-import java.util.UUID;
-
 import data.client.ClientDataEngine;
 import data.server.ServerDataEngine;
 
-public class KickedMessage implements IMessage {
+public class StopGameMessage implements IMessage {
 
-	private static final long serialVersionUID = 6709711021661501877L;
-	private String msg;
+	private static final long serialVersionUID = -4869219421925002125L;
+
+	private boolean answer;
 	
-	public KickedMessage(String msg) {
-		this.msg = msg;
+	public StopGameMessage(boolean answer) {
+		this.answer = answer;
 	}
-	
+
 	@Override
 	public void process(ServerDataEngine dataEngine) {
 		// TODO Auto-generated method stub
@@ -22,7 +21,7 @@ public class KickedMessage implements IMessage {
 
 	@Override
 	public void process(ClientDataEngine dataEngine) {
-		dataEngine.kicked(msg);
+		dataEngine.stopGame(answer);
 	}
 
 }

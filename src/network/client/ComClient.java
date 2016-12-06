@@ -6,8 +6,11 @@ import java.net.UnknownHostException;
 import java.util.UUID;
 
 import data.client.ClientDataEngine;
+import data.ChatMessage;
+import data.GameTable;
 import data.Profile;
 import network.messages.AcceptReplayMessage;
+import network.messages.AnswerStopGameMessage;
 import data.Rules;
 import data.User;
 import network.messages.ConnectionMessage;
@@ -16,12 +19,14 @@ import network.messages.GetProfileMessage;
 import network.messages.IMessage;
 import network.messages.LaunchGameMessage;
 import network.messages.LogoutUserRequestMessage;
+import network.messages.NetworkChatMessage;
 import network.messages.ThrowDiceMessage;
 import network.messages.SelectDiceMessage;
 import network.messages.QuitGameMessage;
 import network.messages.RefuseReplayMessage;
 import network.messages.UpdateProfileMessage;
 import network.messages.AskJoinTableMessage;
+import network.messages.AskQuitTableMessage;
 import network.messages.askRefreshUserListMessage;
 
 public class ComClient implements ComClientInterface{
@@ -105,15 +110,14 @@ public class ComClient implements ComClientInterface{
 		sendMessage(new UpdateProfileMessage(user,profile));
 	}
 
-	@Override
-	public void dropTable(UUID tableId) {
-		//TODO: ATTENTION DropTable supprimé
-		//sendMessage(new DropTableMessage(tableId));
-	}
+	//DropTable supprimé
+
+	//quit(user) supprimé, seul quit(user, table) sera utilisé
 
 	@Override
-	public void quit(UUID user) {
-		sendMessage(new QuitGameMessage(user));
+	public void quit(UUID user, UUID tableId) {
+		// Quit pour le diagramme Quitter Partie (en cours de jeu)
+		sendMessage(new QuitGameMessage(user, tableId));
 	}
 
 	@Override
@@ -124,8 +128,7 @@ public class ComClient implements ComClientInterface{
 
 	@Override
 	public void askQuitTable(UUID tableId, UUID user) {
-		// TODO Auto-generated method stub
-		
+		sendMessage(new AskQuitTableMessage(tableId,user));
 	}
 
 	@Override
@@ -151,7 +154,7 @@ public class ComClient implements ComClientInterface{
 	@Override
 	public void logoutUserRequest(UUID user) {
 		sendMessage(new LogoutUserRequestMessage(user));
-		
+		stop();
 	}
 
     @Override
@@ -195,8 +198,13 @@ public class ComClient implements ComClientInterface{
     }
 
     @Override
-    public void sendMessage(String msg) {
-        // TODO Auto-generated method stub
-        
+    public void sendMessage(ChatMessage msg) {
+		sendMessage(new NetworkChatMessage(msg));
     }
+
+	@Override
+	public void answerStopGame(UUID tableId, boolean answer, UUID user) {
+		sendMessage(new AnswerStopGameMessage(tableId, answer, user));
+	}
+
 }
