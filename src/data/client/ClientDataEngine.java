@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
+import data.ChatMessage;
 import data.Contact;
 import data.ContactCategory;
 import data.GameTable;
@@ -262,6 +263,11 @@ public class ClientDataEngine implements InterfaceDataNetwork {
 		this.actualTable.set(null);
 	}
 
+	@Override
+ 	public void writeMessage(ChatMessage c){
+		this.getActualTable().getLocalChat().add(c);
+ 	}
+
 
 	/////////////////////////////////////////////////////////////////////////////////
 
@@ -335,7 +341,7 @@ public class ClientDataEngine implements InterfaceDataNetwork {
 	@Override
 	public void raiseException(String msg) {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 
