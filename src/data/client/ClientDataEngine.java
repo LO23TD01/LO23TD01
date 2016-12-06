@@ -22,14 +22,22 @@ import javafx.collections.ObservableList;
 import network.client.ComClient;
 import network.client.ComClientInterface;
 
-public class ClientDataEngine implements InterfaceDataIHMLobby, InterfaceDataNetwork {
+public class ClientDataEngine implements InterfaceDataNetwork {
 
-	private final ObjectProperty<ProfileManager> profileManager = new SimpleObjectProperty<ProfileManager>();
+	//ToReview changer ces types pour en faire des non observables
+	//les suel types observable devraient être ceux dans les interfaces
+	private final ProfileManager profileManager;
 	private final ObservableList<User> userList = FXCollections.observableArrayList();
 	private final ObservableList<GameTable> tableList = FXCollections.observableArrayList();
 	private final ObjectProperty<GameTable> actualTable;
 	private final ObjectProperty<UserRole> actualRole;
 	private final ObservableList<Boolean> selectionList = FXCollections.observableArrayList();
+
+	private InterImplDataMain interfaceMain;
+	//si on fait pas confiance à main on decommente cette ligne
+	//private InterImplDataTable interfaceTable;
+
+
 	/**
 	 * Variable qui permet de communiquer avec le serveur, initialisÃ©e lors du login
 	 */
@@ -38,160 +46,27 @@ public class ClientDataEngine implements InterfaceDataIHMLobby, InterfaceDataNet
 	/**
 	 *
 	 */
+	//appelé une seule fois, dans le main !
 	public ClientDataEngine() {
 		super();
-		this.profileManager.set(new ProfileManager());
+		this.profileManager = new ProfileManager();
+		this.setUserList(null);
+		this.setTableList(null);
 		this.actualTable = null;
 		this.actualRole = null;
+		this.setSelectionList(null);
+		this.interfaceMain = new InterImplDataMain(this);
+		//si on fait pas confiance à main on decommente cette ligne
+		//this.interfaceTable = new InterImplDataTable(this);
 	}
 
 
 	@Override
-	public void getListTable() {
-		// TODO Auto-generated method stub
-
+	public void raiseException(String msg) {
+		//TODO niveau Ihm Main
+		//implmenter un truc de leur coté
 	}
 
-	/**
-	 * Cette mÃ©thode vÃ©rifie si le login/mot de passe est correct. Elle connecte ensuite le client au serveur de jeu.
-	 *
-	 * @param login
-	 * @param password
-	 * @param ipd
-	 * @throws Exception
-	 */
-	@Override
-	public void login(String login, String password, IPData ipd) throws Exception {
-		if (!profileManager.get().checkPassword(login, password))
-			throw new Exception("Mauvais mot de passe");
-		comClientInterface = new ComClient(ipd.getValue(), 4000);
-		// TODO choisir un port
-		comClientInterface.connection(this.getLocalProfile(login, password));
-	}
-
-	@Override
-	public void logout() {
-		comClientInterface.logoutUserRequest(profileManager.get().getCurrentProfile().getUUID());
-		profileManager.get().logout(getLocalProfile());
-		this.tableList.clear();
-		this.userList.clear();
-	}
-
-	@Override
-	// Cette fonction est appelée par IHM lobby lors de la création d'un profil c'est pour cela que l'on xmlise ce profile.
-	public void createProfile(String login, String psw) {
-		getProfileManager().createProfile(login,psw).Xmlise();
-	}
-
-	@Override
-	public void getTableInfo(GameTable g) {
-		// TODO Auto-generated method stub
-
-	}
-
-	@Override
-	public void askJoinTable(GameTable g, boolean b) {
-		comClientInterface.askJoinTable(this.getProfileManager().getCurrentProfile().getUUID(), g.getUid(), b);
-	}
-
-	@Override
-	public Profile getLocalProfile() {
-		return this.getProfileManager().getCurrentProfile();
-	}
-
-	@Override
-	public Profile getLocalProfile(String login, String password) {
-		return this.getProfileManager().getLocalProfile(login,password);
-	}
-
-	@Override
-	public Profile getLocalProfile(UUID id) {
-		return this.getProfileManager().getLocalProfile(id);
-	}
-
-	@Override
-	// Cette fonction est appelée par IHM lobby lors de la modification d'un profil c'est pour cela que l'on xmlise ce profile.
-	public Profile changeMyProfile(Profile new_profile) {
-		// Si jamais l'utilisateur veut changer son mdp/login on supprime l'ancien profile XML et on en crée un nouveau.
-		if (getLocalProfile().getLogin() != new_profile.getLogin() || getLocalProfile().getPsw() != new_profile.getPsw()){
-			String path = "MesProfiles\\"+getLocalProfile().getLogin()+"-"+getLocalProfile().getPsw()+".xml";
-			File file = new File(path);
-			file.delete();
-		}
-		Profile p = this.getProfileManager().modifyProfile(getLocalProfile(), new_profile);
-		p.Xmlise();
-		return p;
-	}
-
-	@Override
-	public void getListUsers() {
-		comClientInterface.updateUsersList(this.getProfileManager().getCurrentProfile().getUUID());
-
-	}
-
-	@Override
-	public void askRefreshUsersList() {
-		comClientInterface.askRefreshUsersList(this.getProfileManager().getCurrentProfile().getUUID());
-	}
-
-	@Override
-	public void getProfileFromOtherUser(User other) {
-		comClientInterface.getProfile(other.getPublicData().getUUID(),
-				this.getProfileManager().getCurrentProfile().getUUID());
-	}
-
-	@Override
-	public boolean addContact(UUID uuid) {
-		return this.getProfileManager().getCurrentProfile().getClient()
-				.addContact(new Contact(uuid, null, null, null, 0));
-	}
-
-	@Override
-	public boolean deleteContact(UUID uuid) {
-		return this.getProfileManager().getCurrentProfile().getClient().removeContact(uuid);
-	}
-
-	@Override
-	public List<Contact> getContactList() {
-		return this.getProfileManager().getCurrentProfile().getClient().getContactList();
-	}
-
-	@Override
-	public boolean addCategory(String name, Object... rights) {
-		return this.getProfileManager().getCurrentProfile().getClient().addCategory(name, (Rights) rights[0]);
-	}
-
-	@Override
-	public boolean deleteCategory(UUID uuid) {
-		return this.getProfileManager().getCurrentProfile().getClient().deleteCategoryByUuid(uuid);
-	}
-
-	@Override
-	public List<ContactCategory> getCategoryList() {
-		return this.getProfileManager().getCurrentProfile().getClient().getCategoryList();
-	}
-
-	@Override
-	public boolean modifyCategory(UUID uuid, String name, Object... rights) {
-		return this.getProfileManager().getCurrentProfile().getClient().modifyCategory(uuid, name, (Rights) rights[0]);
-	}
-
-	@Override
-	public boolean addContactToCategory(UUID uuidContact, UUID uuidCategory) {
-		return this.getProfileManager().getCurrentProfile().getClient().addContactToCategory(uuidContact, uuidCategory);
-	}
-
-	@Override
-	public boolean removeContactFromCategory(UUID uuidContact, UUID uuidCategory) {
-		return this.getProfileManager().getCurrentProfile().getClient().removeContactFromCategory(uuidContact,
-				uuidCategory);
-	}
-
-	@Override
-	public void raiseException(Exception e) {
-		// TODO Auto-generated method stub
-
-	}
 
 	@Override
 	public void refreshUsersList(List<User> l) {
@@ -395,17 +270,8 @@ public class ClientDataEngine implements InterfaceDataIHMLobby, InterfaceDataNet
 
 
 
-
-	public final ObjectProperty<ProfileManager> profileManagerProperty() {
-		return this.profileManager;
-	}
-
 	public final ProfileManager getProfileManager() {
-		return this.profileManagerProperty().get();
-	}
-
-	public final void setProfileManager(final ProfileManager profileManager) {
-		this.profileManagerProperty().set(profileManager);
+		return this.profileManager;
 	}
 
 	public final ObjectProperty<GameTable> actualTableProperty() {
@@ -464,10 +330,10 @@ public class ClientDataEngine implements InterfaceDataIHMLobby, InterfaceDataNet
 		return comClientInterface;
 	}
 
+	public void setComClientInterface(ComClientInterface comClientInterface) {
+		this.comClientInterface = comClientInterface;
+	}
 
-<<<<<<< HEAD
-=======
 
 
->>>>>>> 516ab4195242c3be60b4c23c1cd42e33a94ab269
 }
