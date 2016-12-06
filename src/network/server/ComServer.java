@@ -102,7 +102,7 @@ public class ComServer implements Runnable, ComServerInterface {
 	        try {
 	            clientSocket = this.serverSocket.accept();
 	            
-	            System.out.println("Nouveau client connecté");
+	            System.out.println("Nouveau client connectï¿½");
 	            
 	        } catch (IOException e) {
 	            if(isStopped()) {
@@ -137,7 +137,7 @@ public class ComServer implements Runnable, ComServerInterface {
 	}
 
     @Override                                                                                                                                  
-    public void writeMessage(List<UUID> receivers, ChatMessage chatMsg) {                                                                      
+    public void sendMessage(List<UUID> receivers, ChatMessage chatMsg) {                                                                      
         for (UUID receiver : receivers) {                                                                                                      
             SocketClientHandler handler = connectedClients.get(receiver);                                                                      
             if (handler != null) {                                                                                                             
@@ -276,7 +276,7 @@ public class ComServer implements Runnable, ComServerInterface {
 		for(UUID receiver : receivers) {
 			SocketClientHandler handler = connectedClients.get(receiver.toString());
 			if (handler != null) {
-				// Il faut pouvoir spécifier à qui on envoie ?
+				// Il faut pouvoir spï¿½cifier ï¿½ qui on envoie ?
 				handler.sendMessage(new HasAcceptedMessage(user));
 			}
 		}
@@ -287,7 +287,7 @@ public class ComServer implements Runnable, ComServerInterface {
 		for(UUID receiver : receivers) {
 			SocketClientHandler handler = connectedClients.get(receiver.toString());
 			if (handler != null) {
-				// Il faut pouvoir spécifier à qui on envoie ?
+				// Il faut pouvoir spï¿½cifier ï¿½ qui on envoie ?
 				handler.sendMessage(new HasRefusedMessage(user));
 			}
 		}

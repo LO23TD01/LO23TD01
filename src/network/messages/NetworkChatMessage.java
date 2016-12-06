@@ -19,10 +19,13 @@ public class NetworkChatMessage implements IMessage{
 	
 	@Override
 	public void process(ServerDataEngine dataEngine) {
+		dataEngine.sendMessage(msg);
 	}
 
 	@Override
 	public void process(ClientDataEngine dataEngine) {
+		// En attente de DATA : issue #126
+		//dataEngine.writeMessage(msg);
 	}
 
 }
