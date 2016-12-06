@@ -24,4 +24,6 @@ public interface InterfaceDataNetwork {
 	public void hasRefusedReplay (UUID uuid);
 	public void hasAcceptedReplay (UUID uuid);
 	public void askRefreshUsersList (User user);
+	public void askQuitTable(UUID tableID, UUID user); //on connait déjà sa table
+	public void answerStopGame(UUID tableID, boolean answer,UUID user); // on connait déjà sa table, Et ememe, utiliser la calsse vote est plus pratique mais bon.
 }

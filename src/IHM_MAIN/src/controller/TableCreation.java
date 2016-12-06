@@ -92,11 +92,11 @@ public class TableCreation{
 				throw new Exception("Veuillez renseigner un nombre de jetons");
 			if(rules.getValue() == null)
 				throw new Exception("Veuillez sélectionner une règle de jeu");
-			if(this.clientData.getLocalProfile() == null)
+			if(this.interfaceData.getLocalProfile() == null)
 				throw new Exception("Erreur Système: Impossible de charger le profil local");
 
 		List<User> playersList = new ArrayList<User>();
-		User user = new User(this.clientData.getLocalProfile());
+		User user = new User(this.interfaceData.getLocalProfile());
 		playersList.add(user);
 		
 		GameTable game = new GameTable(

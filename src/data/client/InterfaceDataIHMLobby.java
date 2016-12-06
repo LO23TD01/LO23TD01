@@ -16,22 +16,18 @@ public interface InterfaceDataIHMLobby {
 
 	/**
 	 * Cette méthode vérifie si le login/mot de passe est correct. Elle connecte ensuite le client au serveur de jeu.
-	 * 
+	 *
 	 * @param login
 	 * @param password
 	 * @param ipd
 	 * @throws Exception
 	 */
 	public void login(String login, String password, IPData ipd) throws Exception;
-	
+
 	public void logout();
 
 	// TODO argument
-	public void createProfile(Object... args);
-
-	public void getTableInfo(GameTable g);
-
-	public void addNewTable(GameTable g);
+	public void createProfile(String login, String psw);
 
 	// TODO arg names
 	public void askJoinTable(GameTable g, boolean b);
@@ -43,7 +39,7 @@ public interface InterfaceDataIHMLobby {
 	public Profile getLocalProfile(UUID id);
 
 	// TODO args
-	public Profile changeMyProfile(Object... args);
+	public Profile changeMyProfile(Profile new_profile);
 
 	public void getListUsers();
 
@@ -68,4 +64,6 @@ public interface InterfaceDataIHMLobby {
 	public boolean addContactToCategory(UUID uuidContact, UUID uuidCategory);
 
 	public boolean removeContactFromCategory(UUID uuidContact, UUID uuidCategory);
+
+
 }

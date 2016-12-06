@@ -12,12 +12,14 @@ public class User {
 	private final ObjectProperty<GameTable> actualTable;
 	private final BooleanProperty isSpectating;
 
+	//constructeur en copie
 	public User(Profile publicData, GameTable actualTable, boolean isSpectating) {
 		this.publicData = new SimpleObjectProperty<Profile>(publicData);
 		this.actualTable = new SimpleObjectProperty<GameTable>(actualTable);
 		this.isSpectating = new SimpleBooleanProperty(isSpectating);
 	}
 
+	//constructeur a partir des données
 	public User(Profile publicData) {
 		this.publicData = new SimpleObjectProperty<Profile>(publicData);
 		this.actualTable = new SimpleObjectProperty<GameTable>();

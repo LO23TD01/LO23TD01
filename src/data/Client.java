@@ -1,6 +1,7 @@
 package data;
 
 import java.util.List;
+import java.util.UUID;
 
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlElementWrapper;
@@ -16,31 +17,66 @@ import javafx.collections.ObservableList;
 @XmlRootElement
 @XmlType(propOrder = { "contactList", "defaultRight", "categoryList" })
 public class Client {
+	private final ObjectProperty<Profile> profile;
 	private final ObjectProperty<Rights> defaultRight;
 	private final ObservableList<Contact> contactList = FXCollections.observableArrayList();;
 	private final ObservableList<ContactCategory> categoryList = FXCollections.observableArrayList();;
 
 	public Client() {
 		this.defaultRight = new SimpleObjectProperty<Rights>();
+		this.profile = new SimpleObjectProperty<Profile>();
 	}
 
 	public Client(Rights defaultRight) {
 		this.defaultRight = new SimpleObjectProperty<Rights>(defaultRight);
+		this.profile = new SimpleObjectProperty<Profile>();
 	}
 
 	public Profile giveProfileData(User user) {
-		// TO-DO : Pas sï¿½r de ce que doit faire cette fonction
-		return null;
+		return this.profile.get();
 	}
 
-	public void addContact(Contact contact) {
+	public boolean addContact(Contact contact) {
 		if (contact != null)
-			contactList.add(contact);
+			return contactList.add(contact);
+		return false;
 	}
 
-	public void removeContact(Contact contact) {
-		if (contact != null)
-			contactList.remove(contact);
+	private Contact getContactByUuid(UUID uuidContact) {
+		return contactList.stream().filter(c -> c.getUuid().equals(uuidContact)).findFirst().get();
+	}
+
+	public boolean deleteCategoryByUuid(UUID uuidCategory) {
+		return categoryList.removeIf(c -> c.getUuid().equals(uuidCategory));
+	}
+
+	private ContactCategory getContactCategoryByUuid(UUID uuidContactCategory) {
+		return categoryList.stream().filter(c -> c.getUuid().equals(uuidContactCategory)).findFirst().get();
+	}
+
+	public boolean addContactToCategory(UUID uuidContact, UUID uuidCategory) {
+		return this.getContactCategoryByUuid(uuidCategory).addContact(getContactByUuid(uuidContact));
+	}
+
+	public boolean removeContact(UUID uuidContact) {
+		this.getCategoryList().forEach(c -> c.removeContact(uuidContact));
+		return this.getContactList().removeIf(c -> c.getUuid().equals(uuidContact));
+	}
+
+	public boolean removeContactFromCategory(UUID uuidContact, UUID uuidCategory) {
+		if (uuidContact != null)
+			return categoryList.stream().filter(c -> c.getUuid().equals(uuidCategory)).findFirst().get()
+					.removeContact(uuidContact);
+		else
+			return false;
+	}
+
+	public boolean modifyCategory(UUID uuidCategory, String name, Rights rights) {
+		return this.getContactCategoryByUuid(uuidCategory).modifyCategory(name, rights);
+	}
+
+	public boolean addCategory(String name, Rights rights) {
+		return this.categoryList.add(new ContactCategory(name, rights));
 	}
 
 	/*

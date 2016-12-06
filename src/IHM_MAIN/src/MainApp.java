@@ -256,7 +256,7 @@ public class MainApp extends Application {
 		public void run(){
 			try {	
 					Thread.sleep(500);
-					clientData.login(login, password, ip);
+					interfaceData.login(login, password, ip);
 					connectionLoginFlag = true;
 				} catch (Exception e) {
 					exceptionMessage = e.toString();

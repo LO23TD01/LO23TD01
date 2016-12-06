@@ -1,5 +1,6 @@
 package data.client;
 
+import data.ChatMessage;
 import data.UserRole;
 
 public interface InterfaceDataIHMTable {
@@ -13,7 +14,7 @@ public interface InterfaceDataIHMTable {
 	
 	public void quitGame();
 	
-	public void sendMessage(String msg);
+	void sendMessage(ChatMessage msg);
 	
 	public void acceptReplay();
 	
