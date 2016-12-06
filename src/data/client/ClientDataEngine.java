@@ -13,6 +13,8 @@ import data.IPData;
 import data.PlayerData;
 import data.Profile;
 import data.Rights;
+import data.State;
+import data.TurnState;
 import data.User;
 import data.UserRole;
 import data.Vote;
@@ -264,6 +266,25 @@ public class ClientDataEngine implements InterfaceDataNetwork {
 	}
 
 	@Override
+	public void raiseException(String msg) {
+		// TODO Auto-generated method stub
+
+	}
+
+	@Override
+	public void  changeState(State s)
+	{
+
+		getActualTable().getGameState().setState(s);
+	}
+
+	@Override
+	public void  changeTurnState(TurnState s)
+	{
+		getActualTable().getGameState().setTurnState(s);
+	}
+
+	@Override
  	public void writeMessage(ChatMessage c){
 		this.getActualTable().getLocalChat().add(c);
  	}
@@ -337,13 +358,4 @@ public class ClientDataEngine implements InterfaceDataNetwork {
 	public void setComClientInterface(ComClientInterface comClientInterface) {
 		this.comClientInterface = comClientInterface;
 	}
-
-	@Override
-	public void raiseException(String msg) {
-		// TODO Auto-generated method stub
-
-	}
-
-
-
 }
