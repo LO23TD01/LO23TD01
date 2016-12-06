@@ -1,7 +1,9 @@
 package IHM_MAIN.src;
 
+import data.IPData;
 import data.Profile;
 import data.User;
+
 import javafx.application.Application;
 import javafx.application.Platform;
 import javafx.fxml.FXMLLoader;
@@ -10,25 +12,24 @@ import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.BorderPane;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
-import javafx.stage.StageStyle;
 
 import java.io.File;
 import java.io.IOException;
-
 import java.util.concurrent.Callable;
 
-import javafx.application.Application;
+import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.DocumentBuilderFactory;
+
+import org.w3c.dom.Document;
+import org.w3c.dom.Element;
+import org.w3c.dom.NodeList;
+
+import data.client.*;
+
 import javafx.event.ActionEvent;
-import javafx.fxml.FXMLLoader;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
-import javafx.stage.Modality;
-import javafx.stage.Stage;
-import javafx.stage.Window;
 import javafx.scene.Node;
-import javafx.scene.Parent;
-import javafx.scene.Scene;
-import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.text.Font;
@@ -42,15 +43,23 @@ import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import IHM_MAIN.src.controller.ControllerApplication;
 import IHM_MAIN.src.controller.PersonController;
 
 public class MainApp extends Application {
 	Scene scene;
 	private Stage primaryStage;
-
-
+	
+	InterfaceDataIHMLobby interfaceData;
+	ClientDataEngine clientData;
+	
+	TextField userTextField;
+	PasswordField userPassField;
+	TextField serverTextField;
+	
 	@Override
 	public void start(Stage primaryStage) {
+				
 		GridPane grid = new GridPane();
 		grid.setAlignment(Pos.CENTER);
 		grid.setMinWidth(380);
@@ -65,14 +74,14 @@ public class MainApp extends Application {
 		scenetitle.setFont(Font.font("Tahoma", FontWeight.NORMAL, 20));
 
 		Label userName = new Label("Identifiant:");
-		TextField userTextField = new TextField();
+		userTextField = new TextField();
 
 		Label password = new Label("Mot de passe:");
-		PasswordField userPassField = new PasswordField();
+		userPassField = new PasswordField();
 
 		Label serverName = new Label("Adresse du serveur:");
-		TextField serverTextField = new TextField();
-
+		serverTextField = new TextField();
+		
 		Button connectionBtn = new Button("Connexion");
 		Button registerBtn = new Button("Inscription");
 		Button editBtn = new Button("Editer Profil");
@@ -135,6 +144,11 @@ public class MainApp extends Application {
 			FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("./view/ihmmain.fxml"));
 			BorderPane root;
 			root = (BorderPane) fxmlLoader.load();
+			
+			ControllerApplication controller = (ControllerApplication) fxmlLoader.getController();
+			controller.setClientData(this.clientData);
+			controller.setInterfaceDataIHM(this.interfaceData);
+
 			Scene new_scene = new Scene(root, 780, 500);
 			Stage stage = new Stage();
 			stage.setTitle("Main");
@@ -142,7 +156,7 @@ public class MainApp extends Application {
 			stage.show();
 			Stage this_window = (Stage)scene.getWindow();
 			this_window.close();
-
+			
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -151,10 +165,18 @@ public class MainApp extends Application {
 
 	private void connectionHandler(ActionEvent e) throws InterruptedException{
 			WaitingWindow t = new WaitingWindow(((Node) e.getSource()).getScene().getWindow());
-			DataConnection data = new DataConnection(t);
-			data.start();
+			DataConnection dataConnect = new DataConnection(t);
+			dataConnect.setInfo(userTextField.getText(), userPassField.getText(), new IPData(serverTextField.getText()));
+			dataConnect.start();
 			t.showAndWait();
-			openMain();
+			dataConnect.join();
+				if(dataConnect.connectionLoginFlag){
+					openMain();
+				}else{
+					Alert alert = new Alert(AlertType.ERROR, dataConnect.exceptionMessage);
+					alert.showAndWait();
+					openMain();
+				}
 	}
 	
 	private void openRegister(){
@@ -217,23 +239,34 @@ public class MainApp extends Application {
 	
 	public class DataConnection extends Thread{
 		WaitingWindow waitingWindow;
+		String login;
+		String password;
+		data.IPData ip;
+		Boolean connectionLoginFlag;
+		String exceptionMessage;
+
+		public void setInfo(String login2, String password2, data.IPData ip2){
+			login = login2;
+			password = password2;
+			ip = ip2;
+			connectionLoginFlag = false;
+			
+		}
 		
 		public void run(){
-			try {
-					Thread.sleep(1000);
-					waitingWindow.close();
-			} catch (InterruptedException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
+			try {	
+					Thread.sleep(500);
+					clientData.login(login, password, ip);
+					connectionLoginFlag = true;
+				} catch (Exception e) {
+					exceptionMessage = e.toString();
+					e.printStackTrace();
+				}
+			waitingWindow.close();	
 		}
 		public DataConnection(WaitingWindow t){
 			waitingWindow = t;
 		}
-	}
-
-	public static void main(String[] args) {
-		launch(args);
 	}
 
 	public boolean EditProfile(User user){
@@ -263,9 +296,19 @@ public class MainApp extends Application {
 	        return false;
 	    }
 	}
+	
 	public Stage getPrimaryStage()
 	{
 		return primaryStage;
 	}
+	
+	public void init(){
+		this.clientData = new ClientDataEngine();
+	}
+
+	public static void main(String[] args) {
+		launch(args);
+	}
+
 
 }

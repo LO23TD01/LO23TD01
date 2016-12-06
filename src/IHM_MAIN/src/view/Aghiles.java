@@ -27,7 +27,7 @@ import IHM_MAIN.src.model.ModelApplication;
 import data.Profile;
 import data.User;
 
-public class ControllerApplication {
+public class Aghiles {
 	//private ModelApplication model;
 	@FXML
 	TableView<Game> currentGames;
@@ -70,7 +70,7 @@ public class ControllerApplication {
         return data;
     }
 
-	public ControllerApplication (){
+	public Aghiles (){
 		//model = new ModelApplication();
 	}
 
