@@ -25,6 +25,7 @@
       <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
       <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
       <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+      <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
   </rowConstraints>
    <children>
       <Label prefHeight="20.0" prefWidth="127.0" text="Mot de passe" GridPane.rowIndex="2" />
@@ -93,22 +94,22 @@
             </ComboBox>
          </children>
       </HBox>
-      <HBox alignment="CENTER" GridPane.rowIndex="6">
+      <HBox alignment="CENTER" GridPane.rowIndex="7">
          <children>
             <CheckBox id="chatEnabled" fx:id="chatEnabled" mnemonicParsing="false" text="Autoriser le chat " GridPane.rowIndex="5" />
          </children>
       </HBox>
-      <HBox alignment="CENTER" GridPane.columnIndex="1" GridPane.rowIndex="6">
+      <HBox alignment="CENTER" GridPane.columnIndex="1" GridPane.rowIndex="7">
          <children>
             <CheckBox id="spectatorsAllowed" fx:id="spectatorsAllowed" mnemonicParsing="false" text="Autoriser les spectateurs" GridPane.columnIndex="1" GridPane.rowIndex="6" />
          </children>
       </HBox>
-      <HBox alignment="CENTER" GridPane.rowIndex="7">
+      <HBox alignment="CENTER" GridPane.rowIndex="8">
          <children>
             <Button mnemonicParsing="false" onAction="#ok" prefHeight="42.0" prefWidth="183.0" text="Créer" GridPane.rowIndex="6" />
          </children>
       </HBox>
-      <HBox alignment="CENTER" GridPane.columnIndex="1" GridPane.rowIndex="7">
+      <HBox alignment="CENTER" GridPane.columnIndex="1" GridPane.rowIndex="8">
          <children>
             <Button mnemonicParsing="false" onAction="#cancel" prefHeight="42.0" prefWidth="183.0" text="Annuler" GridPane.columnIndex="1" GridPane.rowIndex="6" />
          </children>
@@ -118,6 +119,16 @@
             <Font name="Tahoma" size="20.0" />
          </font>
       </Text>
+      <Label prefHeight="17.0" prefWidth="172.0" text="Variante des règles" GridPane.rowIndex="6" />
+      <ComboBox fx:id="rules" prefHeight="30.0" prefWidth="206.0" GridPane.columnIndex="1" GridPane.rowIndex="6">
+                <items>
+            		<FXCollections fx:factory="observableArrayList">
+            			<String fx:value="FIXED_DISCHARGE" />
+            			<String fx:value="CONSTRAINED_DISCHARGE" />
+            			<String fx:value="FREE_DISCHARGE" />
+            		</FXCollections>
+            	</items>   
+      </ComboBox>
    </children>
    <padding>
       <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
