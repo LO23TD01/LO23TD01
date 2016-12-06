@@ -36,7 +36,7 @@ public class ClientDataEngine implements InterfaceDataIHMLobby, InterfaceDataIHM
 	private ComClientInterface comClientInterface = null;
 
 	/**
-	 * 
+	 *
 	 */
 	public ClientDataEngine() {
 		super();
@@ -45,43 +45,6 @@ public class ClientDataEngine implements InterfaceDataIHMLobby, InterfaceDataIHM
 		this.actualRole = null;
 	}
 
-	@Override
-	public void throwDice(boolean a, boolean b, boolean c) {
-		comClientInterface.throwDice(profileManager.get().getCurrentProfile().getUUID(), a, b, c);
-
-	}
-
-	@Override
-	public void selectDice(boolean a, boolean b, boolean c) {
-		comClientInterface.selectDice(profileManager.get().getCurrentProfile().getUUID(), a, b, c);
-	}
-
-	@Override
-	public void launchGame() {
-		comClientInterface.launchGame(profileManager.get().getCurrentProfile().getUUID());
-
-	}
-
-	@Override
-	public void quitGame() {
-		comClientInterface.quit(profileManager.get().getCurrentProfile().getUUID());
-
-	}
-
-	@Override
-	public void sendMessage(String msg) {
-		comClientInterface.sendMessage(msg);
-	}
-
-	@Override
-	public void acceptReplay() {
-		comClientInterface.acceptReplay(profileManager.get().getCurrentProfile().getUUID());
-	}
-
-	@Override
-	public void refuseReplay() {
-		comClientInterface.refuseReplay(profileManager.get().getCurrentProfile().getUUID());
-	}
 
 	@Override
 	public void getListTable() {
@@ -91,7 +54,7 @@ public class ClientDataEngine implements InterfaceDataIHMLobby, InterfaceDataIHM
 
 	/**
 	 * Cette méthode vérifie si le login/mot de passe est correct. Elle connecte ensuite le client au serveur de jeu.
-	 * 
+	 *
 	 * @param login
 	 * @param password
 	 * @param ipd
@@ -124,14 +87,6 @@ public class ClientDataEngine implements InterfaceDataIHMLobby, InterfaceDataIHM
 	public void getTableInfo(GameTable g) {
 		// TODO Auto-generated method stub
 
-	}
-
-	@Override
-	public void addNewTable(GameTable g) {
-		comClientInterface.createNewTable(this.getProfileManager().getCurrentProfile().getUUID(), g.getName(), null,
-				g.getParameters().getNbPlayerMin(), g.getParameters().getNbPlayerMax(), g.getParameters().getNbChip(),
-				g.getParameters().isAuthorizeSpec(), g.getParameters().isAuthorizeSpecToChat(),
-				g.getParameters().getRules());
 	}
 
 	@Override
@@ -357,7 +312,7 @@ public class ClientDataEngine implements InterfaceDataIHMLobby, InterfaceDataIHM
 	public void updateChips(User u1, User u2, int a) {
 		PlayerData p1 = actualTable.get().getGameState().getData(u1, false);
 		PlayerData p2 = actualTable.get().getGameState().getData(u2, false);
-		
+
 		p1.setChip(p1.getChip()-a);
 		p2.setChip(p2.getChip()+a);
 		getActualTable().getGameState().nextTurn(u1); //ne pas oublier de passer au prochain tour.
@@ -508,5 +463,13 @@ public class ClientDataEngine implements InterfaceDataIHMLobby, InterfaceDataIHM
 		this.selectionList.clear(); //pas utile ?
 		this.selectionList.addAll(selection);
 	}
+
+
+	public ComClientInterface getComClientInterface() {
+		return comClientInterface;
+	}
+
+
+
 
 }
