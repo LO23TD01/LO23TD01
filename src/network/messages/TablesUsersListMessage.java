@@ -36,7 +36,7 @@ public class TablesUsersListMessage implements IMessage {
 		User[] users = FxGson.create().fromJson(userList, User[].class);
 		dataEngine.updateUsersList(Arrays.asList(users));
 		
-		GameTable[] tables = FxGson.create().fromJson(userList, GameTable[].class);
+		GameTable[] tables = FxGson.create().fromJson(tableList, GameTable[].class);
 		dataEngine.updateTablesList(Arrays.asList(tables));
 	}
 

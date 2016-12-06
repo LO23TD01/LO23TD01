@@ -6,6 +6,7 @@ import data.ChatMessage;
 import data.GameTable;
 import data.Profile;
 import data.Rules;
+import data.client.ClientDataEngine;
 
 public interface ComClientInterface {
 	
@@ -30,4 +31,5 @@ public interface ComClientInterface {
 	public void answerStopGame(UUID tableId, boolean answer, UUID user);
 	public void quit(UUID user); // Pour phases d'avant/après la partie (BESOIN A VERIFIER PAR DATA)
 	public void quit(UUID user, UUID tableId); // Pendant une partie
+	public void setClientData(ClientDataEngine clientData);
 }
