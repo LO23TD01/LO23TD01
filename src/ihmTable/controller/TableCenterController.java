@@ -13,7 +13,7 @@ import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Ellipse;
 
-public class TableCenterViewController {
+public class TableCenterController {
 
     @FXML
     private AnchorPane tableCenterView;

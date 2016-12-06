@@ -2,10 +2,14 @@ package ihmTable.controller;
 
 import java.io.IOException;
 
+import data.ChatMessage;
 import data.GameTable;
+import data.Profile;
+import data.User;
 import ihmTable.controller.CollapsiblePanelController.Position;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
+import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.layout.AnchorPane;
@@ -23,17 +27,54 @@ public class TableController {
 
 	public GameTable gameTableInstance;
 
-	public void initialize() throws IOException {
+	public void initialize() {}
 
-		//Initialisation des Panels et de la vue
-	    setPosition(getCollapsiblePane(FXMLLoader.load(getClass().getResource("/ihmTable/resources/view/Chat.fxml")), Position.right), Position.right);
-        setPosition(getCollapsiblePane(FXMLLoader.load(getClass().getResource("/ihmTable/resources/view/Rules.fxml")), Position.left), Position.left);
+	public void setModel(GameTable gameTableInstance) throws IOException {
+		this.gameTableInstance = gameTableInstance;
+		initChat();
+	    initRules();
+	    initTableCenterView();
+        initBottom();
+	}
 
-        setPosition(FXMLLoader.load(getClass().getResource("/ihmTable/resources/view/TableCenterView.fxml")), Position.center);
+	//Chat view's initialization
+	private void initChat() throws IOException {
+		FXMLLoader chatLoader = new FXMLLoader(getClass().getResource("/ihmTable/resources/view/Chat.fxml"));
+		setPosition(getCollapsiblePane(chatLoader.load(), Position.right), Position.right);
+		ChatController chatController = (ChatController) chatLoader.getController();
+		chatController.setLocalChat(gameTableInstance.getLocalChat());
+		ObservableList<ChatMessage> cm = gameTableInstance.getLocalChat().getMessageList();
+		cm.add(new ChatMessage(new User(new Profile()), "Test 1"));
+		cm.add(new ChatMessage(new User(new Profile()), "Test 2"));
+	}
 
-        AnchorPane bottomContainer = new AnchorPane();
-        AnchorPane playerStats = FXMLLoader.load(getClass().getResource("/ihmTable/resources/view/PlayerStats.fxml"));
-        AnchorPane gameStats = FXMLLoader.load(getClass().getResource("/ihmTable/resources/view/GameStats.fxml"));
+	//Rules view's initialization
+	private void initRules() throws IOException {
+		setPosition(getCollapsiblePane(FXMLLoader.load(getClass().getResource("/ihmTable/resources/view/Rules.fxml")), Position.left), Position.left);
+	}
+
+	//TableCenterView view's initialization
+	private void initTableCenterView() throws IOException {
+		FXMLLoader tableCenterLoader = new FXMLLoader(getClass().getResource("/ihmTable/resources/view/TableCenter.fxml"));
+        setPosition(tableCenterLoader.load(), Position.center);
+		TableCenterController tableCenterController = (TableCenterController) tableCenterLoader.getController();
+	}
+
+	//Bottom view's initialization
+	private void initBottom() throws IOException {
+		AnchorPane bottomContainer = new AnchorPane();
+
+		//PlayerStats view's initialization
+		FXMLLoader playerStatsLoader = new FXMLLoader(getClass().getResource("/ihmTable/resources/view/PlayerStats.fxml"));
+        AnchorPane playerStats = playerStatsLoader.load();
+        PlayerStatsController playerStatsController = playerStatsLoader.getController();
+        playerStatsController.gameTableInstance = this.gameTableInstance;
+
+        //GameStats view's initialization
+        FXMLLoader gameStatsLoader = new FXMLLoader(getClass().getResource("/ihmTable/resources/view/GameStats.fxml"));
+        AnchorPane gameStats = gameStatsLoader.load();
+        GameStatsController gameStatsController = gameStatsLoader.getController();
+
         AnchorPane.setLeftAnchor(playerStats, 0.0);
         AnchorPane.setRightAnchor(gameStats, 0.0);
         bottomContainer.widthProperty().addListener(new ChangeListener<Number>() {
@@ -45,32 +86,6 @@ public class TableController {
         });
         bottomContainer.getChildren().addAll(playerStats, gameStats);
         setPosition(getCollapsiblePane(bottomContainer, Position.bottom), Position.bottom);
-        
-        //todo passer gametabelInstance à chaque sous controller
-
-	}
-	
-	private void giveModel() //transmet le modèle pour les sous controlleurs
-	{
-		//on récupère les différents controlleurs
-		FXMLLoader loader = new FXMLLoader(getClass().getResource("/ihmTable/resources/view/Chat.fxml"));
-		ChatController chatController = (ChatController)loader.getController();
-		
-		//todo rules controller
-		
-		loader = new FXMLLoader(getClass().getResource("/ihmTable/resources/view/TableCenterView.fxml"));
-		TableCenterViewController tableCenterViewController= (TableCenterViewController)loader.getController();
-		
-		loader = new FXMLLoader(getClass().getResource("/ihmTable/resources/view/PlayerStats.fxml"));		
-		PlayerStatsController playerStatsController = (PlayerStatsController)loader.getController();
-		
-		loader = new FXMLLoader(getClass().getResource("/ihmTable/resources/view/GameStats.fxml"));
-		GameStatsController gameStatsController = (GameStatsController)loader.getController();
-		
-		//On passe donne l'objet adéquat : 
-		
-		//todo pour chaque
-		playerStatsController.gameTableInstance = this.gameTableInstance;
 	}
 
 	private void setPosition(AnchorPane anchorPane, Position position) {
