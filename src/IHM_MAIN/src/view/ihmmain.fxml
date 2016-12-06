@@ -20,7 +20,6 @@
           </HBox.margin>
         </TextField>
         <CheckBox fx:id="full" mnemonicParsing="false" text="Partie Pleine" HBox.margin="$x1" />
-        <CheckBox id="private" fx:id="privacy" mnemonicParsing="false" text="Partie Privée" HBox.margin="$x1" />
         <ComboBox fx:id="nbpl" prefWidth="94.0" promptText="Nb. J.">
           <items>
             <FXCollections fx:factory="observableArrayList">
@@ -49,7 +48,7 @@
   <top>
     <HBox alignment="CENTER" prefHeight="88.0" prefWidth="815.0">
       <children>
-        <Button fx:id="name" mnemonicParsing="false" onAction="#handleNameButton" prefHeight="47.0" prefWidth="204.0" text="Mon Pseudo" HBox.margin="$x1">
+        <Button fx:id="name" mnemonicParsing="false" onAction="#handleNameButton" prefHeight="47.0" prefWidth="204.0" text="Mon Profil" HBox.margin="$x1">
           <graphic>
             <ImageView fitHeight="32.0" fitWidth="32.0" mouseTransparent="true" pickOnBounds="true" preserveRatio="true">
               <image>
@@ -65,15 +64,6 @@
             <ImageView fitHeight="23.0" fitWidth="23.0" mouseTransparent="true" pickOnBounds="true" preserveRatio="true">
               <image>
                 <Image url="@loupe.png" />
-              </image>
-            </ImageView>
-          </graphic>
-        </Button>
-        <Button fx:id="refresh" contentDisplay="CENTER" minWidth="33.0" mnemonicParsing="false" onAction="#handleRefreshButton" prefWidth="33.0" text="">
-          <graphic>
-            <ImageView fitHeight="24.0" fitWidth="27.555556640625" mouseTransparent="true" pickOnBounds="true" preserveRatio="true">
-              <image>
-                <Image url="@refresh.png" />
               </image>
             </ImageView>
           </graphic>

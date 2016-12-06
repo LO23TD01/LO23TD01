@@ -1,7 +1,12 @@
 package IHM_MAIN.src.controller;
 
+import javafx.beans.property.IntegerProperty;
+import javafx.beans.property.ReadOnlyObjectWrapper;
+import javafx.beans.property.StringProperty;
+import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.collections.transformation.FilteredList;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -11,6 +16,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.TableColumn;
+import javafx.scene.control.TableColumn.CellDataFeatures;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.stage.Modality;
@@ -22,27 +28,27 @@ import IHM_MAIN.src.model.Game;
 import IHM_MAIN.src.model.ModelApplication;
 import data.Profile;
 import data.User;
+import data.client.*;
+import data.GameTable;
 
 public class ControllerApplication {
 	//private ModelApplication model;
 	@FXML
-	TableView<Game> currentGames;
+	TableView<GameTable> currentGames;
 	@FXML
-	TableColumn<Game, String> gameName;
+	TableColumn<GameTable, String> gameName;
 	@FXML
-	TableColumn<Game, String> players;
+	TableColumn<GameTable, String> players;
 	@FXML
-	TableColumn<Game, String> spectators;
+	TableColumn<GameTable, String> spectators;
 	@FXML
-	TableColumn<Game, String> owner;
+	TableColumn<GameTable, String> owner;
 	@FXML
 	Button name;
 	@FXML
 	TextField userSearch;
 	@FXML
 	Button search;
-	@FXML
-	Button refresh;
 	@FXML
 	Button createGame;
 	@FXML
@@ -54,25 +60,18 @@ public class ControllerApplication {
 	@FXML
 	CheckBox privacy;
 
+	ClientDataEngine CDEngine = new ClientDataEngine();
+
 	private MainApp mainApp;
 
-	public ObservableList<Game> data = FXCollections.observableArrayList(
-		    new Game("YoloGame", "3/12", "44", "Fï¿½lix"),
-		    new Game("SwaggyOne", "6/6", "2", "Clï¿½ment"),
-		    new Game("Java", "4/8", "Disabled", "Jo")
-	);
-
-	public ObservableList<Game> getGameData() {
-        return data;
-    }
-
+	
 	public ControllerApplication (){
 		//model = new ModelApplication();
 	}
 
 	@FXML
     private void initialize() {
-		fillTable();
+		filterTable();
 		fillChoiceBox();
 	}
 
@@ -83,8 +82,22 @@ public class ControllerApplication {
         alert.setTitle("No Selection");
         alert.setHeaderText("No Person Selected");
         alert.setContentText("Please select a person in the table.");
-
         alert.showAndWait();
+		Parent root;
+		try {
+			root = FXMLLoader.load(getClass().getResource("../view/GestionProfil.fxml"));
+			Window parent = createGame.getScene().getWindow();
+			Stage stage = new Stage();
+			stage.setScene(new Scene(root, 440, 408));
+			stage.initModality(Modality.WINDOW_MODAL);
+			stage.initOwner(parent);
+		    stage.setTitle("Gestion du profil");
+		    stage.setResizable(false);
+			stage.show();
+
+		} catch (Exception e1) {
+			e1.printStackTrace();
+		}
 	}
 
 
@@ -99,7 +112,7 @@ public class ControllerApplication {
 					stage.setScene(new Scene(root, 440, 408));
 					stage.initModality(Modality.WINDOW_MODAL);
 					stage.initOwner(parent);
-				    stage.setTitle("CrÃ©ation de Table");
+				    stage.setTitle("Création de Table");
 				    stage.setResizable(false);
 					stage.show();
 
@@ -110,20 +123,65 @@ public class ControllerApplication {
 
 	@FXML
 	private void handleSearchButton() {
-		//ouverture pop-up utilisateur cherchï¿½
+		//ouverture pop-up utilisateur cherché
+	}
+		
+	StringProperty constructPlayers(CellDataFeatures<GameTable, String> cd){
+		String ret = cd.getValue().getPlayerList().size() + "/" + cd.getValue().parametersProperty().getValue().getNbPlayerMax();
+		ObservableValue<String> obss = new ReadOnlyObjectWrapper<String>(ret);
+		return (StringProperty) obss;
 	}
 
 	@FXML
 	private void handleRefreshButton() {
 		//rafraichissement des tables disponibles
 	}
+	
+	StringProperty constructSpectators(CellDataFeatures<GameTable, String> cd){
+		String ret;
+		if (cd.getValue().parametersProperty().getValue().authorizeSpecProperty().get() == true)
+			ret = "Disabled";
+		else
+			ret = String.valueOf(cd.getValue().getSpectatorList().size());
+		ObservableValue<String> obss = new ReadOnlyObjectWrapper<String>(ret);
+		return (StringProperty) obss;
+	}
+	
+	
+	
+	private void filterTable(){
+		gameName.setCellValueFactory(cellData -> cellData.getValue().nameProperty());
+		players.setCellValueFactory(cellData -> constructPlayers(cellData));
+		spectators.setCellValueFactory(cellData -> constructSpectators(cellData));
+		owner.setCellValueFactory(cellData -> cellData.getValue().creatorProperty().getValue().publicDataProperty().getValue().nickNameProperty());
+		
+		FilteredList<GameTable> filtered = new FilteredList<>(CDEngine.getTableList(), p -> true);
+		
+		gameSearch.textProperty().addListener((observable, oldValue, newValue) -> {
+            filtered.setPredicate(gameTable -> {
+                // If filter text is empty, display all games.
+                if (newValue == null || newValue.isEmpty()) {
+                    return true;
+                }
 
-	private void fillTable() {
-		gameName.setCellValueFactory(cellData -> cellData.getValue().getName());
-		players.setCellValueFactory(cellData -> cellData.getValue().getPlayers());
-		spectators.setCellValueFactory(cellData -> cellData.getValue().getSpectators());
-		owner.setCellValueFactory(cellData -> cellData.getValue().getOwner());
-		currentGames.setItems(getGameData());
+                // Compare name of every game with filter text.
+                String lowerCaseFilter = newValue.toLowerCase();
+
+                if (gameTable.getName().toLowerCase().contains(lowerCaseFilter)) {// Does match.
+                	if(full.isSelected())
+                		return true;
+                	else{
+                		if (gameTable.getParameters().getNbPlayerMax() != gameTable.getPlayerList().size())
+							return true;
+                		else
+                			return false;
+                    }
+                }
+                else
+                	return false; // Does not match.
+            });
+        });
+		currentGames.setItems(filtered);
 	}
 
 	private void fillChoiceBox() {
