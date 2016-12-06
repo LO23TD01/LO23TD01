@@ -17,8 +17,6 @@ public interface InterfaceDataNetwork {
 
 	public void updateUsers(User u);
 
-	public void updateUserProfile(User u);
-
 	public void addNewTable(GameTable g);
 
 	public void sendTableInfo(GameTable g);
@@ -51,10 +49,14 @@ public interface InterfaceDataNetwork {
 
 	public void hasWon(User u);
 
+	public void hasLost(User u);
+
 	public void showTimer();
 
 	public void newPlayerOnTable(User u);
 
 	public void newSpectatorOnTable(User u);
+
+	public void kicked(String s);
 
 }

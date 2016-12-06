@@ -16,14 +16,14 @@ public interface InterfaceDataIHMLobby {
 
 	/**
 	 * Cette méthode vérifie si le login/mot de passe est correct. Elle connecte ensuite le client au serveur de jeu.
-	 * 
+	 *
 	 * @param login
 	 * @param password
 	 * @param ipd
 	 * @throws Exception
 	 */
 	public void login(String login, String password, IPData ipd) throws Exception;
-	
+
 	public void logout();
 
 	// TODO argument
@@ -68,4 +68,6 @@ public interface InterfaceDataIHMLobby {
 	public boolean addContactToCategory(UUID uuidContact, UUID uuidCategory);
 
 	public boolean removeContactFromCategory(UUID uuidContact, UUID uuidCategory);
+
+
 }

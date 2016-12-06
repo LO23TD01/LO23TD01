@@ -9,10 +9,12 @@ import data.Contact;
 import data.ContactCategory;
 import data.GameTable;
 import data.IPData;
+import data.PlayerData;
 import data.Profile;
 import data.Rights;
 import data.User;
 import data.UserRole;
+import data.Vote;
 import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.collections.FXCollections;
@@ -27,6 +29,7 @@ public class ClientDataEngine implements InterfaceDataIHMLobby, InterfaceDataIHM
 	private final ObservableList<GameTable> tableList = FXCollections.observableArrayList();
 	private final ObjectProperty<GameTable> actualTable;
 	private final ObjectProperty<UserRole> actualRole;
+	private final ObservableList<Boolean> selectionList = FXCollections.observableArrayList();
 	/**
 	 * Variable qui permet de communiquer avec le serveur, initialisÃ©e lors du login
 	 */
@@ -114,7 +117,7 @@ public class ClientDataEngine implements InterfaceDataIHMLobby, InterfaceDataIHM
 	}
 
 	@Override
-	// Cette fonction est appelÃ©e par IHM lobby lors de la crÃ©ation d'un profil c'est pour cela que l'on xmlise ce profile.
+	// Cette fonction est appelée par IHM lobby lors de la création d'un profil c'est pour cela que l'on xmlise ce profile.
 	public void createProfile(String login, String psw) {
 		getProfileManager().createProfile(login,psw).Xmlise();
 	}
@@ -154,9 +157,9 @@ public class ClientDataEngine implements InterfaceDataIHMLobby, InterfaceDataIHM
 	}
 
 	@Override
-	// Cette fonction est appelÃ©e par IHM lobby lors de la modification d'un profil c'est pour cela que l'on xmlise ce profile.
+	// Cette fonction est appelée par IHM lobby lors de la modification d'un profil c'est pour cela que l'on xmlise ce profile.
 	public Profile changeMyProfile(Profile new_profile) {
-		// Si jamais l'utilisateur veut changer son mdp/login on supprime l'ancien profile XML et on en crÃ©e un nouveau.
+		// Si jamais l'utilisateur veut changer son mdp/login on supprime l'ancien profile XML et on en crée un nouveau.
 		if (getLocalProfile().getLogin() != new_profile.getLogin() || getLocalProfile().getPsw() != new_profile.getPsw()){
 			String path = "MesProfiles\\"+getLocalProfile().getLogin()+"-"+getLocalProfile().getPsw()+".xml";
 			File file = new File(path);
@@ -244,142 +247,206 @@ public class ClientDataEngine implements InterfaceDataIHMLobby, InterfaceDataIHM
 
 	@Override
 	public void refreshUsersList(List<User> l) {
-		// TODO Auto-generated method stub
-		// A voir avec IHM Main (observer)
+		this.userList.setAll(l);
 	}
 
 	@Override
 	public void updateUsersList(List<User> l) {
-		// TODO Auto-generated method stub
-		// A voir avec IHM Main (observer)
+		//Appeler lorsqu'un nouveau joueur se connecte
+		//Action similaire à refreshUsersList mais dans le doute d'une autre utilité je laisse les deux
+		this.userList.setAll(l);
 	}
 
 	@Override
 	public void updateTablesList(List<GameTable> l) {
-		// TODO Auto-generated method stub
-		// A voir avec IHM Main (observer)
+		this.tableList.setAll(l);
 	}
 
 	@Override
 	public void updateUsers(User u) {
-		// TODO Auto-generated method stub
-		// A voir avec IHM Main (observer)
+		User userFound = u.getSame(this.userList);
+		if(userFound !=null)
+			this.userList.set(this.userList.indexOf(userFound), u);
+		else
+			this.userList.add(u);
 	}
 
 	@Override
-	public void updateUserProfile(User u) {
-		comClientInterface.updateUserProfile(u.getPublicData().getUUID(), u.getPublicData());
-
+	public void addNewTable(GameTable g) {
+		if(g.getSame(this.tableList)==null)
+			this.tableList.add(g);
+//		else
+//			throw new Exception("Erreur reception table. Table déjà existante.");
 	}
 
 	@Override
 	public void sendTableInfo(GameTable g) {
-		// TODO Auto-generated method stub
-		// A voir avec IHM Main (observer)
+		if(this.actualTable==null)
+			this.actualTable.set(g);
+		else if(g.isSame(this.getActualTable())) // on remplace la table qui doit contenir de nouvelles informations
+			this.actualTable.set(g);
+//		else
+//			throw new Exception("Erreur reception table. On est déjà à une table");
 	}
 
 	@Override
 	public void setSelection(boolean a, boolean b, boolean c) {
-		// TODO Auto-generated method stub
+		//TODO : Voir avec IHM
 
+		//fix proposé
+		List<Boolean>  newList = new ArrayList<Boolean>();
+		newList.add(a);
+		newList.add(b);
+		newList.add(c);
+		this.setSelectionList(newList);
 	}
 
+	//Attention perte d'information ici
+	//Le modèle du serveur contient plus d'information que le modèle client aprsè cette fonction.
+	//TOREVIEW : p-être renvoyer la table complète pour eviter ce problème.
+	//TOREVIEW : autre solution, faire environ 500 lignes de codes pour retro enginneerer l'état.
 	@Override
 	public void setDice(int a, int b, int c) {
-		// TODO Auto-generated method stub
-		// A voir avec IHM Table : showDice(1, 2, 3)
+		int[] dices = {a,b,c};
+		getActualTable().getGameState().getData(new User(this.getProfileManager().getCurrentProfile()), false).setDices(dices); //On check avec soi-meme.
+
+		//fix pour la Selection
+		List<Boolean>  newList = new ArrayList<Boolean>();
+		newList.add(false);
+		newList.add(false);
+		newList.add(false);
+		this.setSelectionList(newList);
 	}
 
 	@Override
 	public void hasSelected(User u, boolean a, boolean b, boolean c) {
-		// TODO Auto-generated method stub
-		// A voir avec IHM Table : updateSelection(UUID, 1, 2, 3)
+		//TODO : Voir avec IHM
+
+		//fix proposé
+		List<Boolean>  newList = new ArrayList<Boolean>();
+		newList.add(a);
+		newList.add(b);
+		newList.add(c);
+		this.setSelectionList(newList);
+
 	}
 
+
+	//Attention perte d'information ici
+	//TOREVIEW : voir setDices
 	@Override
 	public void hasThrown(User u, int a, int b, int c) {
-		// TODO Auto-generated method stub
-		// A voir avec IHM Table : updateResult(UUID, 1, 2, 3)
+		int[] dices = {a,b,c};
+		getActualTable().getGameState().getData(u, false).setDices(dices);
+
+		//fix pour la Selection
+		List<Boolean>  newList = new ArrayList<Boolean>();
+		newList.add(false);
+		newList.add(false);
+		newList.add(false);
+		this.setSelectionList(newList);
 	}
 
+	//c'est une addition ici
 	@Override
 	public void updateChips(User u, int a) {
-		// TODO Auto-generated method stub
-		// A voir avec IHM Table : updateChips(Profile, nb)
+		PlayerData p1 = actualTable.get().getGameState().getData(u, false);
+		p1.setChip(p1.getChip()+a);
+		getActualTable().getGameState().nextTurn(u); //ne pas oublier de passer au prochain tour.
 	}
 
 	@Override
 	public void updateChips(User u1, User u2, int a) {
-		// TODO Auto-generated method stub
-		// A voir avec IHM Table : updateChips(Profile_winner, Profile_loser,
-		// nb)
+		PlayerData p1 = actualTable.get().getGameState().getData(u1, false);
+		PlayerData p2 = actualTable.get().getGameState().getData(u2, false);
+		
+		p1.setChip(p1.getChip()-a);
+		p2.setChip(p2.getChip()+a);
+		getActualTable().getGameState().nextTurn(u1); //ne pas oublier de passer au prochain tour.
 	}
 
 	@Override
 	public void startTurn() {
-		// TODO Auto-generated method stub
-		// A voir avec IHM Table : showDice()
+		// TODO : Vérifier que ce soit la bonne méthode appelée car il y a aussi GameState.nextTurn(User)
+		//
+		User currentUser = new User(getProfileManager().getCurrentProfile());
+		getActualTable().getGameState().setActualPlayer(currentUser);
 	}
 
 	@Override
 	public void isTurn(User u) {
-		// TODO Auto-generated method stub
-		// A voir avec IHM Table : showTurn(Profile)
+		getActualTable().getGameState().setActualPlayer(u);
 	}
 
 	@Override
 	public void stopGame(boolean a) {
-		// TODO Auto-generated method stub
-		// A voir avec IHM Table : showStopGame(a)
+		if(a)
+		this.setActualTable(null);
+		//TODO une fois merge on pourra decommenter
+//		else
+//			this.getActualTable().setVote(false);
 	}
 
 	@Override
 	public void askStopGame() {
-		// TODO Auto-generated method stub
-		// A voir avec IHM Table : askStopGame()
+		//TODO une fois merge on pourra decommenter
+//		this.getActualTable().setVote(true);
 	}
 
 	@Override
 	public void playerQuitGame(User u) {
-		// TODO Auto-generated method stub
-		// A voir avec IHM Table : updateView()
+		this.getActualTable().disconnect(u);
 	}
 
 	@Override
 	public void hasAcceptedReplay(User u) {
-		// TODO Auto-generated method stub
-		// A voir avec IHM Table : updateViewReplay(UUID)
+		//TODO verifier dans merge que l'on vierfir bien qu'il y ai pas de doublon.
+		this.getActualTable().castVote(new Vote(u,true,this.getActualTable().getEmptyVersion()));
 	}
 
 	@Override
 	public void hasRefusedReplay(User u) {
-		// TODO Auto-generated method stub
-		// A voir avec IHM Table : removeViewReplay(UUID)
+		//TODO verifier dans merge que l'on vierfir bien qu'il y ai pas de doublon.
+		this.getActualTable().castVote(new Vote(u,false,this.getActualTable().getEmptyVersion()));
 	}
 
 	@Override
 	public void hasWon(User u) {
-		// TODO Auto-generated method stub
-		// A voir avec IHM Table : gameWon() / hasWon(Profile)
+		getActualTable().getGameState().setWinnerGame(u);
+	}
+
+	@Override
+	public void hasLost(User u) {
+		getActualTable().getGameState().setLoserGame(u);
 	}
 
 	@Override
 	public void showTimer() {
-		// TODO Auto-generated method stub
-		// A voir avec IHM Table : showTimer()
+		//TODO : voir avec IHM
+		getActualTable().initializeGame();
 	}
 
 	@Override
 	public void newPlayerOnTable(User u) {
-		// TODO Auto-generated method stub
-		// A voir avec IHM Table : newPlayerOnTable(Profile)
+		getActualTable().connect(u, false);
 	}
 
 	@Override
 	public void newSpectatorOnTable(User u) {
-		// TODO Auto-generated method stub
-
+		getActualTable().connect(u, true);
 	}
+
+	@Override
+	public void kicked(String s) {
+		this.actualTable.set(null);
+	}
+
+
+	/////////////////////////////////////////////////////////////////////////////////
+
+
+
+
 
 	public final ObjectProperty<ProfileManager> profileManagerProperty() {
 		return this.profileManager;
@@ -422,7 +489,7 @@ public class ClientDataEngine implements InterfaceDataIHMLobby, InterfaceDataIHM
 	}
 
 	public void setUserList(List<User> users) {
-		this.userList.clear();
+		this.userList.clear(); //pas utile ?
 		this.userList.addAll(users);
 	}
 
@@ -431,8 +498,17 @@ public class ClientDataEngine implements InterfaceDataIHMLobby, InterfaceDataIHM
 	}
 
 	public void setTableList(List<GameTable> gameTables) {
-		this.tableList.clear();
+		this.tableList.clear(); //pas utile ?
 		this.tableList.addAll(gameTables);
+	}
+
+	public ObservableList<Boolean> getSelectionList() {
+		return this.selectionList;
+	}
+
+	public void setSelectionList(List<Boolean> selection) {
+		this.selectionList.clear(); //pas utile ?
+		this.selectionList.addAll(selection);
 	}
 
 }
