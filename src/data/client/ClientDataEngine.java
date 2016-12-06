@@ -12,6 +12,8 @@ import data.IPData;
 import data.PlayerData;
 import data.Profile;
 import data.Rights;
+import data.State;
+import data.TurnState;
 import data.User;
 import data.UserRole;
 import data.Vote;
@@ -112,9 +114,7 @@ public class ClientDataEngine implements InterfaceDataNetwork {
 
 	@Override
 	public void setSelection(boolean a, boolean b, boolean c) {
-		//TODO : Voir avec IHM
 
-		//fix proposé
 		List<Boolean>  newList = new ArrayList<Boolean>();
 		newList.add(a);
 		newList.add(b);
@@ -141,9 +141,7 @@ public class ClientDataEngine implements InterfaceDataNetwork {
 
 	@Override
 	public void hasSelected(User u, boolean a, boolean b, boolean c) {
-		//TODO : Voir avec IHM
 
-		//fix proposé
 		List<Boolean>  newList = new ArrayList<Boolean>();
 		newList.add(a);
 		newList.add(b);
@@ -263,6 +261,27 @@ public class ClientDataEngine implements InterfaceDataNetwork {
 	}
 
 
+	@Override
+	public void raiseException(String msg) {
+		// TODO Auto-generated method stub
+
+	}
+
+	@Override
+	public void  changeState(State s)
+	{
+
+		getActualTable().getGameState().setState(s);
+	}
+
+	@Override
+	public void  changeTurnState(TurnState s)
+	{
+		getActualTable().getGameState().setTurnState(s);
+	}
+
+
+
 	/////////////////////////////////////////////////////////////////////////////////
 
 
@@ -332,11 +351,6 @@ public class ClientDataEngine implements InterfaceDataNetwork {
 		this.comClientInterface = comClientInterface;
 	}
 
-	@Override
-	public void raiseException(String msg) {
-		// TODO Auto-generated method stub
-		
-	}
 
 
 

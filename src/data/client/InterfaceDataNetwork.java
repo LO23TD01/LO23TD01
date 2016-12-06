@@ -3,6 +3,8 @@ package data.client;
 import java.util.List;
 
 import data.GameTable;
+import data.State;
+import data.TurnState;
 import data.User;
 
 public interface InterfaceDataNetwork {
@@ -58,5 +60,9 @@ public interface InterfaceDataNetwork {
 	public void newSpectatorOnTable(User u);
 
 	public void kicked(String s);
+
+	public void changeState(State s) ;
+
+	public void changeTurnState(TurnState s) ;
 
 }
