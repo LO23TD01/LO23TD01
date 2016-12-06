@@ -10,7 +10,7 @@
 <?import javafx.scene.paint.*?>
 <?scenebuilder-classpath-element .?>
 
-<BorderPane prefHeight="569.0" prefWidth="815.0" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/2.2" fx:controller="IHM_MAIN.src.controller.ControllerApplication">
+<BorderPane prefHeight="569.0" prefWidth="815.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="IHM_MAIN.src.view.ControllerApplication">
   <bottom>
     <HBox alignment="CENTER" prefHeight="76.0" prefWidth="815.0">
       <children>
@@ -36,10 +36,10 @@
   <center>
     <TableView fx:id="currentGames" prefHeight="200.0" prefWidth="200.0">
       <columns>
-        <TableColumn maxWidth="5000.0" minWidth="10.0" prefWidth="296.0" text="Nom de la partie" fx:id="gameName" />
-        <TableColumn maxWidth="5000.0" minWidth="10.0" prefWidth="150.0" text="Joueurs" fx:id="players" />
-        <TableColumn maxWidth="5000.0" minWidth="10.0" prefWidth="150.0" text="Spectateurs" fx:id="spectators" />
-        <TableColumn maxWidth="5000.0" minWidth="10.0" prefWidth="150.0" text="Créateur" fx:id="owner" />
+        <TableColumn fx:id="gameName" maxWidth="5000.0" minWidth="10.0" prefWidth="296.0" text="Nom de la partie" />
+        <TableColumn fx:id="players" maxWidth="5000.0" minWidth="10.0" prefWidth="150.0" text="Joueurs" />
+        <TableColumn fx:id="spectators" maxWidth="5000.0" minWidth="10.0" prefWidth="150.0" text="Spectateurs" />
+        <TableColumn fx:id="owner" maxWidth="5000.0" minWidth="10.0" prefWidth="150.0" text="Créateur" />
       </columns>
     </TableView>
   </center>

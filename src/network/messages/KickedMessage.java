@@ -22,7 +22,7 @@ public class KickedMessage implements IMessage {
 
 	@Override
 	public void process(ClientDataEngine dataEngine) {
-		// Appeler dataEngine.kicked(msg)
+		dataEngine.kicked(msg);
 	}
 
 }

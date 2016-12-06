@@ -2,7 +2,10 @@ package ihmTable.controller;
 
 import java.io.IOException;
 
+import data.GameTable;
 import ihmTable.controller.CollapsiblePanelController.Position;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.layout.AnchorPane;
@@ -18,12 +21,56 @@ public class TableController {
 	@FXML
 	private BorderPane tableCenterView;
 
+	public GameTable gameTableInstance;
+
 	public void initialize() throws IOException {
-		 setPosition(getCollapsiblePane("/ihmTable/resources/view/Chat.fxml", Position.right), Position.right);
-		 setPosition(getCollapsiblePane("/ihmTable/resources/view/Rules.fxml", Position.left), Position.left);
-		 setPosition(getCollapsiblePane("/ihmTable/resources/view/PlayerStats.fxml", Position.bottom), Position.bottom);
-		 FXMLLoader centerPanelLoader = new FXMLLoader(getClass().getResource("/ihmTable/resources/view/TableCenterView.fxml"));
-		 setPosition(centerPanelLoader.load(), Position.center);
+
+		//Initialisation des Panels et de la vue
+	    setPosition(getCollapsiblePane(FXMLLoader.load(getClass().getResource("/ihmTable/resources/view/Chat.fxml")), Position.right), Position.right);
+        setPosition(getCollapsiblePane(FXMLLoader.load(getClass().getResource("/ihmTable/resources/view/Rules.fxml")), Position.left), Position.left);
+
+        setPosition(FXMLLoader.load(getClass().getResource("/ihmTable/resources/view/TableCenterView.fxml")), Position.center);
+
+        AnchorPane bottomContainer = new AnchorPane();
+        AnchorPane playerStats = FXMLLoader.load(getClass().getResource("/ihmTable/resources/view/PlayerStats.fxml"));
+        AnchorPane gameStats = FXMLLoader.load(getClass().getResource("/ihmTable/resources/view/GameStats.fxml"));
+        AnchorPane.setLeftAnchor(playerStats, 0.0);
+        AnchorPane.setRightAnchor(gameStats, 0.0);
+        bottomContainer.widthProperty().addListener(new ChangeListener<Number>() {
+            @Override
+            public void changed(ObservableValue<? extends Number> observable, Number oldValue, Number newValue) {
+                playerStats.setPrefWidth(newValue.doubleValue() / 2);
+                gameStats.setPrefWidth(newValue.doubleValue() / 2);
+            }
+        });
+        bottomContainer.getChildren().addAll(playerStats, gameStats);
+        setPosition(getCollapsiblePane(bottomContainer, Position.bottom), Position.bottom);
+        
+        //todo passer gametabelInstance à chaque sous controller
+
+	}
+	
+	private void giveModel() //transmet le modèle pour les sous controlleurs
+	{
+		//on récupère les différents controlleurs
+		FXMLLoader loader = new FXMLLoader(getClass().getResource("/ihmTable/resources/view/Chat.fxml"));
+		ChatController chatController = (ChatController)loader.getController();
+		
+		//todo rules controller
+		
+		loader = new FXMLLoader(getClass().getResource("/ihmTable/resources/view/TableCenterView.fxml"));
+		TableCenterViewController tableCenterViewController= (TableCenterViewController)loader.getController();
+		
+		loader = new FXMLLoader(getClass().getResource("/ihmTable/resources/view/PlayerStats.fxml"));		
+		PlayerStatsController playerStatsController = (PlayerStatsController)loader.getController();
+		
+		loader = new FXMLLoader(getClass().getResource("/ihmTable/resources/view/GameStats.fxml"));
+		GameStatsController gameStatsController = (GameStatsController)loader.getController();
+		
+		//On passe donne l'objet adéquat : 
+		
+		//todo pour chaque
+		playerStatsController.gameTableInstance = this.gameTableInstance;
 	}
 
 	private void setPosition(AnchorPane anchorPane, Position position) {
@@ -48,12 +95,11 @@ public class TableController {
 		}
 	}
 
-	private AnchorPane getCollapsiblePane(String content, Position position) throws IOException {
+	private AnchorPane getCollapsiblePane(AnchorPane anchorPane, Position position) throws IOException {
 		FXMLLoader collapsiblePanelLoader = new FXMLLoader(getClass().getResource("/ihmTable/resources/view/CollapsiblePanel.fxml"));
 		AnchorPane panel = collapsiblePanelLoader.load();
 
 		CollapsiblePanelController panelController = (CollapsiblePanelController) collapsiblePanelLoader.getController();
-		AnchorPane anchorPane = FXMLLoader.load(getClass().getResource(content));
 		if(position == Position.left || position == Position.right) {
 			panelController.setContent(anchorPane, position, tableView.getPrefWidth() * PANELS_PERCENTAGE);
 		} else {
