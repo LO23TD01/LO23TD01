@@ -158,7 +158,7 @@ public class ComClient implements ComClientInterface{
 	@Override
 	public void logoutUserRequest(UUID user) {
 		sendMessage(new LogoutUserRequestMessage(user));
-		
+		stop();
 	}
 
     @Override
