@@ -7,6 +7,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.UUID;
 
+import com.sun.corba.se.spi.servicecontext.UEInfoServiceContext;
+
 import data.ChatMessage;
 import data.GameTable;
 import data.Profile;
@@ -24,6 +26,7 @@ import network.messages.KickedMessage;
 import network.messages.LogoutUserRequestMessage;
 import network.messages.NetworkChatMessage;
 import network.messages.PlayerQuitGameMessage;
+import network.messages.RaiseExceptionMessage;
 import network.messages.SendProfileMessage;
 import network.messages.SendTableInfoMessage;
 import network.messages.TablesUsersListMessage;
@@ -243,8 +246,17 @@ public class ComServer implements Runnable, ComServerInterface {
 
 	@Override
 	public void raiseException(UUID user, String msg) {
-		// TODO Auto-generated method stub
-		
+		SocketClientHandler handler = connectedClients.get(user.toString());
+		if (handler != null) {
+			handler.sendMessage(new RaiseExceptionMessage(user, msg));
+		}
+	}
+	
+	@Override
+	public void raiseException(List<UUID> receivers, String msg) {
+		for(UUID receiver : receivers) {
+			raiseException(receiver, msg);
+		}
 	}
 
 	@Override
