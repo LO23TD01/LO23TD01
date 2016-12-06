@@ -20,6 +20,7 @@ import java.io.File;
 import java.io.IOException;
 import java.util.Collection;
 
+
 import javax.imageio.ImageIO;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -259,7 +260,6 @@ System.out.print(wonField);
        	 Profile profil = new Profile();
 
 	        try {
-	        	System.out.print("dqlksdlksjdkqlj");
 
 	        	  DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
 	        	  DocumentBuilder dBuilder = dbFactory.newDocumentBuilder();
@@ -284,6 +284,9 @@ System.out.print(wonField);
 	        	 getFriendsList(eElement);
 	        	 friendsList.getItems().setAll("test1");
 	        	 friendsList.getItems().add(friendsList.getItems().size(), "test2");
+
+
+
 
 	        	     }
 	        	     }
@@ -324,6 +327,7 @@ System.out.print(wonField);
 		        	        System.out.print(nValue);
 		        	 return nValue;
 	        	  }
+
 
 
 

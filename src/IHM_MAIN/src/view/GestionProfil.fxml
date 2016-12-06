@@ -95,7 +95,15 @@
                                         <Menu mnemonicParsing="false" text="Amis" />
                                       </menus>
                                     </MenuBar>
+<<<<<<< HEAD
                                     <ListView fx:id="friendsList" layoutX="-6.0" layoutY="48.0" prefHeight="200.0" prefWidth="200.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="25.0" />
+=======
+                                    <TableView fx:id="friendsTable" layoutX="-12.0" layoutY="35.0" prefHeight="200.0" prefWidth="200.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="25.0">
+                                      <columns>
+                                        <TableColumn fx:id="friend" prefWidth="174.0" text="Amis" />
+                                      </columns>
+                                    </TableView>
+>>>>>>> 260f1d2d66867923303622164733bde84d1e5f4d
                                  </children>
                               </AnchorPane>
                           </items>
