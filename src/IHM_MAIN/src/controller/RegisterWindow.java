@@ -19,6 +19,8 @@ public class RegisterWindow{
 	TextField prenomField;
 	@FXML
 	TextField ageField;
+	@FXML
+	TextField pswdField;
 	
 	@FXML
 	Button validerButton;
