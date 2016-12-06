@@ -26,6 +26,7 @@ public interface ComServerInterface {
 	public void stopGameAccepted(List<UUID> receivers);
 	public void refreshUserList(UUID user, List<User> userList);
 	public void raiseException(UUID user, String msg);
+	public void raiseException(List<UUID> receivers, String msg);
 	public void newPlayerOnTable(List<UUID> receivers, Profile user, GameTable tableInfo);
 	public void newSpectatorOnTable(List<UUID> receivers, Profile user, GameTable tableInfo);
 	public void hasAccepted(UUID user,List<UUID> receivers);
