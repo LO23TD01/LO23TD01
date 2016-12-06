@@ -175,10 +175,7 @@ public class MainApp extends Application {
 			e.printStackTrace();
 		}
 	}
-<<<<<<< HEAD
 
-=======
->>>>>>> 260f1d2d66867923303622164733bde84d1e5f4d
 	private void registerHandler(ActionEvent e){
 		//Alert alert = new Alert(AlertType.INFORMATION, "Signal sent to data, preparing next window");
 		//alert.showAndWait();
@@ -217,10 +214,7 @@ public class MainApp extends Application {
 		        er.printStackTrace();
 		        return false;
 		    }
-<<<<<<< HEAD
 
-=======
->>>>>>> 260f1d2d66867923303622164733bde84d1e5f4d
 	}
 
 
