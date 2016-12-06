@@ -34,6 +34,7 @@ import network.messages.StartTurnMessage;
 import network.messages.StopGameMessage;
 import network.messages.UpdateChipsChargeMessage;
 import network.messages.UpdateChipsDechargeMessage;
+import network.messages.HasLostMessage;
 import data.User;
 import network.messages.NewPlayerOnTableMessage;
 import network.messages.NewSpectatorOnTableMessage;
@@ -101,7 +102,7 @@ public class ComServer implements Runnable, ComServerInterface {
 	        try {
 	            clientSocket = this.serverSocket.accept();
 	            
-	            System.out.println("Nouveau client connectï¿½");
+	            System.out.println("Nouveau client connecté");
 	            
 	        } catch (IOException e) {
 	            if(isStopped()) {
@@ -275,7 +276,7 @@ public class ComServer implements Runnable, ComServerInterface {
 		for(UUID receiver : receivers) {
 			SocketClientHandler handler = connectedClients.get(receiver.toString());
 			if (handler != null) {
-				// Il faut pouvoir spï¿½cifier ï¿½ qui on envoie ?
+				// Il faut pouvoir spécifier à qui on envoie ?
 				handler.sendMessage(new HasAcceptedMessage(user));
 			}
 		}
@@ -286,7 +287,7 @@ public class ComServer implements Runnable, ComServerInterface {
 		for(UUID receiver : receivers) {
 			SocketClientHandler handler = connectedClients.get(receiver.toString());
 			if (handler != null) {
-				// Il faut pouvoir spï¿½cifier ï¿½ qui on envoie ?
+				// Il faut pouvoir spécifier à qui on envoie ?
 				handler.sendMessage(new HasRefusedMessage(user));
 			}
 		}
