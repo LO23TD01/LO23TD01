@@ -72,7 +72,7 @@ public class ClientDataEngine implements InterfaceDataIHMLobby, InterfaceDataIHM
 
 	@Override
 	public void sendMessage(String msg) {
-		comClientInterface.sendMessage(msg);
+		//comClientInterface.sendMessage(msg);
 	}
 
 	@Override
@@ -101,9 +101,11 @@ public class ClientDataEngine implements InterfaceDataIHMLobby, InterfaceDataIHM
 	 */
 	@Override
 	public void login(String login, String password, IPData ipd) throws Exception {
-		if (!profileManager.get().checkPassword(login, password))
+		//if (!profileManager.get().checkPassword(login, password))
+		if(this.getLocalProfile(login, password) == null)
 			throw new Exception("Mauvais mot de passe");
 		comClientInterface = new ComClient(ipd.getValue(), 4000);
+		((ComClient)comClientInterface).setClientData(this);
 		// TODO choisir un port
 		comClientInterface.connection(this.getLocalProfile(login, password));
 	}
@@ -117,7 +119,7 @@ public class ClientDataEngine implements InterfaceDataIHMLobby, InterfaceDataIHM
 	}
 
 	@Override
-	// Cette fonction est appelée par IHM lobby lors de la création d'un profil c'est pour cela que l'on xmlise ce profile.
+	// Cette fonction est appelï¿½e par IHM lobby lors de la crï¿½ation d'un profil c'est pour cela que l'on xmlise ce profile.
 	public void createProfile(String login, String psw) {
 		getProfileManager().createProfile(login,psw).Xmlise();
 	}
@@ -157,9 +159,9 @@ public class ClientDataEngine implements InterfaceDataIHMLobby, InterfaceDataIHM
 	}
 
 	@Override
-	// Cette fonction est appelée par IHM lobby lors de la modification d'un profil c'est pour cela que l'on xmlise ce profile.
+	// Cette fonction est appelï¿½e par IHM lobby lors de la modification d'un profil c'est pour cela que l'on xmlise ce profile.
 	public Profile changeMyProfile(Profile new_profile) {
-		// Si jamais l'utilisateur veut changer son mdp/login on supprime l'ancien profile XML et on en crée un nouveau.
+		// Si jamais l'utilisateur veut changer son mdp/login on supprime l'ancien profile XML et on en crï¿½e un nouveau.
 		if (getLocalProfile().getLogin() != new_profile.getLogin() || getLocalProfile().getPsw() != new_profile.getPsw()){
 			String path = "MesProfiles\\"+getLocalProfile().getLogin()+"-"+getLocalProfile().getPsw()+".xml";
 			File file = new File(path);
@@ -253,13 +255,19 @@ public class ClientDataEngine implements InterfaceDataIHMLobby, InterfaceDataIHM
 	@Override
 	public void updateUsersList(List<User> l) {
 		//Appeler lorsqu'un nouveau joueur se connecte
-		//Action similaire à refreshUsersList mais dans le doute d'une autre utilité je laisse les deux
+		//Action similaire ï¿½ refreshUsersList mais dans le doute d'une autre utilitï¿½ je laisse les deux
 		this.userList.setAll(l);
+		System.out.println("Users mises Ã  jours");
+		System.out.println("Liste des users :");
+		for (User user : userList) {
+			System.out.println(user.getPublicData().getLogin());
+		}
 	}
 
 	@Override
 	public void updateTablesList(List<GameTable> l) {
 		this.tableList.setAll(l);
+		System.out.println("Tables mises Ã  jours");
 	}
 
 	@Override
@@ -272,28 +280,20 @@ public class ClientDataEngine implements InterfaceDataIHMLobby, InterfaceDataIHM
 	}
 
 	@Override
-	public void addNewTable(GameTable g) {
-		if(g.getSame(this.tableList)==null)
-			this.tableList.add(g);
-//		else
-//			throw new Exception("Erreur reception table. Table déjà existante.");
-	}
-
-	@Override
 	public void sendTableInfo(GameTable g) {
 		if(this.actualTable==null)
 			this.actualTable.set(g);
 		else if(g.isSame(this.getActualTable())) // on remplace la table qui doit contenir de nouvelles informations
 			this.actualTable.set(g);
 //		else
-//			throw new Exception("Erreur reception table. On est déjà à une table");
+//			throw new Exception("Erreur reception table. On est dï¿½jï¿½ ï¿½ une table");
 	}
 
 	@Override
 	public void setSelection(boolean a, boolean b, boolean c) {
 		//TODO : Voir avec IHM
 
-		//fix proposé
+		//fix proposï¿½
 		List<Boolean>  newList = new ArrayList<Boolean>();
 		newList.add(a);
 		newList.add(b);
@@ -302,9 +302,9 @@ public class ClientDataEngine implements InterfaceDataIHMLobby, InterfaceDataIHM
 	}
 
 	//Attention perte d'information ici
-	//Le modèle du serveur contient plus d'information que le modèle client aprsè cette fonction.
-	//TOREVIEW : p-être renvoyer la table complète pour eviter ce problème.
-	//TOREVIEW : autre solution, faire environ 500 lignes de codes pour retro enginneerer l'état.
+	//Le modï¿½le du serveur contient plus d'information que le modï¿½le client aprsï¿½ cette fonction.
+	//TOREVIEW : p-ï¿½tre renvoyer la table complï¿½te pour eviter ce problï¿½me.
+	//TOREVIEW : autre solution, faire environ 500 lignes de codes pour retro enginneerer l'ï¿½tat.
 	@Override
 	public void setDice(int a, int b, int c) {
 		int[] dices = {a,b,c};
@@ -322,7 +322,7 @@ public class ClientDataEngine implements InterfaceDataIHMLobby, InterfaceDataIHM
 	public void hasSelected(User u, boolean a, boolean b, boolean c) {
 		//TODO : Voir avec IHM
 
-		//fix proposé
+		//fix proposï¿½
 		List<Boolean>  newList = new ArrayList<Boolean>();
 		newList.add(a);
 		newList.add(b);
@@ -367,7 +367,7 @@ public class ClientDataEngine implements InterfaceDataIHMLobby, InterfaceDataIHM
 
 	@Override
 	public void startTurn() {
-		// TODO : Vérifier que ce soit la bonne méthode appelée car il y a aussi GameState.nextTurn(User)
+		// TODO : Vï¿½rifier que ce soit la bonne mï¿½thode appelï¿½e car il y a aussi GameState.nextTurn(User)
 		//
 		User currentUser = new User(getProfileManager().getCurrentProfile());
 		getActualTable().getGameState().setActualPlayer(currentUser);

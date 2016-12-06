@@ -1,7 +1,9 @@
 package IHM_MAIN.src;
 
+import data.IPData;
 import data.Profile;
 import data.User;
+import data.client.ClientDataEngine;
 import javafx.application.Application;
 import javafx.application.Platform;
 import javafx.fxml.FXMLLoader;
@@ -47,6 +49,7 @@ import IHM_MAIN.src.controller.PersonController;
 public class MainApp extends Application {
 	Scene scene;
 	private Stage primaryStage;
+	private static ClientDataEngine client;
 
 
 	@Override
@@ -237,7 +240,28 @@ public class MainApp extends Application {
 	}
 
 	public static void main(String[] args) {
-		launch(args);
+		//launch(args);
+		client = new ClientDataEngine();
+		
+		client.createProfile("mathieu1", "motdepasse1");
+		
+		client.createProfile("mathieu2", "motdepasse2");
+		
+		try {
+			client.login("mathieu1", "motdepasse1", new IPData("localhost"));
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		try {
+			Thread.sleep(5000);
+		} catch (InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		client.logout();
 	}
 
 	public boolean EditProfile(User user){

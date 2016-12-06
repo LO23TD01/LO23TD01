@@ -34,9 +34,10 @@ public class TablesUsersListMessage implements IMessage {
 	@Override
 	public void process(ClientDataEngine dataEngine) {
 		User[] users = FxGson.create().fromJson(userList, User[].class);
+		System.out.println(dataEngine.toString());
 		dataEngine.updateUsersList(Arrays.asList(users));
 		
-		GameTable[] tables = FxGson.create().fromJson(userList, GameTable[].class);
+		GameTable[] tables = FxGson.create().fromJson(tableList, GameTable[].class);
 		dataEngine.updateTablesList(Arrays.asList(tables));
 	}
 

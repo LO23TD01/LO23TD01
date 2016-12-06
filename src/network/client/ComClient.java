@@ -51,8 +51,6 @@ public class ComClient implements ComClientInterface{
 		try {
 			socketToServer = new Socket(ipAdress, serverPort);
 			
-			System.out.println("Client connect� au serveur");
-			
 			SocketServerHandler server = new SocketServerHandler(socketToServer, this);
         	new Thread(server).start();
         	this.server = server;
@@ -158,7 +156,13 @@ public class ComClient implements ComClientInterface{
 	@Override
 	public void logoutUserRequest(UUID user) {
 		sendMessage(new LogoutUserRequestMessage(user));
-		
+		try {
+			Thread.sleep(500);
+		} catch (InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		stop();
 	}
 
     @Override

@@ -102,8 +102,6 @@ public class ComServer implements Runnable, ComServerInterface {
 	        try {
 	            clientSocket = this.serverSocket.accept();
 	            
-	            System.out.println("Nouveau client connect�");
-	            
 	        } catch (IOException e) {
 	            if(isStopped()) {
 	                System.out.println("Server Stopped.") ;
@@ -384,5 +382,11 @@ public class ComServer implements Runnable, ComServerInterface {
 			if(client != null)
 				client.sendMessage(new StopGameMessage(answer));
 		}
+	}
+
+	@Override
+	public void hasLost(List<UUID> receivers, UUID winner) {
+		// TODO Auto-generated method stub
+		
 	}
 }

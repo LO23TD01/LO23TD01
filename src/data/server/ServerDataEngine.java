@@ -104,10 +104,10 @@ public class ServerDataEngine implements InterfaceDataNetwork {
 //		if(userFull==null)
 //			throw new Exception("L'utilisateur n'exsite pas, Il doit exister pour parler.");
 //		if(userFull.getActualTable()==null)
-//			throw new Exception("L'utilisateur n'est à aucune table. il doit être à une table pour parler.");
+//			throw new Exception("L'utilisateur n'est ï¿½ aucune table. il doit ï¿½tre ï¿½ une table pour parler.");
 		GameTable tableFull = userFull.getActualTable().getSame(this.tableList);
 //		if(tableFull==null)
-//			throw new Exception("L'utilisateur est à une table qui n'existe pas. La table doit exister pour parler.");
+//			throw new Exception("L'utilisateur est ï¿½ une table qui n'existe pas. La table doit exister pour parler.");
 		if(tableFull.getLocalChat().isVoiced(message))
 		{
 			tableFull.getLocalChat().add(message);
@@ -125,12 +125,12 @@ public class ServerDataEngine implements InterfaceDataNetwork {
 	public void dropTable(GameTable table) {
 		GameTable tableFull = table.getSame(this.tableList);
 //		 if(tableFull==null)
-//			 throw new Exception("La table n'existe pas. Il faut que la table existe pour la détruire.");
+//			 throw new Exception("La table n'existe pas. Il faut que la table existe pour la dï¿½truire.");
 		 for(User u : tableFull.getAllList())
 		 {
 			 User userFull = u.getSame(this.usersList);
 //			 if(userFull==null)
-//					 throw new Exception("L'utilisateur n'est pas connecté. Il faut être connecté pour se faire kick d'une table.");
+//					 throw new Exception("L'utilisateur n'est pas connectï¿½. Il faut ï¿½tre connectï¿½ pour se faire kick d'une table.");
 			userFull.setActualTable(null);
 		 }
 		 this.comServer.kick(this.getUUIDList(tableFull.getAllList()), "La partie n'existe plus.");
@@ -143,13 +143,13 @@ public class ServerDataEngine implements InterfaceDataNetwork {
 	public void quit(User user, GameTable table) {
 		User userFull = user.getSame(this.usersList);
 //		 if(userFull==null)
-//				 throw new Exception("L'utilisateur n'est pas connecté. Il faut être connecté pour quitter une table.");
+//				 throw new Exception("L'utilisateur n'est pas connectï¿½. Il faut ï¿½tre connectï¿½ pour quitter une table.");
 
 //		 if(userFull.getActualTable()==null)
-//			 throw new Exception("L'utilisateur n'est pas à une table. Il dtoi être à une table pour la quitter.");
+//			 throw new Exception("L'utilisateur n'est pas ï¿½ une table. Il dtoi ï¿½tre ï¿½ une table pour la quitter.");
 		GameTable tableFull = userFull.getActualTable().getSame(this.tableList);
 //		 if(userFull.getActualTable()==null)
-//		 throw new Exception("L'utilisateur est à une table qui n'existe pas. La table doit exister pour quitter la table..");
+//		 throw new Exception("L'utilisateur est ï¿½ une table qui n'existe pas. La table doit exister pour quitter la table..");
 		
 		tableFull.disconnect(userFull);
 		userFull.setActualTable(null);
@@ -228,9 +228,9 @@ public class ServerDataEngine implements InterfaceDataNetwork {
 	public void createNewTable(User user, String name, Parameters params) {
 		User userFull = user.getSame(this.usersList);
 //		 if(userFull==null)
-//			 throw new Exception("L'utilisateur n'est pas connecté. Il faut être connecté pour lancer une partie.");
+//			 throw new Exception("L'utilisateur n'est pas connectï¿½. Il faut ï¿½tre connectï¿½ pour lancer une partie.");
 //		 else if(userFull.getActualTable()!=null)
-//			 throw new Exception("L'utilisateur est déjà à une table. Il faut sortir de table avant d'en créer une nouvelle.");
+//			 throw new Exception("L'utilisateur est dï¿½jï¿½ ï¿½ une table. Il faut sortir de table avant d'en crï¿½er une nouvelle.");
 		GameTable newTable = createTable(userFull.getLightWeightVersion(), name, params);
 		this.tableList.add(newTable);
 		userFull.setActualTable(newTable.getEmptyVersion());
@@ -251,6 +251,8 @@ public class ServerDataEngine implements InterfaceDataNetwork {
 				tableFull.disconnect(user);
 		}
 		this.usersList.remove(user.getSame(this.usersList));
+		
+		System.out.print("Client dÃ©connectÃ© du serveur");
 	}
 
 	
@@ -351,7 +353,7 @@ public class ServerDataEngine implements InterfaceDataNetwork {
 		this.comServer.newUser(getUUIDList(this.usersList), newUser.getEmptyVersion().getPublicData());
 		this.usersList.add(newUser);
 		this.comServer.sendTablesUsers(this.usersList, this.tableList, newUser.getEmptyVersion().getPublicData());
-
+		System.out.println("Client connectÃ© sur le serveur");
 	}
 
 	@Override
@@ -370,14 +372,14 @@ public class ServerDataEngine implements InterfaceDataNetwork {
 //		if(userFull==null)
 //			throw new Exception("L'utilisateur n'exsite pas, Il doit exister pour voter.");
 //		if(userFull.getActualTable()==null)
-//			throw new Exception("L'utilisateur n'est à aucune table. il doit être à une table pour voter.");
+//			throw new Exception("L'utilisateur n'est ï¿½ aucune table. il doit ï¿½tre ï¿½ une table pour voter.");
 		GameTable tableFull = userFull.getActualTable().getSame(this.tableList);
 //		if(tableFull==null)
-//			throw new Exception("L'utilisateur est à une table qui n'existe pas. La table doit exister pour voter.");
+//			throw new Exception("L'utilisateur est ï¿½ une table qui n'existe pas. La table doit exister pour voter.");
 //		if(tableFull.getVote() || tableFull.getGameState().getState()!=State.END)
-//			throw new Exception("Aucun vote pour rejouer en cours. Un vote doit être en cours pour voter");
+//			throw new Exception("Aucun vote pour rejouer en cours. Un vote doit ï¿½tre en cours pour voter");
 //		if(tableFull.getVoteCasted().stream().filter(v->v.getUser().isSame(userFull)).count()!=0)
-//			throw new Exception("L'utilisateur à déjà voté.");
+//			throw new Exception("L'utilisateur ï¿½ dï¿½jï¿½ votï¿½.");
 		tableFull.castVote(new Vote(userFull.getLightWeightVersion(),answer,tableFull.getLightWeightVersion()));
 		if(answer)
 			this.comServer.hasAccepted(userFull.getPublicData().getUUID(), this.getUUIDList(tableFull.getAllList()));
@@ -832,12 +834,12 @@ public class ServerDataEngine implements InterfaceDataNetwork {
 //		if(userFull==null)
 //			throw new Exception("L'utilisateur n'exsite pas, Il doit exister pour demander de quitter une table.");
 //		if(userFull.getActualTable()==null)
-//			throw new Exception("L'utilisateur n'est à aucune table. il doit être à une table pour demander de la quitter.");
+//			throw new Exception("L'utilisateur n'est ï¿½ aucune table. il doit ï¿½tre ï¿½ une table pour demander de la quitter.");
 		GameTable tableFull = userFull.getActualTable().getSame(this.tableList);
 //		if(tableFull==null)
-//			throw new Exception("L'utilisateur est à une table qui n'existe pas. La table doit exister pour être quittée.");
+//			throw new Exception("L'utilisateur est ï¿½ une table qui n'existe pas. La table doit exister pour ï¿½tre quittï¿½e.");
 //		if(tableFull.getVote())
-//			throw new Exception("Vote déjà en cours");
+//			throw new Exception("Vote dï¿½jï¿½ en cours");
 		tableFull.startVote();
 		this.comServer.askStopGameEveryUser(this.getUUIDList(tableFull.getPlayerList()));
 	}
@@ -849,12 +851,12 @@ public class ServerDataEngine implements InterfaceDataNetwork {
 //		if(userFull==null)
 //			throw new Exception("L'utilisateur n'exsite pas, Il doit exister pour voter.");
 //		if(userFull.getActualTable()==null)
-//			throw new Exception("L'utilisateur n'est à aucune table. il doit être à une table pour voter.");
+//			throw new Exception("L'utilisateur n'est ï¿½ aucune table. il doit ï¿½tre ï¿½ une table pour voter.");
 		GameTable tableFull = userFull.getActualTable().getSame(this.tableList);
 //		if(tableFull==null)
-//			throw new Exception("L'utilisateur est à une table qui n'existe pas. La table doit exister pour voter.");
+//			throw new Exception("L'utilisateur est ï¿½ une table qui n'existe pas. La table doit exister pour voter.");
 //		if(tableFull.getVoteCasted() == null)
-//			throw new Exception("Aucun vote en cours. Un vote doit être en cours pour voter");
+//			throw new Exception("Aucun vote en cours. Un vote doit ï¿½tre en cours pour voter");
 		tableFull.castVote(new Vote(userFull.getLightWeightVersion(),answer,tableFull.getLightWeightVersion()));
 		if(tableFull.getVoteCasted().size()==tableFull.getPlayerList().size()-1)
 		{
@@ -866,7 +868,7 @@ public class ServerDataEngine implements InterfaceDataNetwork {
 				 {
 					 User userFull2 = u.getSame(this.usersList);
 //					 if(userFull2==null)
-//							 throw new Exception("L'utilisateur n'est pas connecté. Il faut être connecté pour se faire kick d'une table.");
+//							 throw new Exception("L'utilisateur n'est pas connectï¿½. Il faut ï¿½tre connectï¿½ pour se faire kick d'une table.");
 					userFull2.setActualTable(null);
 				 }
 				 this.tableList.remove(tableFull);
