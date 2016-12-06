@@ -14,16 +14,19 @@ import data.Variant;
 import data.Vote;
 import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.SimpleObjectProperty;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 
 public class InterImplDataTable implements InterfaceDataIHMTable{
 	private final ObjectProperty<GameTable> actualTable;
 	private ClientDataEngine dataEngine;
 	private final ObjectProperty<UserRole> actualRole;
+	private final ObjectProperty<GameTable> actualTable;
+	private final ObservableList<Boolean> selectionList = FXCollections.observableArrayList();
 
 	//constructeur  de test pour ihm table
 	public InterImplDataTable() {
 		super();
-
 		this.actualTable = new SimpleObjectProperty<GameTable>();
 		User u1 = new User(new Profile("lol","Jeanlaque","AHAH","Pro","Gamer",42));
 		User u2 = new User(new Profile("hackzorDu60","xXDeathKillerXx","AHAH","Kevin","Louzeur",10));
@@ -32,6 +35,7 @@ public class InterImplDataTable implements InterfaceDataIHMTable{
 		uList.add(u2);
 		this.setActualTable(new GameTable("Table Test pour Ihm", u1, new Parameters(2,6,21,true,true,new Rules(Variant.CONSTRAINED_DISCHARGE,3)), uList, new ArrayList<User>()));
 		this.actualRole = new SimpleObjectProperty<UserRole>();
+		//TODO selection list ?
 	}
 
 	/**
@@ -41,31 +45,40 @@ public class InterImplDataTable implements InterfaceDataIHMTable{
 	public InterImplDataTable(ClientDataEngine dataEngine) {
 		super();
 		this.dataEngine = dataEngine;
-		this.actualTable = new SimpleObjectProperty<GameTable>();
-		this.actualRole = new SimpleObjectProperty<UserRole>();
+
 		if(this.dataEngine.getActualTable()==null)
 			;//throw exception
 		if(this.dataEngine.getActualRole()==null)
 			;//thwor new Escpetion
-		this.setActualTable(this.dataEngine.getActualTable());
-		this.setActualRole(this.dataEngine.getActualRole());
+		if(this.dataEngine.getSelectionList()==null)
+			;//thwor new Escpetion
+
+		this.actualTable = new SimpleObjectProperty<GameTable>(this.dataEngine.getActualTable());
+		this.actualRole = new SimpleObjectProperty<UserRole>(this.dataEngine.getActualRole());
+
+		this.setSelectionList(this.dataEngine.getSelectionList());
 	}
+
 
 	/**
+	 * @param dataEngine
 	 * @param actualTable
 	 * @param actualRole
+	 * @param list
 	 */
 	//Constructeur en copie
-	public InterImplDataTable(GameTable actualTable, UserRole actualRole) {
+public InterImplDataTable(ClientDataEngine dataEngine, UserRole actualRole,
+			GameTable actualTable, List<Boolean> list) {
 		super();
+		this.dataEngine = dataEngine;
 		this.actualTable = new SimpleObjectProperty<GameTable>(actualTable);
 		this.actualRole = new SimpleObjectProperty<UserRole>(actualRole);
+		this.setSelectionList(list);
 	}
-
-
 
 ///IMPLEMENTATION INTERFACE ICI
 /////////////////////////////////////////////////////////////
+
 
 	@Override
 	public UserRole getUserRole() {
@@ -81,6 +94,9 @@ public class InterImplDataTable implements InterfaceDataIHMTable{
 
 	@Override
 	public void selectDice(boolean a, boolean b, boolean c) {
+		//pas besoin de changer icic la selection, le server va renvoyer à tout le monde y coimpris le joueur
+		//sinon risque de conflit et de trucs pas beau
+		//en plus ca permet de voir le temps de réponse du server
 		this.dataEngine.getComClientInterface().selectDice(this.dataEngine.getProfileManager().getCurrentProfile().getUUID(), a, b, c);
 	}
 
@@ -111,8 +127,6 @@ public class InterImplDataTable implements InterfaceDataIHMTable{
 		this.dataEngine.getComClientInterface().refuseReplay(this.dataEngine.getProfileManager().getCurrentProfile().getUUID());
 	}
 
-/////////////////////////////////////////////////////////////
-
 
 
 	public final ObjectProperty<GameTable> actualTableProperty() {
@@ -139,6 +153,16 @@ public class InterImplDataTable implements InterfaceDataIHMTable{
 
 	public final void setActualRole(final UserRole actualRole) {
 		this.actualRoleProperty().set(actualRole);
+	}
+
+
+	public ObservableList<Boolean> getSelectionList() {
+		return this.selectionList;
+	}
+
+	public void setSelectionList(List<Boolean> selection) {
+		this.selectionList.clear(); //pas utile ?
+		this.selectionList.addAll(selection);
 	}
 
 }

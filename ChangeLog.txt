@@ -1,3 +1,4 @@
 KLAJA - 28/11/2016 - Changements de "Commencer Partie" : On a maintenant que le créateur qui lance la partie. La fonction "selectFirstPlayer()" est maitenant obsolete puisque codé dans le GameEngine().
 KLAJA - 28/11/2016 - Changements de "Fin Partie" : On doit maintenant envoyer hasLost() en plus de hasWon(). Attention : On a forcement un perdant, mais le gagnant peut-être à null selon notre ruleset.
 KLAJA - 28/11/2016 - Changements dans la partie : On gère maintenant les cas d'égalités, il seront renvoyé par Data Server par "exAequoCase(...)" Implémentation proposée : exAequoCase(liste UUID, Liste joueurs à égalité, Booleen estGagnant)
+KLAJA - 06/12/2016 - Changements Conception : On a maintenant deux classes pour implementer les interfaces IHM, InterImplDataMain et InterImplDataMain. Cela permet d'eviter que les controller des uns fasse le bordel chez les autres.

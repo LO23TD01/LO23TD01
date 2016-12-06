@@ -7,7 +7,7 @@ import data.User;
 
 public interface InterfaceDataNetwork {
 
-	public void raiseException(Exception e);
+	public void raiseException(String msg);
 
 	public void refreshUsersList(List<User> l);
 

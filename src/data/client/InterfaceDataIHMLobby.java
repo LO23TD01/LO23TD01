@@ -29,10 +29,6 @@ public interface InterfaceDataIHMLobby {
 	// TODO argument
 	public void createProfile(String login, String psw);
 
-	public void getTableInfo(GameTable g);
-
-	public void addNewTable(GameTable g);
-
 	// TODO arg names
 	public void askJoinTable(GameTable g, boolean b);
 
