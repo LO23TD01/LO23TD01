@@ -8,12 +8,20 @@ import java.net.SocketException;
 
 import network.messages.IMessage;
 
+/**
+ * Handler for a socket connected to the game server
+ */
 public class SocketServerHandler implements Runnable {
 	private Socket 				socket;
 	private ObjectInputStream 	inputStream;
 	private ObjectOutputStream 	outputStream;
 	private ComClient 			client;
 	
+	/**
+	 * Constructor for the SocketServerHandler class.
+	 * @param socket	the socket to be handled
+	 * @param client	the ComClient object the handler is connected to
+	 */
 	public SocketServerHandler(Socket socket, ComClient client){
 		this.socket = socket;
 		this.client = client;
@@ -28,6 +36,9 @@ public class SocketServerHandler implements Runnable {
 		
 	}
 	
+	/* (non-Javadoc)
+	 * @see java.lang.Runnable#run()
+	 */
 	@Override
 	public void run() {
 		while (true) {
@@ -56,6 +67,10 @@ public class SocketServerHandler implements Runnable {
         }
 	}
 	
+	/**
+	 * Sends a message from the client to ther server using the open socket.
+	 * @param message	the message to be sent
+	 */
 	public void sendMessage(IMessage message){
 		try {
         	
