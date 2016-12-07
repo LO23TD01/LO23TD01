@@ -2,6 +2,7 @@ package IHM_MAIN.src;
 
 import data.Profile;
 import data.User;
+import data.client.ClientDataEngine;
 import javafx.application.Application;
 import javafx.application.Platform;
 import javafx.fxml.FXMLLoader;
@@ -47,6 +48,7 @@ import IHM_MAIN.src.controller.PersonController;
 public class MainApp extends Application {
 	Scene scene;
 	private Stage primaryStage;
+	static ClientDataEngine c;
 
 
 	@Override
@@ -199,10 +201,11 @@ public class MainApp extends Application {
 		        // Set the person into the controller.
 		        PersonController controller = loader.getController();
 		        controller.setDialogStage(dialogStage);
-	        	File fXmlFile = new File("file:./../monProfile.xml");
-
-		       Profile profil= controller.loadPersonDataFromFile(fXmlFile);
+	        	//File fXmlFile = new File("file:./../monProfile.xml");
+		       //Profile profil= controller.loadPersonDataFromFile(fXmlFile);
 		        //Profile profil = new Profile(null,"test","test","test",25);
+		        c= new ClientDataEngine();
+		        Profile profil = c.getLocalProfile();
 		        User user= new User(profil);
 		        controller.setPerson(user);
 
@@ -273,5 +276,13 @@ public class MainApp extends Application {
 	{
 		return primaryStage;
 	}
+	public static void setC(ClientDataEngine c) {
+		MainApp.c = c;
+	}
+
+	public static ClientDataEngine getC() {
+		return c;
+	}
+
 
 }

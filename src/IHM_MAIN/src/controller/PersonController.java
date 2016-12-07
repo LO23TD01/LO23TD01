@@ -43,6 +43,7 @@ import org.w3c.dom.NodeList;
 import IHM_MAIN.src.MainApp;
 import data.Profile;
 import data.User;
+import data.client.ClientDataEngine;
 
 
 public class PersonController {
@@ -170,13 +171,17 @@ System.out.print(wonField);
 	    private void handleOk() {
 	        if (isInputValid()) {
 	        	Profile profil = new Profile(null,pseudoField.getText(),firstNameField.getText(),lastNameField.getText(),Integer.parseInt(ageField.getText()));
-	            user.setPublicData(profil);
+	    	    ClientDataEngine c = mainApp.getC();
+				c.changeMyProfile(profil);
+			            dialogStage.close();
+
+	        	//user.setPublicData(profil);
 
 	            okClicked = true;
 
-	        	File fXmlFile = new File("file:./../monProfile.xml");
+	        	//File fXmlFile = new File("file:./../monProfile.xml");
 
-		        try {
+		       /* try {
 
 		        	  DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
 		        	  DocumentBuilder dBuilder = dbFactory.newDocumentBuilder();
@@ -198,16 +203,16 @@ System.out.print(wonField);
 		        	        setTagValue("age",eElement,Integer.toString(profil.getAge()));
 
 		        	     }
-		        	     }
+		        	     }*/
 		        		// write the content into xml file
-		        		TransformerFactory transformerFactory = TransformerFactory.newInstance();
+		        		/*TransformerFactory transformerFactory = TransformerFactory.newInstance();
 		        		Transformer transformer = transformerFactory.newTransformer();
 		        		DOMSource source = new DOMSource(doc);
 		        		StreamResult result = new StreamResult(fXmlFile);
-		        		transformer.transform(source, result);
+		        		transformer.transform(source, result);*/
 
 		        		System.out.println("Done");
-		        } catch (ParserConfigurationException pce) {
+		       /* } catch (ParserConfigurationException pce) {
 		    		pce.printStackTrace();
 		    	   } catch (TransformerException tfe) {
 		    		tfe.printStackTrace();
@@ -215,13 +220,11 @@ System.out.print(wonField);
 		    		ioe.printStackTrace();
 		    	   } catch (org.xml.sax.SAXException sae) {
 		    		sae.printStackTrace();
-		    	   }
+		    	   }*/
 		    	}
 
 
 
-
-	            dialogStage.close();
 
 	        }
 	    @FXML
