@@ -6,6 +6,8 @@ import java.util.UUID;
 import data.ChatMessage;
 import data.GameTable;
 import data.Profile;
+import data.State;
+import data.TurnState;
 import data.User;
 
 public interface ComServerInterface {
@@ -36,4 +38,6 @@ public interface ComServerInterface {
 	public void playerQuitGame(List<UUID> receivers, UUID user);
 	public void stopGame(List<UUID> receivers, boolean answer);
 	public void hasLost(List<UUID> receivers, UUID winner);
+	public void changeState(List<UUID> receivers, State state);
+	public void changeTurnState(List<UUID> receivers, TurnState turnState);
 }

@@ -12,6 +12,8 @@ import com.sun.corba.se.spi.servicecontext.UEInfoServiceContext;
 import data.ChatMessage;
 import data.GameTable;
 import data.Profile;
+import data.State;
+import data.TurnState;
 import data.server.ServerDataEngine;
 import network.messages.NewUserMessage;
 import network.messages.HasSelectedMessage;
@@ -20,6 +22,8 @@ import network.messages.HasThrownMessage;
 import network.messages.AddNewTableMessage;
 import network.messages.HasWonMessage;
 import network.messages.AskStopGameMessage;
+import network.messages.ChangeStateMessage;
+import network.messages.ChangeTurnStateMessage;
 import network.messages.HasAcceptedMessage;
 import network.messages.HasRefusedMessage;
 import network.messages.KickedMessage;
@@ -407,4 +411,24 @@ public class ComServer implements Runnable, ComServerInterface {
                 handler.sendMessage(new HasLostMessage(loser));
         }
     }
+
+	@Override
+	public void changeState(List<UUID> receivers, State state) {
+		SocketClientHandler  handler;
+        for (UUID user : receivers) {
+            handler = connectedClients.get(user.toString());
+            if (handler != null)
+                handler.sendMessage(new ChangeStateMessage(state));
+        }
+	}
+
+	@Override
+	public void changeTurnState(List<UUID> receivers, TurnState turnState) {
+		SocketClientHandler  handler;
+        for (UUID user : receivers) {
+            handler = connectedClients.get(user.toString());
+            if (handler != null)
+                handler.sendMessage(new ChangeTurnStateMessage(turnState));
+        }
+	}
 }
