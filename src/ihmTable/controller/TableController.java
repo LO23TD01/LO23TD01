@@ -59,7 +59,7 @@ public class TableController {
 		FXMLLoader playerStatsLoader = new FXMLLoader(getClass().getResource("/ihmTable/resources/view/PlayerStats.fxml"));
 		AnchorPane playerStats = playerStatsLoader.load();
 		PlayerStatsController playerStatsController = playerStatsLoader.getController();
-		playerStatsController.gameTableInstance = this.interImplDataTable.getActualTable();
+		playerStatsController.setData(interImplDataTable, user);
 		return playerStats;
 	}
 
