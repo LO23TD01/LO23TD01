@@ -61,7 +61,7 @@ public class MainApp extends Application {
 	
 	@Override
 	public void start(Stage primaryStage) {
-				
+
 		GridPane grid = new GridPane();
 		grid.setAlignment(Pos.CENTER);
 		grid.setMinWidth(380);
