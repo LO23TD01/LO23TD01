@@ -184,6 +184,12 @@ public class MainApp extends Application {
 			FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("./view/registerWindow.fxml"));
 			AnchorPane root;
 			root = (AnchorPane) fxmlLoader.load();
+			
+			ControllerApplication controller = (ControllerApplication) fxmlLoader.getController();
+			controller.setClientData(this.clientData);
+			controller.setInterfaceDataIHM(this.interfaceData);
+			
+			
 			Scene new_scene = new Scene(root, 400, 500);
 			Stage stage = new Stage();
 			stage.setTitle("Register");

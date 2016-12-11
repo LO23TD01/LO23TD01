@@ -7,11 +7,8 @@
 
 <AnchorPane prefHeight="500.0" prefWidth="400.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="IHM_MAIN.src.controller.RegisterWindow">
    <children>
-      <TextField fx:id="pseudoField" alignment="TOP_LEFT" layoutX="88.0" layoutY="61.0" text="Pseudo" AnchorPane.leftAnchor="88.0" AnchorPane.rightAnchor="88.0" />
-      <TextField fx:id="loginField" layoutX="88.0" layoutY="112.0" text="Login" AnchorPane.leftAnchor="88.0" AnchorPane.rightAnchor="88.0" />
-      <TextField fx:id="nomField" layoutX="88.0" layoutY="162.0" text="Nom" AnchorPane.leftAnchor="88.0" AnchorPane.rightAnchor="88.0" />
-      <TextField fx:id="prenomField" layoutX="88.0" layoutY="211.0" text="Prenom" AnchorPane.leftAnchor="88.0" AnchorPane.rightAnchor="88.0" />
-      <TextField fx:id="ageField" layoutX="88.0" layoutY="263.0" text="Age" AnchorPane.leftAnchor="88.0" AnchorPane.rightAnchor="88.0" />
+      <TextField fx:id="loginField" alignment="TOP_LEFT" layoutX="88.0" layoutY="61.0" text="Login" AnchorPane.leftAnchor="88.0" AnchorPane.rightAnchor="88.0" />
       <Button fx:id="validerButton" layoutX="161.0" layoutY="330.0" mnemonicParsing="false" text="Valider" AnchorPane.leftAnchor="161.0" AnchorPane.rightAnchor="159.0" />
+      <TextField fx:id="pswdField" alignment="TOP_LEFT" layoutX="89.0" layoutY="127.0" text="Password" AnchorPane.leftAnchor="88.0" AnchorPane.rightAnchor="88.0" />
    </children>
 </AnchorPane>
