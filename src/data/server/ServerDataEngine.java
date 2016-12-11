@@ -24,7 +24,7 @@ public class ServerDataEngine implements InterfaceDataNetwork {
 	private Timer time;
 	private ComServer comServer;
 
-	
+
 	/*
 	 *
 	 * Constructor
@@ -118,7 +118,7 @@ public class ServerDataEngine implements InterfaceDataNetwork {
 		{
 			//throw new Exception("L'utilisateur n'a pas les droits pour parler. Il doit avoir le droit de parler pour parler.");
 		}
-		
+
 	}
 
 	@Override
@@ -137,7 +137,7 @@ public class ServerDataEngine implements InterfaceDataNetwork {
 		 this.tableList.remove(tableFull);
 	}
 
-	
+
 	//Table inutile
 	@Override
 	public void quit(User user, GameTable table) {
@@ -150,7 +150,7 @@ public class ServerDataEngine implements InterfaceDataNetwork {
 		GameTable tableFull = userFull.getActualTable().getSame(this.tableList);
 //		 if(userFull.getActualTable()==null)
 //		 throw new Exception("L'utilisateur est à une table qui n'existe pas. La table doit exister pour quitter la table..");
-		
+
 		tableFull.disconnect(userFull);
 		userFull.setActualTable(null);
 		this.comServer.playerQuitGame(this.getUUIDList(tableFull.getAllList()), userFull.getPublicData().getUUID());
@@ -235,7 +235,7 @@ public class ServerDataEngine implements InterfaceDataNetwork {
 		this.tableList.add(newTable);
 		userFull.setActualTable(newTable.getEmptyVersion());
 		userFull.setSpectating(false);
-		this.comServer.addNewTable(user.getPublicData().getUUID(), getUUIDList(this.usersList), newTable);	
+		this.comServer.addNewTable(user.getPublicData().getUUID(), getUUIDList(this.usersList), newTable);
 	}
 
 	//DOUBLON
@@ -253,7 +253,7 @@ public class ServerDataEngine implements InterfaceDataNetwork {
 		this.usersList.remove(user.getSame(this.usersList));
 	}
 
-	
+
 	@Override
 	// boolean true signifie relancer le dï¿½
 	public void hasThrown(UUID uuid, boolean d1, boolean d2, boolean d3) {
@@ -363,7 +363,7 @@ public class ServerDataEngine implements InterfaceDataNetwork {
 	public void hasAcceptedReplay(UUID uuid) {
 		voteReplay(uuid, true);
 	}
-	
+
 	public void voteReplay(UUID uuid, boolean answer)
 	{
 		User userFull = new User(new Profile(uuid)).getSame(this.usersList);
@@ -421,6 +421,7 @@ public class ServerDataEngine implements InterfaceDataNetwork {
 		case PRESTART:
 			// Premier appel debut du jeu
 			tableFull.getGameState().setState(State.SELECTION);
+			this.comServer.changeState(getUUIDList(tableFull.getAllList()), State.SELECTION);
 			// Absence de BREAK INTENTIONNELLE (on passe ï¿½ la suite cela veux
 			// dire).
 
@@ -446,6 +447,7 @@ public class ServerDataEngine implements InterfaceDataNetwork {
 				break;
 			case END:
 				tableFull.getGameState().setState(State.CHARGING);
+				this.comServer.changeState(getUUIDList(tableFull.getAllList()), State.CHARGING);
 				tableFull.getGameState().nextTurn(tableFull.getGameState().getWinners().get(0));
 				gameEngine(tableFull, false);
 				break;
@@ -489,10 +491,19 @@ public class ServerDataEngine implements InterfaceDataNetwork {
 																	// la
 																	// decharge
 				{
-					tableFull.getGameState().setState(State.DISCHARGING);
+
 					// si qqun perd sec
 					if (tableFull.getGameState().getDataList().stream().filter(d -> d.getChip() != 0).count() == 1)
+					{
 						tableFull.getGameState().setState(State.END);
+
+						this.comServer.changeState(getUUIDList(tableFull.getAllList()), State.END);
+					}
+					else
+					{
+						tableFull.getGameState().setState(State.DISCHARGING);
+						this.comServer.changeState(getUUIDList(tableFull.getAllList()), State.DISCHARGING);
+					}
 
 				}
 				tableFull.getGameState().nextTurn(pDataL.getPlayer());
@@ -541,7 +552,11 @@ public class ServerDataEngine implements InterfaceDataNetwork {
 						tableFull.getGameState().setWinnerGame(pDataW.getPlayer());
 
 					if (tableFull.getGameState().getDataList().stream().filter(d -> d.getChip() != 0).count() == 1)
+					{
 						tableFull.getGameState().setState(State.END);
+						this.comServer.changeState(getUUIDList(tableFull.getAllList()), State.END);
+					}
+
 				}
 				tableFull.getGameState().nextTurn(pDataL.getPlayer());
 				gameEngine(tableFull, false);
@@ -567,7 +582,7 @@ public class ServerDataEngine implements InterfaceDataNetwork {
 					.findFirst().get();
 			// TODO : coder hasLost
 			// this.comServer.hasLost(getUUIDList(tableFull.getAllList()),pDataLoser.getPlayer().getPublicData().getUUID());
-			
+
 			this.time.schedule(new EndGameTimer(tableFull,this),1000*2*60);
 			break;
 
@@ -585,7 +600,7 @@ public class ServerDataEngine implements InterfaceDataNetwork {
 	public void setComServer(ComServer comServer) {
 		this.comServer = comServer;
 	}
-	
+
 	public List<GameTable> getTableList() {
 		return this.tableList;
 	}
@@ -628,6 +643,7 @@ public class ServerDataEngine implements InterfaceDataNetwork {
 	private void initTurnRoutine(GameTable tableFull, boolean isSec, boolean isStop) {
 		if (isSec) {
 			tableFull.getGameState().setTurnState(TurnState.FIRST_ROUND);
+			this.comServer.changeTurnState(getUUIDList(tableFull.getAllList()), TurnState.FIRST_ROUND);
 			this.comServer.startTurn(getUUIDList(tableFull.getAllList()),
 					tableFull.getGameState().getActualPlayer().getPublicData().getUUID(), false);
 
@@ -648,6 +664,7 @@ public class ServerDataEngine implements InterfaceDataNetwork {
 				// on change le joueur et l'ï¿½tat
 				tableFull.getGameState().setActualPlayer(tableFull.getGameState().getNextPlayer());
 				tableFull.getGameState().setTurnState(TurnState.FIRST_ROUND);
+				this.comServer.changeTurnState(getUUIDList(tableFull.getAllList()), TurnState.FIRST_ROUND);
 			}
 			this.comServer.startTurn(getUUIDList(tableFull.getAllList()),
 					tableFull.getGameState().getActualPlayer().getPublicData().getUUID(), false);
@@ -673,6 +690,7 @@ public class ServerDataEngine implements InterfaceDataNetwork {
 			} else // On a fini de dsitribuer
 			{
 				tableFull.getGameState().setTurnState(TurnState.WINNER_TIE_ROUND);
+				this.comServer.changeTurnState(getUUIDList(tableFull.getAllList()), TurnState.WINNER_TIE_ROUND);
 				gameEngine(tableFull, false); // pour passer ï¿½ la phase suivante
 												// sans trop de souci.
 			}
@@ -707,6 +725,7 @@ public class ServerDataEngine implements InterfaceDataNetwork {
 				} else {
 					// sinon on change d'ï¿½tat
 					tableFull.getGameState().setTurnState(TurnState.WINNER_TIE_ROUND);
+					this.comServer.changeTurnState(getUUIDList(tableFull.getAllList()), TurnState.WINNER_TIE_ROUND);
 					gameEngine(tableFull, false);
 				}
 
@@ -741,6 +760,7 @@ public class ServerDataEngine implements InterfaceDataNetwork {
 																	// facile
 			{
 				tableFull.getGameState().setTurnState(TurnState.LOSER_TIE_ROUND);
+				this.comServer.changeTurnState(getUUIDList(tableFull.getAllList()), TurnState.LOSER_TIE_ROUND);
 				gameEngine(tableFull, false); // pour passer ï¿½ la phase suivante
 												// sans trop de souci.
 				return;
@@ -765,6 +785,7 @@ public class ServerDataEngine implements InterfaceDataNetwork {
 			}
 		} else {
 			tableFull.getGameState().setTurnState(TurnState.LOSER_TIE_ROUND);
+			this.comServer.changeTurnState(getUUIDList(tableFull.getAllList()), TurnState.LOSER_TIE_ROUND);
 			gameEngine(tableFull, false); // pour passer ï¿½ la phase suivante
 											// sans trop de souci.
 		}
@@ -795,6 +816,7 @@ public class ServerDataEngine implements InterfaceDataNetwork {
 																	// facile
 			{
 				tableFull.getGameState().setTurnState(TurnState.END);
+				this.comServer.changeTurnState(getUUIDList(tableFull.getAllList()), TurnState.END);
 				gameEngine(tableFull, false); // pour passer ï¿½ la phase suivante
 												// sans trop de souci.
 				return;
@@ -819,6 +841,7 @@ public class ServerDataEngine implements InterfaceDataNetwork {
 			}
 		} else {
 			tableFull.getGameState().setTurnState(TurnState.END);
+			this.comServer.changeTurnState(getUUIDList(tableFull.getAllList()), TurnState.END);
 			gameEngine(tableFull, false); // pour passer ï¿½ la phase suivante
 											// sans trop de souci.
 		}
@@ -841,7 +864,7 @@ public class ServerDataEngine implements InterfaceDataNetwork {
 		tableFull.startVote();
 		this.comServer.askStopGameEveryUser(this.getUUIDList(tableFull.getPlayerList()));
 	}
-	
+
 
 	@Override
 	public void answerStopGame(UUID tableID, boolean answer, UUID user) {
@@ -872,8 +895,8 @@ public class ServerDataEngine implements InterfaceDataNetwork {
 				 this.tableList.remove(tableFull);
 			}
 		}
-		
+
 	}
 
-	
+
 }
