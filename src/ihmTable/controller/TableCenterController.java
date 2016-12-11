@@ -47,7 +47,7 @@ public class TableCenterController {
 		tableEllipse = new Ellipse();
 		tableEllipse.setStrokeWidth(3);
 		tableEllipse.setStroke(Color.BLACK);
-		tableEllipse.setFill(Color.CADETBLUE);
+		tableEllipse.setFill(Color.rgb(39,143,197));
 
 		playerViews = new HashMap<UUID, AnchorPane>();
 
@@ -90,8 +90,8 @@ public class TableCenterController {
 	private void setEllipse() {
 		tableEllipse.setCenterX(centerAnchor.getWidth() / 2);
 		tableEllipse.setCenterY(centerAnchor.getHeight() / 2);
-		tableEllipse.setRadiusX(tableCenterView.getWidth() / 6);
-		tableEllipse.setRadiusY(tableCenterView.getHeight() / 6);
+		tableEllipse.setRadiusX(tableCenterView.getWidth() / 4);
+		tableEllipse.setRadiusY(tableCenterView.getHeight() / 4);
 		AnchorPane.setLeftAnchor(diceLauncher, (centerAnchor.getWidth() / 2) - (diceLauncher.getWidth() / 2));
 	}
 
