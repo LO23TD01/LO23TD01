@@ -23,6 +23,7 @@ public class InterImplDataTable implements InterfaceDataIHMTable{
 	private ClientDataEngine dataEngine;
 	private final ObjectProperty<UserRole> actualRole;
 	private final ObservableList<Boolean> selectionList = FXCollections.observableArrayList();
+	private ObjectProperty<Profile> currentProfile;
 
 	//constructeur  de test pour ihm table
 	public InterImplDataTable() {
@@ -35,7 +36,9 @@ public class InterImplDataTable implements InterfaceDataIHMTable{
 		uList.add(u2);
 		this.setActualTable(new GameTable("Table Test pour Ihm", u1, new Parameters(2,6,21,true,true,new Rules(Variant.CONSTRAINED_DISCHARGE,3)), uList, new ArrayList<User>()));
 		this.actualRole = new SimpleObjectProperty<UserRole>();
-		//TODO selection list ?
+		this.setSelectionList(this.dataEngine.getSelectionList());
+		//NE PAS UTILISER
+		this.currentProfile = new SimpleObjectProperty<Profile>();
 	}
 
 	/**
@@ -57,6 +60,7 @@ public class InterImplDataTable implements InterfaceDataIHMTable{
 		this.actualRole = new SimpleObjectProperty<UserRole>(this.dataEngine.getActualRole());
 
 		this.setSelectionList(this.dataEngine.getSelectionList());
+		this.currentProfile = this.dataEngine.getProfileManager().currentProfileProperty();
 	}
 
 
@@ -74,6 +78,7 @@ public InterImplDataTable(ClientDataEngine dataEngine, UserRole actualRole,
 		this.actualTable = new SimpleObjectProperty<GameTable>(actualTable);
 		this.actualRole = new SimpleObjectProperty<UserRole>(actualRole);
 		this.setSelectionList(list);
+		this.currentProfile = this.dataEngine.getProfileManager().currentProfileProperty();
 	}
 
 ///IMPLEMENTATION INTERFACE ICI

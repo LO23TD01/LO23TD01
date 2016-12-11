@@ -11,6 +11,8 @@ import data.IPData;
 import data.Profile;
 import data.Rights;
 import data.User;
+import javafx.beans.property.ObjectProperty;
+import javafx.beans.property.SimpleObjectProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import network.client.ComClient;
@@ -20,6 +22,7 @@ public class InterImplDataMain implements InterfaceDataIHMLobby{
 	private ClientDataEngine dataEngine;
 	private ObservableList<User> userList;
 	private ObservableList<GameTable> tableList;
+	private ObjectProperty<Profile> currentProfile;
 
 	//appelé uniquement par le ClientDataEngine
 	public InterImplDataMain(ClientDataEngine dataEngine) {
@@ -27,6 +30,7 @@ public class InterImplDataMain implements InterfaceDataIHMLobby{
 		this.dataEngine = dataEngine;
 		this.userList = this.dataEngine.getUserList();
 		this.tableList = this.dataEngine.getTableList();
+		this.currentProfile = this.dataEngine.getProfileManager().currentProfileProperty();
 	}
 
 	@Override
