@@ -15,6 +15,7 @@ import javafx.scene.control.ListCell;
 import javafx.scene.control.ListView;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableColumn.CellDataFeatures;
+import javafx.scene.layout.BorderPane;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.stage.Modality;
@@ -192,4 +193,63 @@ public class ControllerApplication {
             }
         });
 	}
+	
+	@FXML
+	private void handleRowSelectGame(){
+	    GameTable row = currentGames.getSelectionModel().getSelectedItem();
+	    if (row==null) return;
+	    if(row!=tempGame){
+	        tempGame=row;
+	        lastClickGame=new Date();
+	    } else if(row==tempGame) {
+	        Date now = new Date();
+	        long diff = now.getTime() - lastClickGame.getTime();
+	        if (diff < 300){ 
+	     		//Parent root;
+	     		try {
+	     			FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("./view/joinTable.fxml"));
+	     			BorderPane root;
+	    			root = (BorderPane) fxmlLoader.load();
+	     			Window parent = createGame.getScene().getWindow();
+	     			joinTableController controller = (joinTableController) fxmlLoader.getController();
+	    			controller.setClientData(this.clientData);
+	    			controller.setInterfaceDataIHM(this.interfaceData);
+	    			controller.setJoiningGame(tempGame);
+	    			
+	     			Stage stage = new Stage();
+	     			stage.setScene(new Scene(root, 440, 408));
+	     			stage.initModality(Modality.WINDOW_MODAL);
+	     			stage.initOwner(parent);
+	     		    stage.setTitle("Rejoindre une partie");
+	     		    stage.setResizable(false);
+	     			stage.show();
+
+	     		} catch (Exception e1) {
+	     			e1.printStackTrace();
+	     		}
+	        } else {
+	            lastClickGame = new Date();
+	        }
+	    }
+	}
+	
+	@FXML
+	private void handleRowSelectUser() throws IncompleteProfileException{
+	    User row = connectedUsers.getSelectionModel().getSelectedItem();
+	    if (row==null) return;
+	    if(row!=tempUser){
+	        tempUser=row;
+	        lastClickUser=new Date();
+	    } else if(row==tempUser) {
+	        Date now = new Date();
+	        long diff = now.getTime() - lastClickUser.getTime();
+	        if (diff < 300){ 
+
+				interfaceLobby.displayProfile(tempUser.getPublicData());
+	        } else {
+	            lastClickUser = new Date();
+	        }
+	    }
+	}
+	
 }
