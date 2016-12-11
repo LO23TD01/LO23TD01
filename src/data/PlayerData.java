@@ -43,7 +43,7 @@ public class PlayerData {
 	 * @param dices
 	 * @param rerollCount
 	 */
-	//aucune idée ???
+	//aucune idï¿½e ???
 	public PlayerData(PlayerData pData) {
 		this.player = new SimpleObjectProperty<User>(pData.getPlayer());
 		this.chip = new SimpleIntegerProperty(pData.getChip());
@@ -78,6 +78,10 @@ public class PlayerData {
 	public void newTurn() {
 		dices.setAll(0, 0, 0);
 		this.setRerollCount(0);
+	}
+
+	public final ObservableIntegerArray dicesProperty() {
+		return this.dices;
 	}
 
 	public final int[] getDices() {
