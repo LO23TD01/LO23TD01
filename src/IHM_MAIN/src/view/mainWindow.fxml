@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.lang.*?>
+<?import java.util.*?>
+<?import javafx.collections.*?>
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.image.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.paint.*?>
+<?scenebuilder-classpath-element .?>
+
+<BorderPane prefHeight="569.0" prefWidth="815.0" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/2.2" fx:controller="IHM_MAIN.src.view.ControllerApplication">
+  <bottom>
+    <HBox alignment="CENTER" prefHeight="76.0" prefWidth="815.0">
+      <children>
+        <TextField fx:id="gameSearch" prefWidth="276.0" text="Rechercher Partie">
+          <HBox.margin>
+            <Insets right="10.0" fx:id="x1" />
+          </HBox.margin>
+        </TextField>
+      </children>
+    </HBox>
+  </bottom>
+  <center>
+    <TableView fx:id="currentGames" prefHeight="200.0" prefWidth="200.0">
+      <columns>
+        <TableColumn maxWidth="5000.0" minWidth="10.0" prefWidth="247.0" text="Nom de la partie" fx:id="gameName" />
+        <TableColumn maxWidth="5000.0" minWidth="10.0" prefWidth="117.0" text="Joueurs" fx:id="players" />
+        <TableColumn maxWidth="5000.0" minWidth="10.0" prefWidth="107.0" text="Spectateurs" fx:id="spectators" />
+        <TableColumn maxWidth="5000.0" minWidth="10.0" prefWidth="150.0" text="Créateur" fx:id="owner" />
+      </columns>
+    </TableView>
+  </center>
+  <right>
+    <VBox prefHeight="405.0" prefWidth="195.0">
+      <children>
+        <Label alignment="CENTER" contentDisplay="CENTER" prefWidth="195.0" text="Utilisateurs" textAlignment="CENTER" />
+        <ListView fx:id="connectedUsers" prefHeight="381.0" prefWidth="204.0" />
+      </children>
+    </VBox>
+  </right>
+  <top>
+    <HBox alignment="CENTER" prefHeight="88.0" prefWidth="815.0">
+      <children>
+        <Button fx:id="name" mnemonicParsing="false" onAction="#handleNameButton" prefHeight="47.0" prefWidth="204.0" text="Mon Profil" HBox.margin="$x1">
+          <graphic>
+            <ImageView fitHeight="32.0" fitWidth="32.0" mouseTransparent="true" pickOnBounds="true" preserveRatio="true">
+              <image>
+                <Image url="@uti.jpg" />
+              </image>
+            </ImageView>
+          </graphic>
+        </Button>
+        <Button fx:id="createGame" mnemonicParsing="false" onAction="#handleCreateButton" prefHeight="47.0" prefWidth="195.0" text="Créer Partie" HBox.margin="$x1" />
+      </children>
+    </HBox>
+  </top>
+</BorderPane>
