@@ -15,9 +15,7 @@ public class IHMTable extends Application {
 
 	private IHMTableLobby ihmTableLobby;
 
-	public static void main(String[] args) {
-		launch(args);
-	}
+	private InterImplDataTable interImplDataTable;
 
 	@Override
 	public void start(Stage stage) throws IOException {
@@ -38,9 +36,23 @@ public class IHMTable extends Application {
 
 	private void onLaunchButtonClick() throws IOException {
 		ihmTableLobby = new IHMTableLobbyImpl();
-		InterImplDataTable interImplDataTable = new InterImplDataTable();
+		if(interImplDataTable == null)
+			interImplDataTable = new InterImplDataTable();
 		//Set user as the creator for testing purpose
 		User user = interImplDataTable.getActualTable().getCreator();
 		ihmTableLobby.displayTable(interImplDataTable, user);
 	}
+
+	public InterImplDataTable getInterImplDataTable() {
+		return interImplDataTable;
+	}
+
+	public void setInterImplDataTable(InterImplDataTable interImplDataTable) {
+		this.interImplDataTable = interImplDataTable;
+	}
+
+	public static void main(String[] args) {
+		launch(args);
+	}
+
 }
