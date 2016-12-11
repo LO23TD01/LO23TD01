@@ -1,16 +1,20 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import java.lang.*?>
-<?import java.util.*?>
-<?import javafx.collections.*?>
-<?import javafx.geometry.*?>
-<?import javafx.scene.control.*?>
-<?import javafx.scene.image.*?>
-<?import javafx.scene.layout.*?>
-<?import javafx.scene.paint.*?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ListView?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
 <?scenebuilder-classpath-element .?>
 
-<BorderPane prefHeight="569.0" prefWidth="815.0" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/2.2" fx:controller="IHM_MAIN.src.view.ControllerApplication">
+<BorderPane prefHeight="569.0" prefWidth="815.0" xmlns="http://javafx.com/javafx/8.0.60" xmlns:fx="http://javafx.com/fxml/1" fx:controller="IHM_MAIN.src.controller.ControllerApplication">
   <bottom>
     <HBox alignment="CENTER" prefHeight="76.0" prefWidth="815.0">
       <children>
@@ -23,12 +27,12 @@
     </HBox>
   </bottom>
   <center>
-    <TableView fx:id="currentGames" prefHeight="200.0" prefWidth="200.0">
+    <TableView fx:id="currentGames" onMouseClicked="#handleRowSelectGame" prefHeight="200.0" prefWidth="200.0">
       <columns>
-        <TableColumn maxWidth="5000.0" minWidth="10.0" prefWidth="247.0" text="Nom de la partie" fx:id="gameName" />
-        <TableColumn maxWidth="5000.0" minWidth="10.0" prefWidth="117.0" text="Joueurs" fx:id="players" />
-        <TableColumn maxWidth="5000.0" minWidth="10.0" prefWidth="107.0" text="Spectateurs" fx:id="spectators" />
-        <TableColumn maxWidth="5000.0" minWidth="10.0" prefWidth="150.0" text="Créateur" fx:id="owner" />
+        <TableColumn fx:id="gameName" maxWidth="5000.0" minWidth="10.0" prefWidth="247.0" text="Nom de la partie" />
+        <TableColumn fx:id="players" maxWidth="5000.0" minWidth="10.0" prefWidth="117.0" text="Joueurs" />
+        <TableColumn fx:id="spectators" maxWidth="5000.0" minWidth="10.0" prefWidth="107.0" text="Spectateurs" />
+        <TableColumn fx:id="owner" maxWidth="5000.0" minWidth="10.0" prefWidth="150.0" text="Créateur" />
       </columns>
     </TableView>
   </center>
@@ -36,7 +40,7 @@
     <VBox prefHeight="405.0" prefWidth="195.0">
       <children>
         <Label alignment="CENTER" contentDisplay="CENTER" prefWidth="195.0" text="Utilisateurs" textAlignment="CENTER" />
-        <ListView fx:id="connectedUsers" prefHeight="381.0" prefWidth="204.0" />
+        <ListView fx:id="connectedUsers" onMouseClicked="#handleRowSelectUser" prefHeight="381.0" prefWidth="204.0" />
       </children>
     </VBox>
   </right>

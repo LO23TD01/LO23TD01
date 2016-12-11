@@ -23,10 +23,17 @@ import javafx.stage.Stage;
 import javafx.stage.Window;
 import javafx.util.Callback;
 import javafx.scene.control.Alert.AlertType;
+
+import java.io.IOException;
+import java.util.Date;
+
+import IHM_MAIN.src.IHMLobbyAPI;
+import IHM_MAIN.src.IHMLobbyAPI.IncompleteProfileException;
 import IHM_MAIN.src.MainApp;
 import data.User;
 import data.client.*;
 import data.GameTable;
+import data.Profile;
 
 public class ControllerApplication {
 	//private ModelApplication model;
@@ -52,9 +59,14 @@ public class ControllerApplication {
 	TextField gameSearch;
 	@FXML
 	ListView<User> connectedUsers;
+	GameTable tempGame;
+	Date lastClickGame;
+	User tempUser;
+	Date lastClickUser;
 
-
-	ClientDataEngine CDEngine = new ClientDataEngine();
+	InterfaceDataIHMLobby interfaceData;
+	IHMLobbyAPI interfaceLobby;
+	ClientDataEngine clientData;
 
 	private MainApp mainApp;
 
@@ -154,7 +166,7 @@ public class ControllerApplication {
 		spectators.setCellValueFactory(cellData -> constructSpectators(cellData));
 		owner.setCellValueFactory(cellData -> cellData.getValue().creatorProperty().getValue().publicDataProperty().getValue().nickNameProperty());
 		
-		FilteredList<GameTable> filtered = new FilteredList<>(CDEngine.getTableList(), p -> true);
+		FilteredList<GameTable> filtered = new FilteredList<>(clientData.getTableList(), p -> true);
 		
 		gameSearch.textProperty().addListener((observable, oldValue, newValue) -> {
             filtered.setPredicate(gameTable -> {
@@ -172,11 +184,13 @@ public class ControllerApplication {
                 	return false; // Does not match.
             });
         });
-		currentGames.setItems(filtered);
+		currentGames.setItems(filtered);	
 	}
 	
+	
+	
 	private void fillListView(){
-		ObservableList<User> items = CDEngine.getUserList();
+		ObservableList<User> items = clientData.getUserList();
 		connectedUsers.setItems(items);
 		connectedUsers.setCellFactory(new Callback<ListView<User>, ListCell<User>>(){
             public ListCell<User> call(ListView<User> p) {
@@ -227,6 +241,7 @@ public class ControllerApplication {
 	     		} catch (Exception e1) {
 	     			e1.printStackTrace();
 	     		}
+	        	interfaceData.askJoinTable(tempGame, true);
 	        } else {
 	            lastClickGame = new Date();
 	        }
@@ -244,7 +259,6 @@ public class ControllerApplication {
 	        Date now = new Date();
 	        long diff = now.getTime() - lastClickUser.getTime();
 	        if (diff < 300){ 
-
 				interfaceLobby.displayProfile(tempUser.getPublicData());
 	        } else {
 	            lastClickUser = new Date();
