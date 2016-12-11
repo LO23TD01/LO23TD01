@@ -200,16 +200,14 @@ public class ClientDataEngine implements InterfaceDataNetwork {
 	@Override
 	public void stopGame(boolean a) {
 		if(a)
-		this.setActualTable(null);
-		//TODO une fois merge on pourra decommenter
-//		else
-//			this.getActualTable().setVote(false);
+			this.setActualTable(null);
+		else
+			this.getActualTable().setVote(false);
 	}
 
 	@Override
 	public void askStopGame() {
-		//TODO une fois merge on pourra decommenter
-//		this.getActualTable().setVote(true);
+		this.getActualTable().startVote();
 	}
 
 	@Override
@@ -270,7 +268,6 @@ public class ClientDataEngine implements InterfaceDataNetwork {
 	@Override
 	public void  changeState(State s)
 	{
-
 		getActualTable().getGameState().setState(s);
 	}
 
@@ -278,6 +275,25 @@ public class ClientDataEngine implements InterfaceDataNetwork {
 	public void  changeTurnState(TurnState s)
 	{
 		getActualTable().getGameState().setTurnState(s);
+		if(s==TurnState.WINNER_TIE_ROUND)
+
+		{
+			getActualTable().getGameState().setWinners(getActualTable().getGameState().getRules().getWinner(getActualTable().getGameState().getDataList()));
+			List<PlayerData> newList = new ArrayList<PlayerData>();
+			for (User u : getActualTable().getGameState().getWinners())
+				newList.add(new PlayerData(u));
+			getActualTable().getGameState().setActualPlayer(getActualTable().getGameState().getWinners().get(0));
+			getActualTable().getGameState().setFirstPlayer(getActualTable().getGameState().getWinners().get(0));
+		}
+		else if(s==TurnState.LOSER_TIE_ROUND)
+		{
+			getActualTable().getGameState().setLosers(getActualTable().getGameState().getRules().getLoser(getActualTable().getGameState().getDataList()));
+			List<PlayerData> newList = new ArrayList<PlayerData>();
+			for (User u : getActualTable().getGameState().getLosers())
+				newList.add(new PlayerData(u));
+			getActualTable().getGameState().setActualPlayer(getActualTable().getGameState().getLosers().get(0));
+			getActualTable().getGameState().setFirstPlayer(getActualTable().getGameState().getLosers().get(0));
+		}
 	}
 
 

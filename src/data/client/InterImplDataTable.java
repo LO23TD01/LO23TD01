@@ -127,6 +127,10 @@ public InterImplDataTable(ClientDataEngine dataEngine, UserRole actualRole,
 		this.dataEngine.getComClientInterface().refuseReplay(this.dataEngine.getProfileManager().getCurrentProfile().getUUID());
 	}
 
+	@Override
+	public void answerStopGame(boolean answer) {
+		this.dataEngine.getComClientInterface().answerStopGame(this.getActualTable().getUid(), answer, this.dataEngine.getProfileManager().getCurrentProfile().getUUID());
+	}
 
 
 	public final ObjectProperty<GameTable> actualTableProperty() {
@@ -164,5 +168,7 @@ public InterImplDataTable(ClientDataEngine dataEngine, UserRole actualRole,
 		this.selectionList.clear(); //pas utile ?
 		this.selectionList.addAll(selection);
 	}
+
+
 
 }
