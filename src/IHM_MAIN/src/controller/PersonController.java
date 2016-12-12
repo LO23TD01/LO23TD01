@@ -13,6 +13,7 @@ import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import jdk.internal.org.xml.sax.SAXException;
 import javafx.scene.control.Alert.AlertType;
+import javafx.scene.control.Button;
 import javafx.scene.image.Image;
 
 import java.awt.image.BufferedImage;
@@ -40,6 +41,7 @@ import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
+import IHM_MAIN.src.IHMLobbyAPI.IncompleteProfileException;
 import IHM_MAIN.src.MainApp;
 import data.Profile;
 import data.User;
@@ -47,18 +49,26 @@ import data.client.ClientDataEngine;
 
 
 public class PersonController {
-	 @FXML
-	    private TextField firstNameField;
-	    @FXML
-	    private TextField lastNameField;
-	    @FXML
-	    private TextField pseudoField;
-	    @FXML
-	    private TextField ageField;
-
-	    @FXML
+		@FXML
+		private TextField firstNameField;
+		@FXML
+		private TextField lastNameField;
+		@FXML
+		private TextField pseudoField;
+		@FXML
+		private TextField ageField;
+	
+		@FXML
 		private ImageView imgField;
+	
+		@FXML
+		private   Label wonField;
+		@FXML
+		private  Label lostField;
+		@FXML
+		private  Label leaveField;
 
+<<<<<<< HEAD
 	   @FXML
 	   private   Label wonField;
 	   @FXML
@@ -68,6 +78,10 @@ public class PersonController {
 	   @FXML
 	   private ListView<String> friendsList;
 
+=======
+		@FXML
+		private Button selectPhotoButton;
+>>>>>>> 0920b2a99831572e92ca306647e7ef66d057ed38
 
 
 	    private User user;
@@ -108,6 +122,37 @@ System.out.print(wonField);
 	        imgField.setImage(imageObject);
 
 	    }
+	    
+	    /**
+	     * Sets all fields on the window from a  Profile object
+	     * @param profile
+	     */
+	    public void setProfile(Profile profile) throws IncompleteProfileException{
+	    	if(profile.getFirstName() == null || profile.getSurName() == null ||
+	    			profile.getNickName() == null){
+	    		throw new IncompleteProfileException();
+	    	}
+	    	firstNameField.setText(profile.getFirstName());
+	    	lastNameField.setText(profile.getSurName());
+	    	pseudoField.setText(profile.getNickName());
+	    	ageField.setText(Integer.toString(profile.getAge()));
+	    	wonField.setText(Integer.toString(profile.getNbGameWon()));
+	    	lostField.setText(Integer.toString(profile.getNbGameLost()));
+	    	leaveField.setText(Integer.toString(profile.getNbGameAbandonned()));
+	    }
+	    
+	    /**
+	     * Disables edit buttons/fields on the Profile view
+	     */
+	    public void disableButtonsAndFields(){
+	    	firstNameField.setDisable(true);
+	    	lastNameField.setDisable(true);
+	    	pseudoField.setDisable(true);
+	    	ageField.setDisable(true);
+	    	selectPhotoButton.setVisible(false);
+	    }
+	    
+	    
 	    /**
 	     * Returns true if the user clicked OK, false otherwise.
 	     *
@@ -126,7 +171,7 @@ System.out.print(wonField);
 	        String errorMessage = "";
 
 	        if (firstNameField.getText() == null || firstNameField.getText().length() == 0) {
-	            errorMessage += "Veuillez remplir le champ Prénom \n";
+	            errorMessage += "Veuillez remplir le champ Prï¿½nom \n";
 	        }
 	        if (lastNameField.getText() == null || lastNameField.getText().length() == 0) {
 	            errorMessage += "Veuillez remplir le champ Nom\n";

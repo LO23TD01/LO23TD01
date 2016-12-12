@@ -17,11 +17,14 @@ import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.stage.Window;
 import javafx.scene.control.Alert.AlertType;
+import javafx.scene.layout.BorderPane;
 import IHM_MAIN.src.MainApp;
 import IHM_MAIN.src.model.Game;
 import IHM_MAIN.src.model.ModelApplication;
 import data.Profile;
 import data.User;
+import data.client.ClientDataEngine;
+import data.client.InterfaceDataIHMLobby;
 
 public class ControllerApplication {
 	//private ModelApplication model;
@@ -55,7 +58,17 @@ public class ControllerApplication {
 	CheckBox privacy;
 
 	private MainApp mainApp;
+	InterfaceDataIHMLobby interfaceData;
+	ClientDataEngine clientData;
 
+	
+	public void setClientData(ClientDataEngine client){
+		this.clientData = client;
+	}
+	public void setInterfaceDataIHM(InterfaceDataIHMLobby interf){
+		this.interfaceData = interf;
+	}
+	
 	public ObservableList<Game> data = FXCollections.observableArrayList(
 		    new Game("YoloGame", "3/12", "44", "F�lix"),
 		    new Game("SwaggyOne", "6/6", "2", "Cl�ment"),
@@ -87,13 +100,18 @@ public class ControllerApplication {
         alert.showAndWait();
 	}
 
-
 	@FXML
 	private void handleCreateButton() {
 		//ouverture fenetre creation nouvelle table
 				Parent root;
 				try {
-					root = FXMLLoader.load(getClass().getResource("../view/tableCreation.fxml"));
+					FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("../view/tableCreation.fxml"));
+					root = fxmlLoader.load();
+					//root = FXMLLoader.load(getClass().getResource("../view/tableCreation.fxml"));
+					TableCreation controller = (TableCreation) fxmlLoader.getController();
+					controller.setClientData(this.clientData);
+					controller.setInterfaceDataIHM(this.interfaceData);
+
 					Window parent = createGame.getScene().getWindow();
 					Stage stage = new Stage();
 					stage.setScene(new Scene(root, 440, 408));
@@ -102,6 +120,7 @@ public class ControllerApplication {
 				    stage.setTitle("Création de Table");
 				    stage.setResizable(false);
 					stage.show();
+
 
 				} catch (Exception e1) {
 					e1.printStackTrace();

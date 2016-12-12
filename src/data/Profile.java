@@ -1,6 +1,7 @@
 package data;
 
 import java.awt.Image;
+import java.io.File;
 import java.io.FileOutputStream;
 import java.io.Serializable;
 import java.util.UUID;
@@ -19,7 +20,7 @@ import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
 
 @XmlRootElement
-@XmlType(propOrder = { "uuid", "login", "nickName", "psw", "firstName", "surName", "age", "avatar", "nbGameWon", "nbGameLost", "nbGameAbandonned", "client" })
+@XmlType(propOrder = { "UUID", "login", "nickName", "psw", "firstName", "surName", "age", "avatar", "nbGameWon", "nbGameLost", "nbGameAbandonned", "client" })
 public class Profile implements Serializable {
 	/**
 	 *
@@ -88,6 +89,37 @@ public class Profile implements Serializable {
 		this.nbGameAbandonned = new SimpleIntegerProperty();
 		this.client = new SimpleObjectProperty<Client>();
 	}
+	
+	public Profile(String login, String nickname, String psw, String firstName, String surName, int age) {
+		this.uuid = new SimpleObjectProperty<UUID>(UUID.randomUUID());
+		this.login = new SimpleStringProperty(login);
+		this.nickName = new SimpleStringProperty(nickname);
+		this.psw = new SimpleStringProperty(psw);
+		this.firstName = new SimpleStringProperty(firstName);
+		this.surName = new SimpleStringProperty(surName);
+		this.age = new SimpleIntegerProperty(age);
+		this.avatar = new SimpleObjectProperty<Image>();
+		this.nbGameWon = new SimpleIntegerProperty();
+		this.nbGameLost = new SimpleIntegerProperty();
+		this.nbGameAbandonned = new SimpleIntegerProperty();
+		this.client = new SimpleObjectProperty<Client>();
+	}
+	
+	// Constructeur appelé lors de la 1ère création du profile, l'UUID est généré (normalement)
+	public Profile(String login, String psw) {
+		this.uuid = new SimpleObjectProperty<UUID>(UUID.randomUUID());
+		this.login = new SimpleStringProperty(login);
+		this.nickName = new SimpleStringProperty();
+		this.psw = new SimpleStringProperty(psw);
+		this.firstName = new SimpleStringProperty();
+		this.surName = new SimpleStringProperty();
+		this.age = new SimpleIntegerProperty();
+		this.avatar = new SimpleObjectProperty<Image>();
+		this.nbGameWon = new SimpleIntegerProperty();
+		this.nbGameLost = new SimpleIntegerProperty();
+		this.nbGameAbandonned = new SimpleIntegerProperty();
+		this.client = new SimpleObjectProperty<Client>();
+	}
 
 	public Profile(UUID uuid, String login, String nickname, String psw, String firstName, String surName, int age, Image avatar, int nbGameWon, int nbGameLost,
 			int nbGameAbandonned, Client client) {
@@ -112,6 +144,9 @@ public class Profile implements Serializable {
 	 *
 	 */
 
+    // Convention de nommage d'un profile : 
+	// Il se trouve forcément dans le dossier MesProfiles
+	// nom du fichier : login-psw.xml
 	public void Xmlise() {
 		try {
 
@@ -122,19 +157,20 @@ public class Profile implements Serializable {
 			Marshaller marshaller = context.createMarshaller();
 			marshaller.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, true);
 
+			// Création du dossier si inexistant.
+			new File("MesProfiles").mkdir(); 
+			
+			// Nom du fichier
+			String path = "MesProfiles\\"+login.get()+"-"+psw.get()+".xml";
+			
 			// Do the marshal operation
-			marshaller.marshal(this, new FileOutputStream(".\\monProfile.xml"));
+			FileOutputStream FopS = new FileOutputStream(path);
+			marshaller.marshal(this, FopS);
+			FopS.close();
 			System.out.println("java object converted to xml successfully.");
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-
-		/*
-		 * ATTANTION : ne fonctionne pas si le client du profile possï¿½de une liste de contact... (boucle)
-		 *
-		 * Le problï¿½me sera bientï¿½t rï¿½glï¿½.
-		 *
-		 */
 	}
 
 	/*
@@ -143,10 +179,11 @@ public class Profile implements Serializable {
 	 *
 	 *
 	 */
+	
 	public final ObjectProperty<UUID> uuidProperty() {
 		return this.uuid;
 	}
-
+	
 	public final UUID getUUID() {
 		return this.uuidProperty().get();
 	}

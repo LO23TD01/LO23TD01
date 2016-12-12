@@ -1,0 +1,17 @@
+.border {
+   -fx-border-color: black;
+   -fx-border-width: 2;
+   -fx-border-style: solid;
+}
+
+.dice {
+	-fx-border-radius : 5px;
+	-fx-border-width : 2px;
+	-fx-border-color : black;
+	-fx-border-style: solid;
+}
+
+.dice.selected {
+	-fx-border-color : green;
+}
+

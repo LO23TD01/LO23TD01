@@ -5,7 +5,9 @@ import java.util.UUID;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
+import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.ObjectProperty;
+import javafx.beans.property.SimpleBooleanProperty;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
@@ -22,6 +24,7 @@ public class GameTable {
 	private final ObjectProperty<GameState> gameState;
 	private final ObjectProperty<Chat> localChat;
 	private final ObjectProperty<Record> record;
+	private final BooleanProperty vote;
 	private final ObservableList<Vote> voteCasted = FXCollections.observableArrayList();
 
 	public GameTable(String name, User creator, Parameters parameters, List<User> playerList, List<User> spectatorList) {
@@ -40,6 +43,7 @@ public class GameTable {
 		else
 			this.localChat = new SimpleObjectProperty<Chat>(new Chat(playerList, mergedList));
 		this.record = new SimpleObjectProperty<Record>();
+		this.vote = new SimpleBooleanProperty();
 	}
 
 	public GameTable(UUID uid) {
@@ -52,6 +56,7 @@ public class GameTable {
 		this.gameState = new SimpleObjectProperty<GameState>();
 		this.localChat = new SimpleObjectProperty<Chat>();
 		this.record = new SimpleObjectProperty<Record>();
+		this.vote = new SimpleBooleanProperty();
 	}
 
 	public GameTable(UUID uid, String name, User creator, Parameters parameters, List<User> playerList, List<User> spectatorList, GameState gameState) {
@@ -64,6 +69,7 @@ public class GameTable {
 		this.gameState = new SimpleObjectProperty<GameState>(gameState);
 		this.localChat = new SimpleObjectProperty<Chat>();
 		this.record = new SimpleObjectProperty<Record>();
+		this.vote = new SimpleBooleanProperty();
 	}
 
 	public GameTable(UUID uid, String name, User creator, Parameters parameters, List<User> playerList, List<User> spectatorList, GameState gameState,
@@ -78,6 +84,7 @@ public class GameTable {
 		this.localChat = new SimpleObjectProperty<Chat>(localChat);
 		this.record = new SimpleObjectProperty<Record>(record);
 		this.voteCasted.addAll(voteCasted);
+		this.vote = new SimpleBooleanProperty();
 	}
 
 	public void initializeGame() {
@@ -119,21 +126,23 @@ public class GameTable {
 		}
 	}
 
-	public void startGame() {
-		// TOReview inutile ?
-	}
-
-	public void stopGame() {
-		// TOReview inutile ?
-	}
-
 	public void startVote() {
-		this.voteCasted.clear();
+		if(!this.vote.get())
+		{
+			this.vote.set(true);
+			this.voteCasted.clear();
+	
+		}
+//		else
+//			throw new Exception("Vote déjà en cours");
 	}
 
-	public void castVote(Vote v) {
-		// if() TO-DO : condiotn player et player pas deja castÃ¯Â¿Â½
-		this.voteCasted.add(v);
+	public void castVote(Vote vote) {
+//		if(!this.vote.get())
+//			throw new Exception("Pas de vote en cours.");
+//		if(this.voteCasted.stream().filter(v->v.getUser().isSame(vote.getUser())).count()==0)
+//			throw new Exception("Déjà voté");
+		this.voteCasted.add(vote);
 	}
 
 	public boolean voteResult() {
@@ -157,11 +166,11 @@ public class GameTable {
 		return false;
 	}
 
-	public GameTable getLightWeightVersion() throws Exception {
+	public GameTable getLightWeightVersion() {
 		if (isLightWeightVersion())
 			return this;
-		if (this.isEmptyVersion())
-			throw new Exception("GameTable is Empty, can't get LightWeight");
+//		if (this.isEmptyVersion())
+//			throw new Exception("GameTable is Empty, can't get LightWeight");
 
 		return new GameTable(this.getUid(), this.name.get(), this.creator.get(), this.parameters.get(), this.playerList, this.spectatorList,
 				this.gameState.get());
@@ -296,6 +305,18 @@ public class GameTable {
 
 	public final void setRecord(final Record record) {
 		this.recordProperty().set(record);
+	}
+	
+	public final BooleanProperty voteProperty() {
+		return this.vote;
+	}
+
+	public final boolean getVote() {
+		return this.voteProperty().get();
+	}
+
+	public final void setVote(final boolean b) {
+		this.voteProperty().set(b);
 	}
 
 }

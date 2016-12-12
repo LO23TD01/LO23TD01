@@ -3,6 +3,7 @@ package network.server;
 import java.util.List;
 import java.util.UUID;
 
+import data.ChatMessage;
 import data.GameTable;
 import data.Profile;
 import data.User;
@@ -10,7 +11,7 @@ import data.User;
 public interface ComServerInterface {
 
 	public void sendResult(List<UUID> receivers, int r1, int r2, int r3);
-	public void sendMessage(List<UUID> receivers, String senderLogin, String msg);
+	public void sendMessage(List<UUID> receivers, ChatMessage msg);
 	public void showTimer(List<UUID> receivers); // ajouté List<UUID> au lieu de UUID : corrigé avec le diagramme de sequence "Commencer Partie"
 	public void addNewTable(UUID receiver,List<UUID> receivers, GameTable tableinfo); // ajouté l'UUID du receiver unique
 	public void sendSelection(List<UUID> receivers, UUID player, boolean d1, boolean d2, boolean d3);
@@ -25,6 +26,7 @@ public interface ComServerInterface {
 	public void stopGameAccepted(List<UUID> receivers);
 	public void refreshUserList(UUID user, List<User> userList);
 	public void raiseException(UUID user, String msg);
+	public void raiseException(List<UUID> receivers, String msg);
 	public void newPlayerOnTable(List<UUID> receivers, Profile user, GameTable tableInfo);
 	public void newSpectatorOnTable(List<UUID> receivers, Profile user, GameTable tableInfo);
 	public void hasAccepted(UUID user,List<UUID> receivers);
@@ -32,4 +34,6 @@ public interface ComServerInterface {
 	public void newUser(List<UUID> receivers, Profile user);
 	public void sendTablesUsers(List<User> userList, List<GameTable> tableList, Profile user);
 	public void playerQuitGame(List<UUID> receivers, UUID user);
+	public void stopGame(List<UUID> receivers, boolean answer);
+	public void hasLost(List<UUID> receivers, UUID winner);
 }

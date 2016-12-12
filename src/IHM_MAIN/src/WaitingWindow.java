@@ -11,16 +11,16 @@ import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 import javafx.stage.Window;
 
-public class Waiting{
+public class WaitingWindow{
 	Stage stage;
-	public Waiting(Window parent) {	
+	public WaitingWindow(Window parent) {	
 		try {
 			FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("./view/Loading.fxml"));
 			AnchorPane root;
 			root = (AnchorPane) fxmlLoader.load();
 			Scene new_scene = new Scene(root);
 			stage = new Stage();
-			stage.initStyle(StageStyle.TRANSPARENT);
+			stage.initStyle(StageStyle.UNDECORATED);
 			stage.initModality(Modality.WINDOW_MODAL);
 			stage.initOwner(parent);
 			stage.setScene(new_scene);
@@ -29,9 +29,7 @@ public class Waiting{
 			e1.printStackTrace();
 		}			
 	}
-	
 	public void showAndWait(){
-		System.out.println("Go");
 		stage.showAndWait();
 	}
 	public void show(){

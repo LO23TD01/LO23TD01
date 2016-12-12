@@ -10,17 +10,34 @@ public class Chat {
 	private final ObservableList<User> listeningUserList = FXCollections.observableArrayList();
 	private final ObservableList<ChatMessage> messageList = FXCollections.observableArrayList();
 
-	// TODO
 	public void add(User user, boolean isVoiced) {
-		// TODO;
+		this.listeningUserList.add(user);
+		if(isVoiced)
+			this.voicedUserList.add(user);
+	}
+	
+	public boolean isVoiced(ChatMessage message)
+	{
+		User sender = message.getSender().getSame(voicedUserList);
+		if(sender != null)
+			return true;
+		return false;
+	}
+	
+	public void add(ChatMessage message) {
+		this.messageList.add(message);
 	}
 
 	public void remove(User user) {
-		// TODO;
+
+		User u = user.getSame(this.listeningUserList);
+		if(u !=null)
+			this.listeningUserList.remove(u);
+		u = user.getSame(this.voicedUserList);
+		if(u !=null)
+			this.voicedUserList.remove(u);
 	}
-	// adduser
-	// removeUser
-	// chat a message
+
 
 	public Chat() {
 	}

@@ -2,15 +2,19 @@ package network.messages;
 
 import data.client.ClientDataEngine;
 import data.server.ServerDataEngine;
+
+import org.hildan.fxgson.FxGson;
+
 import data.Profile;
+import data.User;
 
 public class NewPlayerOnTableMessage implements IMessage {
 
     private static final long serialVersionUID = 3379374689137731613L;
-    private Profile userProfile;
+    private String userProfile;
 
     public NewPlayerOnTableMessage(Profile userProfile) {
-        this.userProfile = userProfile;
+        this.userProfile = FxGson.create().toJson(userProfile);
     }
 
     @Override
@@ -20,8 +24,7 @@ public class NewPlayerOnTableMessage implements IMessage {
 
     @Override
     public void process(ClientDataEngine dataEngine) {
-        //Décommenter quand clientDataEngine sera fini
-        //dataEngine.newPlayerOnTable(this.userProfile);
+        dataEngine.newPlayerOnTable(new User(FxGson.create().fromJson(userProfile, Profile.class)));
     }
 
 }
