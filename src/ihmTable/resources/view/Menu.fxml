@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.MenuButton?>
+<?import javafx.scene.control.MenuItem?>
+<?import javafx.scene.control.RadioMenuItem?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.text.Font?>
+
+<AnchorPane fx:id="menuView" prefHeight="50.0" prefWidth="506.0" xmlns="http://javafx.com/javafx/8.0.60" xmlns:fx="http://javafx.com/fxml/1">
+   <children>
+      <HBox fx:id="Menu_Hbox" prefHeight="50.0" prefWidth="1346.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+         <children>
+            <MenuButton fx:id="menu_partie" contentDisplay="CENTER" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" prefHeight="50.0" prefWidth="171.0" text="Partie" textFill="#4a3823">
+               <font>
+                  <Font name="Antonio Regular" size="24.0" />
+               </font>
+               <items>
+                  <MenuItem fx:id="Menu_QuitterItem" mnemonicParsing="false" text="Quitter la partie" />
+                  <MenuItem fx:id="Menu_OptionsItem" mnemonicParsing="false" text="Options partie" />
+               </items>
+            </MenuButton>
+            <MenuButton fx:id="menu_affichage" contentDisplay="CENTER" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" prefHeight="50.0" prefWidth="187.0" text="Affichage" textFill="#4a3823">
+               <font>
+                  <Font name="Antonio Regular" size="24.0" />
+               </font>
+               <items>
+                  <RadioMenuItem fx:id="Menu_ReglesItem" mnemonicParsing="false" selected="true" text="Règles" />
+                  <RadioMenuItem fx:id="Menu_ChatItem" mnemonicParsing="false" selected="true" text="Chat" />
+                  <RadioMenuItem fx:id="Menu_ControleItem" mnemonicParsing="false" selected="true" text="Contrôles" />
+               </items>
+            </MenuButton>
+            <Button fx:id="menu_apropos" minHeight="50.0" minWidth="142.0" mnemonicParsing="false" prefHeight="50.0" prefWidth="607.0" text="A-propos">
+               <font>
+                  <Font size="24.0" />
+               </font>
+            </Button>
+         </children>
+      </HBox>
+   </children>
+</AnchorPane>
