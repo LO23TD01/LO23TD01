@@ -35,6 +35,7 @@ public class TableController {
 	    initRules();
 	    initTableCenterView();
         initBottom();
+        initMenu();
 	}
 
 	//Chat view's initialization
@@ -58,6 +59,13 @@ public class TableController {
 		FXMLLoader tableCenterLoader = new FXMLLoader(getClass().getResource("/ihmTable/resources/view/TableCenter.fxml"));
         setPosition(tableCenterLoader.load(), Position.center);
 		TableCenterController tableCenterController = (TableCenterController) tableCenterLoader.getController();
+	}
+	
+	//Menu view's initialization
+	private void initMenu() throws IOException {
+		FXMLLoader menuLoader = new FXMLLoader(getClass().getResource("/ihmTable/resources/view/Menu.fxml"));
+        setPosition(menuLoader.load(), Position.top);
+		MenuController menuController = (MenuController) menuLoader.getController();
 	}
 
 	//Bottom view's initialization
