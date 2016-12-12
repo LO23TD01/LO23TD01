@@ -14,13 +14,16 @@ import javafx.scene.layout.StackPane;
 
 public class DiceController {
 	private static final String SELECTED_CLASS = "selected";
+	private static final Image DICE0 = new Image("/ihmTable/resources/png/0.png");
 	private static final Image DICE1 = new Image("/ihmTable/resources/png/1.png");
 	private static final Image DICE2 = new Image("/ihmTable/resources/png/2.png");
 	private static final Image DICE3 = new Image("/ihmTable/resources/png/3.png");
 	private static final Image DICE4 = new Image("/ihmTable/resources/png/4.png");
 	private static final Image DICE5 = new Image("/ihmTable/resources/png/5.png");
 	private static final Image DICE6 = new Image("/ihmTable/resources/png/6.png");
+	
 
+	
     @FXML
     private StackPane diceContainer;
 
@@ -57,6 +60,7 @@ public class DiceController {
 	}
 
 	public void setValue(int value) {
+		diceContainer.setVisible(true);
 		switch (value) {
 		case 1:
 			setOne();
@@ -77,6 +81,7 @@ public class DiceController {
 			setSix();
 			break;
 		default:
+			setZero();
 			break;
 		}
 		this.value.setValue(value);
@@ -123,6 +128,10 @@ public class DiceController {
 		}
 	}
 
+	private void setZero() {
+		dice.setImage(DICE0);
+	}
+	
 	private void setOne() {
 		dice.setImage(DICE1);
 	}
@@ -146,5 +155,5 @@ public class DiceController {
 	private void setSix() {
 		dice.setImage(DICE6);
 	}
-
+	
 }
