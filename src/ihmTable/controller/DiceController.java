@@ -1,14 +1,18 @@
 package ihmTable.controller;
 
+import java.io.IOException;
 import java.util.Random;
 
+import javafx.beans.property.BooleanProperty;
+import javafx.beans.property.SimpleBooleanProperty;
+import javafx.beans.property.SimpleIntegerProperty;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.StackPane;
 
 public class DiceController {
-
 	private static final String SELECTED_CLASS = "selected";
 	private static final Image DICE1 = new Image("/ihmTable/resources/png/1.png");
 	private static final Image DICE2 = new Image("/ihmTable/resources/png/2.png");
@@ -24,14 +28,20 @@ public class DiceController {
     private ImageView dice;
 
 	private Random random;
-	private boolean selected, selectable;
-	private int value;
+	private boolean selectable;
+	public SimpleIntegerProperty value;
 
-	public void initialize() {
+	public static final Boolean FALSE = false;
+
+	private Integer position;
+	public SimpleBooleanProperty selected;
+
+	public void initialize() throws IOException {
 		random = new Random();
+		value = new SimpleIntegerProperty();
 		setValue();
 		dice.setOnMouseClicked(event -> clicked());
-		selected = false;
+		selected = new SimpleBooleanProperty(false);
 		selectable = true;
 		dice.setPreserveRatio(true);
 		dice.setSmooth(true);
@@ -43,7 +53,7 @@ public class DiceController {
 	}
 
 	public int getValue() {
-		return this.value;
+		return this.value.getValue();
 	}
 
 	public void setValue(int value) {
@@ -69,7 +79,16 @@ public class DiceController {
 		default:
 			break;
 		}
-		this.value = value;
+		this.value.setValue(value);
+	}
+
+	public void setPosition(Integer pos)
+	{
+		this.position = pos;
+	}
+
+	public boolean isSelected(){
+		return this.selected.getValue();
 	}
 
 	public void setDice(boolean selectable, int size) {
@@ -81,6 +100,10 @@ public class DiceController {
 		this.selectable = selectable;
 	}
 
+	public void setSelected(boolean selected) {
+		this.selected.setValue(selected);
+	}
+
 	public void setSize(int size) {
 	    diceContainer.setPrefSize(size, size);
 	    dice.setFitHeight(size);
@@ -89,11 +112,13 @@ public class DiceController {
 
 	private void clicked() {
 		if(selectable) {
-			selected = !selected;
-			if(selected) {
+			selected.setValue(!selected.getValue());
+			if(selected.getValue()) {
 			    diceContainer.getStyleClass().add(SELECTED_CLASS);
+			    System.out.println("dice "+ position.intValue() +" is select");
 			} else {
 			    diceContainer.getStyleClass().remove(SELECTED_CLASS);
+			    System.out.println("dice "+ position.intValue() +" is not select");
 			}
 		}
 	}
