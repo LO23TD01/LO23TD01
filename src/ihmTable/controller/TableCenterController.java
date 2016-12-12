@@ -2,11 +2,15 @@ package ihmTable.controller;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.UUID;
 
 import data.GameTable;
 import data.User;
 import data.client.InterImplDataTable;
 import javafx.collections.FXCollections;
+import javafx.collections.ListChangeListener;
+import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.geometry.HPos;
@@ -35,7 +39,9 @@ public class TableCenterController {
 
 	private Ellipse tableEllipse;
 	private Pane diceLauncher;
-	private ArrayList<PlayerController> playerControllers;
+	private HashMap<UUID, AnchorPane> playerViews;
+	
+	private ObservableList<User> players;
 
 	public void initialize() throws IOException {
 		tableEllipse = new Ellipse();
@@ -43,7 +49,8 @@ public class TableCenterController {
 		tableEllipse.setStroke(Color.BLACK);
 		tableEllipse.setFill(Color.CADETBLUE);
 
-		playerControllers = new ArrayList<PlayerController>();
+		playerViews = new HashMap<UUID, AnchorPane>();
+
 		FXMLLoader diceLauncherLoader = new FXMLLoader(getClass().getResource("/ihmTable/resources/view/DiceLauncher.fxml"));
 		diceLauncher = diceLauncherLoader.load();
 		this.diceLaunchController = (DiceLauncherController) diceLauncherLoader.getController();
@@ -52,15 +59,6 @@ public class TableCenterController {
 		centerAnchor.getChildren().addAll(tableEllipse, diceLauncher);
 		centerAnchor.heightProperty().addListener(event -> setEllipse());
 		centerAnchor.widthProperty().addListener(event -> setEllipse());
-
-		addPlayer();
-		addPlayer();
-		addPlayer();
-		addPlayer();
-		addPlayer();
-		addPlayer();
-		addPlayer();
-		addPlayer();
 	}
 
 	public void setData(InterImplDataTable interImplDataTable, User user) throws IOException {
@@ -68,6 +66,25 @@ public class TableCenterController {
 		this.gameTableInstance = interImplDataTable.getActualTable();
 		this.user = user;
 		diceLaunchController.setData(this.interImplDataTable, user);
+		initPlayers();
+	}
+	
+	private void initPlayers() throws IOException {
+		this.players = gameTableInstance.getPlayerList();
+		for(User player : players) {
+			addPlayer(player);
+		}
+		ListChangeListener<User> playersChangeListener;
+		playersChangeListener = change -> {
+			while(change.next()) {
+				if(change.wasRemoved()) {
+					for(User removedUser : change.getRemoved()) {
+						this.tableGrid.getChildren().remove(playerViews.get(removedUser.getPublicData().getUUID()));
+					}
+				}
+			}
+		};
+		players.addListener(playersChangeListener);
 	}
 
 	private void setEllipse() {
@@ -78,12 +95,14 @@ public class TableCenterController {
 		AnchorPane.setLeftAnchor(diceLauncher, (centerAnchor.getWidth() / 2) - (diceLauncher.getWidth() / 2));
 	}
 
-	private void addPlayer() throws IOException {
-		int playersCount = playerControllers.size() + 1;
+	private void addPlayer(User user) throws IOException {
+		int playersCount = playerViews.size() + 1;
 		if(playersCount < 9) {
 			FXMLLoader playerLoader = new FXMLLoader(getClass().getResource("/ihmTable/resources/view/Player.fxml"));
 			AnchorPane player = playerLoader.load();
-			playerControllers.add(playerLoader.getController());
+			PlayerController playerController = playerLoader.getController();
+			playerController.setData(gameTableInstance, user);
+			playerViews.put(user.getPublicData().getUUID(), player);
 			switch(playersCount) {
 			case 1:
 				GridPane.setValignment(player, VPos.TOP);
