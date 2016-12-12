@@ -3,6 +3,10 @@ package ihmTable.controller;
 import java.io.IOException;
 import java.util.ArrayList;
 
+import data.GameTable;
+import data.User;
+import data.client.InterImplDataTable;
+import javafx.collections.FXCollections;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.geometry.HPos;
@@ -24,6 +28,11 @@ public class TableCenterController {
     @FXML
     private AnchorPane centerAnchor;
 
+    private GameTable gameTableInstance;
+    private User user;
+    private InterImplDataTable interImplDataTable;
+    private DiceLauncherController diceLaunchController;
+
 	private Ellipse tableEllipse;
 	private Pane diceLauncher;
 	private ArrayList<PlayerController> playerControllers;
@@ -35,8 +44,10 @@ public class TableCenterController {
 		tableEllipse.setFill(Color.CADETBLUE);
 
 		playerControllers = new ArrayList<PlayerController>();
-		FXMLLoader diceLaucherLoader = new FXMLLoader(getClass().getResource("/ihmTable/resources/view/DiceLauncher.fxml"));
-		diceLauncher = diceLaucherLoader.load();
+		FXMLLoader diceLauncherLoader = new FXMLLoader(getClass().getResource("/ihmTable/resources/view/DiceLauncher.fxml"));
+		diceLauncher = diceLauncherLoader.load();
+		this.diceLaunchController = (DiceLauncherController) diceLauncherLoader.getController();
+
 		AnchorPane.setBottomAnchor(diceLauncher, 0.0);
 		centerAnchor.getChildren().addAll(tableEllipse, diceLauncher);
 		centerAnchor.heightProperty().addListener(event -> setEllipse());
@@ -50,6 +61,13 @@ public class TableCenterController {
 		addPlayer();
 		addPlayer();
 		addPlayer();
+	}
+
+	public void setData(InterImplDataTable interImplDataTable, User user) throws IOException {
+		this.interImplDataTable = interImplDataTable;
+		this.gameTableInstance = interImplDataTable.getActualTable();
+		this.user = user;
+		diceLaunchController.setData(this.interImplDataTable, user);
 	}
 
 	private void setEllipse() {

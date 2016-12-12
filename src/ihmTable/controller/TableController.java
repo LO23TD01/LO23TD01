@@ -52,6 +52,7 @@ public class TableController {
 		FXMLLoader tableCenterLoader = new FXMLLoader(getClass().getResource("/ihmTable/resources/view/TableCenter.fxml"));
 		setPosition(tableCenterLoader.load(), Position.center);
 		TableCenterController tableCenterController = (TableCenterController) tableCenterLoader.getController();
+		tableCenterController.setData(interImplDataTable, user);
 	}
 
 	// PlayerStats view's initialization
