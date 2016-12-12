@@ -9,6 +9,7 @@ import data.Parameters;
 import data.PlayerData;
 import data.Profile;
 import data.Rules;
+import data.TurnState;
 import data.User;
 import data.UserRole;
 import data.Variant;
@@ -80,6 +81,36 @@ public InterImplDataTable(ClientDataEngine dataEngine, UserRole actualRole,
 		this.setSelectionList(list);
 		this.currentProfile = this.dataEngine.getProfileManager().currentProfileProperty();
 	}
+
+ //ne renvoie que le premier Winner
+ 	PlayerData getBest(){
+ 		if(this.getActualTable()==null)
+ 			;//exception
+ 		boolean tie =(this.getActualTable().getGameState().getTurnState()!=TurnState.WINNER_TIE_ROUND && this.getActualTable().getGameState().getTurnState()!=TurnState.LOSER_TIE_ROUND);
+ 		User winner = (tie? this.getActualTable().getGameState().getRules().getWinner(this.getActualTable().getGameState().getDataTieList()).get(0)
+ 				: this.getActualTable().getGameState().getRules().getWinner(this.getActualTable().getGameState().getDataList()).get(0));
+ 			return this.getActualTable().getGameState().getData(winner, tie);
+ 	}
+
+ 	//ne renvoie que le premier loser
+ 		PlayerData getWorst(){
+ 			if(this.getActualTable()==null)
+ 				;//exception
+ 			boolean tie =(this.getActualTable().getGameState().getTurnState()!=TurnState.WINNER_TIE_ROUND && this.getActualTable().getGameState().getTurnState()!=TurnState.LOSER_TIE_ROUND);
+ 			User loser = (tie? this.getActualTable().getGameState().getRules().getLoser(this.getActualTable().getGameState().getDataTieList()).get(0)
+ 					: this.getActualTable().getGameState().getRules().getLoser(this.getActualTable().getGameState().getDataList()).get(0));
+ 				return this.getActualTable().getGameState().getData(loser, tie);
+ 		}
+
+ 		int getValueCurrentTurn()
+ 		{
+ 			if(this.getActualTable()==null)
+ 				;//exception
+ 				return this.getActualTable().getGameState().getRules().getChip(this.getActualTable().getGameState().getDataList());
+ 		}
+
+
+
 
 ///IMPLEMENTATION INTERFACE ICI
 /////////////////////////////////////////////////////////////
