@@ -32,6 +32,7 @@ public class TableController {
 		initRules();
 		initTableCenter();
 		initBottom();
+        	initMenu();
 	}
 
 	// Chat view's initialization
@@ -70,6 +71,13 @@ public class TableController {
 		AnchorPane gameStats = gameStatsLoader.load();
 		GameStatsController gameStatsController = gameStatsLoader.getController();
 		return gameStats;
+	}
+
+	//Menu view's initialization
+	private void initMenu() throws IOException {
+		FXMLLoader menuLoader = new FXMLLoader(getClass().getResource("/ihmTable/resources/view/Menu.fxml"));
+        setPosition(menuLoader.load(), Position.top);
+		MenuController menuController = (MenuController) menuLoader.getController();
 	}
 
 	// Bottom view's initialization
