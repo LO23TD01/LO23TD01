@@ -206,11 +206,12 @@ System.out.print(wonField);
 	    private void handleOk() {
 	        if (isInputValid()) {
 	        	Profile profil = new Profile(null,pseudoField.getText(),firstNameField.getText(),lastNameField.getText(),Integer.parseInt(ageField.getText()));
-	        	InterImplDataMain intImpl = mainApp.getInterImplDataMain();
+		        	InterImplDataMain intImpl = mainApp.getInterImplDataMain();
 	        	intImpl.changeMyProfile(profil);
+	        	user.setPublicData(profil);
+
 	        	dialogStage.close();
 
-	        	//user.setPublicData(profil);
 
 	            okClicked = true;
 
