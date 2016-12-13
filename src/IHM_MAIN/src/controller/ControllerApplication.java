@@ -34,6 +34,11 @@ import data.User;
 import data.client.*;
 import data.GameTable;
 import data.Profile;
+import IHM_MAIN.src.model.Game;
+import IHM_MAIN.src.model.ModelApplication;
+import data.client.*;
+import data.Profile;
+import data.User;
 
 public class ControllerApplication {
 	//private ModelApplication model;
@@ -64,18 +69,13 @@ public class ControllerApplication {
 	User tempUser;
 	Date lastClickUser;
 
-	InterfaceDataIHMLobby interfaceData;
-	IHMLobbyAPI interfaceLobby;
-	ClientDataEngine clientData;
-
 	private MainApp mainApp;
-
-	public void setClientData(ClientDataEngine client){
-        this.clientData = client;
-    }
-    public void setInterfaceDataIHM(InterfaceDataIHMLobby interf){
-        this.interfaceData = interf;
-    }
+	InterImplDataMain interImplDataMain;
+	IHMLobbyAPI interfaceLobby;
+	
+	public void setInterfaceData(InterImplDataMain interf){
+		this.interImplDataMain = interf;
+	}    
 
 	public ControllerApplication (){
 		//model = new ModelApplication();
@@ -120,12 +120,12 @@ public class ControllerApplication {
 				try {
 					/*==>After merge*/
 					FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("../view/tableCreation.fxml"));
-                    root = fxmlLoader.load();
-                    //root = FXMLLoader.load(getClass().getResource("../view/tableCreation.fxml"));
-                    TableCreation controller = (TableCreation) fxmlLoader.getController();
-                    controller.setClientData(this.clientData);
-                    controller.setInterfaceDataIHM(this.interfaceData);
-                    //<=========//
+
+					root = fxmlLoader.load();
+					//root = FXMLLoader.load(getClass().getResource("../view/tableCreation.fxml"));
+					TableCreation controller = (TableCreation) fxmlLoader.getController();
+					controller.setInterfaceData(this.interImplDataMain);
+
 					Window parent = createGame.getScene().getWindow();
 					Stage stage = new Stage();
 					stage.setScene(new Scene(root, 440, 408));
@@ -166,7 +166,7 @@ public class ControllerApplication {
 		spectators.setCellValueFactory(cellData -> constructSpectators(cellData));
 		owner.setCellValueFactory(cellData -> cellData.getValue().creatorProperty().getValue().publicDataProperty().getValue().nickNameProperty());
 		
-		FilteredList<GameTable> filtered = new FilteredList<>(clientData.getTableList(), p -> true);
+		FilteredList<GameTable> filtered = new FilteredList<>(interImplDataMain.getListTable(), p -> true);
 		
 		gameSearch.textProperty().addListener((observable, oldValue, newValue) -> {
             filtered.setPredicate(gameTable -> {
@@ -190,7 +190,7 @@ public class ControllerApplication {
 	
 	
 	private void fillListView(){
-		ObservableList<User> items = clientData.getUserList();
+		ObservableList<User> items = interImplDataMain.getUserList();
 		connectedUsers.setItems(items);
 		connectedUsers.setCellFactory(new Callback<ListView<User>, ListCell<User>>(){
             public ListCell<User> call(ListView<User> p) {
@@ -226,8 +226,7 @@ public class ControllerApplication {
 	    			root = (BorderPane) fxmlLoader.load();
 	     			Window parent = createGame.getScene().getWindow();
 	     			joinTableController controller = (joinTableController) fxmlLoader.getController();
-	    			controller.setClientData(this.clientData);
-	    			controller.setInterfaceDataIHM(this.interfaceData);
+	    			controller.setInterfaceData(this.interImplDataMain);
 	    			controller.setJoiningGame(tempGame);
 	    			
 	     			Stage stage = new Stage();
@@ -241,7 +240,7 @@ public class ControllerApplication {
 	     		} catch (Exception e1) {
 	     			e1.printStackTrace();
 	     		}
-	        	interfaceData.askJoinTable(tempGame, true);
+	     		interImplDataMain.askJoinTable(tempGame, true);
 	        } else {
 	            lastClickGame = new Date();
 	        }

@@ -20,9 +20,10 @@ public interface InterfaceDataIHMLobby {
 	 * @param login
 	 * @param password
 	 * @param ipd
+	 * @return 
 	 * @throws Exception
 	 */
-	public void login(String login, String password, IPData ipd) throws Exception;
+	public boolean login(String login, String password, IPData ipd) throws Exception;
 
 	public void logout();
 
