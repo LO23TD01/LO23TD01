@@ -2,6 +2,10 @@ package ihmTable.controller;
 
 import java.io.IOException;
 
+import data.GameTable;
+import data.User;
+import data.client.InterImplDataTable;
+import javafx.beans.value.ObservableValue;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
@@ -13,25 +17,19 @@ public class GameStatsController {
     private AnchorPane GameStatsView;
 
     @FXML
-    private AnchorPane GameStats_PhasePane;
-
-    @FXML
     private Label GameStats_PhaseLabel;
-
-    @FXML
-    private AnchorPane GameStats_BestScorePane;
 
     @FXML
     private Label GameStats_BestScoreLabel;
 
     @FXML
-    private AnchorPane GameStats_ScoreToBeatPane;
+    private Label GameStats_BestScorePlayer;
 
     @FXML
     private Label GameStats_ScoreToBeatLabel;
 
     @FXML
-    private AnchorPane GameStats_StakePane;
+    private Label GameStats_ScoreToBeatPlayer;
 
     @FXML
     private Label GameStats_StakeLabel;
@@ -39,22 +37,74 @@ public class GameStatsController {
     @FXML
     private Button GameStats_LaunchButton;
 
+    public GameTable gameTableInstance;
 
+    private InterImplDataTable interImplDataTable;
+    
     public void initialize() throws IOException {
+    	
     	handleAsserts();
     }
+	
+	private void setLabel() {
+		if(gameTableInstance != null)
+			GameStats_PhaseLabel.setText(String.valueOf(gameTableInstance.getGameState()));
+		GameStats_StakeLabel.setText("0");
+		GameStats_BestScoreLabel.setText("0 0 0");
+		GameStats_BestScorePlayer.setText("0");
+		GameStats_ScoreToBeatLabel.setText("0 0 0");
+		GameStats_ScoreToBeatPlayer.setText("0");
+	}
+	
+	public void setData(InterImplDataTable interImplDataTable, User user) {
+		this.interImplDataTable = interImplDataTable;
+		gameTableInstance = this.interImplDataTable.getActualTable();
+		setLabel();
+		Bindings();
+		
+	}
 
+	private void Bindings() {
+		// TODO *** Quand Data a implémenté la fonction pour récupérer la meilleure valeur, le joueur, la pire valeur, le joueur
+//		gameTableInstance.ElementBestScore().addListener((observable, oldValue, newValue) -> bestScoreListener(observable, oldValue, newValue));
+//		gameTableInstance.ElementBestScorePlayer().addListener((observable, oldValue, newValue) -> bestScorePlayerListener(observable, oldValue, newValue));
+//		gameTableInstance.ElementScoreToBeat().addListener((observable, oldValue, newValue) -> ScoreToBeatListener(observable, oldValue, newValue));
+//		gameTableInstance.ElementScoreToBeatPlayer().addListener((observable, oldValue, newValue) -> ScoreToBeatPlayerListener(observable, oldValue, newValue));
+	}
+	
+	private Object bestScoreListener(ObservableValue<? extends String> observable, String oldValue,
+			String newValue) {
+		GameStats_BestScoreLabel.setText(String.valueOf(newValue));
+		return null;
+	}
+	
+	private Object bestScorePlayerListener(ObservableValue<? extends Number> observable, Number oldValue,
+			Number newValue) {
+		GameStats_BestScorePlayer.setText(String.valueOf(newValue));
+		return null;
+	}
+	
+	private Object ScoreToBeatListener(ObservableValue<? extends String> observable, String oldValue,
+			String newValue) {
+		GameStats_BestScoreLabel.setText(String.valueOf(newValue));
+		return null;
+	}
+	
+	private Object ScoreToBeatPlayerListener(ObservableValue<? extends Number> observable, Number oldValue,
+			Number newValue) {
+		GameStats_BestScorePlayer.setText(String.valueOf(newValue));
+		return null;
+	}
+	
     private void handleAsserts(){
     	assert GameStatsView != null : "fx:id=\"GameStatsView\" was not injected: check your FXML file 'GameStats.fxml'.";
-    	assert GameStats_PhasePane != null : "fx:id=\"GameStats_PhasePane\" was not injected: check your FXML file 'GameStats.fxml'.";
     	assert GameStats_PhaseLabel != null : "fx:id=\"GameStats_PhaseLabel\" was not injected: check your FXML file 'GameStats.fxml'.";
-        assert GameStats_BestScorePane != null : "fx:id=\"GameStats_BestScorePane\" was not injected: check your FXML file 'GameStats.fxml'.";
     	assert GameStats_BestScoreLabel != null : "fx:id=\"GameStats_BestScoreLabel\" was not injected: check your FXML file 'GameStats.fxml'.";
-    	assert GameStats_ScoreToBeatPane != null : "fx:id=\"GameStats_ScoreToBeatPane\" was not injected: check your FXML file 'GameStats.fxml'.";
     	assert GameStats_ScoreToBeatLabel != null : "fx:id=\"GameStats_ScoreToBeatLabel\" was not injected: check your FXML file 'GameStats.fxml'.";
-    	assert GameStats_StakePane != null : "fx:id=\"GameStats_StakePane\" was not injected: check your FXML file 'GameStats.fxml'.";
     	assert GameStats_StakeLabel != null : "fx:id=\"GameStats_StakeLabel\" was not injected: check your FXML file 'GameStats.fxml'.";
     	assert GameStats_LaunchButton != null : "fx:id=\"GameStats_LaunchButton\" was not injected: check your FXML file 'GameStats.fxml'.";
+    	assert GameStats_BestScorePlayer != null : "fx:id=\"GameStats_BestScorePlayer\" was not injected: check your FXML file 'GameStats.fxml'.";
+    	assert GameStats_ScoreToBeatPlayer != null : "fx:id=\"GameStats_ScoreToBeatPlayer\" was not injected: check your FXML file 'GameStats.fxml'.";  	
     }
 
 
