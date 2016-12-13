@@ -24,7 +24,7 @@ public class InterImplDataMain implements InterfaceDataIHMLobby{
 	private ObservableList<GameTable> tableList = FXCollections.observableArrayList();
 	private ObjectProperty<Profile> currentProfile;
 
-	//appelé uniquement par le ClientDataEngine
+	//appelï¿½ uniquement par le ClientDataEngine
 	public InterImplDataMain(ClientDataEngine dataEngine) {
 		super();
 		this.dataEngine = dataEngine;
@@ -48,16 +48,23 @@ public class InterImplDataMain implements InterfaceDataIHMLobby{
 	 * @throws Exception
 	 */
 	@Override
-	public void login(String login, String password, IPData ipd) {
+	public boolean login(String login, String password, IPData ipd) {
 //		if (!this.dataEngine.getProfileManager().checkPassword(login, password))
 //			throw new Exception("Mauvais mot de passe");
 		if(this.getLocalProfile(login,password)!=null)
 		{
-		this.dataEngine.setComClientInterface(new ComClient(ipd.getValue(), 4000));
-		this.dataEngine.getComClientInterface().setClientData(this.dataEngine);
-		this.dataEngine.getComClientInterface().connection(this.getLocalProfile(login, password));
+			try{
+				this.dataEngine.setComClientInterface(new ComClient(ipd.getValue(), 4000));
+				this.dataEngine.getComClientInterface().setClientData(this.dataEngine);
+				this.dataEngine.getComClientInterface().connection(this.getLocalProfile(login, password));
+			}catch(Exception e){
+				e.printStackTrace();
+				return false;
+			}
+		return true;
 		}
-	}
+		return false;
+}
 
 	@Override
 	public void logout() {
@@ -68,7 +75,7 @@ public class InterImplDataMain implements InterfaceDataIHMLobby{
 	}
 
 	@Override
-	// Cette fonction est appelée par IHM lobby lors de la création d'un profil c'est pour cela que l'on xmlise ce profile.
+	// Cette fonction est appelï¿½e par IHM lobby lors de la crï¿½ation d'un profil c'est pour cela que l'on xmlise ce profile.
 	public void createProfile(String login, String psw) {
 		this.dataEngine.getProfileManager().createProfile(login,psw).Xmlise();
 	}
@@ -95,9 +102,9 @@ public class InterImplDataMain implements InterfaceDataIHMLobby{
 	}
 
 	@Override
-	// Cette fonction est appelée par IHM lobby lors de la modification d'un profil c'est pour cela que l'on xmlise ce profile.
+	// Cette fonction est appelï¿½e par IHM lobby lors de la modification d'un profil c'est pour cela que l'on xmlise ce profile.
 	public Profile changeMyProfile(Profile new_profile) {
-		// Si jamais l'utilisateur veut changer son mdp/login on supprime l'ancien profile XML et on en crée un nouveau.
+		// Si jamais l'utilisateur veut changer son mdp/login on supprime l'ancien profile XML et on en crï¿½e un nouveau.
 		if (getLocalProfile().getLogin() != new_profile.getLogin() || getLocalProfile().getPsw() != new_profile.getPsw()){
 			String path = "MesProfiles\\"+getLocalProfile().getLogin()+"-"+getLocalProfile().getPsw()+".xml";
 			File file = new File(path);

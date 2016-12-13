@@ -1,15 +1,12 @@
 package IHM_MAIN.src.controller;
 
-import IHM_MAIN.src.MainApp.DataConnection;
 import IHM_MAIN.src.WaitingWindow;
 import data.Parameters;
 import data.Rules;
 import data.User;
 import data.Variant;
-import data.client.ClientDataEngine;
-import data.client.InterfaceDataIHMLobby;
-import data.Client;
 import data.GameTable;
+import data.client.*;
 import javafx.event.ActionEvent;
 import javafx.fxml.*;
 import javafx.scene.Node;
@@ -50,14 +47,10 @@ public class TableCreation{
     @FXML
     ComboBox<String> rules;
 
-    data.client.ClientDataEngine clientData;
-    data.client.InterfaceDataIHMLobby interfaceData;
+    InterImplDataMain interImplDataMain;
 
-    public void setClientData(ClientDataEngine client){
-		this.clientData = client;
-	}
-	public void setInterfaceDataIHM(InterfaceDataIHMLobby interf){
-		this.interfaceData = interf;
+	public void setInterfaceData(InterImplDataMain interf){
+		this.interImplDataMain = interf;
 	}
 	
 
@@ -92,11 +85,11 @@ public class TableCreation{
 				throw new Exception("Veuillez renseigner un nombre de jetons");
 			if(rules.getValue() == null)
 				throw new Exception("Veuillez sélectionner une règle de jeu");
-			if(this.interfaceData.getLocalProfile() == null)
+			if(this.interImplDataMain.getLocalProfile() == null)
 				throw new Exception("Erreur Système: Impossible de charger le profil local");
 
 		List<User> playersList = new ArrayList<User>();
-		User user = new User(this.interfaceData.getLocalProfile());
+		User user = new User(this.interImplDataMain.getLocalProfile());
 		playersList.add(user);
 		
 		GameTable game = new GameTable(

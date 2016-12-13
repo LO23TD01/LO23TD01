@@ -51,8 +51,6 @@ public class MainApp extends Application {
 	Scene scene;
 	private Stage primaryStage;
 	
-	InterfaceDataIHMLobby interfaceData;
-	ClientDataEngine clientData;
 	InterImplDataMain interImplDataMain;
 	
 	TextField userTextField;
@@ -148,8 +146,7 @@ public class MainApp extends Application {
 			root = (BorderPane) fxmlLoader.load();
 			
 			ControllerApplication controller = (ControllerApplication) fxmlLoader.getController();
-			controller.setClientData(this.clientData);
-			controller.setInterfaceDataIHM(this.interfaceData);
+			controller.setInterfaceData(this.interImplDataMain);
 
 			Scene new_scene = new Scene(root, 780, 500);
 			Stage stage = new Stage();
@@ -169,6 +166,7 @@ public class MainApp extends Application {
 			WaitingWindow t = new WaitingWindow(((Node) e.getSource()).getScene().getWindow());
 			DataConnection dataConnect = new DataConnection(t);
 			dataConnect.setInfo(userTextField.getText(), userPassField.getText(), new IPData(serverTextField.getText()));
+			dataConnect.setInterfaceData(this.interImplDataMain);
 			dataConnect.start();
 			t.showAndWait();
 			dataConnect.join();
@@ -177,7 +175,6 @@ public class MainApp extends Application {
 				}else{
 					Alert alert = new Alert(AlertType.ERROR, dataConnect.exceptionMessage);
 					alert.showAndWait();
-					openMain();
 				}
 	}
 	
@@ -188,8 +185,6 @@ public class MainApp extends Application {
 			root = (AnchorPane) fxmlLoader.load();
 			
 			RegisterWindow controller = (RegisterWindow) fxmlLoader.getController();
-			controller.setClientData(this.clientData);
-			controller.setInterfaceDataIHM(this.interfaceData);
 			controller.setInterImplDataMain(this.interImplDataMain);
 			
 			Scene new_scene = new Scene(root, 400, 500);
@@ -254,28 +249,35 @@ public class MainApp extends Application {
 		data.IPData ip;
 		Boolean connectionLoginFlag;
 		String exceptionMessage;
+		InterImplDataMain interImplDataMain;
 
 		public void setInfo(String login2, String password2, data.IPData ip2){
-			login = login2;
-			password = password2;
-			ip = ip2;
-			connectionLoginFlag = false;
+			this.login = login2;
+			this.password = password2;
+			this.ip = ip2;
+			this.connectionLoginFlag = false;
 			
 		}
+	    public void setInterfaceData(InterImplDataMain client){
+			this.interImplDataMain = client;
+		}
+
 		
 		public void run(){
-			try {	
-					Thread.sleep(500);
-					interfaceData.login(login, password, ip);
-					connectionLoginFlag = true;
-				} catch (Exception e) {
-					exceptionMessage = e.toString();
-					e.printStackTrace();
-				}
-			waitingWindow.close();	
+					try {
+						Thread.sleep(500);
+					} catch (InterruptedException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+					if(this.interImplDataMain.login(login, password, ip))
+						this.connectionLoginFlag = true;
+					else
+						this.exceptionMessage= "Connexion Réseau Impossible";
+					this.waitingWindow.close();	
 		}
 		public DataConnection(WaitingWindow t){
-			waitingWindow = t;
+			this.waitingWindow = t;
 		}
 	}
 
@@ -313,8 +315,7 @@ public class MainApp extends Application {
 	}
 	
 	public void init(){
-		this.clientData = new ClientDataEngine();
-		this.interImplDataMain = new InterImplDataMain(this.clientData);
+		this.interImplDataMain = new InterImplDataMain(new ClientDataEngine());
 	}
 
 	public static void main(String[] args) {
