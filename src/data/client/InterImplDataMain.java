@@ -51,9 +51,12 @@ public class InterImplDataMain implements InterfaceDataIHMLobby{
 	public void login(String login, String password, IPData ipd) {
 //		if (!this.dataEngine.getProfileManager().checkPassword(login, password))
 //			throw new Exception("Mauvais mot de passe");
+		if(this.getLocalProfile(login,password)!=null)
+		{
 		this.dataEngine.setComClientInterface(new ComClient(ipd.getValue(), 4000));
 		this.dataEngine.getComClientInterface().setClientData(this.dataEngine);
 		this.dataEngine.getComClientInterface().connection(this.getLocalProfile(login, password));
+		}
 	}
 
 	@Override
