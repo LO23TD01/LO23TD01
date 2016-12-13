@@ -51,8 +51,6 @@ public class GameTable {
 		this.name = new SimpleStringProperty();
 		this.creator = new SimpleObjectProperty<User>();
 		this.parameters = new SimpleObjectProperty<Parameters>();
-		this.playerList.addAll(playerList);
-		this.spectatorList.addAll(spectatorList);
 		this.gameState = new SimpleObjectProperty<GameState>();
 		this.localChat = new SimpleObjectProperty<Chat>();
 		this.record = new SimpleObjectProperty<Record>();
@@ -92,18 +90,18 @@ public class GameTable {
 		this.setGameState(new GameState(this.parameters.get(), this.playerList));
 	}
 
-	public boolean connect(User u, boolean isSpec) {
-		if (isSpec && !this.parameters.get().isAuthorizeSpecToChat())
+	public boolean connect(User u, boolean isPlayer) {
+		if (!isPlayer && !this.parameters.get().isAuthorizeSpecToChat())
 			return false;
-		if (isSpec) {
+		if (!isPlayer) {
 			this.spectatorList.add(u);
 			this.localChat.get().add(u, this.parameters.get().isAuthorizeSpecToChat());
 			return true;
 		}
-		if (!isSpec && this.parameters.get().getNbPlayerMax() <= this.playerList.size()
+		if (isPlayer && this.parameters.get().getNbPlayerMax() <= this.playerList.size()
 				&& !(this.gameState.get().getState() == State.PRESTART || this.gameState.get().getState() == State.END))
 			return false;
-		if (!isSpec) {
+		if (isPlayer) {
 			this.playerList.add(u);
 			this.localChat.get().add(u, true);
 			this.gameState.get().add(u);
@@ -131,17 +129,17 @@ public class GameTable {
 		{
 			this.vote.set(true);
 			this.voteCasted.clear();
-	
+
 		}
 //		else
-//			throw new Exception("Vote déjà en cours");
+//			throw new Exception("Vote dï¿½jï¿½ en cours");
 	}
 
 	public void castVote(Vote vote) {
 //		if(!this.vote.get())
 //			throw new Exception("Pas de vote en cours.");
 //		if(this.voteCasted.stream().filter(v->v.getUser().isSame(vote.getUser())).count()==0)
-//			throw new Exception("Déjà voté");
+//			throw new Exception("Dï¿½jï¿½ votï¿½");
 		this.voteCasted.add(vote);
 	}
 
@@ -306,7 +304,7 @@ public class GameTable {
 	public final void setRecord(final Record record) {
 		this.recordProperty().set(record);
 	}
-	
+
 	public final BooleanProperty voteProperty() {
 		return this.vote;
 	}

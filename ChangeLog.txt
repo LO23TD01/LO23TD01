@@ -3,3 +3,4 @@ KLAJA - 28/11/2016 - Changements de "Fin Partie" : On doit maintenant envoyer ha
 KLAJA - 28/11/2016 - Changements dans la partie : On gère maintenant les cas d'égalités, il seront renvoyé par Data Server par "exAequoCase(...)" Implémentation proposée : exAequoCase(liste UUID, Liste joueurs à égalité, Booleen estGagnant)
 mathieudi - 04/12/2016 - Display profile utilise updateUsers(u) & updateTableInfo équivaut à sendTableInfo
 KLAJA - 06/12/2016 - Changements Conception : On a maintenant deux classes pour implementer les interfaces IHM, InterImplDataMain et InterImplDataMain. Cela permet d'eviter que les controller des uns fasse le bordel chez les autres.
+mathieudi - 13/12/2016 - Modification dans PlayerData : Utilisation de 3 IntergerProperty (d1, d2, d3) au lieu d'un ObservableIntegerArray (problème de sérialisation)

@@ -64,7 +64,8 @@ public class User {
 	}
 
 	public boolean isSame(User u) {
-		if (u.getPublicData().getUUID() == this.publicData.get().getUUID())
+		//Fix : Comparaison avec UUID ne marche pas, il faut comparer les UUID.toString() pour que cela fonctionne
+		if (u.getPublicData().getUUID().toString().equals(this.publicData.get().getUUID().toString()))
 			return true;
 		return false;
 	}

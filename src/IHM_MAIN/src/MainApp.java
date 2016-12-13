@@ -51,8 +51,6 @@ public class MainApp extends Application {
 	Scene scene;
 	private Stage primaryStage;
 
-	InterfaceDataIHMLobby interfaceData;
-	ClientDataEngine clientData;
 	InterImplDataMain interImplDataMain;
 
 	TextField userTextField;
@@ -101,13 +99,9 @@ public class MainApp extends Application {
 		hbLogo.setAlignment(Pos.CENTER);
 		hbLogo.getChildren().add(logo);
 
-		HBox hbBtn3 = new HBox();
+		/*HBox hbBtn3 = new HBox();
 		hbBtn3.setAlignment(Pos.BOTTOM_RIGHT);
-		hbBtn3.getChildren().add(editBtn);
-
-		HBox hbBtn4 = new HBox();
-		hbBtn4.setAlignment(Pos.BOTTOM_RIGHT);
-		hbBtn4.getChildren().add(tableCreationBtn);
+		hbBtn3.getChildren().add(editBtn);*/
 
 		grid.add(hbLogo, 1, 0);
 		grid.add(scenetitle, 0, 0);
@@ -119,8 +113,6 @@ public class MainApp extends Application {
 		grid.add(serverTextField, 1, 3);
 		grid.add(hbBtn, 1, 4);
 		grid.add(hbBtn2, 1, 5);
-		grid.add(hbBtn3, 1, 6);
-		grid.add(hbBtn4, 1, 8);
 
 		scene = new Scene(grid, 380, 400);
 		primaryStage.setScene(scene);
@@ -137,6 +129,10 @@ public class MainApp extends Application {
 	    registerBtn.setOnAction(e -> registerHandler(e));
 	    editBtn.setOnAction(e -> editHandler(e));
 
+	    userTextField.setText("tmp");
+	    userPassField.setText("utc");
+	    serverTextField.setText("localhost");
+	    
 	    primaryStage.show();
 
 	}
@@ -148,9 +144,8 @@ public class MainApp extends Application {
 			root = (BorderPane) fxmlLoader.load();
 
 			ControllerApplication controller = (ControllerApplication) fxmlLoader.getController();
-			controller.setClientData(this.clientData);
-			controller.setInterfaceDataIHM(this.interfaceData);
-
+			controller.setInterfaceData(this.interImplDataMain);
+			controller.init();
 			Scene new_scene = new Scene(root, 780, 500);
 			Stage stage = new Stage();
 			stage.setTitle("Main");
@@ -169,6 +164,7 @@ public class MainApp extends Application {
 			WaitingWindow t = new WaitingWindow(((Node) e.getSource()).getScene().getWindow());
 			DataConnection dataConnect = new DataConnection(t);
 			dataConnect.setInfo(userTextField.getText(), userPassField.getText(), new IPData(serverTextField.getText()));
+			dataConnect.setInterfaceData(this.interImplDataMain);
 			dataConnect.start();
 			t.showAndWait();
 			dataConnect.join();
@@ -177,7 +173,6 @@ public class MainApp extends Application {
 				}else{
 					Alert alert = new Alert(AlertType.ERROR, dataConnect.exceptionMessage);
 					alert.showAndWait();
-					openMain();
 				}
 	}
 
@@ -188,8 +183,6 @@ public class MainApp extends Application {
 			root = (AnchorPane) fxmlLoader.load();
 
 			RegisterWindow controller = (RegisterWindow) fxmlLoader.getController();
-			controller.setClientData(this.clientData);
-			controller.setInterfaceDataIHM(this.interfaceData);
 			controller.setInterImplDataMain(this.interImplDataMain);
 
 			Scene new_scene = new Scene(root, 400, 500);
@@ -230,8 +223,10 @@ public class MainApp extends Application {
 		        // Set the person into the controller.
 		        PersonController controller = loader.getController();
 		        controller.setDialogStage(dialogStage);
-		         Profile profil = interImplDataMain.getLocalProfile();
+	        	File fXmlFile = new File("file:./../monProfile.xml");
 
+		       Profile profil= controller.loadPersonDataFromFile(fXmlFile);
+		        //Profile profil = new Profile(null,"test","test","test",25);
 		        User user= new User(profil);
 		        controller.setPerson(user);
 
@@ -252,28 +247,35 @@ public class MainApp extends Application {
 		data.IPData ip;
 		Boolean connectionLoginFlag;
 		String exceptionMessage;
+		InterImplDataMain interImplDataMain;
 
 		public void setInfo(String login2, String password2, data.IPData ip2){
-			login = login2;
-			password = password2;
-			ip = ip2;
-			connectionLoginFlag = false;
+			this.login = login2;
+			this.password = password2;
+			this.ip = ip2;
+			this.connectionLoginFlag = false;
 
 		}
+	    public void setInterfaceData(InterImplDataMain client){
+			this.interImplDataMain = client;
+		}
+
 
 		public void run(){
-			try {
-					Thread.sleep(500);
-					interfaceData.login(login, password, ip);
-					connectionLoginFlag = true;
-				} catch (Exception e) {
-					exceptionMessage = e.toString();
-					e.printStackTrace();
-				}
-			waitingWindow.close();
+					try {
+						Thread.sleep(500);
+					} catch (InterruptedException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+					if(this.interImplDataMain.login(login, password, ip))
+						this.connectionLoginFlag = true;
+					else
+						this.exceptionMessage= "Connexion Réseau Impossible";
+					this.waitingWindow.close();
 		}
 		public DataConnection(WaitingWindow t){
-			waitingWindow = t;
+			this.waitingWindow = t;
 		}
 	}
 
@@ -305,26 +307,24 @@ public class MainApp extends Application {
 	    }
 	}
 
+	public InterImplDataMain getInterImplDataMain() {
+		return this.interImplDataMain;
+	}
+
+
+
 	public Stage getPrimaryStage()
 	{
 		return primaryStage;
 	}
 
 	public void init(){
-		this.clientData = new ClientDataEngine();
-		this.interImplDataMain = new InterImplDataMain(this.clientData);
+		this.interImplDataMain = new InterImplDataMain(new ClientDataEngine());
+		System.out.println(this.interImplDataMain);
 	}
 
 	public static void main(String[] args) {
 		launch(args);
-	}
-
-	public InterImplDataMain getInterImplDataMain() {
-		return interImplDataMain;
-	}
-
-	public void setInterImplDataMain(InterImplDataMain interImplDataMain) {
-		this.interImplDataMain = interImplDataMain;
 	}
 
 

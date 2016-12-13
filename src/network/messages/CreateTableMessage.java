@@ -39,10 +39,11 @@ public class CreateTableMessage implements IMessage{
 
     @Override
     public void process(ServerDataEngine dataEngine) {
+    	System.out.println("Appel du process côté serveur");
         User user = new User(new Profile(userUUID));
         Parameters parameters = new Parameters(min, max, token, withSpec, withChat, FxGson.create().fromJson(rules, Rules.class)); 
     	try {
-			dataEngine.createTable(user, name, parameters);
+			dataEngine.createNewTable(user, name, parameters);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}        

@@ -10,7 +10,9 @@ import javafx.collections.ObservableIntegerArray;
 public class PlayerData {
 	private final ObjectProperty<User> player;
 	private final IntegerProperty chip;
-	private final ObservableIntegerArray dices = FXCollections.observableIntegerArray(0, 0, 0);
+	private final IntegerProperty d1;
+	private final IntegerProperty d2;
+	private final IntegerProperty d3;
 	private final IntegerProperty rerollCount;
 
 	/**
@@ -20,6 +22,9 @@ public class PlayerData {
 	public PlayerData(User player) {
 		this.player = new SimpleObjectProperty<User>(player);
 		this.chip = new SimpleIntegerProperty(0);
+		this.d1 = new SimpleIntegerProperty(0);
+		this.d2 = new SimpleIntegerProperty(0);
+		this.d3 = new SimpleIntegerProperty(0);
 		this.rerollCount = new SimpleIntegerProperty(0);
 	}
 
@@ -34,7 +39,9 @@ public class PlayerData {
 		this.player = new SimpleObjectProperty<User>(player);
 		this.chip = new SimpleIntegerProperty(chip);
 		this.rerollCount = new SimpleIntegerProperty(rerollCount);
-		this.dices.setAll(dices, 0, 3);
+		this.d1 = new SimpleIntegerProperty(dices[0]);
+		this.d2 = new SimpleIntegerProperty(dices[1]);
+		this.d3 = new SimpleIntegerProperty(dices[2]);
 	}
 
 	/**
@@ -48,7 +55,9 @@ public class PlayerData {
 		this.player = new SimpleObjectProperty<User>(pData.getPlayer());
 		this.chip = new SimpleIntegerProperty(pData.getChip());
 		this.rerollCount = new SimpleIntegerProperty(pData.getRerollCount());
-		this.dices.setAll(pData.dices, 0, 3);
+		this.d1 = pData.d1;
+		this.d2 = pData.d2;
+		this.d3 = pData.d3;
 	}
 
 	/**
@@ -61,13 +70,12 @@ public class PlayerData {
 	public PlayerData(PlayerData pData, boolean isNewTurn) {
 		this.player = new SimpleObjectProperty<User>(pData.getPlayer());
 		this.chip = new SimpleIntegerProperty(pData.getChip());
-		int[] newDices = new int[3];
-		for (int i = 0; i < newDices.length; i++)
-			newDices[i] = 0;
+		this.d1 = new SimpleIntegerProperty(0);
+		this.d2 = new SimpleIntegerProperty(0);
+		this.d3 = new SimpleIntegerProperty(0);
 		if (isNewTurn)
 			this.rerollCount = new SimpleIntegerProperty(0);
 		else {
-			this.dices.setAll(pData.dices, 0, 3);
 			this.rerollCount = new SimpleIntegerProperty(pData.getRerollCount());
 		}
 	}
@@ -76,20 +84,30 @@ public class PlayerData {
 	 * Permet de reset le PlayerData pour un tour, c'est-à-dire que les dés et le compteur de reroll sont remis à zéro
 	 */
 	public void newTurn() {
-		dices.setAll(0, 0, 0);
+		this.d1.set(0);
+		this.d2.set(0);
+		this.d3.set(0);
 		this.setRerollCount(0);
 	}
 
-	public final ObservableIntegerArray dicesProperty() {
-		return this.dices;
+	public final IntegerProperty d1Property() {
+		return this.d1;
+	}
+	public final IntegerProperty d2Property() {
+		return this.d2;
+	}
+	public final IntegerProperty d3Property() {
+		return this.d3;
 	}
 
 	public final int[] getDices() {
-		return this.dices.toArray(null);
+		return new int[]{d1.get(), d2.get(), d3.get()};
 	}
 
 	public final void setDices(int[] dices) {
-		this.dices.setAll(dices, 0, 3);
+		this.d1.set(dices[0]);
+		this.d2.set(dices[1]);
+		this.d3.set(dices[2]);
 	}
 
 	public final ObjectProperty<User> playerProperty() {

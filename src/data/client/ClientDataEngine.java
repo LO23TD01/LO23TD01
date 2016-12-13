@@ -1,10 +1,10 @@
 package data.client;
 
 import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
-
 import data.ChatMessage;
 import data.Contact;
 import data.ContactCategory;
@@ -17,7 +17,10 @@ import data.State;
 import data.TurnState;
 import data.User;
 import data.UserRole;
+import IHM_MAIN.src.IHMLobbyAPI;
 import data.Vote;
+import ihmTable.api.IHMTableLobbyImpl;
+import javafx.application.Platform;
 import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.collections.FXCollections;
@@ -32,8 +35,9 @@ public class ClientDataEngine implements InterfaceDataNetwork {
 	private final ProfileManager profileManager;
 	private final ObservableList<User> userList = FXCollections.observableArrayList();
 	private final ObservableList<GameTable> tableList = FXCollections.observableArrayList();
-	private final ObjectProperty<GameTable> actualTable;
-	private final ObjectProperty<UserRole> actualRole;
+	//Fix : Instancier les properties au lieu de mettre null sinon nullPointerException d�s le premier set.
+	private final ObjectProperty<GameTable> actualTable = new SimpleObjectProperty<>();
+	private final ObjectProperty<UserRole> actualRole = new SimpleObjectProperty<>();
 	private final ObservableList<Boolean> selectionList = FXCollections.observableArrayList();
 
 	private InterImplDataMain interfaceMain;
@@ -52,11 +56,6 @@ public class ClientDataEngine implements InterfaceDataNetwork {
 	public ClientDataEngine() {
 		super();
 		this.profileManager = new ProfileManager();
-		this.setUserList(null);
-		this.setTableList(null);
-		this.actualTable = null;
-		this.actualRole = null;
-		this.setSelectionList(null);
 		this.interfaceMain = new InterImplDataMain(this);
 		//si on fait pas confiance à main on decommente cette ligne
 		//this.interfaceTable = new InterImplDataTable(this);
@@ -105,12 +104,31 @@ public class ClientDataEngine implements InterfaceDataNetwork {
 
 	@Override
 	public void sendTableInfo(GameTable g) {
-		if(this.actualTable==null)
+		if(this.actualTable.isNull().get()){
 			this.actualTable.set(g);
+			
+			// callback: open table with g
+			//new IHMLobbyAPI().closeWaitingWindow();
+		
+			InterImplDataTable inter = new InterImplDataTable(this);
+			User currentUser = new User(this.getProfileManager().getCurrentProfile());
+			if(g.getCreator().isSame(currentUser))
+				inter.setActualRole(UserRole.CREATOR);
+			else
+				inter.setActualRole(UserRole.PLAYER);
+			User user = new User(this.getProfileManager().getCurrentProfile());
+			Platform.runLater(new Runnable() {
+		            @Override public void run() {
+						new IHMLobbyAPI().displayTable(inter, user);
+		            }
+		     });
+		}
 		else if(g.isSame(this.getActualTable())) // on remplace la table qui doit contenir de nouvelles informations
 			this.actualTable.set(g);
 //		else
 //			throw new Exception("Erreur reception table. On est déjà à une table");
+		
+		
 	}
 
 	@Override

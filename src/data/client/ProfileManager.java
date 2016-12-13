@@ -35,7 +35,7 @@ public class ProfileManager {
 	private ObjectProperty<Document> parsedProfileXML = new SimpleObjectProperty<Document>();
 
 	
-	//Différentes façon de créer un Profile
+	//Diffï¿½rentes faï¿½on de crï¿½er un Profile
 	public Profile createProfile() {
 		return new Profile();
 	}
@@ -48,7 +48,7 @@ public class ProfileManager {
 		return new Profile(uuid,nickname,firstName,surName,age);
 	}
 	
-	// Normalement, c'est celui la que doit appeler IHM lobby lors de la création du premier profil
+	// Normalement, c'est celui la que doit appeler IHM lobby lors de la crï¿½ation du premier profil
 	public Profile createProfile(String login, String psw) {
 		return new Profile(login,psw);
 	}
@@ -130,7 +130,7 @@ public class ProfileManager {
 	}
 
 	public Profile getLocalProfile(UUID id) {
-		// On récupère tous les fichiers du dossier "MesProfiles"
+		// On rï¿½cupï¿½re tous les fichiers du dossier "MesProfiles"
 		File repertoire = new File("MesProfiles");
 		String[] L_fichiers =  repertoire.list();
 		
@@ -160,8 +160,8 @@ public class ProfileManager {
 		return null;
 	}
 
-	//Modifier le 1er profile passé en paramètres avec les attributs du 2ème profile (sauf l'UUID)
-	// En gros cela copie le contenu de new_profile à la place de celui de profile_to_modify (sauf l'UUID)
+	//Modifier le 1er profile passï¿½ en paramï¿½tres avec les attributs du 2ï¿½me profile (sauf l'UUID)
+	// En gros cela copie le contenu de new_profile ï¿½ la place de celui de profile_to_modify (sauf l'UUID)
 	public Profile modifyProfile(Profile profile_to_modify, Profile new_profile) {
 		profile_to_modify.setAge(new_profile.getAge());
 		profile_to_modify.setAvatar(new_profile.getAvatar());

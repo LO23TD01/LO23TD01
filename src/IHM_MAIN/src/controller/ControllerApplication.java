@@ -3,6 +3,7 @@ package IHM_MAIN.src.controller;
 import javafx.beans.property.ReadOnlyObjectWrapper;
 import javafx.beans.property.StringProperty;
 import javafx.beans.value.ObservableValue;
+import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.collections.transformation.FilteredList;
 import javafx.fxml.FXML;
@@ -25,6 +26,7 @@ import javafx.stage.Window;
 import javafx.util.Callback;
 import javafx.scene.control.Alert.AlertType;
 
+import java.io.File;
 import java.io.IOException;
 import java.util.Date;
 
@@ -35,6 +37,11 @@ import data.User;
 import data.client.*;
 import data.GameTable;
 import data.Profile;
+import IHM_MAIN.src.model.Game;
+import IHM_MAIN.src.model.ModelApplication;
+import data.client.*;
+import data.Profile;
+import data.User;
 
 public class ControllerApplication {
 	//private ModelApplication model;
@@ -65,51 +72,27 @@ public class ControllerApplication {
 	User tempUser;
 	Date lastClickUser;
 
-	InterfaceDataIHMLobby interfaceData;
-	IHMLobbyAPI interfaceLobby;
-	ClientDataEngine clientData;
-
 	private MainApp mainApp;
+	InterImplDataMain interImplDataMain;
+	IHMLobbyAPI interfaceLobby;
 
-	public void setClientData(ClientDataEngine client){
-        this.clientData = client;
-    }
-    public void setInterfaceDataIHM(InterfaceDataIHMLobby interf){
-        this.interfaceData = interf;
-    }
+	public void setInterfaceData(InterImplDataMain interf){
+		this.interImplDataMain = interf;
+	}
 
 	public ControllerApplication (){
 		//model = new ModelApplication();
 	}
 
-	@FXML
-    private void initialize() {
-		filterTable();
+    public void init() {
+		//filterTable();
 		fillListView();
+		//ObservableList<GameTable> yolo = interImplDataMain.getTableList();
+		System.out.println(interImplDataMain);
 	}
 
 	@FXML
 	private void handleNameButton() {
-		 /* Alert alert = new Alert(AlertType.WARNING);
-        alert.initOwner(mainApp.getPrimaryStage());
-        alert.setTitle("No Selection");
-        alert.setHeaderText("No Person Selected");
-        alert.setContentText("Please select a person in the table.");
-        alert.showAndWait();
-		Parent root;
-		try {
-			root = FXMLLoader.load(getClass().getResource("../view/GestionProfil.fxml"));
-			Window parent = createGame.getScene().getWindow();
-			Stage stage = new Stage();
-			stage.setScene(new Scene(root, 440, 408));
-			stage.initModality(Modality.WINDOW_MODAL);
-			stage.initOwner(parent);
-		    stage.setTitle("Gestion du profil");
-		    stage.setResizable(false);
-			stage.show();
-		} catch (Exception e1) {
-			e1.printStackTrace();
-		}*/
 		 try {
 		        // Load the fxml file and create a new stage for the popup dialog.
 		        FXMLLoader loader = new FXMLLoader();
@@ -126,10 +109,13 @@ public class ControllerApplication {
 		        // Set the person into the controller.
 		        PersonController controller = loader.getController();
 		        controller.setDialogStage(dialogStage);
+		        controller.setInterImplDataMain(this.interImplDataMain);
+	        	//File fXmlFile = new File("file:./../monProfile.xml");
+		        //InterImplDataMain interImplDataMain = mainApp.getInterImplDataMain();
+		       Profile profil = this.interImplDataMain.getLocalProfile();
 
-		        InterImplDataMain interImplDataMain = mainApp.getInterImplDataMain();
-		        Profile profil = interImplDataMain.getLocalProfile();
-
+		     //  Profile profil= controller.loadPersonDataFromFile(fXmlFile);
+		      //  Profile profil = new Profile(null,"test","test","test",25);
 		        User user= new User(profil);
 		        controller.setPerson(user);
 
@@ -151,12 +137,12 @@ public class ControllerApplication {
 				try {
 					/*==>After merge*/
 					FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("../view/tableCreation.fxml"));
-                    root = fxmlLoader.load();
-                    //root = FXMLLoader.load(getClass().getResource("../view/tableCreation.fxml"));
-                    TableCreation controller = (TableCreation) fxmlLoader.getController();
-                    controller.setClientData(this.clientData);
-                    controller.setInterfaceDataIHM(this.interfaceData);
-                    //<=========//
+
+					root = fxmlLoader.load();
+					//root = FXMLLoader.load(getClass().getResource("../view/tableCreation.fxml"));
+					TableCreation controller = (TableCreation) fxmlLoader.getController();
+					controller.setInterfaceData(this.interImplDataMain);
+
 					Window parent = createGame.getScene().getWindow();
 					Stage stage = new Stage();
 					stage.setScene(new Scene(root, 440, 408));
@@ -192,12 +178,14 @@ public class ControllerApplication {
 
 
 	private void filterTable(){
+
 		gameName.setCellValueFactory(cellData -> cellData.getValue().nameProperty());
 		players.setCellValueFactory(cellData -> constructPlayers(cellData));
 		spectators.setCellValueFactory(cellData -> constructSpectators(cellData));
 		owner.setCellValueFactory(cellData -> cellData.getValue().creatorProperty().getValue().publicDataProperty().getValue().nickNameProperty());
 
-		FilteredList<GameTable> filtered = new FilteredList<>(clientData.getTableList(), p -> true);
+
+		FilteredList<GameTable> filtered = new FilteredList<>(interImplDataMain.getTableList(), p -> true);
 
 		gameSearch.textProperty().addListener((observable, oldValue, newValue) -> {
             filtered.setPredicate(gameTable -> {
@@ -221,7 +209,8 @@ public class ControllerApplication {
 
 
 	private void fillListView(){
-		ObservableList<User> items = clientData.getUserList();
+		ObservableList<User> items = interImplDataMain.getUserList();
+		System.out.println(items);
 		connectedUsers.setItems(items);
 		connectedUsers.setCellFactory(new Callback<ListView<User>, ListCell<User>>(){
             public ListCell<User> call(ListView<User> p) {
@@ -230,7 +219,7 @@ public class ControllerApplication {
                     protected void updateItem(User u, boolean bln) {
                         super.updateItem(u, bln);
                         if (u != null) {
-                            setText(u.getPublicData().getNickName());
+                            setText(u.getPublicData().getLogin());
                         }
                     }
                 };
@@ -257,8 +246,7 @@ public class ControllerApplication {
 	    			root = (BorderPane) fxmlLoader.load();
 	     			Window parent = createGame.getScene().getWindow();
 	     			joinTableController controller = (joinTableController) fxmlLoader.getController();
-	    			controller.setClientData(this.clientData);
-	    			controller.setInterfaceDataIHM(this.interfaceData);
+	    			controller.setInterfaceData(this.interImplDataMain);
 	    			controller.setJoiningGame(tempGame);
 
 	     			Stage stage = new Stage();
@@ -272,7 +260,7 @@ public class ControllerApplication {
 	     		} catch (Exception e1) {
 	     			e1.printStackTrace();
 	     		}
-	        	interfaceData.askJoinTable(tempGame, true);
+	     		interImplDataMain.askJoinTable(tempGame, true);
 	        } else {
 	            lastClickGame = new Date();
 	        }

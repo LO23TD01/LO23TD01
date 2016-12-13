@@ -1,24 +1,26 @@
 package IHM_MAIN.src.controller;
 
-import IHM_MAIN.src.MainApp.DataConnection;
+import IHM_MAIN.src.IHMLobbyAPI;
 import IHM_MAIN.src.WaitingWindow;
 import data.Parameters;
 import data.Rules;
 import data.User;
 import data.Variant;
-import data.client.ClientDataEngine;
-import data.client.InterfaceDataIHMLobby;
-import data.Client;
 import data.GameTable;
+import data.client.*;
+import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.*;
 import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.control.Alert.AlertType;
+import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.Pane;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
+import javafx.stage.StageStyle;
+import ihmTable.api.*;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -50,14 +52,10 @@ public class TableCreation{
     @FXML
     ComboBox<String> rules;
 
-    data.client.ClientDataEngine clientData;
-    data.client.InterfaceDataIHMLobby interfaceData;
-
-    public void setClientData(ClientDataEngine client){
-		this.clientData = client;
-	}
-	public void setInterfaceDataIHM(InterfaceDataIHMLobby interf){
-		this.interfaceData = interf;
+    InterImplDataMain interImplDataMain;
+    
+	public void setInterfaceData(InterImplDataMain interf){
+		this.interImplDataMain = interf;
 	}
 	
 
@@ -67,19 +65,6 @@ public class TableCreation{
 	}
 	
 	public void ok(){
-		// data.createNewTable(name, pwd, min, max, max_token, withSpec, withChat);
-		/*Alert alert = new Alert(AlertType.INFORMATION, "Signal sent to data, preparing party:\n"
-				+ "Table Name:"+tableName.getText()+"\n" 
-				+ "Password:"+tablePassword.getText()+"\n"
-				+ "Max Players:"+maxPlayers.getValue()+"\n"
-				+ "Min Players:"+minPlayers.getValue()+"\n"
-				+ "Max Tokens:"+maxTokens.getValue()+"\n"
-				+ "With Chat:"+chatEnabled.isSelected()+"\n"
-				+ "With Spec:"+spectatorsAllowed.isSelected()+"\n");
-		alert.showAndWait();
-		Stage stage = (Stage) tableName.getScene().getWindow();
-		stage.close();*/
-		//public Parameters(int nbPlayerMin, int nbPlayerMax, int nbChip, boolean authorizeSpec, boolean authorizeSpecToChat, Rules rules) {
 		try{
 			
 			if(tableName.getText().isEmpty())
@@ -92,77 +77,74 @@ public class TableCreation{
 				throw new Exception("Veuillez renseigner un nombre de jetons");
 			if(rules.getValue() == null)
 				throw new Exception("Veuillez sélectionner une règle de jeu");
-			if(this.interfaceData.getLocalProfile() == null)
+			
+			if(this.interImplDataMain.getLocalProfile() == null)
 				throw new Exception("Erreur Système: Impossible de charger le profil local");
-
-		List<User> playersList = new ArrayList<User>();
-		User user = new User(this.interfaceData.getLocalProfile());
-		playersList.add(user);
-		
-		GameTable game = new GameTable(
+			
+		Stage stage = (Stage) tableName.getScene().getWindow();
+		FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("../view/Loading.fxml"));
+		AnchorPane root;
+		root = (AnchorPane) fxmlLoader.load();
+		Scene new_scene = new Scene(root);
+		Stage waiting = new Stage();
+		waiting.initStyle(StageStyle.UNDECORATED);
+		waiting.initModality(Modality.WINDOW_MODAL);
+		waiting.initOwner(stage);
+		waiting.setScene(new_scene);
+		new IHMLobbyAPI().setWindowToDestroy(stage);
+		waiting.show();
+		Thread.sleep(500);
+		Timeout timeout = new Timeout(waiting, 3000);
+		timeout.start();
+		this.interImplDataMain.createNewTable(
+				this.interImplDataMain.getLocalProfile().getUUID(),
 				tableName.getText(), 
-				user, 
-				new Parameters(minPlayers.getValue(), 
-				maxPlayers.getValue(), 
-				maxTokens.getValue(),
+				tablePassword.getText(), 
+				minPlayers.getValue().intValue(),
+				maxPlayers.getValue().intValue(),
+				maxTokens.getValue().intValue(),
 				spectatorsAllowed.isSelected(),
 				chatEnabled.isSelected(),
-				new Rules(Variant.valueOf(rules.getValue()), 3)),
-				playersList, 
-				new ArrayList<User>()
-				);
-		
-		}
+				new Rules(Variant.valueOf(rules.getValue()), 3)
+			);
+		}	
 		catch(Exception e){
 			Alert alert = new Alert(AlertType.ERROR, e.getMessage());
 			alert.showAndWait();
-		}
-		//open game table with game
-
-		Stage stage = (Stage) tableName.getScene().getWindow();
-		WaitingWindow t = new WaitingWindow(stage);
-		DataConnection data = new DataConnection(t);
-		data.start();
-		t.showAndWait();
-		this.open_table();
-		stage.close();
-		
+		}		
 	}
-	public void open_table(){
-		try {
-			FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("../../../ihmTable/resources/view/Table.fxml"));
-			Pane root;
-			root = (Pane) fxmlLoader.load();
-			Scene scene = new Scene(root);
-			Stage stage = new Stage();
-			stage.setTitle("Table");
-			stage.setScene(scene);
-			stage.setAlwaysOnTop(true);
-	        stage.initModality(Modality.WINDOW_MODAL);
-			stage.setMaximized(true);
-			stage.show();
-
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-	}
-	
-	private class DataConnection extends Thread{
-		WaitingWindow waitingWindow;
+	public class Timeout extends Thread{
+		Stage waitingWindow;
+		int time;
 		
 		public void run(){
-			try {
-					Thread.sleep(500);
-					waitingWindow.close();
-			} catch (InterruptedException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
+					try {
+						Thread.sleep(this.time);
+						if(waitingWindow.isShowing()){
+							Platform.runLater(new Runnable() {
+					            @Override public void run() {
+									waitingWindow.close();
+									Alert alert = new Alert(AlertType.ERROR, "Temps de réponse du serveur dépassé.");
+									alert.showAndWait();
+					            }
+							});
+						}
+
+					} catch (InterruptedException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();						
+					}
 		}
-		public DataConnection(WaitingWindow t){
-			waitingWindow = t;
+		public Timeout(Stage w, int time){
+			this.waitingWindow = w;
+			this.time = time;
 		}
 	}
 
+	public void init(){
+		this.minPlayers.setValue(3);
+		this.maxPlayers.setValue(7);
+		this.maxTokens.setValue(21);
+		this.tableName.setText("La table du turfu");
+	}
 }

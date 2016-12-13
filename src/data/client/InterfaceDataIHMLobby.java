@@ -8,6 +8,7 @@ import data.ContactCategory;
 import data.GameTable;
 import data.IPData;
 import data.Profile;
+import data.Rules;
 import data.User;
 
 public interface InterfaceDataIHMLobby {
@@ -20,9 +21,10 @@ public interface InterfaceDataIHMLobby {
 	 * @param login
 	 * @param password
 	 * @param ipd
+	 * @return 
 	 * @throws Exception
 	 */
-	public void login(String login, String password, IPData ipd) throws Exception;
+	public boolean login(String login, String password, IPData ipd) throws Exception;
 
 	public void logout();
 
@@ -65,5 +67,7 @@ public interface InterfaceDataIHMLobby {
 
 	public boolean removeContactFromCategory(UUID uuidContact, UUID uuidCategory);
 
+	public void createNewTable(UUID user, String name, String pwd, int min, int max, int token, boolean withSpec,
+			boolean withChat, Rules rules);
 
 }

@@ -10,6 +10,7 @@ import data.GameTable;
 import data.IPData;
 import data.Profile;
 import data.Rights;
+import data.Rules;
 import data.User;
 import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.SimpleObjectProperty;
@@ -20,11 +21,15 @@ import network.client.ComClient;
 public class InterImplDataMain implements InterfaceDataIHMLobby{
 
 	private ClientDataEngine dataEngine;
-	private ObservableList<User> userList;
-	private ObservableList<GameTable> tableList;
+	public ClientDataEngine getDataEngine() {
+		return dataEngine;
+	}
+
+	private ObservableList<User> userList = FXCollections.observableArrayList();
+	private ObservableList<GameTable> tableList = FXCollections.observableArrayList();
 	private ObjectProperty<Profile> currentProfile;
 
-	//appelé uniquement par le ClientDataEngine
+	//appelï¿½ uniquement par le ClientDataEngine
 	public InterImplDataMain(ClientDataEngine dataEngine) {
 		super();
 		this.dataEngine = dataEngine;
@@ -48,13 +53,25 @@ public class InterImplDataMain implements InterfaceDataIHMLobby{
 	 * @throws Exception
 	 */
 	@Override
-	public void login(String login, String password, IPData ipd) {
+	public boolean login(String login, String password, IPData ipd) {
 //		if (!this.dataEngine.getProfileManager().checkPassword(login, password))
 //			throw new Exception("Mauvais mot de passe");
-		this.dataEngine.setComClientInterface(new ComClient(ipd.getValue(), 4000));
-		// TODO choisir un port
-		this.dataEngine.getComClientInterface().connection(this.getLocalProfile(login, password));
-	}
+		if(this.getLocalProfile(login,password)!=null)
+		{
+			try{
+				this.dataEngine.setComClientInterface(new ComClient(ipd.getValue(), 4000));
+				this.dataEngine.getComClientInterface().setClientData(this.dataEngine);
+				Profile profile = this.getLocalProfile(login, password);
+				this.dataEngine.getProfileManager().setCurrentProfile(profile);
+				this.dataEngine.getComClientInterface().connection(profile);
+			}catch(Exception e){
+				e.printStackTrace();
+				return false;
+			}
+		return true;
+		}
+		return false;
+}
 
 	@Override
 	public void logout() {
@@ -65,7 +82,7 @@ public class InterImplDataMain implements InterfaceDataIHMLobby{
 	}
 
 	@Override
-	// Cette fonction est appelée par IHM lobby lors de la création d'un profil c'est pour cela que l'on xmlise ce profile.
+	// Cette fonction est appelï¿½e par IHM lobby lors de la crï¿½ation d'un profil c'est pour cela que l'on xmlise ce profile.
 	public void createProfile(String login, String psw) {
 		this.dataEngine.getProfileManager().createProfile(login,psw).Xmlise();
 	}
@@ -92,9 +109,9 @@ public class InterImplDataMain implements InterfaceDataIHMLobby{
 	}
 
 	@Override
-	// Cette fonction est appelée par IHM lobby lors de la modification d'un profil c'est pour cela que l'on xmlise ce profile.
+	// Cette fonction est appelï¿½e par IHM lobby lors de la modification d'un profil c'est pour cela que l'on xmlise ce profile.
 	public Profile changeMyProfile(Profile new_profile) {
-		// Si jamais l'utilisateur veut changer son mdp/login on supprime l'ancien profile XML et on en crée un nouveau.
+		// Si jamais l'utilisateur veut changer son mdp/login on supprime l'ancien profile XML et on en crï¿½e un nouveau.
 		if (getLocalProfile().getLogin() != new_profile.getLogin() || getLocalProfile().getPsw() != new_profile.getPsw()){
 			String path = "MesProfiles\\"+getLocalProfile().getLogin()+"-"+getLocalProfile().getPsw()+".xml";
 			File file = new File(path);
@@ -174,6 +191,49 @@ public class InterImplDataMain implements InterfaceDataIHMLobby{
 		return  this.dataEngine.getProfileManager().getCurrentProfile().getClient().removeContactFromCategory(uuidContact,
 				uuidCategory);
 	}
+
+	public final ObjectProperty<Profile> currentProfileProperty() {
+		return this.currentProfile;
+	}
+
+	@Override
+	public void createNewTable(UUID user, String name, String pwd, int min, int max, int token, boolean withSpec,
+			boolean withChat, Rules rules){
+		
+		this.dataEngine.getComClientInterface().createNewTable(user, name, pwd, min, max, token, withSpec, withChat, rules);
+	
+	}
+	
+	
+
+//////////////////////////////////////////:
+
+
+	public final Profile getCurrentProfile() {
+		return this.currentProfileProperty().get();
+	}
+
+
+	public final void setCurrentProfile(final Profile currentProfile) {
+		this.currentProfileProperty().set(currentProfile);
+	}
+
+	public ObservableList<User> getUserList() {
+		return userList;
+	}
+
+	public void setUserList(ObservableList<User> userList) {
+		this.userList = userList;
+	}
+
+	public ObservableList<GameTable> getTableList() {
+		return tableList;
+	}
+
+	public void setTableList(ObservableList<GameTable> tableList) {
+		this.tableList = tableList;
+	}
+
 
 
 
