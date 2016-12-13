@@ -3,7 +3,9 @@ package ihmTable.controller;
 import java.io.IOException;
 
 import data.GameTable;
+import data.User;
 import data.client.InterImplDataTable;
+import javafx.beans.value.ObservableValue;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.control.Button;
@@ -43,7 +45,6 @@ public class GameStatsController {
     
     public void initialize() throws IOException {
     	setLabel();
-    	setData();
     	handleAsserts();
     }
 	
