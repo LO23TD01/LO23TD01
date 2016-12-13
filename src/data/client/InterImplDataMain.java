@@ -24,7 +24,7 @@ public class InterImplDataMain implements InterfaceDataIHMLobby{
 	private ObservableList<GameTable> tableList;
 	private ObjectProperty<Profile> currentProfile;
 
-	//appelé uniquement par le ClientDataEngine
+	//appelï¿½ uniquement par le ClientDataEngine
 	public InterImplDataMain(ClientDataEngine dataEngine) {
 		super();
 		this.dataEngine = dataEngine;
@@ -32,12 +32,7 @@ public class InterImplDataMain implements InterfaceDataIHMLobby{
 		this.tableList = this.dataEngine.getTableList();
 		this.currentProfile = this.dataEngine.getProfileManager().currentProfileProperty();
 	}
-
-	@Override
-	public void getListTable() {
-		// TODO Auto-generated method stub
-
-	}
+	
 
 	/**
 	 * Cette mÃ©thode vÃ©rifie si le login/mot de passe est correct. Elle connecte ensuite le client au serveur de jeu.
@@ -65,7 +60,7 @@ public class InterImplDataMain implements InterfaceDataIHMLobby{
 	}
 
 	@Override
-	// Cette fonction est appelée par IHM lobby lors de la création d'un profil c'est pour cela que l'on xmlise ce profile.
+	// Cette fonction est appelï¿½e par IHM lobby lors de la crï¿½ation d'un profil c'est pour cela que l'on xmlise ce profile.
 	public void createProfile(String login, String psw) {
 		this.dataEngine.getProfileManager().createProfile(login,psw).Xmlise();
 	}
@@ -92,9 +87,9 @@ public class InterImplDataMain implements InterfaceDataIHMLobby{
 	}
 
 	@Override
-	// Cette fonction est appelée par IHM lobby lors de la modification d'un profil c'est pour cela que l'on xmlise ce profile.
+	// Cette fonction est appelï¿½e par IHM lobby lors de la modification d'un profil c'est pour cela que l'on xmlise ce profile.
 	public Profile changeMyProfile(Profile new_profile) {
-		// Si jamais l'utilisateur veut changer son mdp/login on supprime l'ancien profile XML et on en crée un nouveau.
+		// Si jamais l'utilisateur veut changer son mdp/login on supprime l'ancien profile XML et on en crï¿½e un nouveau.
 		if (getLocalProfile().getLogin() != new_profile.getLogin() || getLocalProfile().getPsw() != new_profile.getPsw()){
 			String path = "MesProfiles\\"+getLocalProfile().getLogin()+"-"+getLocalProfile().getPsw()+".xml";
 			File file = new File(path);
@@ -103,11 +98,6 @@ public class InterImplDataMain implements InterfaceDataIHMLobby{
 		Profile p =  this.dataEngine.getProfileManager().modifyProfile(getLocalProfile(), new_profile);
 		p.Xmlise();
 		return p;
-	}
-
-	@Override
-	public void getListUsers() {
-		this.dataEngine.getComClientInterface().updateUsersList(this.dataEngine.getProfileManager().getCurrentProfile().getUUID());
 	}
 
 	@Override
