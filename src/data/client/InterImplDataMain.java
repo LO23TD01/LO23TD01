@@ -37,12 +37,7 @@ public class InterImplDataMain implements InterfaceDataIHMLobby{
 		this.tableList = this.dataEngine.getTableList();
 		this.currentProfile = this.dataEngine.getProfileManager().currentProfileProperty();
 	}
-
-	@Override
-	public void getListTable() {
-		// TODO Auto-generated method stub
-
-	}
+	
 
 	/**
 	 * Cette méthode vérifie si le login/mot de passe est correct. Elle connecte ensuite le client au serveur de jeu.
@@ -120,11 +115,6 @@ public class InterImplDataMain implements InterfaceDataIHMLobby{
 		Profile p =  this.dataEngine.getProfileManager().modifyProfile(getLocalProfile(), new_profile);
 		p.Xmlise();
 		return p;
-	}
-
-	@Override
-	public void getListUsers() {
-		this.dataEngine.getComClientInterface().updateUsersList(this.dataEngine.getProfileManager().getCurrentProfile().getUUID());
 	}
 
 	@Override

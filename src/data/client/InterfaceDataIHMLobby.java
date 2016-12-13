@@ -13,8 +13,6 @@ import data.User;
 
 public interface InterfaceDataIHMLobby {
 
-	public void getListTable();
-
 	/**
 	 * Cette méthode vérifie si le login/mot de passe est correct. Elle connecte ensuite le client au serveur de jeu.
 	 *
@@ -42,8 +40,6 @@ public interface InterfaceDataIHMLobby {
 
 	// TODO args
 	public Profile changeMyProfile(Profile new_profile);
-
-	public void getListUsers();
 
 	public void askRefreshUsersList();
 
