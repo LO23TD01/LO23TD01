@@ -15,6 +15,7 @@ import javafx.scene.control.ListCell;
 import javafx.scene.control.ListView;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableColumn.CellDataFeatures;
+import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
@@ -89,7 +90,7 @@ public class ControllerApplication {
 
 	@FXML
 	private void handleNameButton() {
-	    Alert alert = new Alert(AlertType.WARNING);
+		 /* Alert alert = new Alert(AlertType.WARNING);
         alert.initOwner(mainApp.getPrimaryStage());
         alert.setTitle("No Selection");
         alert.setHeaderText("No Person Selected");
@@ -106,10 +107,40 @@ public class ControllerApplication {
 		    stage.setTitle("Gestion du profil");
 		    stage.setResizable(false);
 			stage.show();
-
 		} catch (Exception e1) {
 			e1.printStackTrace();
-		}
+		}*/
+		 try {
+		        // Load the fxml file and create a new stage for the popup dialog.
+		        FXMLLoader loader = new FXMLLoader();
+		        loader.setLocation(MainApp.class.getResource("view/GestionProfil.fxml"));
+		        AnchorPane page = (AnchorPane) loader.load();
+
+		        // Create the dialog Stage.
+		        Stage dialogStage = new Stage();
+		        dialogStage.setTitle("Edit Person");
+		        dialogStage.initModality(Modality.WINDOW_MODAL);
+		        Scene scene = new Scene(page);
+		        dialogStage.setScene(scene);
+
+		        // Set the person into the controller.
+		        PersonController controller = loader.getController();
+		        controller.setDialogStage(dialogStage);
+
+		        InterImplDataMain interImplDataMain = mainApp.getInterImplDataMain();
+		        Profile profil = interImplDataMain.getLocalProfile();
+
+		        User user= new User(profil);
+		        controller.setPerson(user);
+
+		        // Show the dialog and wait until the user closes it
+		        dialogStage.showAndWait();
+
+		       // return controller.isOkClicked();
+		    } catch (IOException er) {
+		        er.printStackTrace();
+		       // return false;
+		    }
 	}
 
 
@@ -140,14 +171,14 @@ public class ControllerApplication {
 				}
 	}
 
-		
+
 	StringProperty constructPlayers(CellDataFeatures<GameTable, String> cd){
 		String ret = cd.getValue().getPlayerList().size() + "/" + cd.getValue().parametersProperty().getValue().getNbPlayerMax();
 		ObservableValue<String> obss = new ReadOnlyObjectWrapper<String>(ret);
 		return (StringProperty) obss;
 	}
 
-	
+
 	StringProperty constructSpectators(CellDataFeatures<GameTable, String> cd){
 		String ret;
 		if (cd.getValue().parametersProperty().getValue().authorizeSpecProperty().get() == true)
@@ -157,17 +188,17 @@ public class ControllerApplication {
 		ObservableValue<String> obss = new ReadOnlyObjectWrapper<String>(ret);
 		return (StringProperty) obss;
 	}
-	
-	
-	
+
+
+
 	private void filterTable(){
 		gameName.setCellValueFactory(cellData -> cellData.getValue().nameProperty());
 		players.setCellValueFactory(cellData -> constructPlayers(cellData));
 		spectators.setCellValueFactory(cellData -> constructSpectators(cellData));
 		owner.setCellValueFactory(cellData -> cellData.getValue().creatorProperty().getValue().publicDataProperty().getValue().nickNameProperty());
-		
+
 		FilteredList<GameTable> filtered = new FilteredList<>(clientData.getTableList(), p -> true);
-		
+
 		gameSearch.textProperty().addListener((observable, oldValue, newValue) -> {
             filtered.setPredicate(gameTable -> {
                 // If filter text is empty, display all games.
@@ -184,11 +215,11 @@ public class ControllerApplication {
                 	return false; // Does not match.
             });
         });
-		currentGames.setItems(filtered);	
+		currentGames.setItems(filtered);
 	}
-	
-	
-	
+
+
+
 	private void fillListView(){
 		ObservableList<User> items = clientData.getUserList();
 		connectedUsers.setItems(items);
@@ -207,7 +238,7 @@ public class ControllerApplication {
             }
         });
 	}
-	
+
 	@FXML
 	private void handleRowSelectGame(){
 	    GameTable row = currentGames.getSelectionModel().getSelectedItem();
@@ -218,7 +249,7 @@ public class ControllerApplication {
 	    } else if(row==tempGame) {
 	        Date now = new Date();
 	        long diff = now.getTime() - lastClickGame.getTime();
-	        if (diff < 300){ 
+	        if (diff < 300){
 	     		//Parent root;
 	     		try {
 	     			FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("./view/joinTable.fxml"));
@@ -229,7 +260,7 @@ public class ControllerApplication {
 	    			controller.setClientData(this.clientData);
 	    			controller.setInterfaceDataIHM(this.interfaceData);
 	    			controller.setJoiningGame(tempGame);
-	    			
+
 	     			Stage stage = new Stage();
 	     			stage.setScene(new Scene(root, 440, 408));
 	     			stage.initModality(Modality.WINDOW_MODAL);
@@ -247,7 +278,7 @@ public class ControllerApplication {
 	        }
 	    }
 	}
-	
+
 	@FXML
 	private void handleRowSelectUser() throws IncompleteProfileException{
 	    User row = connectedUsers.getSelectionModel().getSelectedItem();
@@ -258,12 +289,12 @@ public class ControllerApplication {
 	    } else if(row==tempUser) {
 	        Date now = new Date();
 	        long diff = now.getTime() - lastClickUser.getTime();
-	        if (diff < 300){ 
+	        if (diff < 300){
 				interfaceLobby.displayProfile(tempUser.getPublicData());
 	        } else {
 	            lastClickUser = new Date();
 	        }
 	    }
 	}
-	
+
 }
