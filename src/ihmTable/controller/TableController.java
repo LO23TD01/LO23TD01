@@ -66,10 +66,11 @@ public class TableController {
 	}
 
 	// GameStats view's initialization
-	private AnchorPane intGameStats() throws IOException {
+	private AnchorPane initGameStats() throws IOException {
 		FXMLLoader gameStatsLoader = new FXMLLoader(getClass().getResource("/ihmTable/resources/view/GameStats.fxml"));
 		AnchorPane gameStats = gameStatsLoader.load();
 		GameStatsController gameStatsController = gameStatsLoader.getController();
+		gameStatsController.setData(interImplDataTable, user);
 		return gameStats;
 	}
 
@@ -84,7 +85,7 @@ public class TableController {
 	private void initBottom() throws IOException {
 		AnchorPane bottomContainer = new AnchorPane();
 		AnchorPane playerStats = initPlayerStats();
-		AnchorPane gameStats = intGameStats();
+		AnchorPane gameStats = initGameStats();
 
 		AnchorPane.setLeftAnchor(playerStats, 0.0);
 		AnchorPane.setRightAnchor(gameStats, 0.0);
