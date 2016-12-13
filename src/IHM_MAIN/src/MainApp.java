@@ -50,15 +50,15 @@ import IHM_MAIN.src.controller.RegisterWindow;
 public class MainApp extends Application {
 	Scene scene;
 	private Stage primaryStage;
-	
+
 	InterfaceDataIHMLobby interfaceData;
 	ClientDataEngine clientData;
 	InterImplDataMain interImplDataMain;
-	
+
 	TextField userTextField;
 	PasswordField userPassField;
 	TextField serverTextField;
-	
+
 	@Override
 	public void start(Stage primaryStage) {
 
@@ -83,7 +83,7 @@ public class MainApp extends Application {
 
 		Label serverName = new Label("Adresse du serveur:");
 		serverTextField = new TextField();
-		
+
 		Button connectionBtn = new Button("Connexion");
 		Button registerBtn = new Button("Inscription");
 		Button editBtn = new Button("Editer Profil");
@@ -146,7 +146,7 @@ public class MainApp extends Application {
 			FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("./view/mainWindow.fxml"));
 			BorderPane root;
 			root = (BorderPane) fxmlLoader.load();
-			
+
 			ControllerApplication controller = (ControllerApplication) fxmlLoader.getController();
 			controller.setClientData(this.clientData);
 			controller.setInterfaceDataIHM(this.interfaceData);
@@ -158,7 +158,7 @@ public class MainApp extends Application {
 			stage.show();
 			Stage this_window = (Stage)scene.getWindow();
 			this_window.close();
-			
+
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -180,25 +180,25 @@ public class MainApp extends Application {
 					openMain();
 				}
 	}
-	
+
 	private void openRegister(){
 		try {
 			FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("./view/registerWindow.fxml"));
 			AnchorPane root;
 			root = (AnchorPane) fxmlLoader.load();
-			
+
 			RegisterWindow controller = (RegisterWindow) fxmlLoader.getController();
 			controller.setClientData(this.clientData);
 			controller.setInterfaceDataIHM(this.interfaceData);
 			controller.setInterImplDataMain(this.interImplDataMain);
-			
+
 			Scene new_scene = new Scene(root, 400, 500);
 			Stage stage = new Stage();
 			stage.setTitle("Register");
 			stage.setScene(new_scene);
-			
+
 			controller.setCurrentStage(stage);
-	        
+
 			stage.show();
 			//we don't close the current window because the user will need to come back after registering
 
@@ -230,10 +230,8 @@ public class MainApp extends Application {
 		        // Set the person into the controller.
 		        PersonController controller = loader.getController();
 		        controller.setDialogStage(dialogStage);
-	        	File fXmlFile = new File("file:./../monProfile.xml");
+		         Profile profil = interImplDataMain.getLocalProfile();
 
-		       Profile profil= controller.loadPersonDataFromFile(fXmlFile);
-		        //Profile profil = new Profile(null,"test","test","test",25);
 		        User user= new User(profil);
 		        controller.setPerson(user);
 
@@ -246,7 +244,7 @@ public class MainApp extends Application {
 		        return false;
 		    }
 	}
-	
+
 	public class DataConnection extends Thread{
 		WaitingWindow waitingWindow;
 		String login;
@@ -260,11 +258,11 @@ public class MainApp extends Application {
 			password = password2;
 			ip = ip2;
 			connectionLoginFlag = false;
-			
+
 		}
-		
+
 		public void run(){
-			try {	
+			try {
 					Thread.sleep(500);
 					interfaceData.login(login, password, ip);
 					connectionLoginFlag = true;
@@ -272,7 +270,7 @@ public class MainApp extends Application {
 					exceptionMessage = e.toString();
 					e.printStackTrace();
 				}
-			waitingWindow.close();	
+			waitingWindow.close();
 		}
 		public DataConnection(WaitingWindow t){
 			waitingWindow = t;
@@ -306,12 +304,12 @@ public class MainApp extends Application {
 	        return false;
 	    }
 	}
-	
+
 	public Stage getPrimaryStage()
 	{
 		return primaryStage;
 	}
-	
+
 	public void init(){
 		this.clientData = new ClientDataEngine();
 		this.interImplDataMain = new InterImplDataMain(this.clientData);
@@ -319,6 +317,14 @@ public class MainApp extends Application {
 
 	public static void main(String[] args) {
 		launch(args);
+	}
+
+	public InterImplDataMain getInterImplDataMain() {
+		return interImplDataMain;
+	}
+
+	public void setInterImplDataMain(InterImplDataMain interImplDataMain) {
+		this.interImplDataMain = interImplDataMain;
 	}
 
 

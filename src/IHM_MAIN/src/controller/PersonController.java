@@ -42,6 +42,7 @@ import IHM_MAIN.src.IHMLobbyAPI.IncompleteProfileException;
 import IHM_MAIN.src.MainApp;
 import data.Profile;
 import data.User;
+import data.client.InterImplDataMain;
 
 
 public class PersonController {
@@ -53,10 +54,10 @@ public class PersonController {
 		private TextField pseudoField;
 		@FXML
 		private TextField ageField;
-	
+
 		@FXML
 		private ImageView imgField;
-	
+
 		@FXML
 		private   Label wonField;
 		@FXML
@@ -106,7 +107,7 @@ System.out.print(wonField);
 	        imgField.setImage(imageObject);
 
 	    }
-	    
+
 	    /**
 	     * Sets all fields on the window from a  Profile object
 	     * @param profile
@@ -124,7 +125,7 @@ System.out.print(wonField);
 	    	lostField.setText(Integer.toString(profile.getNbGameLost()));
 	    	leaveField.setText(Integer.toString(profile.getNbGameAbandonned()));
 	    }
-	    
+
 	    /**
 	     * Disables edit buttons/fields on the Profile view
 	     */
@@ -135,8 +136,8 @@ System.out.print(wonField);
 	    	ageField.setDisable(true);
 	    	selectPhotoButton.setVisible(false);
 	    }
-	    
-	    
+
+
 	    /**
 	     * Returns true if the user clicked OK, false otherwise.
 	     *
@@ -203,52 +204,11 @@ System.out.print(wonField);
 	            user.setPublicData(profil);
 
 	            okClicked = true;
+	            InterImplDataMain intImpl = mainApp.getInterImplDataMain();
+	                    	intImpl.changeMyProfile(profil);
+	                    	user.setPublicData(profil);
 
-	        	File fXmlFile = new File("file:./../monProfile.xml");
-
-		        try {
-
-		        	  DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
-		        	  DocumentBuilder dBuilder = dbFactory.newDocumentBuilder();
-		        	  Document doc = dBuilder.parse(fXmlFile);
-		        	  doc.getDocumentElement().normalize();
-
-		        	  NodeList nList = doc.getElementsByTagName("profile");
-
-		        	  for (int temp = 0; temp < nList.getLength(); temp++) {
-
-		        	     Node nNode = nList.item(temp);
-		        	     if (nNode.getNodeType() == Node.ELEMENT_NODE) {
-
-		        	        Element eElement = (Element) nNode;
-
-		        	        setTagValue("nickName",eElement,profil.getNickName());
-		        	        setTagValue("surName",eElement,profil.getSurName());
-		        	        setTagValue("firstName",eElement,profil.getFirstName());
-		        	        setTagValue("age",eElement,Integer.toString(profil.getAge()));
-
-		        	     }
-		        	     }
-		        		// write the content into xml file
-		        		TransformerFactory transformerFactory = TransformerFactory.newInstance();
-		        		Transformer transformer = transformerFactory.newTransformer();
-		        		DOMSource source = new DOMSource(doc);
-		        		StreamResult result = new StreamResult(fXmlFile);
-		        		transformer.transform(source, result);
-
-		        		System.out.println("Done");
-		        } catch (ParserConfigurationException pce) {
-		    		pce.printStackTrace();
-		    	   } catch (TransformerException tfe) {
-		    		tfe.printStackTrace();
-		    	   } catch (IOException ioe) {
-		    		ioe.printStackTrace();
-		    	   } catch (org.xml.sax.SAXException sae) {
-		    		sae.printStackTrace();
-		    	   }
-		    	}
-
-
+	        }
 
 
 	            dialogStage.close();
