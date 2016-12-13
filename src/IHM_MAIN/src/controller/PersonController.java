@@ -46,6 +46,7 @@ import IHM_MAIN.src.MainApp;
 import data.Profile;
 import data.User;
 import data.client.ClientDataEngine;
+import data.client.InterImplDataMain;
 
 
 public class PersonController {
@@ -57,31 +58,20 @@ public class PersonController {
 		private TextField pseudoField;
 		@FXML
 		private TextField ageField;
-	
+
 		@FXML
 		private ImageView imgField;
-	
+
 		@FXML
 		private   Label wonField;
 		@FXML
 		private  Label lostField;
 		@FXML
 		private  Label leaveField;
-
-<<<<<<< HEAD
-	   @FXML
-	   private   Label wonField;
-	   @FXML
-	   private  Label lostField;
-	   @FXML
-	   private  Label leaveField;
 	   @FXML
 	   private ListView<String> friendsList;
-
-=======
 		@FXML
 		private Button selectPhotoButton;
->>>>>>> 0920b2a99831572e92ca306647e7ef66d057ed38
 
 
 	    private User user;
@@ -122,7 +112,7 @@ System.out.print(wonField);
 	        imgField.setImage(imageObject);
 
 	    }
-	    
+
 	    /**
 	     * Sets all fields on the window from a  Profile object
 	     * @param profile
@@ -140,7 +130,7 @@ System.out.print(wonField);
 	    	lostField.setText(Integer.toString(profile.getNbGameLost()));
 	    	leaveField.setText(Integer.toString(profile.getNbGameAbandonned()));
 	    }
-	    
+
 	    /**
 	     * Disables edit buttons/fields on the Profile view
 	     */
@@ -151,8 +141,8 @@ System.out.print(wonField);
 	    	ageField.setDisable(true);
 	    	selectPhotoButton.setVisible(false);
 	    }
-	    
-	    
+
+
 	    /**
 	     * Returns true if the user clicked OK, false otherwise.
 	     *
@@ -216,9 +206,9 @@ System.out.print(wonField);
 	    private void handleOk() {
 	        if (isInputValid()) {
 	        	Profile profil = new Profile(null,pseudoField.getText(),firstNameField.getText(),lastNameField.getText(),Integer.parseInt(ageField.getText()));
-	    	    ClientDataEngine c = mainApp.getC();
-				c.changeMyProfile(profil);
-			            dialogStage.close();
+	        	InterImplDataMain intImpl = mainApp.getInterImplDataMain();
+	        	intImpl.changeMyProfile(profil);
+	        	dialogStage.close();
 
 	        	//user.setPublicData(profil);
 

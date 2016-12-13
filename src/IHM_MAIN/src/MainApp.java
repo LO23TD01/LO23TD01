@@ -50,8 +50,8 @@ import IHM_MAIN.src.controller.PersonController;
 public class MainApp extends Application {
 	Scene scene;
 	private Stage primaryStage;
-	static ClientDataEngine c;
-
+	//static ClientDataEngine c;
+	InterImplDataMain interImplDataMain;
 
 	InterfaceDataIHMLobby interfaceData;
 	ClientDataEngine clientData;
@@ -227,8 +227,7 @@ public class MainApp extends Application {
 	        	//File fXmlFile = new File("file:./../monProfile.xml");
 		       //Profile profil= controller.loadPersonDataFromFile(fXmlFile);
 		        //Profile profil = new Profile(null,"test","test","test",25);
-		        c= new ClientDataEngine();
-		        Profile profil = c.getLocalProfile();
+		        Profile profil = interImplDataMain.getLocalProfile();
 		        User user= new User(profil);
 		        controller.setPerson(user);
 
@@ -307,13 +306,23 @@ public class MainApp extends Application {
 	{
 		return primaryStage;
 	}
-	public static void setC(ClientDataEngine c) {
-		MainApp.c = c;
+
+
+	public ClientDataEngine getClientData() {
+		return clientData;
 	}
 
-	public static ClientDataEngine getC() {
-		return c;
-		}
+	public void setClientData(ClientDataEngine clientData) {
+		this.clientData = clientData;
+	}
+
+	public InterImplDataMain getInterImplDataMain() {
+		return interImplDataMain;
+	}
+
+	public void setInterImplDataMain(InterImplDataMain interImplDataMain) {
+		this.interImplDataMain = interImplDataMain;
+	}
 
 	public void init(){
 		this.clientData = new ClientDataEngine();

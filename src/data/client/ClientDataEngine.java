@@ -49,11 +49,11 @@ public class ClientDataEngine implements InterfaceDataNetwork {
 	public ClientDataEngine() {
 		super();
 		this.profileManager = new ProfileManager();
-		this.setUserList(null);
-		this.setTableList(null);
+		//this.setUserList(null);
+		//this.setTableList(null);
 		this.actualTable = null;
 		this.actualRole = null;
-		this.setSelectionList(null);
+		//this.setSelectionList(null);
 		this.interfaceMain = new InterImplDataMain(this);
 		//si on fait pas confiance à main on decommente cette ligne
 		//this.interfaceTable = new InterImplDataTable(this);
@@ -335,7 +335,7 @@ public class ClientDataEngine implements InterfaceDataNetwork {
 	@Override
 	public void raiseException(String msg) {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 
