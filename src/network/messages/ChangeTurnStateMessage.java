@@ -22,8 +22,7 @@ public class ChangeTurnStateMessage implements IMessage {
 
 	@Override
 	public void process(ClientDataEngine dataEngine) {
-		//TO-DO : A décommenter lors de l'intégration
-		//dataEngine.changeTurnState(turnState);
+		dataEngine.changeTurnState(turnState);
 	}
 
 }

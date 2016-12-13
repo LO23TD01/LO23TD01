@@ -22,8 +22,7 @@ public class ChangeStateMessage implements IMessage {
 
 	@Override
 	public void process(ClientDataEngine dataEngine) {
-		//TO-DO : A décommenter lors de l'intégration
-		//dataEngine.changeState(state);
+		dataEngine.changeState(state);
 	}
 
 }
