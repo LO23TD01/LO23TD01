@@ -3,13 +3,13 @@ package ihmTable.controller;
 import java.io.IOException;
 
 import data.GameTable;
+import data.User;
 import data.client.InterImplDataTable;
+import javafx.beans.value.ObservableValue;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.layout.AnchorPane;
-import javafx.scene.text.Text;
 
 public class GameStatsController {
 
@@ -42,13 +42,13 @@ public class GameStatsController {
     private InterImplDataTable interImplDataTable;
     
     public void initialize() throws IOException {
-    	setLabel();
-    	setData();
+    	
     	handleAsserts();
     }
 	
 	private void setLabel() {
-		GameStats_PhaseLabel.setText(String.valueOf(gameTableInstance.getGameState()));
+		if(gameTableInstance != null)
+			GameStats_PhaseLabel.setText(String.valueOf(gameTableInstance.getGameState()));
 		GameStats_StakeLabel.setText("0");
 		GameStats_BestScoreLabel.setText("0 0 0");
 		GameStats_BestScorePlayer.setText("0");
@@ -58,12 +58,14 @@ public class GameStatsController {
 	
 	public void setData(InterImplDataTable interImplDataTable, User user) {
 		this.interImplDataTable = interImplDataTable;
-		gameTableInstance = interImplDataTable.getActualTable();
+		gameTableInstance = this.interImplDataTable.getActualTable();
+		setLabel();
 		Bindings();
+		
 	}
 
 	private void Bindings() {
-		// TODO Quand Data a implémenté la fonction pour récupérer la meilleure valeur, le joueur, la pire valeur, le joueur
+		// TODO *** Quand Data a implémenté la fonction pour récupérer la meilleure valeur, le joueur, la pire valeur, le joueur
 //		gameTableInstance.ElementBestScore().addListener((observable, oldValue, newValue) -> bestScoreListener(observable, oldValue, newValue));
 //		gameTableInstance.ElementBestScorePlayer().addListener((observable, oldValue, newValue) -> bestScorePlayerListener(observable, oldValue, newValue));
 //		gameTableInstance.ElementScoreToBeat().addListener((observable, oldValue, newValue) -> ScoreToBeatListener(observable, oldValue, newValue));
