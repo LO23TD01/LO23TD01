@@ -52,7 +52,7 @@ public class InterImplDataMain implements InterfaceDataIHMLobby{
 //		if (!this.dataEngine.getProfileManager().checkPassword(login, password))
 //			throw new Exception("Mauvais mot de passe");
 		this.dataEngine.setComClientInterface(new ComClient(ipd.getValue(), 4000));
-		// TODO choisir un port
+		this.dataEngine.getComClientInterface().setClientData(this.dataEngine);
 		this.dataEngine.getComClientInterface().connection(this.getLocalProfile(login, password));
 	}
 
