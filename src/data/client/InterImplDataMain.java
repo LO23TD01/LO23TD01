@@ -178,6 +178,42 @@ public class InterImplDataMain implements InterfaceDataIHMLobby{
 				uuidCategory);
 	}
 
+	public final ObjectProperty<Profile> currentProfileProperty() {
+		return this.currentProfile;
+	}
+
+
+
+
+//////////////////////////////////////////:
+
+
+	public final Profile getCurrentProfile() {
+		return this.currentProfileProperty().get();
+	}
+
+
+	public final void setCurrentProfile(final Profile currentProfile) {
+		this.currentProfileProperty().set(currentProfile);
+	}
+
+	public ObservableList<User> getUserList() {
+		return userList;
+	}
+
+	public void setUserList(ObservableList<User> userList) {
+		this.userList = userList;
+	}
+
+	public ObservableList<GameTable> getTableList() {
+		return tableList;
+	}
+
+	public void setTableList(ObservableList<GameTable> tableList) {
+		this.tableList = tableList;
+	}
+
+
 
 
 
