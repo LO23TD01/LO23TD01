@@ -83,8 +83,8 @@ public class ControllerApplication {
 
 	@FXML
     private void initialize() {
-		filterTable();
-		fillListView();
+		//filterTable();
+		//fillListView();
 	}
 
 	@FXML
