@@ -51,8 +51,6 @@ public class GameTable {
 		this.name = new SimpleStringProperty();
 		this.creator = new SimpleObjectProperty<User>();
 		this.parameters = new SimpleObjectProperty<Parameters>();
-		this.playerList.addAll(playerList);
-		this.spectatorList.addAll(spectatorList);
 		this.gameState = new SimpleObjectProperty<GameState>();
 		this.localChat = new SimpleObjectProperty<Chat>();
 		this.record = new SimpleObjectProperty<Record>();
@@ -131,17 +129,17 @@ public class GameTable {
 		{
 			this.vote.set(true);
 			this.voteCasted.clear();
-	
+
 		}
 //		else
-//			throw new Exception("Vote déjà en cours");
+//			throw new Exception("Vote dï¿½jï¿½ en cours");
 	}
 
 	public void castVote(Vote vote) {
 //		if(!this.vote.get())
 //			throw new Exception("Pas de vote en cours.");
 //		if(this.voteCasted.stream().filter(v->v.getUser().isSame(vote.getUser())).count()==0)
-//			throw new Exception("Déjà voté");
+//			throw new Exception("Dï¿½jï¿½ votï¿½");
 		this.voteCasted.add(vote);
 	}
 
@@ -306,7 +304,7 @@ public class GameTable {
 	public final void setRecord(final Record record) {
 		this.recordProperty().set(record);
 	}
-	
+
 	public final BooleanProperty voteProperty() {
 		return this.vote;
 	}
