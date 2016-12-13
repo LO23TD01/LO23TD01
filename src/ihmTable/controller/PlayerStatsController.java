@@ -4,6 +4,13 @@ import java.io.IOException;
 
 import data.GameTable;
 import data.PlayerData;
+import data.User;
+import data.client.InterImplDataTable;
+import javafx.beans.property.Property;
+import javafx.beans.value.ObservableValue;
+import javafx.collections.ArrayChangeListener;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableIntegerArray;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.control.Label;
@@ -16,187 +23,309 @@ import javafx.scene.paint.Color;
 
 public class PlayerStatsController {
 
-    private static final int DICE_SIZE = 80;
+	private static final int DICE_SIZE = 80;
 
-    @FXML
-    private VBox PLayerStats_VBoxLeft1;
+	@FXML
+	private HBox PlayerStats_DicesHBox1;
 
-    @FXML
-    private AnchorPane PlayerStats_TitlePane1;
+	@FXML
+	private Label PlayerStats_TitleLabelPlayer;
 
-    @FXML
-    private Label PlayerStats_TitleLabelPlayer;
+	@FXML
+	private ImageView PlayerStats_Jetons;
 
-    @FXML
-    private HBox PlayerStats_InfosHBoxParent1;
+	@FXML
+	private ImageView PlayerStats_PartiesPerdues;
 
-    @FXML
-    private VBox PlayerStats_PlayerInfoVBox1;
+	@FXML
+	private Label PlayerStats_ScoreLabel;
 
-    @FXML
-    private ImageView PlayerStats_Jetons;
+	@FXML
+	private Label playerStats_LabelStats;
 
-    @FXML
-    private ImageView PlayerStats_PartiesPerdues;
+	@FXML
+	private Label PlayerStats_Jeton_Score_Label;
 
-    @FXML
-    private HBox PlayerStats_DicesHBox1;
+	@FXML
+	private Label PlayerStats_Jeton_Loss_Score_Label;
 
-    @FXML
-    private AnchorPane PLayersStats_ScoreNumberAnchorPane1;
+	@FXML
+	private Label PlayerStats_Label_Wins;
 
-    @FXML
-    private Label PlayerStats_ScoreLabel;
+	@FXML
+	private Label PlayerStats_Label_Lose;
 
-    @FXML
-    private VBox PLayerStats_StatsVBox;
+	@FXML
+	private Label PlayerStats_Label_Forfeit;
 
-    @FXML
-    private Label playerStats_LabelStats;
+	private DiceController dice1, dice2, dice3;
 
-    @FXML
-    private Label PlayerStats_Jeton_Score_Label;
+	public GameTable gameTableInstance;
 
-    @FXML
-    private Label PlayerStats_Jeton_Loss_Score_Label;
+	private InterImplDataTable interImplDataTable;
 
-    @FXML
-    private AnchorPane PlayerStats_StatsPane;
+	private PlayerData currentPlayerData;
 
-    @FXML
-    private Label PlayerStats_Label_Wins;
+	// Création des images
+	Image Jeton = new Image("/ihmTable/resources/png/JetonOK.png");
+	Image JetonLoss = new Image("/ihmTable/resources/png/JetonLoss.png");
 
-    @FXML
-    private Label PlayerStats_Label_Lose;
+	/**
+	 * Initialisation du controller
+	 */
+	public void initialize() throws IOException {
+		// Gestion des erreurs
+		handleAsserts();
+		// Gestion des images
+		handleImage(PlayerStats_Jetons, Jeton);
+		handleImage(PlayerStats_PartiesPerdues, JetonLoss);
 
-    @FXML
-    private Label PlayerStats_Label_Forfeit;
+		PlayerStats_Jeton_Loss_Score_Label.setText("0");
+		PlayerStats_Jeton_Loss_Score_Label.setTextFill(Color.RED);
 
-    private DiceController dice1, dice2, dice3;
-
-    public GameTable gameTableInstance;
-
-    private PlayerData currentPlayerData;
-
-    // Création des images
-    Image Jeton = new Image("/ihmTable/resources/png/JetonOK.png");
-    Image JetonLoss = new Image("/ihmTable/resources/png/JetonLoss.png");
-
-    public void initialize() throws IOException {
-    	//Gestion des erreurs
-        handleAsserts();
-        //Gestion des images
-        handleImage(PlayerStats_Jetons, Jeton);
-        handleImage(PlayerStats_PartiesPerdues, JetonLoss);
-
-        PlayerStats_Jeton_Loss_Score_Label.setText("0");
-        PlayerStats_Jeton_Loss_Score_Label.setTextFill(Color.RED);
-
-
-        Bindings();
-
-        setPlayerDice();
-    }
-
-    private void Bindings()
-    {
-    	if(currentPlayerData != null)
-    	{
-    	//on crée un player data local pour pouvoir l'updater en fonction du joueur courant.
-        currentPlayerData = gameTableInstance.getGameState().getData(gameTableInstance.getGameState().getActualPlayer(), false);
-
-        //listeners
-        currentPlayerData.chipProperty().addListener((observable, oldValue, newValue) -> chipListener());
-        currentPlayerData.getPlayer().getPublicData(); //todo parties perdues
-        currentPlayerData.getPlayer().getPublicData().nbGameWonProperty().addListener((observable, oldValue, newValue) -> totalWinListener());
-        currentPlayerData.getPlayer().getPublicData().nbGameLostProperty().addListener((observable, oldValue, newValue) -> totalLossListener());
-        currentPlayerData.getPlayer().getPublicData().nbGameAbandonnedProperty().addListener((observable, oldValue, newValue) -> totalForfeitListener());
-
-        //bindings
-        currentPlayerData.getPlayer().getPublicData(); //todo name
-    	}
-    	else
-    	{
-    		//todo handle error
-    	}
-    }
-
-    private int totalForfeitListener() {
-    	if(currentPlayerData.getPlayer().getPublicData().getNbGameAbandonned() != 0)
-    	{
-    		PlayerStats_Label_Forfeit.setText(String.valueOf(currentPlayerData.getPlayer().getPublicData().getNbGameAbandonned()));
-    		return currentPlayerData.getPlayer().getPublicData().getNbGameAbandonned();
-    	}
-    	else
-    		return 0;
+		setPlayerDice();
 	}
 
-
-    private int totalLossListener() {
-    	if(currentPlayerData.getPlayer().getPublicData().getNbGameWon() != 0)
-    	{
-    		PlayerStats_Label_Lose.setText(String.valueOf(currentPlayerData.getPlayer().getPublicData().getNbGameLost()));
-    		return currentPlayerData.getPlayer().getPublicData().getNbGameLost();
-    	}
-    	else
-    		return 0;
+	/**
+	 * Passage des données par le controller père
+	 */
+	public void setData(InterImplDataTable interImplDataTable, User user) {
+		this.interImplDataTable = interImplDataTable;
+		gameTableInstance = interImplDataTable.getActualTable();
+		currentPlayerData = gameTableInstance.getGameState().getData(gameTableInstance.getGameState().getActualPlayer(),
+				false);
+		init();
+		Bindings();
 	}
 
+	/**
+	 * Initialisation des valeurs.
+	 */
+	private void init() {
+		PlayerStats_Label_Forfeit
+		.setText(String.valueOf(currentPlayerData.getPlayer().getPublicData().getNbGameAbandonned()));
+		PlayerStats_Label_Lose.setText(String.valueOf(currentPlayerData.getPlayer().getPublicData().getNbGameLost()));
+		PlayerStats_Label_Wins.setText(String.valueOf(currentPlayerData.getPlayer().getPublicData().getNbGameWon()));
+		PlayerStats_Jeton_Score_Label.setText(String.valueOf(currentPlayerData.getChip()));
+
+		handleDices();
+	}
+
+	/**
+	 * Gestion des dés pour l'initilisation des valeurs
+	 */
+	private void handleDices() {
+		// TODO gérer avec observable array
+		int d1;
+		int d2;
+		int d3;
+
+		int[] dices = currentPlayerData.getDices();
+
+		d1 = dices[0];
+		d2 = dices[1];
+		d3 = dices[2];
+
+		PlayerStats_ScoreLabel.setText(d1 + " " + d2 + " " + d3);
+
+		dice1.setValue(d1);
+		dice2.setValue(d2);
+		dice3.setValue(d3);
+	}
+
+	/**
+	 * Création des bindings
+	 */
+	private void Bindings() {
+		if (currentPlayerData != null) {
+
+			boolean isCurrentPlayerLoser = false;
+			for (int i = 0; i < gameTableInstance.getGameState().getLosers().size(); i++) {
+				if (gameTableInstance.getGameState().getLosers().get(i).equals(currentPlayerData.getPlayer())) {
+					isCurrentPlayerLoser = true;
+				}
+			}
+			if (isCurrentPlayerLoser) {
+				PlayerStats_Jeton_Loss_Score_Label.textProperty().set("1");
+			}
+			// listeners
+			currentPlayerData.chipProperty()
+			.addListener((observable, oldValue, newValue) -> chipListener(observable, oldValue, newValue));
+			currentPlayerData.getPlayer().getPublicData().nbGameWonProperty()
+			.addListener((observable, oldValue, newValue) -> totalWinListener(observable, oldValue, newValue));
+			currentPlayerData.getPlayer().getPublicData().nbGameLostProperty()
+			.addListener((observable, oldValue, newValue) -> totalLossListener(observable, oldValue, newValue));
+			currentPlayerData.getPlayer().getPublicData().nbGameAbandonnedProperty().addListener(
+					(observable, oldValue, newValue) -> totalForfeitListener(observable, oldValue, newValue));
+
+			// TODO Handle dices when data's done
+			// dices.addListener((array, size, from, to) -> dicesListener(array,
+			// size, from, to));
+			// currentPlayerData.getDices();
+
+			// bindings
+			PlayerStats_TitleLabelPlayer.textProperty()
+			.bind(currentPlayerData.getPlayer().getPublicData().nickNameProperty());
+		} else {
+			// TODO handle error
+		}
+	}
+
+	/**
+	 * Listener sur les abandons
+	 */
+	private Object totalForfeitListener(ObservableValue<? extends Number> observable, Number oldValue,
+			Number newValue) {
+
+		PlayerStats_Label_Forfeit.setText(String.valueOf(newValue));
+
+		return null;
+	}
+
+	/**
+	 * Listener sur les défaites
+	 */
+	private Object totalLossListener(ObservableValue<? extends Number> observable, Number oldValue, Number newValue) {
+		PlayerStats_Label_Lose.setText(String.valueOf(newValue));
+		return null;
+	}
+
+	/**
+	 * Listener sur les victoires
+	 */
+	private Object totalWinListener(ObservableValue<? extends Number> observable, Number oldValue, Number newValue) {
+		PlayerStats_Label_Wins.setText(String.valueOf(newValue));
+		return null;
+	}
+
+	/**
+	 * Listener sur les jetons
+	 */
+	private Object chipListener(ObservableValue<? extends Number> observable, Number oldValue, Number newValue) {
+		PlayerStats_Jeton_Score_Label.setText(String.valueOf(newValue));
+		return null;
+	}
+
+	/**
+	 * Listener sur les dés
+	 */
+	private Object dicesListener(ObservableIntegerArray array, boolean size, int from, int to) {
+
+		int d1;
+		int d2;
+		int d3;
+
+		d1 = array.get(0);
+		d2 = array.get(0);
+		d3 = array.get(0);
+
+		PlayerStats_ScoreLabel.setText(d1 + " " + d2 + " " + d3);
+
+		dice1.setValue(d1);
+		dice2.setValue(d2);
+		dice3.setValue(d3);
+
+		return null;
+	}
+
+	/**
+	 * Listener sur les abandons
+	 *
+	 * @deprecated
+	 */
+	private int totalForfeitListener() {
+		if (currentPlayerData.getPlayer().getPublicData().getNbGameAbandonned() != 0) {
+			PlayerStats_Label_Forfeit
+			.setText(String.valueOf(currentPlayerData.getPlayer().getPublicData().getNbGameAbandonned()));
+			return currentPlayerData.getPlayer().getPublicData().getNbGameAbandonned();
+		} else
+			return 0;
+	}
+
+	/**
+	 * Listener sur les défaites
+	 *
+	 * @deprecated
+	 */
+	private int totalLossListener() {
+		if (currentPlayerData.getPlayer().getPublicData().getNbGameWon() != 0) {
+			PlayerStats_Label_Lose
+			.setText(String.valueOf(currentPlayerData.getPlayer().getPublicData().getNbGameLost()));
+			return currentPlayerData.getPlayer().getPublicData().getNbGameLost();
+		} else
+			return 0;
+	}
+
+	/**
+	 * Listener sur les victoires
+	 *
+	 * @deprecated
+	 */
 	private int totalWinListener() {
-    	if(currentPlayerData.getPlayer().getPublicData().getNbGameWon() != 0)
-    	{
-    		PlayerStats_Label_Wins.setText(String.valueOf(currentPlayerData.getPlayer().getPublicData().getNbGameWon()));
-    		return currentPlayerData.getPlayer().getPublicData().getNbGameWon();
-    	}
-    	else
-    		return 0;
+		if (currentPlayerData.getPlayer().getPublicData().getNbGameWon() != 0) {
+			PlayerStats_Label_Wins
+			.setText(String.valueOf(currentPlayerData.getPlayer().getPublicData().getNbGameWon()));
+			return currentPlayerData.getPlayer().getPublicData().getNbGameWon();
+		} else
+			return 0;
 	}
 
+	/**
+	 * Listener sur les jetons
+	 *
+	 * @deprecated
+	 */
 	private int chipListener() {
-    	if(currentPlayerData.getChip() != 0)
-    	{
-    		PlayerStats_Jeton_Loss_Score_Label.setText(String.valueOf(currentPlayerData.getChip()));
-    		return currentPlayerData.getChip();
-    	}
-    	else
-    		return 0;
+		if (currentPlayerData.getChip() != 0) {
+			PlayerStats_Jeton_Score_Label.setText(String.valueOf(currentPlayerData.getChip()));
+			return currentPlayerData.getChip();
+		} else
+			return 0;
 	}
 
+	/**
+	 * Vérification des composants
+	 *
+	 */
 	private void handleAsserts() {
-        assert PLayerStats_VBoxLeft1 != null : "fx:id=\"PLayerStats_VBoxLeft1\" was not injected: check your FXML file 'PlayerStats.fxml'.";
-        assert PlayerStats_TitlePane1 != null : "fx:id=\"PlayerStats_TitlePane1\" was not injected: check your FXML file 'PlayerStats.fxml'.";
-        assert PlayerStats_TitleLabelPlayer != null : "fx:id=\"PlayerStats_TitleLabelPlayer\" was not injected: check your FXML file 'PlayerStats.fxml'.";
-        assert PlayerStats_InfosHBoxParent1 != null : "fx:id=\"PlayerStats_InfosHBoxParent1\" was not injected: check your FXML file 'PlayerStats.fxml'.";
-        assert PlayerStats_PlayerInfoVBox1 != null : "fx:id=\"PlayerStats_PlayerInfoVBox1\" was not injected: check your FXML file 'PlayerStats.fxml'.";
-        assert PlayerStats_Jetons != null : "fx:id=\"PlayerStats_Jetons\" was not injected: check your FXML file 'PlayerStats.fxml'.";
-        assert PlayerStats_PartiesPerdues != null : "fx:id=\"PlayerStats_PartiesPerdues\" was not injected: check your FXML file 'PlayerStats.fxml'.";
-        assert PlayerStats_DicesHBox1 != null : "fx:id=\"PlayerStats_DicesHBox1\" was not injected: check your FXML file 'PlayerStats.fxml'.";
-        assert PLayersStats_ScoreNumberAnchorPane1 != null : "fx:id=\"PLayersStats_ScoreNumberAnchorPane1\" was not injected: check your FXML file 'PlayerStats.fxml'.";
-        assert PlayerStats_ScoreLabel != null : "fx:id=\"PlayerStats_ScoreLabel\" was not injected: check your FXML file 'PlayerStats.fxml'.";
-        assert PLayerStats_StatsVBox != null : "fx:id=\"PLayerStats_StatsVBox\" was not injected: check your FXML file 'PlayerStats.fxml'.";
-        assert playerStats_LabelStats != null : "fx:id=\"playerStats_LabelStats\" was not injected: check your FXML file 'PlayerStats.fxml'.";
-        assert PlayerStats_StatsPane != null : "fx:id=\"PlayerStats_StatsPane\" was not injected: check your FXML file 'PlayerStats.fxml'.";
-    }
 
-    private void setPlayerDice() throws IOException {
-        FXMLLoader diceLoader1 = new FXMLLoader(getClass().getResource("/ihmTable/resources/view/Dice.fxml"));
-        PlayerStats_DicesHBox1.getChildren().add(diceLoader1.load());
-        dice1 = (DiceController) diceLoader1.getController();
-        dice1.setDice(false, DICE_SIZE);
+		assert PlayerStats_TitleLabelPlayer != null : "fx:id=\"PlayerStats_TitleLabelPlayer\" was not injected: check your FXML file 'PlayerStats.fxml'.";
 
-        FXMLLoader diceLoader2 = new FXMLLoader(getClass().getResource("/ihmTable/resources/view/Dice.fxml"));
-        PlayerStats_DicesHBox1.getChildren().add(diceLoader2.load());
-        dice2 = (DiceController) diceLoader2.getController();
-        dice2.setDice(false, DICE_SIZE);
+		assert PlayerStats_Jetons != null : "fx:id=\"PlayerStats_Jetons\" was not injected: check your FXML file 'PlayerStats.fxml'.";
+		assert PlayerStats_PartiesPerdues != null : "fx:id=\"PlayerStats_PartiesPerdues\" was not injected: check your FXML file 'PlayerStats.fxml'.";
 
-        FXMLLoader diceLoader3 = new FXMLLoader(getClass().getResource("/ihmTable/resources/view/Dice.fxml"));
-        PlayerStats_DicesHBox1.getChildren().add(diceLoader3.load());
-        dice3 = (DiceController) diceLoader3.getController();
-        dice3.setDice(false, DICE_SIZE);
-    }
+		assert PlayerStats_ScoreLabel != null : "fx:id=\"PlayerStats_ScoreLabel\" was not injected: check your FXML file 'PlayerStats.fxml'.";
 
-    // Permet d'assigne rune image à un imageview en conservant ses proriété.
-    private void handleImage(ImageView image, Image toAssign) {
-        image.setImage(toAssign);
-    }
+		assert playerStats_LabelStats != null : "fx:id=\"playerStats_LabelStats\" was not injected: check your FXML file 'PlayerStats.fxml'.";
+
+	}
+
+	/**
+	 * Mise en place des dés
+	 *
+	 */
+	private void setPlayerDice() throws IOException {
+		FXMLLoader diceLoader1 = new FXMLLoader(getClass().getResource("/ihmTable/resources/view/Dice.fxml"));
+		PlayerStats_DicesHBox1.getChildren().add(diceLoader1.load());
+		dice1 = (DiceController) diceLoader1.getController();
+		dice1.setDice(false, DICE_SIZE);
+
+		FXMLLoader diceLoader2 = new FXMLLoader(getClass().getResource("/ihmTable/resources/view/Dice.fxml"));
+		PlayerStats_DicesHBox1.getChildren().add(diceLoader2.load());
+		dice2 = (DiceController) diceLoader2.getController();
+		dice2.setDice(false, DICE_SIZE);
+
+		FXMLLoader diceLoader3 = new FXMLLoader(getClass().getResource("/ihmTable/resources/view/Dice.fxml"));
+		PlayerStats_DicesHBox1.getChildren().add(diceLoader3.load());
+		dice3 = (DiceController) diceLoader3.getController();
+		dice3.setDice(false, DICE_SIZE);
+	}
+
+	/**
+	 * Permet d'assigne rune image à un imageview en conservant ses propriétés.
+	 *
+	 */
+	private void handleImage(ImageView image, Image toAssign) {
+		image.setImage(toAssign);
+	}
 }

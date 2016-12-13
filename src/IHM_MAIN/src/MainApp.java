@@ -45,6 +45,7 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import IHM_MAIN.src.controller.ControllerApplication;
 import IHM_MAIN.src.controller.PersonController;
+import IHM_MAIN.src.controller.RegisterWindow;
 
 public class MainApp extends Application {
 	Scene scene;
@@ -52,6 +53,7 @@ public class MainApp extends Application {
 	
 	InterfaceDataIHMLobby interfaceData;
 	ClientDataEngine clientData;
+	InterImplDataMain interImplDataMain;
 	
 	TextField userTextField;
 	PasswordField userPassField;
@@ -59,7 +61,7 @@ public class MainApp extends Application {
 	
 	@Override
 	public void start(Stage primaryStage) {
-				
+
 		GridPane grid = new GridPane();
 		grid.setAlignment(Pos.CENTER);
 		grid.setMinWidth(380);
@@ -141,7 +143,7 @@ public class MainApp extends Application {
 
 	private void openMain(){
 		try {
-			FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("./view/ihmmain.fxml"));
+			FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("./view/mainWindow.fxml"));
 			BorderPane root;
 			root = (BorderPane) fxmlLoader.load();
 			
@@ -184,13 +186,21 @@ public class MainApp extends Application {
 			FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("./view/registerWindow.fxml"));
 			AnchorPane root;
 			root = (AnchorPane) fxmlLoader.load();
+			
+			RegisterWindow controller = (RegisterWindow) fxmlLoader.getController();
+			controller.setClientData(this.clientData);
+			controller.setInterfaceDataIHM(this.interfaceData);
+			controller.setInterImplDataMain(this.interImplDataMain);
+			
 			Scene new_scene = new Scene(root, 400, 500);
 			Stage stage = new Stage();
 			stage.setTitle("Register");
 			stage.setScene(new_scene);
+			
+			controller.setCurrentStage(stage);
+	        
 			stage.show();
-			Stage this_window = (Stage)scene.getWindow();
-			this_window.close();
+			//we don't close the current window because the user will need to come back after registering
 
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
@@ -304,6 +314,7 @@ public class MainApp extends Application {
 	
 	public void init(){
 		this.clientData = new ClientDataEngine();
+		this.interImplDataMain = new InterImplDataMain(this.clientData);
 	}
 
 	public static void main(String[] args) {
