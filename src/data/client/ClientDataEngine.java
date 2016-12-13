@@ -50,8 +50,8 @@ public class ClientDataEngine implements InterfaceDataNetwork {
 	public ClientDataEngine() {
 		super();
 		this.profileManager = new ProfileManager();
-		this.actualTable = null;
-		this.actualRole = null;
+		this.actualTable = new SimpleObjectProperty<GameTable>();
+		this.actualRole = new SimpleObjectProperty<UserRole>();
 		this.interfaceMain = new InterImplDataMain(this);
 		//si on fait pas confiance à main on decommente cette ligne
 		//this.interfaceTable = new InterImplDataTable(this);
