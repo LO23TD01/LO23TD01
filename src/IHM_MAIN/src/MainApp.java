@@ -238,8 +238,6 @@ public class MainApp extends Application {
 		       // Profile profil = new Profile(null,"test","test","test",25);
 		        Profile profil = interImplDataMain.getLocalProfile();
 		      //clientData.getProfileManager().setCurrentProfile(profil);
-		     // ProfileManager profilMan = new ProfileManager();
-		     // profilMan.setCurrentProfile(profil);
 		       // System.out.print(profil);
 		        User user= new User(profil);
 		        controller.setPerson(user);

@@ -133,8 +133,6 @@ public class ControllerApplication {
 		        InterImplDataMain interImplDataMain = mainApp.getInterImplDataMain();
 		        Profile profil = interImplDataMain.getLocalProfile();
 		      //clientData.getProfileManager().setCurrentProfile(profil);
-		     // ProfileManager profilMan = new ProfileManager();
-		     // profilMan.setCurrentProfile(profil);
 		       // System.out.print(profil);
 		        User user= new User(profil);
 		        controller.setPerson(user);
