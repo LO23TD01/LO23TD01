@@ -20,8 +20,8 @@ import network.client.ComClient;
 public class InterImplDataMain implements InterfaceDataIHMLobby{
 
 	private ClientDataEngine dataEngine;
-	private ObservableList<User> userList;
-	private ObservableList<GameTable> tableList;
+	private ObservableList<User> userList = FXCollections.observableArrayList();
+	private ObservableList<GameTable> tableList = FXCollections.observableArrayList();
 	private ObjectProperty<Profile> currentProfile;
 
 	//appelé uniquement par le ClientDataEngine
