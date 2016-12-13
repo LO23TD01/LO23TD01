@@ -145,7 +145,7 @@ public class MainApp extends Application {
 
 	private void openMain(){
 		try {
-			FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("./view/ihmmain.fxml"));
+			FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("./view/mainWindow.fxml"));
 			BorderPane root;
 			root = (BorderPane) fxmlLoader.load();
 
