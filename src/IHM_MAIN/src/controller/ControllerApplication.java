@@ -89,6 +89,7 @@ public class ControllerApplication {
 		fillListView();
 		//ObservableList<GameTable> yolo = interImplDataMain.getTableList();
 		System.out.println(interImplDataMain);
+		interfaceLobby = new IHMLobbyAPI();
 	}
 
 	@FXML
@@ -270,7 +271,9 @@ public class ControllerApplication {
 
 	@FXML
 	private void handleRowSelectUser() throws IncompleteProfileException{
+
 	    User row = connectedUsers.getSelectionModel().getSelectedItem();
+		//System.out.println(row.getPublicData().getLogin());
 	    if (row==null) return;
 	    if(row!=tempUser){
 	        tempUser=row;
@@ -279,11 +282,12 @@ public class ControllerApplication {
 	        Date now = new Date();
 	        long diff = now.getTime() - lastClickUser.getTime();
 	        if (diff < 300){
-				interfaceLobby.displayProfile(tempUser.getPublicData());
+	        	System.out.println("on affiche le profil!!");
+	        	System.out.println(interfaceLobby);
+				interfaceLobby.displayProfile(row, createGame.getScene().getWindow());
 	        } else {
 	            lastClickUser = new Date();
 	        }
 	    }
 	}
-
 }
