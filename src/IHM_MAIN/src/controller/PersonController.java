@@ -101,10 +101,11 @@ public class PersonController {
 	        lostField.setText(Integer.toString(profil.getNbGameLost()));
 	        leaveField.setText(Integer.toString(profil.getNbGameAbandonned()));
 System.out.print(wonField);
-
-
-	        Image imageObject = new Image("file:view/uti.jpg");
-	        imgField.setImage(imageObject);
+if (profil.getAvatar() != null)
+ 			{BufferedImage img = (BufferedImage) profil.getAvatar();
+			imgField.setImage(SwingFXUtils.toFXImage(img, null));}
+	        //Image imageObject = new Image("file:view/uti.jpg");
+	        //imgField.setImage(imageObject);
 
 	    }
 
@@ -208,6 +209,8 @@ System.out.print(wonField);
 	            profil.setFirstName(firstNameField.getText());
 	            profil.setSurName(lastNameField.getText());
 	            profil.setAge(Integer.parseInt(ageField.getText()));
+	            BufferedImage img=SwingFXUtils.fromFXImage(imgField.getImage(), null);
+	            profil.setAvatar(img);
 	            intImpl.changeMyProfile(profil);
 
 	            okClicked = true;

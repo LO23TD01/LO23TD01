@@ -130,7 +130,7 @@ public class MainApp extends Application {
 	    editBtn.setOnAction(e -> editHandler(e));
 
 	    userTextField.setText("tmp");
-	    userPassField.setText("utc");
+	    userPassField.setText("tmp");
 	    serverTextField.setText("localhost");
 
 	    primaryStage.show();
