@@ -130,9 +130,9 @@ public class MainApp extends Application {
 	    editBtn.setOnAction(e -> editHandler(e));
 
 	    userTextField.setText("tmp");
-	    userPassField.setText("utc");
+	    userPassField.setText("tmp");
 	    serverTextField.setText("localhost");
-	    
+
 	    primaryStage.show();
 
 	}
@@ -223,12 +223,12 @@ public class MainApp extends Application {
 		        // Set the person into the controller.
 		        PersonController controller = loader.getController();
 		        controller.setDialogStage(dialogStage);
-	        	File fXmlFile = new File("file:./../monProfile.xml");
+		         Profile profil = interImplDataMain.getLocalProfile();
 
 		       Profile profil= controller.loadPersonDataFromFile(fXmlFile);
 		        //Profile profil = new Profile(null,"test","test","test",25);
 		        User user= new User(profil);
-		        controller.setPerson(user);
+		        //controller.setPerson(user);
 
 		        // Show the dialog and wait until the user closes it
 		        dialogStage.showAndWait();
@@ -295,7 +295,7 @@ public class MainApp extends Application {
 	     // Set the person into the controller.
 	        PersonController controller = loader.getController();
 	        controller.setDialogStage(dialogStage);
-	        controller.setPerson(user);
+	        //controller.setPerson(user);
 
 	     // Show the dialog and wait until the user closes it
 	        dialogStage.showAndWait();

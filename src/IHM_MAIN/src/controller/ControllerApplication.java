@@ -114,8 +114,9 @@ public class ControllerApplication {
 		        //InterImplDataMain interImplDataMain = mainApp.getInterImplDataMain();
 		       Profile profil = this.interImplDataMain.getLocalProfile();
 
-		     //  Profile profil= controller.loadPersonDataFromFile(fXmlFile);
-		      //  Profile profil = new Profile(null,"test","test","test",25);
+		        InterImplDataMain interImplDataMain = mainApp.getInterImplDataMain();
+		        Profile profil = interImplDataMain.getLocalProfile();
+
 		        User user= new User(profil);
 		        controller.setPerson(user);
 

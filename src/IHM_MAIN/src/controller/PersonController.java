@@ -94,18 +94,19 @@ public class PersonController {
 	    public void setPerson(User person) {
 	        this.user = person;
 
-	        firstNameField.setText(person.getPublicData().getFirstName());
-	        lastNameField.setText(person.getPublicData().getSurName());
-	        pseudoField.setText(person.getPublicData().getNickName());
-	        ageField.setText(Integer.toString(person.getPublicData().getAge()));
-	        wonField.setText(Integer.toString(person.getPublicData().getNbGameWon()));
-	        lostField.setText(Integer.toString(person.getPublicData().getNbGameLost()));
-	        leaveField.setText(Integer.toString(person.getPublicData().getNbGameAbandonned()));
+	        firstNameField.setText(profil.getFirstName());
+	        lastNameField.setText(profil.getSurName());
+	        pseudoField.setText(profil.getNickName());
+	        ageField.setText(Integer.toString(profil.getAge()));
+	        wonField.setText(Integer.toString(profil.getNbGameWon()));
+	        lostField.setText(Integer.toString(profil.getNbGameLost()));
+	        leaveField.setText(Integer.toString(profil.getNbGameAbandonned()));
 System.out.print(wonField);
-
-
-	        Image imageObject = new Image("file:view/uti.jpg");
-	        imgField.setImage(imageObject);
+if (profil.getAvatar() != null)
+ 			{BufferedImage img = (BufferedImage) profil.getAvatar();
+			imgField.setImage(SwingFXUtils.toFXImage(img, null));}
+	        //Image imageObject = new Image("file:view/uti.jpg");
+	        //imgField.setImage(imageObject);
 
 	    }
 
@@ -201,62 +202,24 @@ System.out.print(wonField);
 	    @FXML
 	    private void handleOk() {
 	        if (isInputValid()) {
-	        	Profile profil = new Profile(null,pseudoField.getText(),firstNameField.getText(),lastNameField.getText(),Integer.parseInt(ageField.getText()));
-	            user.setPublicData(profil);
 	            InterImplDataMain intImpl = this.getInterImplDataMain();
+	            Profile profil = intImpl.getLocalProfile();
+	            profil.setNickName(pseudoField.getText());
+	            profil.setFirstName(firstNameField.getText());
+	            profil.setSurName(lastNameField.getText());
+	            profil.setAge(Integer.parseInt(ageField.getText()));
+	            BufferedImage img=SwingFXUtils.fromFXImage(imgField.getImage(), null);
+	            profil.setAvatar(img);
 	            intImpl.changeMyProfile(profil);
 
 	            okClicked = true;
-	        	/*File fXmlFile = new File("file:./../monProfile.xml");
-
-		        try {
-
-		        	  DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
-		        	  DocumentBuilder dBuilder = dbFactory.newDocumentBuilder();
-		        	  Document doc = dBuilder.parse(fXmlFile);
-		        	  doc.getDocumentElement().normalize();
-
-		        	  NodeList nList = doc.getElementsByTagName("profile");
-
-		        	  for (int temp = 0; temp < nList.getLength(); temp++) {
-
-		        	     Node nNode = nList.item(temp);
-		        	     if (nNode.getNodeType() == Node.ELEMENT_NODE) {
-
-		        	        Element eElement = (Element) nNode;
-
-		        	        setTagValue("nickName",eElement,profil.getNickName());
-		        	        setTagValue("surName",eElement,profil.getSurName());
-		        	        setTagValue("firstName",eElement,profil.getFirstName());
-		        	        setTagValue("age",eElement,Integer.toString(profil.getAge()));
-
-		        	     }
-		        	     }
-		        		// write the content into xml file
-		        		TransformerFactory transformerFactory = TransformerFactory.newInstance();
-		        		Transformer transformer = transformerFactory.newTransformer();
-		        		DOMSource source = new DOMSource(doc);
-		        		StreamResult result = new StreamResult(fXmlFile);
-		        		transformer.transform(source, result);
-
-		        		System.out.println("Done");
-		        } catch (ParserConfigurationException pce) {
-		    		pce.printStackTrace();
-		    	   } catch (TransformerException tfe) {
-		    		tfe.printStackTrace();
-		    	   } catch (IOException ioe) {
-		    		ioe.printStackTrace();
-		    	   } catch (org.xml.sax.SAXException sae) {
-		    		sae.printStackTrace();
-		    	   }
-		    	}*/
 
 
 
 
 	            dialogStage.close();
 	        }
-	        }
+	    }
 	    @FXML
 	    public void handleChangePhoto(){
 	    	 FileChooser fileChooser = new FileChooser();
