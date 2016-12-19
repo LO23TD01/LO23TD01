@@ -143,6 +143,7 @@ public class MainApp extends Application {
 			BorderPane root;
 			root = (BorderPane) fxmlLoader.load();
 
+
 			ControllerApplication controller = (ControllerApplication) fxmlLoader.getController();
 			controller.setInterfaceData(this.interImplDataMain);
 			controller.init();
@@ -223,10 +224,8 @@ public class MainApp extends Application {
 		        // Set the person into the controller.
 		        PersonController controller = loader.getController();
 		        controller.setDialogStage(dialogStage);
-	        	File fXmlFile = new File("file:./../monProfile.xml");
+		         Profile profil = interImplDataMain.getLocalProfile();
 
-		       Profile profil= controller.loadPersonDataFromFile(fXmlFile);
-		        //Profile profil = new Profile(null,"test","test","test",25);
 		        User user= new User(profil);
 		        //controller.setPerson(user);
 
@@ -273,6 +272,7 @@ public class MainApp extends Application {
 					else
 						this.exceptionMessage= "Connexion Réseau Impossible";
 					this.waitingWindow.close();
+
 		}
 		public DataConnection(WaitingWindow t){
 			this.waitingWindow = t;
@@ -307,11 +307,6 @@ public class MainApp extends Application {
 	    }
 	}
 
-	public InterImplDataMain getInterImplDataMain() {
-		return this.interImplDataMain;
-	}
-
-
 
 	public Stage getPrimaryStage()
 	{
@@ -325,6 +320,14 @@ public class MainApp extends Application {
 
 	public static void main(String[] args) {
 		launch(args);
+	}
+
+	public InterImplDataMain getInterImplDataMain() {
+		return interImplDataMain;
+	}
+
+	public void setInterImplDataMain(InterImplDataMain interImplDataMain) {
+		this.interImplDataMain = interImplDataMain;
 	}
 
 

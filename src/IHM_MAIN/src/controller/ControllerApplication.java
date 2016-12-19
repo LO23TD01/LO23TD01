@@ -93,6 +93,7 @@ public class ControllerApplication {
 
 	@FXML
 	private void handleNameButton() {
+
 		 try {
 		        // Load the fxml file and create a new stage for the popup dialog.
 		        FXMLLoader loader = new FXMLLoader();
@@ -109,6 +110,7 @@ public class ControllerApplication {
 		        // Set the person into the controller.
 		        PersonController controller = loader.getController();
 		        controller.setDialogStage(dialogStage);
+
 		        controller.setInterImplDataMain(this.interImplDataMain);
 	        	//File fXmlFile = new File("file:./../monProfile.xml");
 		        //InterImplDataMain interImplDataMain = mainApp.getInterImplDataMain();
@@ -116,6 +118,7 @@ public class ControllerApplication {
 
 		        //User user= new User(profil);
 		        controller.setPerson(profil);
+
 
 		        // Show the dialog and wait until the user closes it
 		        dialogStage.showAndWait();
@@ -181,6 +184,7 @@ public class ControllerApplication {
 		players.setCellValueFactory(cellData -> constructPlayers(cellData));
 		spectators.setCellValueFactory(cellData -> constructSpectators(cellData));
 		owner.setCellValueFactory(cellData -> cellData.getValue().creatorProperty().getValue().publicDataProperty().getValue().nickNameProperty());
+
 
 
 		FilteredList<GameTable> filtered = new FilteredList<>(interImplDataMain.getTableList(), p -> true);

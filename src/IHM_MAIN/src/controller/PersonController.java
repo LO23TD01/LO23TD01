@@ -211,50 +211,6 @@ System.out.print(wonField);
 	            intImpl.changeMyProfile(profil);
 
 	            okClicked = true;
-	        	/*File fXmlFile = new File("file:./../monProfile.xml");
-
-		        try {
-
-		        	  DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
-		        	  DocumentBuilder dBuilder = dbFactory.newDocumentBuilder();
-		        	  Document doc = dBuilder.parse(fXmlFile);
-		        	  doc.getDocumentElement().normalize();
-
-		        	  NodeList nList = doc.getElementsByTagName("profile");
-
-		        	  for (int temp = 0; temp < nList.getLength(); temp++) {
-
-		        	     Node nNode = nList.item(temp);
-		        	     if (nNode.getNodeType() == Node.ELEMENT_NODE) {
-
-		        	        Element eElement = (Element) nNode;
-
-		        	        setTagValue("nickName",eElement,profil.getNickName());
-		        	        setTagValue("surName",eElement,profil.getSurName());
-		        	        setTagValue("firstName",eElement,profil.getFirstName());
-		        	        setTagValue("age",eElement,Integer.toString(profil.getAge()));
-
-		        	     }
-		        	     }
-		        		// write the content into xml file
-		        		TransformerFactory transformerFactory = TransformerFactory.newInstance();
-		        		Transformer transformer = transformerFactory.newTransformer();
-		        		DOMSource source = new DOMSource(doc);
-		        		StreamResult result = new StreamResult(fXmlFile);
-		        		transformer.transform(source, result);
-
-		        		System.out.println("Done");
-		        } catch (ParserConfigurationException pce) {
-		    		pce.printStackTrace();
-		    	   } catch (TransformerException tfe) {
-		    		tfe.printStackTrace();
-		    	   } catch (IOException ioe) {
-		    		ioe.printStackTrace();
-		    	   } catch (org.xml.sax.SAXException sae) {
-		    		sae.printStackTrace();
-		    	   }
-		    	}*/
-
 
 
 
