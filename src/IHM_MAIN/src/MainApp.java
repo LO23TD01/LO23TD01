@@ -12,6 +12,7 @@ import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.BorderPane;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
+import javafx.stage.WindowEvent;
 
 import java.io.File;
 import java.io.IOException;
@@ -27,6 +28,7 @@ import org.w3c.dom.NodeList;
 import data.client.*;
 
 import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Node;
@@ -151,6 +153,11 @@ public class MainApp extends Application {
 			stage.setTitle("Main");
 			stage.setScene(new_scene);
 			stage.show();
+			stage.setOnCloseRequest(new EventHandler<WindowEvent>() {
+	          public void handle(WindowEvent we) {
+	             interImplDataMain.logout();
+	          }
+		    });
 			Stage this_window = (Stage)scene.getWindow();
 			this_window.close();
 
