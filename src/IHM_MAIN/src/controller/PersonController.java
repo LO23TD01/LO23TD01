@@ -91,16 +91,15 @@ public class PersonController {
 	     *
 	     * @param person
 	     */
-	    public void setPerson(User person) {
-	        this.user = person;
+	    public void setPerson(Profile profil) {
 
-	        firstNameField.setText(person.getPublicData().getFirstName());
-	        lastNameField.setText(person.getPublicData().getSurName());
-	        pseudoField.setText(person.getPublicData().getNickName());
-	        ageField.setText(Integer.toString(person.getPublicData().getAge()));
-	        wonField.setText(Integer.toString(person.getPublicData().getNbGameWon()));
-	        lostField.setText(Integer.toString(person.getPublicData().getNbGameLost()));
-	        leaveField.setText(Integer.toString(person.getPublicData().getNbGameAbandonned()));
+	        firstNameField.setText(profil.getFirstName());
+	        lastNameField.setText(profil.getSurName());
+	        pseudoField.setText(profil.getNickName());
+	        ageField.setText(Integer.toString(profil.getAge()));
+	        wonField.setText(Integer.toString(profil.getNbGameWon()));
+	        lostField.setText(Integer.toString(profil.getNbGameLost()));
+	        leaveField.setText(Integer.toString(profil.getNbGameAbandonned()));
 System.out.print(wonField);
 
 
@@ -201,9 +200,14 @@ System.out.print(wonField);
 	    @FXML
 	    private void handleOk() {
 	        if (isInputValid()) {
-	        	Profile profil = new Profile(null,pseudoField.getText(),firstNameField.getText(),lastNameField.getText(),Integer.parseInt(ageField.getText()));
-	            user.setPublicData(profil);
+	        	//Profile profil = new Profile(null,pseudoField.getText(),firstNameField.getText(),lastNameField.getText(),Integer.parseInt(ageField.getText()));
+	            //user.setPublicData(profil);
 	            InterImplDataMain intImpl = this.getInterImplDataMain();
+	            Profile profil = intImpl.getLocalProfile();
+	            profil.setNickName(pseudoField.getText());
+	            profil.setFirstName(firstNameField.getText());
+	            profil.setSurName(lastNameField.getText());
+	            profil.setAge(Integer.parseInt(ageField.getText()));
 	            intImpl.changeMyProfile(profil);
 
 	            okClicked = true;

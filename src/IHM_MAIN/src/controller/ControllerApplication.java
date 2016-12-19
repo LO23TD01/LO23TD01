@@ -114,10 +114,8 @@ public class ControllerApplication {
 		        //InterImplDataMain interImplDataMain = mainApp.getInterImplDataMain();
 		       Profile profil = this.interImplDataMain.getLocalProfile();
 
-		     //  Profile profil= controller.loadPersonDataFromFile(fXmlFile);
-		      //  Profile profil = new Profile(null,"test","test","test",25);
-		        User user= new User(profil);
-		        controller.setPerson(user);
+		        //User user= new User(profil);
+		        controller.setPerson(profil);
 
 		        // Show the dialog and wait until the user closes it
 		        dialogStage.showAndWait();
