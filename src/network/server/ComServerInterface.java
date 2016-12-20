@@ -142,7 +142,7 @@ public interface ComServerInterface {
 	 * @param msg Message of the exception
 	 */
 	public void raiseException(List<UUID> receivers, String msg);
-	
+
 	/**
 	 * Adds a player to a table
 	 * @param receivers List of receivers' ID
@@ -210,6 +210,25 @@ public interface ComServerInterface {
 	 * @param winner Losing player's ID
 	 */
 	public void hasLost(List<UUID> receivers, UUID winner);
+
+	/**
+	 * Changes game state
+	 * @param receivers List of receivers' ID
+	 * @param state State to which the game will be changed
+	 */
 	public void changeState(List<UUID> receivers, State state);
+
+	/**
+	 * Changes turn state
+	 * @param receivers List of receivers' ID
+	 * @param turnState State to which the turn will be changed
+	 */
 	public void changeTurnState(List<UUID> receivers, TurnState turnState);
+
+	/**
+	 * Sets a player as the game creator
+	 * @param receivers List of receivers' ID
+	 * @param creator ID of the creator
+	 */
+	public void setCreator(List<UUID> receivers, UUID creator);
 }

@@ -3,6 +3,7 @@ package ihmTable.controller;
 import java.io.IOException;
 
 import data.GameTable;
+import data.State;
 import data.User;
 import data.client.InterImplDataTable;
 import javafx.beans.value.ObservableValue;
@@ -40,15 +41,15 @@ public class GameStatsController {
     public GameTable gameTableInstance;
 
     private InterImplDataTable interImplDataTable;
-    
+
+
     public void initialize() throws IOException {
-    	
     	handleAsserts();
     }
 	
 	private void setLabel() {
 		if(gameTableInstance != null)
-			GameStats_PhaseLabel.setText(String.valueOf(gameTableInstance.getGameState()));
+			GameStats_PhaseLabel.setText(String.valueOf(gameTableInstance.getGameState().getState()));
 		GameStats_StakeLabel.setText("0");
 		GameStats_BestScoreLabel.setText("0 0 0");
 		GameStats_BestScorePlayer.setText("0");
@@ -61,38 +62,38 @@ public class GameStatsController {
 		gameTableInstance = this.interImplDataTable.getActualTable();
 		setLabel();
 		Bindings();
-		
 	}
 
 	private void Bindings() {
-		// TODO *** Quand Data a implémenté la fonction pour récupérer la meilleure valeur, le joueur, la pire valeur, le joueur
-//		gameTableInstance.ElementBestScore().addListener((observable, oldValue, newValue) -> bestScoreListener(observable, oldValue, newValue));
-//		gameTableInstance.ElementBestScorePlayer().addListener((observable, oldValue, newValue) -> bestScorePlayerListener(observable, oldValue, newValue));
-//		gameTableInstance.ElementScoreToBeat().addListener((observable, oldValue, newValue) -> ScoreToBeatListener(observable, oldValue, newValue));
-//		gameTableInstance.ElementScoreToBeatPlayer().addListener((observable, oldValue, newValue) -> ScoreToBeatPlayerListener(observable, oldValue, newValue));
+		this.gameTableInstance.getGameState().stateProperty()
+		.addListener((observable, oldValue, newValue) -> stateListener(observable, oldValue, newValue));
+
+		this.gameTableInstance.getGameState().getActualPlayer().getPublicData().uuidProperty()
+		.addListener(event -> actualPlayerChange());
+
+		this.gameTableInstance.getGameState().chipStackProperty()
+		.addListener((observable, oldValue, newValue) -> chipStackListener(observable, oldValue, newValue));
 	}
+
+	private void actualPlayerChange(){
+		GameStats_BestScoreLabel.setText(String.valueOf(this.interImplDataTable.getValueCurrentTurn()));
+		GameStats_BestScorePlayer.setText(String.valueOf(
+				this.interImplDataTable.getBest().getPlayer().getPublicData().loginProperty()));
+		GameStats_ScoreToBeatLabel.setText(String.valueOf(this.interImplDataTable.getValueCurrentTurn()));
+		GameStats_ScoreToBeatPlayer.setText(String.valueOf(
+				this.interImplDataTable.getBest().getPlayer().getPublicData().loginProperty()));
+	}
+
 	
-	private Object bestScoreListener(ObservableValue<? extends String> observable, String oldValue,
-			String newValue) {
-		GameStats_BestScoreLabel.setText(String.valueOf(newValue));
+	private Object stateListener(ObservableValue<? extends State> observable, State oldValue,
+			State newValue){
+		GameStats_PhaseLabel.setText(String.valueOf(newValue));
 		return null;
 	}
 	
-	private Object bestScorePlayerListener(ObservableValue<? extends Number> observable, Number oldValue,
+	private Object chipStackListener(ObservableValue<? extends Number> observable, Number oldValue,
 			Number newValue) {
-		GameStats_BestScorePlayer.setText(String.valueOf(newValue));
-		return null;
-	}
-	
-	private Object ScoreToBeatListener(ObservableValue<? extends String> observable, String oldValue,
-			String newValue) {
-		GameStats_BestScoreLabel.setText(String.valueOf(newValue));
-		return null;
-	}
-	
-	private Object ScoreToBeatPlayerListener(ObservableValue<? extends Number> observable, Number oldValue,
-			Number newValue) {
-		GameStats_BestScorePlayer.setText(String.valueOf(newValue));
+		GameStats_StakeLabel.setText(String.valueOf(newValue));
 		return null;
 	}
 	

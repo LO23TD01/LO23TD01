@@ -173,9 +173,11 @@ public class ServerDataEngine implements InterfaceDataNetwork {
 			// Success
 			userFull.setActualTable(tableFull.getEmptyVersion());
 			userFull.setSpectating(!isPlayer);
-			if (isPlayer)
-				this.comServer.newPlayerOnTable(getUUIDList(tableFull.getAllList()), userFull.getPublicData(),
-						tableFull);
+			if (isPlayer){
+				List<UUID> currentPlayers = getUUIDList(tableFull.getAllList());
+				currentPlayers.remove(user.getPublicData().getUUID());
+				this.comServer.newPlayerOnTable(currentPlayers, userFull.getPublicData(), tableFull);
+			}
 			else
 				this.comServer.newPlayerOnTable(getUUIDList(tableFull.getAllList()), userFull.getPublicData(),
 						tableFull);
@@ -333,7 +335,7 @@ public class ServerDataEngine implements InterfaceDataNetwork {
 	@Override
 	public void connectUser(Profile profile) {
 		User newUser = new User(profile);
-		
+
 		//To-Fix : Impossible de créer un full user sans être connecté mais impossible de se connecter sans un full user
 		//En attendant que ce problème soit resolue on accepte la connexion pour pouvoir continuer à tester les autres fonctionnalités
 		 //if(!newUser.isFullVersion())
@@ -857,6 +859,8 @@ public class ServerDataEngine implements InterfaceDataNetwork {
 		else
 		if(tableFull.getVote())
 			this.comServer.raiseException(user,"Vote déjà en cours");
+		else if(tableFull.getCreator().getPublicData().getUUID() != user)
+			this.comServer.raiseException(user,"Vous n'etes pas le créateur de la table.");
 		else{
 		tableFull.startVote();
 		this.comServer.askStopGameEveryUser(getUUIDList(tableFull.getPlayerList()));
@@ -893,6 +897,11 @@ public class ServerDataEngine implements InterfaceDataNetwork {
 						 userFull2.setActualTable(null);
 				 }
 				 this.tableList.remove(tableFull);
+			}
+			else
+			{
+				tableFull.setCreator(tableFull.getPlayerList().get(0));
+				this.comServer.setCreator(getUUIDList(tableFull.getAllList()),tableFull.getCreator().getPublicData().getUUID());
 			}
 		}}
 

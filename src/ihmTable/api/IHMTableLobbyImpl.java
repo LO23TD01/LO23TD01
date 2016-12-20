@@ -14,22 +14,20 @@ import javafx.stage.Stage;
 public class IHMTableLobbyImpl implements IHMTableLobby {
 
 	public void displayTable(InterImplDataTable interImplDataTable, User user) throws IOException {
-		//Loading table
+		// Loading table
 		FXMLLoader tableLoader = new FXMLLoader(getClass().getResource("/ihmTable/resources/view/Table.fxml"));
 		AnchorPane table = (AnchorPane) tableLoader.load();
 
-		//Setting data to table
-		TableController tableController = (TableController) tableLoader.getController();
-		tableController.setData(interImplDataTable, user);
-
-		//Displaying the new stage
+		// Displaying the new stage
 		Stage stage = new Stage();
 		stage.setTitle(interImplDataTable.getActualTable().getName());
 		stage.setScene(new Scene(table));
 		stage.setMaximized(true);
-		stage.setAlwaysOnTop(true);
 		stage.initModality(Modality.WINDOW_MODAL);
 		stage.show();
-		
+
+		// Setting data to table
+		TableController tableController = (TableController) tableLoader.getController();
+		tableController.setData(interImplDataTable, user);
 	}
 }

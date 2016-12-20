@@ -52,11 +52,10 @@ public class ComClient implements ComClientInterface{
 	 * @param ipAdress	the IP address of the game server
 	 * @param serverPort	the port of the game server the socket will connect to 
 	 */
-	public ComClient(String ipAdress, int serverPort) {
+	public ComClient(String ipAdress, int serverPort) throws Exception {
 		this.serverPort = serverPort;
 		this.ipAdress = ipAdress;
 		
-		try {
 			socketToServer = new Socket(ipAdress, serverPort);
 			
 			System.out.println("Client connect� au serveur");
@@ -65,11 +64,6 @@ public class ComClient implements ComClientInterface{
         	new Thread(server).start();
         	this.server = server;
 			
-		} catch (UnknownHostException e) {
-			e.printStackTrace();
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
 	}
 	
 	/*

@@ -18,8 +18,8 @@ public class TablesUsersListMessage implements IMessage {
 	String tableList;
 	
 	public TablesUsersListMessage(List<User> userList, List<GameTable> tableList) {
-		User[] users = userList.toArray(new User[1]);
-		GameTable[] tables = tableList.toArray(new GameTable[1]);
+		User[] users = userList.toArray(new User[0]);
+		GameTable[] tables = tableList.toArray(new GameTable[0]);
 		
 		this.userList = FxGson.create().toJson(users);
 		this.tableList = FxGson.create().toJson(tables);

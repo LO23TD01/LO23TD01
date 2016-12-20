@@ -1,6 +1,7 @@
 package IHM_MAIN.src.controller;
 
 import javafx.beans.property.ReadOnlyObjectWrapper;
+import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
@@ -85,10 +86,10 @@ public class ControllerApplication {
 	}
 
     public void init() {
-		//filterTable();
+		filterTable();
 		fillListView();
 		//ObservableList<GameTable> yolo = interImplDataMain.getTableList();
-		System.out.println(interImplDataMain);
+		System.out.println(interImplDataMain.getTableList());
 		interfaceLobby = new IHMLobbyAPI();
 	}
 
@@ -115,7 +116,6 @@ public class ControllerApplication {
 		        //InterImplDataMain interImplDataMain = mainApp.getInterImplDataMain();
 		       Profile profil = this.interImplDataMain.getLocalProfile();
 
-		        InterImplDataMain interImplDataMain = mainApp.getInterImplDataMain();
 
 		        controller.setPerson(profil);
 
@@ -160,19 +160,23 @@ public class ControllerApplication {
 
 	StringProperty constructPlayers(CellDataFeatures<GameTable, String> cd){
 		String ret = cd.getValue().getPlayerList().size() + "/" + cd.getValue().parametersProperty().getValue().getNbPlayerMax();
-		ObservableValue<String> obss = new ReadOnlyObjectWrapper<String>(ret);
-		return (StringProperty) obss;
+		System.out.println(cd.getValue().getCreator().getPublicData().getLogin());
+		//ObservableValue<String> obss = new ReadOnlyObjectWrapper<String>(ret);
+		StringProperty st = new SimpleStringProperty();
+		st.setValue(ret);
+		return st;
 	}
 
 
 	StringProperty constructSpectators(CellDataFeatures<GameTable, String> cd){
 		String ret;
-		if (cd.getValue().parametersProperty().getValue().authorizeSpecProperty().get() == true)
+		if (cd.getValue().parametersProperty().getValue().authorizeSpecProperty().get() == false)
 			ret = "Disabled";
 		else
 			ret = String.valueOf(cd.getValue().getSpectatorList().size());
-		ObservableValue<String> obss = new ReadOnlyObjectWrapper<String>(ret);
-		return (StringProperty) obss;
+		StringProperty st = new SimpleStringProperty();
+		st.setValue(ret);
+		return st;
 	}
 
 
@@ -182,7 +186,7 @@ public class ControllerApplication {
 		gameName.setCellValueFactory(cellData -> cellData.getValue().nameProperty());
 		players.setCellValueFactory(cellData -> constructPlayers(cellData));
 		spectators.setCellValueFactory(cellData -> constructSpectators(cellData));
-		owner.setCellValueFactory(cellData -> cellData.getValue().creatorProperty().getValue().publicDataProperty().getValue().nickNameProperty());
+		owner.setCellValueFactory(cellData -> cellData.getValue().creatorProperty().getValue().publicDataProperty().getValue().loginProperty());
 
 
 		FilteredList<GameTable> filtered = new FilteredList<>(interImplDataMain.getTableList(), p -> true);
@@ -241,9 +245,9 @@ public class ControllerApplication {
 	        if (diff < 300){
 	     		//Parent root;
 	     		try {
-	     			FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("./view/joinTable.fxml"));
-	     			BorderPane root;
-	    			root = (BorderPane) fxmlLoader.load();
+	     			FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("../view/joinTable.fxml"));
+	     			AnchorPane root;
+	    			root = (AnchorPane) fxmlLoader.load();
 	     			Window parent = createGame.getScene().getWindow();
 	     			joinTableController controller = (joinTableController) fxmlLoader.getController();
 	    			controller.setInterfaceData(this.interImplDataMain);
@@ -260,7 +264,6 @@ public class ControllerApplication {
 	     		} catch (Exception e1) {
 	     			e1.printStackTrace();
 	     		}
-	     		interImplDataMain.askJoinTable(tempGame, true);
 	        } else {
 	            lastClickGame = new Date();
 	        }

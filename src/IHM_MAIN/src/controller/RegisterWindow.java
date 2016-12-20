@@ -58,21 +58,32 @@ public class RegisterWindow{
 
 	 @FXML
 	 private void handleValiderButton(ActionEvent event) {
-		
 		try{
-			System.out.print("\ncreate a new profile with \nlogin : "+this.loginField.getText() + "\npassword : " + this.pswdField.getText() +"\n");
-			this.interImplDataMain.createProfile(this.loginField.getText(), this.pswdField.getText());
-			System.out.print("just created a new profile\n");
-			currentStage.close();
+			if(this.loginField.getText().equals(""))
+				throw new Exception();
+			if(this.pswdField.getText().equals(""))
+				throw new Exception();
+			try{
+				System.out.print("\ncreate a new profile with \nlogin : "+this.loginField.getText() + "\npassword : " + this.pswdField.getText() +"\n");
+				this.interImplDataMain.createProfile(this.loginField.getText(), this.pswdField.getText());
+				System.out.print("just created a new profile\n");
+				currentStage.close();
+			}
+			catch(Exception e){
+				Alert alert = new Alert(AlertType.ERROR);
+	            alert.setTitle("Error");
+	            alert.setHeaderText("Error while creating profile");
+	            alert.setContentText("Error while creating profile");
+	            alert.showAndWait();
+			}
 		}
 		catch(Exception e){
 			Alert alert = new Alert(AlertType.ERROR);
             alert.setTitle("Error");
-            alert.setHeaderText("Error while creating profile");
-            alert.setContentText("Error while creating profile");
+            alert.setHeaderText("You should not have a blank password or login");
+            alert.setContentText("You should not have a blank password or login");
             alert.showAndWait();
 		}
 		
 	 }
-	
 }

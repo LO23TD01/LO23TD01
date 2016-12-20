@@ -10,8 +10,11 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.control.Button;
 import javafx.scene.layout.HBox;
+import javafx.beans.property.IntegerProperty;
 import javafx.beans.property.SimpleBooleanProperty;
 import javafx.beans.property.SimpleIntegerProperty;
+import javafx.beans.value.ObservableValue;
+import javafx.collections.ObservableIntegerArray;
 
 public class DiceLauncherController {
 
@@ -45,38 +48,32 @@ public class DiceLauncherController {
 
 		launchButton.setOnAction(event -> launch());
 
-		// Listener pour quand la valeur d'un dés change
-		dice1.value.addListener(event -> valueDice1Change());
-		dice2.value.addListener(event -> valueDice2Change());
-		dice3.value.addListener(event -> valueDice3Change());
-
 		// Listener pour quand un dés est selectionné ou non
 		dice1.selected.addListener(event -> selectedDiceChange());
 		dice2.selected.addListener(event -> selectedDiceChange());
 		dice3.selected.addListener(event -> selectedDiceChange());
-
-		// TODO: *** Problème getDice n'est pas une property qui est renvoyé
-		//this.interImplDataTable.getActualTable().getGameState().getData(this.interImplDataTable.getActualTable().getGameState().getActualPlayer(), false).getDices();
 	}
 
 	public void setData(InterImplDataTable interImplDataTable, User user) throws IOException{
 		this.interImplDataTable = interImplDataTable;
 		this.localUser = user;
+
+		// TODO: *** A tester listerner dice
+		// Mise à jour des donnée avec listener sur les valeurs des dés
+		this.interImplDataTable.getActualTable().getGameState().getData(this.interImplDataTable.getActualTable().getGameState().getActualPlayer(), false).d1Property().addListener((observable, oldValue, newValue) -> valueDice1Change(observable, oldValue, newValue));
+		this.interImplDataTable.getActualTable().getGameState().getData(this.interImplDataTable.getActualTable().getGameState().getActualPlayer(), false).d2Property().addListener((observable, oldValue, newValue) -> valueDice2Change(observable, oldValue, newValue));
+		this.interImplDataTable.getActualTable().getGameState().getData(this.interImplDataTable.getActualTable().getGameState().getActualPlayer(), false).d3Property().addListener((observable, oldValue, newValue) -> valueDice3Change(observable, oldValue, newValue));
 		this.interImplDataTable.getActualTable().getGameState().getActualPlayer().getPublicData().uuidProperty().addListener(event -> actualPlayerChange()); // quand le joueur qui joue change
 	}
 
 	private void launch() {
-		// TODO: *** problème imcompréhensible dataEngine is null ? Pb initialisation.
+		// TODO: *** A tester
+		this.interImplDataTable.throwDice(dice1.isSelected(), dice2.isSelected(), dice3.isSelected());
 
-		//this.interImplDataTable.throwDice(dice1.isSelected(), dice2.isSelected(), dice3.isSelected());
 		System.out.println("dice1: "+ dice1.isSelected() +", dice2:"+ dice2.isSelected()+", dice3:"+ dice3.isSelected());
 		dice1.setSelected(false);
 		dice2.setSelected(false);
 		dice3.setSelected(false);
-
-		dice1.setValue();
-		dice2.setValue();
-		dice3.setValue();
 	}
 
 	// Rend le bouton lancer les dés cliquable
@@ -95,24 +92,28 @@ public class DiceLauncherController {
 		dice3.setSelectable(false);
 	}
 
-	private void valueDice1Change(){
-		dice1.setValue(dice1.getValue()); // Mise a jour de l'image correspondant nouvelle valeur du dé
-		System.out.println("dice1 change");
+	// Listener sur les valeurs des dés
+	private Object valueDice1Change(ObservableValue<? extends Number> observable, Number oldValue, Number newValue) {
+		dice1.setValue(newValue.intValue()); // Mise a jour de l'image correspondant nouvelle valeur du dé
+		System.out.println("value dice1 change");
+		return null;
 	}
 
-	private void valueDice2Change(){
-		dice2.setValue(dice2.getValue()); // Mise a jour de l'image correspondant nouvelle valeur du dé
-		System.out.println("dice2 change");
+	private Object valueDice2Change(ObservableValue<? extends Number> observable, Number oldValue, Number newValue) {
+		dice2.setValue(newValue.intValue()); // Mise a jour de l'image correspondant nouvelle valeur du dé
+		System.out.println("value dice2 change");
+		return null;
 	}
 
-	private void valueDice3Change(){
-		dice3.setValue(dice3.getValue()); // Mise a jour de l'image correspondant nouvelle valeur du dé
-		System.out.println("dice3 change");
+	private Object valueDice3Change(ObservableValue<? extends Number> observable, Number oldValue, Number newValue) {
+		dice3.setValue(newValue.intValue()); // Mise a jour de l'image correspondant nouvelle valeur du dé
+		System.out.println("value dice3 change");
+		return null;
 	}
 
 	private void selectedDiceChange(){
-		// TODO: *** problème imcompréhensible dataEngine is null ? Pb initialisation.
-		//this.interImplDataTable.selectDice(dice3.isSelected(), dice2.isSelected(), dice3.isSelected());
+		// TODO: *** A tester
+		this.interImplDataTable.selectDice(dice3.isSelected(), dice2.isSelected(), dice3.isSelected());
 	}
 
 	private void actualPlayerChange(){
@@ -125,8 +126,10 @@ public class DiceLauncherController {
 			setDisableLaunchButton();
 		}
 
-		// TODO: *** Problème getDice n'est pas une property qui est renvoyé
-		// Mise à jour des donnée
-		//this.interImplDataTable.getActualTable().getGameState().getData(this.interImplDataTable.getActualTable().getGameState().getActualPlayer(), false).getDices();
+		// Mise à jour des donnée avec listener sur les valeurs des dés
+		this.interImplDataTable.getActualTable().getGameState().getData(this.interImplDataTable.getActualTable().getGameState().getActualPlayer(), false).d1Property().addListener((observable, oldValue, newValue) -> valueDice1Change(observable, oldValue, newValue));
+		this.interImplDataTable.getActualTable().getGameState().getData(this.interImplDataTable.getActualTable().getGameState().getActualPlayer(), false).d2Property().addListener((observable, oldValue, newValue) -> valueDice2Change(observable, oldValue, newValue));
+		this.interImplDataTable.getActualTable().getGameState().getData(this.interImplDataTable.getActualTable().getGameState().getActualPlayer(), false).d3Property().addListener((observable, oldValue, newValue) -> valueDice3Change(observable, oldValue, newValue));
 	}
+
 }

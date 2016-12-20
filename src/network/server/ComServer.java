@@ -33,6 +33,7 @@ import network.messages.PlayerQuitGameMessage;
 import network.messages.RaiseExceptionMessage;
 import network.messages.SendProfileMessage;
 import network.messages.SendTableInfoMessage;
+import network.messages.SetCreatorMessage;
 import network.messages.TablesUsersListMessage;
 import network.messages.refreshUserListMessage;
 import network.messages.SetSelectionMessage;
@@ -285,7 +286,7 @@ public class ComServer implements Runnable, ComServerInterface {
 	 */
 	@Override
 	public void askStopGameEveryUser(List<UUID> receivers) {
-		for(UUID receiver : receivers) {		
+		for(UUID receiver : receivers) {
 			SocketClientHandler handler = connectedClients.get(receiver.toString());
 			if (handler != null) {
 				handler.sendMessage(new AskStopGameMessage());
@@ -312,7 +313,7 @@ public class ComServer implements Runnable, ComServerInterface {
 			handler.sendMessage(new RaiseExceptionMessage(user, msg));
 		}
 	}
-	
+
 	/* (non-Javadoc)
 	 * @see network.server.ComServerInterface#raiseException(java.util.List, java.lang.String)
 	 */
@@ -524,6 +525,9 @@ public class ComServer implements Runnable, ComServerInterface {
         }
     }
 
+	/* (non-Javadoc)
+	 * @see network.server.ComServerInterface#changeState(java.util.List, data.State)
+	 */
 	@Override
 	public void changeState(List<UUID> receivers, State state) {
 		SocketClientHandler  handler;
@@ -534,6 +538,9 @@ public class ComServer implements Runnable, ComServerInterface {
         }
 	}
 
+	/* (non-Javadoc)
+	 * @see network.server.ComServerInterface#changeTurnState(java.util.List, data.TurnState)
+	 */
 	@Override
 	public void changeTurnState(List<UUID> receivers, TurnState turnState) {
 		SocketClientHandler  handler;
@@ -541,6 +548,19 @@ public class ComServer implements Runnable, ComServerInterface {
             handler = connectedClients.get(user.toString());
             if (handler != null)
                 handler.sendMessage(new ChangeTurnStateMessage(turnState));
+        }
+	}
+
+	/* (non-Javadoc)
+	 * @see network.server.ComServerInterface#setCreator(java.util.List, java.util.UUID)
+	 */
+	@Override
+	public void setCreator(List<UUID> receivers, UUID creator) {
+		SocketClientHandler  handler;
+        for (UUID user : receivers) {
+            handler = connectedClients.get(user.toString());
+            if (handler != null)
+            	handler.sendMessage(new SetCreatorMessage(creator));
         }
 	}
 }

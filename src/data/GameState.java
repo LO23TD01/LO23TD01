@@ -147,13 +147,21 @@ public class GameState {
 	 *
 	 */
 	public void remove(User user) {
+		User playerToRemove = null;
 		for (User player : playerList) {
 			if (player.isSame(user))
-				playerList.remove(player);
+				playerToRemove = player;
 		}
+		if(playerToRemove != null) {
+			playerList.remove(playerToRemove);
+		}
+		PlayerData dataToRemove = null;
 		for (PlayerData data : dataList) {
 			if (data.getPlayer().isSame(user))
-				dataList.remove(data);
+				dataToRemove = data;
+		}
+		if(dataToRemove != null) {
+			dataList.remove(dataToRemove);
 		}
 	}
 
@@ -336,6 +344,6 @@ public class GameState {
 		this.loserGameProperty().set(loserGame);
 	}
 
-	
+
 
 }

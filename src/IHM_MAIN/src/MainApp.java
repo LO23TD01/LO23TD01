@@ -196,6 +196,7 @@ public class MainApp extends Application {
 			Stage stage = new Stage();
 			stage.setTitle("Register");
 			stage.setScene(new_scene);
+			stage.setResizable(false);
 
 			controller.setCurrentStage(stage);
 

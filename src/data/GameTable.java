@@ -188,15 +188,16 @@ public class GameTable {
 	}
 
 	public boolean isSame(GameTable t) {
-		if (t.getUid() == this.getUid())
+		if (t.getUid().equals(this.getUid()))
 			return true;
 		return false;
 	}
 
 	public GameTable getSame(List<GameTable> l) {
 		for (GameTable t : l) {
-			if (isSame(t))
-				return t;
+			if (t!=null) 
+				if(isSame(t))
+					return t;
 		}
 		return null;
 	}

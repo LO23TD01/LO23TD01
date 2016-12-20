@@ -23,6 +23,7 @@ import ihmTable.api.IHMTableLobbyImpl;
 import javafx.application.Platform;
 import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.SimpleObjectProperty;
+import javafx.beans.property.StringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import network.client.ComClient;
@@ -39,6 +40,7 @@ public class ClientDataEngine implements InterfaceDataNetwork {
 	private final ObjectProperty<GameTable> actualTable = new SimpleObjectProperty<>();
 	private final ObjectProperty<UserRole> actualRole = new SimpleObjectProperty<>();
 	private final ObservableList<Boolean> selectionList = FXCollections.observableArrayList();
+	private StringProperty voteText;
 
 	private InterImplDataMain interfaceMain;
 	//si on fait pas confiance à main on decommente cette ligne
@@ -67,37 +69,84 @@ public class ClientDataEngine implements InterfaceDataNetwork {
 		comClientInterface.selectDice(profileManager.getCurrentProfile().getUUID(), a, b, c);
 	}*/
 
+	//TODO A CLEAN
+	public void setCreator(UUID u){
+		User newCreator = new User(new Profile(u));
+		if(this.getActualTable() !=null)
+		{
+			if(!this.getActualTable().getCreator().isSame(newCreator))
+				this.getActualTable().setCreator(newCreator);
+			if(this.profileManager.getCurrentProfile().getUUID()==u && this.getActualRole()!=UserRole.CREATOR)
+				this.setActualRole(UserRole.CREATOR);
+			this.getActualTable().setVote(false);
+		}
+
+
+	}
 
 	@Override
 	public void refreshUsersList(List<User> l) {
-		this.userList.setAll(l);
+		
+		ObservableList<User> userList = this.userList;
+		Platform.runLater(new Runnable() {
+            @Override public void run() {
+        		userList.setAll(l);
+            }
+        });
 	}
 
 	@Override
 	public void updateUsersList(List<User> l) {
 		//Appeler lorsqu'un nouveau joueur se connecte
 		//Action similaire à refreshUsersList mais dans le doute d'une autre utilité je laisse les deux
-		this.userList.setAll(l);
+		ObservableList<User> userList = this.userList;
+		Platform.runLater(new Runnable() {
+            @Override public void run() {
+        		userList.setAll(l);
+            }
+        });
 	}
 
 	@Override
 	public void updateTablesList(List<GameTable> l) {
-		this.tableList.setAll(l);
+		ObservableList<GameTable> tableList = this.tableList;
+		Platform.runLater(new Runnable() {
+            @Override public void run() {
+        		tableList.setAll(l);
+            }
+        });
 	}
 
 	@Override
 	public void updateUsers(User u) {
 		User userFound = u.getSame(this.userList);
-		if(userFound !=null)
-			this.userList.set(this.userList.indexOf(userFound), u);
-		else
-			this.userList.add(u);
+		ObservableList<User> userList = this.userList;
+		if(userFound !=null){
+			Platform.runLater(new Runnable() {
+                @Override public void run() {
+        			userList.set(userList.indexOf(userFound), u);
+                }
+            });
+		}
+		else{
+			Platform.runLater(new Runnable() {
+                @Override public void run() {
+        			userList.add(u);
+                }
+            });
+		}
 	}
 
 	@Override
 	public void addNewTable(GameTable g) {
-		if(g.getSame(this.tableList)==null)
-			this.tableList.add(g);
+		if(g.getSame(this.tableList)==null){
+			ObservableList<GameTable> tableList = this.tableList;
+			Platform.runLater(new Runnable() {
+                @Override public void run() {
+        			tableList.add(g);
+                }
+            });
+		}
 //		else
 //			throw new Exception("Erreur reception table. Table déjà existante.");
 	}
@@ -106,10 +155,10 @@ public class ClientDataEngine implements InterfaceDataNetwork {
 	public void sendTableInfo(GameTable g) {
 		if(this.actualTable.isNull().get()){
 			this.actualTable.set(g);
-			
+
 			// callback: open table with g
 			//new IHMLobbyAPI().closeWaitingWindow();
-		
+
 			InterImplDataTable inter = new InterImplDataTable(this);
 			User currentUser = new User(this.getProfileManager().getCurrentProfile());
 			if(g.getCreator().isSame(currentUser))
@@ -127,8 +176,8 @@ public class ClientDataEngine implements InterfaceDataNetwork {
 			this.actualTable.set(g);
 //		else
 //			throw new Exception("Erreur reception table. On est déjà à une table");
-		
-		
+
+
 	}
 
 	@Override
@@ -230,6 +279,7 @@ public class ClientDataEngine implements InterfaceDataNetwork {
 
 	@Override
 	public void askStopGame() {
+		this.setVoteText("Voulez-vous arretez la partie ?");
 		this.getActualTable().startVote();
 	}
 
@@ -257,6 +307,8 @@ public class ClientDataEngine implements InterfaceDataNetwork {
 
 	@Override
 	public void hasLost(User u) {
+		this.getActualTable().startVote();
+		this.setVoteText("Voulez-vous recommencer la partie ?");
 		getActualTable().getGameState().setLoserGame(u);
 	}
 
@@ -362,8 +414,13 @@ public class ClientDataEngine implements InterfaceDataNetwork {
 	}
 
 	public void setUserList(List<User> users) {
-		this.userList.clear(); //pas utile ?
-		this.userList.addAll(users);
+		ObservableList<User> userList = this.userList;
+		Platform.runLater(new Runnable() {
+            @Override public void run() {
+        		userList.clear(); //pas utile ?
+        		userList.addAll(users);
+            }
+        });
 	}
 
 	public ObservableList<GameTable> getTableList() {
@@ -371,8 +428,14 @@ public class ClientDataEngine implements InterfaceDataNetwork {
 	}
 
 	public void setTableList(List<GameTable> gameTables) {
-		this.tableList.clear(); //pas utile ?
-		this.tableList.addAll(gameTables);
+		
+		List<GameTable> tableList = this.tableList;
+		Platform.runLater(new Runnable() {
+            @Override public void run() {
+        		tableList.clear(); //pas utile ?
+        		tableList.addAll(gameTables);
+            }
+        });
 	}
 
 	public ObservableList<Boolean> getSelectionList() {
@@ -392,4 +455,20 @@ public class ClientDataEngine implements InterfaceDataNetwork {
 	public void setComClientInterface(ComClientInterface comClientInterface) {
 		this.comClientInterface = comClientInterface;
 	}
+
+	public final StringProperty voteTextProperty() {
+		return this.voteText;
+	}
+
+
+	public final String getVoteText() {
+		return this.voteTextProperty().get();
+	}
+
+
+	public final void setVoteText(final String voteText) {
+		this.voteTextProperty().set(voteText);
+	}
+
+
 }

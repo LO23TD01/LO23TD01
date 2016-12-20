@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<profile>
+    <UUID>808afd1e-7008-4bfe-b237-f9492ae7ac19</UUID>
+    <login></login>
+    <psw></psw>
+    <age>0</age>
+    <nbGameWon>0</nbGameWon>
+    <nbGameLost>0</nbGameLost>
+    <nbGameAbandonned>0</nbGameAbandonned>
+</profile>

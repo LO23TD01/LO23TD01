@@ -1,9 +1,7 @@
 package IHM_MAIN.src.controller;
 
 import data.GameTable;
-import data.client.ClientDataEngine;
 import data.client.InterImplDataMain;
-import data.client.InterfaceDataIHMLobby;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.stage.Stage;
@@ -16,6 +14,7 @@ public class joinTableController {
 	@FXML
 	Button cancel;
 	InterImplDataMain interfaceData;
+	
 	GameTable joiningGame;
 	
     public void setInterfaceData(InterImplDataMain interf){
@@ -27,12 +26,11 @@ public class joinTableController {
     @FXML
 	private void handleJoinAP(){
     	interfaceData.askJoinTable(joiningGame, true);
-    	//compl�ter avec ouverture table de jeu 
+    	System.out.println("coucou");
 	}
     @FXML
 	private void handleJoinAS(){
 		interfaceData.askJoinTable(joiningGame, false);
-		//compl�ter avec ouveture table de jeu
 	}
     @FXML
 	private void handleCancel(){

@@ -16,6 +16,8 @@ import data.Variant;
 import data.Vote;
 import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.SimpleObjectProperty;
+import javafx.beans.property.SimpleStringProperty;
+import javafx.beans.property.StringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 
@@ -25,6 +27,7 @@ public class InterImplDataTable implements InterfaceDataIHMTable{
 	private final ObjectProperty<UserRole> actualRole;
 	private final ObservableList<Boolean> selectionList = FXCollections.observableArrayList();
 	private ObjectProperty<Profile> currentProfile;
+	private StringProperty voteText;
 
 	//constructeur  de test pour ihm table
 	public InterImplDataTable() {
@@ -40,6 +43,7 @@ public class InterImplDataTable implements InterfaceDataIHMTable{
 		this.setSelectionList(this.dataEngine.getSelectionList());
 		//NE PAS UTILISER
 		this.currentProfile = new SimpleObjectProperty<Profile>();
+		this.voteText = new SimpleStringProperty();
 	}
 
 	/**
@@ -62,6 +66,7 @@ public class InterImplDataTable implements InterfaceDataIHMTable{
 
 		this.setSelectionList(this.dataEngine.getSelectionList());
 		this.currentProfile = this.dataEngine.getProfileManager().currentProfileProperty();
+		this.voteText = this.dataEngine.voteTextProperty();
 	}
 
 
@@ -80,10 +85,11 @@ public InterImplDataTable(ClientDataEngine dataEngine, UserRole actualRole,
 		this.actualRole = new SimpleObjectProperty<UserRole>(actualRole);
 		this.setSelectionList(list);
 		this.currentProfile = this.dataEngine.getProfileManager().currentProfileProperty();
-	}
+		this.voteText = this.dataEngine.voteTextProperty();
+}
 
  //ne renvoie que le premier Winner
- 	PlayerData getBest(){
+ 	public PlayerData getBest(){
  		if(this.getActualTable()==null)
  			;//exception
  		boolean tie =(this.getActualTable().getGameState().getTurnState()!=TurnState.WINNER_TIE_ROUND && this.getActualTable().getGameState().getTurnState()!=TurnState.LOSER_TIE_ROUND);
@@ -93,7 +99,7 @@ public InterImplDataTable(ClientDataEngine dataEngine, UserRole actualRole,
  	}
 
  	//ne renvoie que le premier loser
- 		PlayerData getWorst(){
+ 		public PlayerData getWorst(){
  			if(this.getActualTable()==null)
  				;//exception
  			boolean tie =(this.getActualTable().getGameState().getTurnState()!=TurnState.WINNER_TIE_ROUND && this.getActualTable().getGameState().getTurnState()!=TurnState.LOSER_TIE_ROUND);
@@ -102,7 +108,7 @@ public InterImplDataTable(ClientDataEngine dataEngine, UserRole actualRole,
  				return this.getActualTable().getGameState().getData(loser, tie);
  		}
 
- 		int getValueCurrentTurn()
+ 		public int getValueCurrentTurn()
  		{
  			if(this.getActualTable()==null)
  				;//exception
@@ -130,9 +136,9 @@ public InterImplDataTable(ClientDataEngine dataEngine, UserRole actualRole,
 
 	@Override
 	public void selectDice(boolean a, boolean b, boolean c) {
-		//pas besoin de changer icic la selection, le server va renvoyer Ã  tout le monde y coimpris le joueur
+		//pas besoin de changer icic la selection, le server va renvoyer à tout le monde y coimpris le joueur
 		//sinon risque de conflit et de trucs pas beau
-		//en plus ca permet de voir le temps de rÃ©ponse du server
+		//en plus ca permet de voir le temps de réponse du server
 		this.dataEngine.getComClientInterface().selectDice(this.dataEngine.getProfileManager().getCurrentProfile().getUUID(), a, b, c);
 	}
 
@@ -144,6 +150,10 @@ public InterImplDataTable(ClientDataEngine dataEngine, UserRole actualRole,
 
 	@Override
 	public void quitGame() {
+
+		if(this.getActualRole() == UserRole.CREATOR)
+			this.dataEngine.getComClientInterface().askQuitTable(this.actualTable.get().getUid(),this.dataEngine.getProfileManager().getCurrentProfile().getUUID());
+
 		this.dataEngine.getComClientInterface().quit(this.dataEngine.getProfileManager().getCurrentProfile().getUUID(), this.actualTable.get().getUid());
 
 	}

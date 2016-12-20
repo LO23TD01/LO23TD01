@@ -59,11 +59,11 @@ public class InterImplDataMain implements InterfaceDataIHMLobby{
 				Profile profile = this.getLocalProfile(login, password);
 				this.dataEngine.getProfileManager().setCurrentProfile(profile);
 				this.dataEngine.getComClientInterface().connection(profile);
+				return true;
 			}catch(Exception e){
+				this.dataEngine.setComClientInterface(null);
 				e.printStackTrace();
-				return false;
 			}
-		return true;
 		}
 		return false;
 }

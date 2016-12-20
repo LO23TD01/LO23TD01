@@ -158,10 +158,10 @@ public class PlayerStatsController {
 			currentPlayerData.getPlayer().getPublicData().nbGameAbandonnedProperty().addListener(
 					(observable, oldValue, newValue) -> totalForfeitListener(observable, oldValue, newValue));
 
-			// TODO Handle dices when data's done
-			// dices.addListener((array, size, from, to) -> dicesListener(array,
-			// size, from, to));
-			// currentPlayerData.getDices();
+			// Handle dices when data's done
+			currentPlayerData.d1Property().addListener((observable, oldValue, newValue) -> valueDice1Change(observable, oldValue, newValue));
+			currentPlayerData.d2Property().addListener((observable, oldValue, newValue) -> valueDice2Change(observable, oldValue, newValue));
+			currentPlayerData.d3Property().addListener((observable, oldValue, newValue) -> valueDice3Change(observable, oldValue, newValue));
 
 			// bindings
 			PlayerStats_TitleLabelPlayer.textProperty()
@@ -209,22 +209,21 @@ public class PlayerStatsController {
 	/**
 	 * Listener sur les dés
 	 */
-	private Object dicesListener(ObservableIntegerArray array, boolean size, int from, int to) {
+	private Object valueDice1Change(ObservableValue<? extends Number> observable, Number oldValue, Number newValue) {
+		dice1.setValue(newValue.intValue()); // Mise a jour de l'image correspondant nouvelle valeur du dé
+		System.out.println("value dice1 change");
+		return null;
+	}
 
-		int d1;
-		int d2;
-		int d3;
+	private Object valueDice2Change(ObservableValue<? extends Number> observable, Number oldValue, Number newValue) {
+		dice2.setValue(newValue.intValue()); // Mise a jour de l'image correspondant nouvelle valeur du dé
+		System.out.println("value dice2 change");
+		return null;
+	}
 
-		d1 = array.get(0);
-		d2 = array.get(0);
-		d3 = array.get(0);
-
-		PlayerStats_ScoreLabel.setText(d1 + " " + d2 + " " + d3);
-
-		dice1.setValue(d1);
-		dice2.setValue(d2);
-		dice3.setValue(d3);
-
+	private Object valueDice3Change(ObservableValue<? extends Number> observable, Number oldValue, Number newValue) {
+		dice3.setValue(newValue.intValue()); // Mise a jour de l'image correspondant nouvelle valeur du dé
+		System.out.println("value dice3 change");
 		return null;
 	}
 

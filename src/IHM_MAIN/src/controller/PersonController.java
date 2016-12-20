@@ -67,7 +67,8 @@ public class PersonController {
 
 		@FXML
 		private Button selectPhotoButton;
-
+		@FXML
+		private Button saveButton;
 
 	    private User user;
 
@@ -136,6 +137,7 @@ if (profil.getAvatar() != null)
 	    	pseudoField.setDisable(true);
 	    	ageField.setDisable(true);
 	    	selectPhotoButton.setVisible(false);
+	    	saveButton.setVisible(false);
 	    }
 
 
@@ -273,7 +275,8 @@ if (profil.getAvatar() != null)
 
 	            //Show open file dialog
 	            File file = fileChooser.showOpenDialog(null);
-
+	            	if (file != null)
+	            	{
 	            try {
 
 	                BufferedImage bufferedImage = ImageIO.read(file);
@@ -287,7 +290,7 @@ if (profil.getAvatar() != null)
 
 	   	            alert.showAndWait();
 	            }
-	    }
+	    }}
 
 
 	    public void setDialogStage(Stage dialogStage) {
