@@ -232,8 +232,6 @@ public class MainApp extends Application {
 		        controller.setDialogStage(dialogStage);
 		         Profile profil = interImplDataMain.getLocalProfile();
 
-		       Profile profil= controller.loadPersonDataFromFile(fXmlFile);
-		        //Profile profil = new Profile(null,"test","test","test",25);
 		        User user= new User(profil);
 		        //controller.setPerson(user);
 

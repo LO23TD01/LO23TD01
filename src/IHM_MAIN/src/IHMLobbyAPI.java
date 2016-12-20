@@ -34,7 +34,7 @@ public class IHMLobbyAPI {
 
 	// DATA will use this method to display
 	// a user's profile after requesting it
-	public void displayProfile(User user, Window parent) throws IncompleteProfileException{
+	public void displayProfile(Profile profil, Window parent) throws IncompleteProfileException{
 		/*System.out.println(profile.getLogin());
 		FXMLLoader loader = new FXMLLoader();
 		loader.setLocation(MainApp.class.getResource("view/GestionProfil.fxml"));
@@ -47,7 +47,7 @@ public class IHMLobbyAPI {
 			root = (AnchorPane) fxmlLoader.load();
  			//Window parent = createGame.getScene().getWindow();
  			PersonController controller = (PersonController) fxmlLoader.getController();
- 			controller.setPerson(user);
+ 			controller.setPerson(profil);
  			controller.disableButtonsAndFields();
 
  			Stage stage = new Stage();

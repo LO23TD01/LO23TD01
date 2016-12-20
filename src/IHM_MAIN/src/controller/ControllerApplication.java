@@ -116,10 +116,8 @@ public class ControllerApplication {
 		       Profile profil = this.interImplDataMain.getLocalProfile();
 
 		        InterImplDataMain interImplDataMain = mainApp.getInterImplDataMain();
-		        Profile profil = interImplDataMain.getLocalProfile();
 
-		        User user= new User(profil);
-		        controller.setPerson(user);
+		        controller.setPerson(profil);
 
 		        // Show the dialog and wait until the user closes it
 		        dialogStage.showAndWait();
@@ -284,7 +282,7 @@ public class ControllerApplication {
 	        if (diff < 300){
 	        	System.out.println("on affiche le profil!!");
 	        	System.out.println(interfaceLobby);
-				interfaceLobby.displayProfile(row, createGame.getScene().getWindow());
+				interfaceLobby.displayProfile(row.getPublicData(), createGame.getScene().getWindow());
 	        } else {
 	            lastClickUser = new Date();
 	        }
