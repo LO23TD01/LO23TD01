@@ -132,7 +132,7 @@ public class ComServer implements Runnable, ComServerInterface {
 
 	        } catch (IOException e) {
 	            if(isStopped()) {
-	                System.out.println("Server Stopped.") ;
+	                System.out.println("Server Stopped.");
 	                return;
 	            }
 	            e.printStackTrace();
@@ -142,6 +142,20 @@ public class ComServer implements Runnable, ComServerInterface {
 	        	new Thread(client).start();
 	            connectedClients.put(clientSocket.getInetAddress().toString(), client);
 	    }
+	}
+	
+	/**
+	 * @param SocketClientHandler à supprimer
+	 */
+	public String removeClient(SocketClientHandler client){
+		for (String key : connectedClients.keySet()) {
+			if(connectedClients.get(key).equals(client)){
+				connectedClients.remove(key);
+				return key;
+			}
+				
+		}
+		return null;
 	}
 
 	/*
