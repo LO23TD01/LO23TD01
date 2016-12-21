@@ -164,6 +164,8 @@ public class ServerDataEngine implements InterfaceDataNetwork {
 			this.comServer.kick(getUUIDList(tableFull.getAllList()), "La partie n'existe plus.");
 			//et drop la tbale
 			this.tableList.remove(tableFull);
+			//TODO
+			//this.comServer.
 		}
 		else
 			this.comServer.playerQuitGame(getUUIDList(tableFull.getAllList()), userFull.getPublicData().getUUID());
@@ -224,15 +226,20 @@ public class ServerDataEngine implements InterfaceDataNetwork {
 			 this.comServer.raiseException(user.getPublicData().getUUID(),"L'utilisateur n'est pas connect�. Il faut �tre connect� pour lancer une partie.");
 		 else if(userFull.getActualTable()==null)
 			 this.comServer.raiseException(user.getPublicData().getUUID(),"L'utilisateur n'a rejoint aucune table. Il faut �tre assit � une table pour lancer une partie.");
-		 else if(!userFull.getActualTable().getCreator().isSame(user))
-			 this.comServer.raiseException(user.getPublicData().getUUID(),"L'utilisateur n'est pas le createur de sa partie. Il faut �tre le createur pour lancer une partie.");
-		GameTable tableFull = userFull.getActualTable().getSame(this.tableList);
-		 if(tableFull==null)
-			 this.comServer.raiseException(user.getPublicData().getUUID(),"La table n'existe pas. Il faut que la table existe pour s'y connecter.");
-		tableFull.initializeGame();
-		this.startLaunchTimer(userFull.getActualTable());
-		gameEngine(tableFull, false);
-
+		 else
+			 {
+			 GameTable tableFull = userFull.getActualTable().getSame(this.tableList);
+			 if(tableFull==null)
+				 this.comServer.raiseException(user.getPublicData().getUUID(),"La table n'existe pas. Il faut que la table existe pour s'y connecter.");
+			 else if(!tableFull.getCreator().isSame(user))
+				 this.comServer.raiseException(user.getPublicData().getUUID(),"L'utilisateur n'est pas le createur de sa partie. Il faut �tre le createur pour lancer une partie.");
+			 else
+			 {
+				 tableFull.initializeGame();
+				 this.startLaunchTimer(userFull.getActualTable());
+				 gameEngine(tableFull, false);
+			 }
+			 }
 	}
 
 	@Override

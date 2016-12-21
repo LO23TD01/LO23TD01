@@ -102,6 +102,17 @@ public class ClientDataEngine implements InterfaceDataNetwork {
         });
 	}
 
+	//TODO A CLEAN
+	public void refreshTableList(List<GameTable> l) {
+
+		ObservableList<GameTable> tableList = this.tableList;
+		Platform.runLater(new Runnable() {
+            @Override public void run() {
+            	tableList.setAll(l);
+            }
+        });
+	}
+
 	@Override
 	public void updateTablesList(List<GameTable> l) {
 		ObservableList<GameTable> tableList = this.tableList;
