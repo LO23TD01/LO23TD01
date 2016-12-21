@@ -3,9 +3,11 @@ package ihmTable.controller;
 import java.io.IOException;
 import java.util.Optional;
 
+import data.State;
 import data.User;
 import data.client.InterImplDataTable;
 import ihmTable.controller.CollapsiblePanelController.Position;
+import ihmTable.util.PlayerWaitingAlert;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.event.EventHandler;
@@ -41,7 +43,7 @@ public class TableController {
 		this.user = user;
 		this.stage = (Stage) tableView.getScene().getWindow();
 
-		stage.setOnCloseRequest(new EventHandler<WindowEvent>() {
+		this.stage.setOnCloseRequest(new EventHandler<WindowEvent>() {
 		    @Override
 		    public void handle(WindowEvent event) {
 		    	event.consume();
@@ -55,8 +57,10 @@ public class TableController {
 		initBottom();
 		initMenu();
 
-		//Waiting for other players
-//		new PlayerWaitingAlert(interImplDataTable, user, stage);
+		if(this.interImplDataTable.getActualTable().getGameState().getState() == State.PRESTART) {
+			//Waiting for other players
+			new PlayerWaitingAlert(interImplDataTable, user, stage);
+		}
 	}
 
 	private void setExitModal(Stage stage) {

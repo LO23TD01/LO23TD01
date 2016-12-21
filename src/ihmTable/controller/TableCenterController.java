@@ -1,14 +1,12 @@
 package ihmTable.controller;
 
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.UUID;
 
 import data.GameTable;
 import data.User;
 import data.client.InterImplDataTable;
-import javafx.collections.FXCollections;
 import javafx.collections.ListChangeListener;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
@@ -40,7 +38,7 @@ public class TableCenterController {
 	private Ellipse tableEllipse;
 	private Pane diceLauncher;
 	private HashMap<UUID, AnchorPane> playerViews;
-	
+
 	private ObservableList<User> players;
 
 	public void initialize() throws IOException {
@@ -68,7 +66,7 @@ public class TableCenterController {
 		diceLaunchController.setData(this.interImplDataTable, user);
 		initPlayers();
 	}
-	
+
 	private void initPlayers() throws IOException {
 		this.players = gameTableInstance.getPlayerList();
 		for(User player : players) {
@@ -77,6 +75,15 @@ public class TableCenterController {
 		ListChangeListener<User> playersChangeListener;
 		playersChangeListener = change -> {
 			while(change.next()) {
+				if (change.wasAdded()) {
+					for (User addedUser : change.getAddedSubList()) {
+						try {
+							addPlayer(addedUser);
+						} catch (IOException e) {
+							e.printStackTrace();
+						}
+					}
+				}
 				if(change.wasRemoved()) {
 					for(User removedUser : change.getRemoved()) {
 						this.tableGrid.getChildren().remove(playerViews.get(removedUser.getPublicData().getUUID()));

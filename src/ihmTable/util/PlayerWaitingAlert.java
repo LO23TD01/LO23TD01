@@ -3,6 +3,7 @@ package ihmTable.util;
 import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
 import java.util.HashMap;
+import java.util.NoSuchElementException;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -10,6 +11,7 @@ import data.GameTable;
 import data.Parameters;
 import data.User;
 import data.client.InterImplDataTable;
+import javafx.application.Platform;
 import javafx.collections.ListChangeListener;
 import javafx.collections.ObservableList;
 import javafx.embed.swing.SwingFXUtils;
@@ -60,7 +62,12 @@ public class PlayerWaitingAlert extends Alert {
 		this.players = gameTable.getPlayerList();
 		this.stage = stage;
 		this.playerViews = new HashMap<UUID, Rectangle>();
-
+		this.gameTable.getGameState().stateProperty().addListener(event -> Platform.runLater(new Runnable() {
+		    @Override
+		    public void run() {
+		    	start();
+		    }
+		}));
 		this.playersHBox = new HBox();
 		this.vBox = new VBox(playersHBox);
 		this.getDialogPane().setContent(vBox);
@@ -95,6 +102,9 @@ public class PlayerWaitingAlert extends Alert {
 	}
 
 	private void start() {
+		if(user.isSame(gameTable.getCreator())) {
+			this.interImplDataTable.launchGame();
+		}
 		this.close();
 	}
 
@@ -116,18 +126,26 @@ public class PlayerWaitingAlert extends Alert {
 				if (change.wasAdded()) {
 					for (User addedUser : change.getAddedSubList()) {
 						Rectangle rectangle = getPlayerAvatar(addedUser);
-						this.playersHBox.getChildren().add(rectangle);
+						Platform.runLater(new Runnable() {
+						    @Override
+						    public void run() {
+						    	playersHBox.getChildren().add(rectangle);
+						    }
+						});
 						this.playerViews.put(addedUser.getPublicData().getUUID(), rectangle);
 					}
 				}
 				if (change.wasRemoved()) {
 					for (User removedUser : change.getRemoved()) {
-						this.playersHBox.getChildren()
-								.remove(playerViews.remove(removedUser.getPublicData().getUUID()));
+						Platform.runLater(new Runnable() {
+						    @Override
+						    public void run() {
+						    	playersHBox.getChildren().remove(playerViews.remove(removedUser.getPublicData().getUUID()));
+						    }
+						});
 					}
 				}
-				this.getDialogPane().lookupButton(buttonStart)
-						.setDisable(players.size() != parameters.getNbPlayerMin());
+				this.getDialogPane().lookupButton(buttonStart).setDisable(players.size() != parameters.getNbPlayerMin());
 			}
 		};
 		players.addListener(playersChangeListener);
@@ -138,15 +156,19 @@ public class PlayerWaitingAlert extends Alert {
 		this.buttonQuit = new ButtonType(BUTTON_QUIT_TEXT);
 		if (user.isSame(gameTable.getCreator())) {
 			this.getButtonTypes().setAll(buttonStart, buttonQuit);
+			this.getDialogPane().lookupButton(buttonStart).setDisable(players.size() != parameters.getNbPlayerMin());
 		} else {
 			this.getButtonTypes().setAll(buttonQuit);
 		}
-		this.getDialogPane().lookupButton(buttonStart).setDisable(players.size() != parameters.getNbPlayerMin());
 		Optional<ButtonType> result = this.showAndWait();
-		if (result.get() == buttonStart) {
-			start();
-		} else {
-			quit();
+		try {
+			if (result.get() == buttonStart) {
+				start();
+			} else {
+				quit();
+			}
+		}catch(NoSuchElementException noSuchElementException) {
+
 		}
 	}
 
