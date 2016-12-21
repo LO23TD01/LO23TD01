@@ -250,6 +250,11 @@ public class ServerDataEngine implements InterfaceDataNetwork {
 				tableFull.disconnect(user);
 		}
 		this.usersList.remove(user.getSame(this.usersList));
+		List<User> toSend = getLightweightList(this.usersList);
+		for(User u : this.usersList)
+		{
+			this.comServer.refreshUserList(u.getPublicData().getUUID(),toSend);
+		}
 	}
 
 
