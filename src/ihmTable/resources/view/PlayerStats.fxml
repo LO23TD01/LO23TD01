@@ -11,7 +11,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane xmlns="http://javafx.com/javafx/8.0.60" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ihmTable.controller.PlayerStatsController">
+<AnchorPane stylesheets="@../css/style1.css" xmlns="http://javafx.com/javafx/8.0.60" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ihmTable.controller.PlayerStatsController">
    <children>
       <HBox prefHeight="236.0" prefWidth="534.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
          <children>
@@ -21,7 +21,7 @@
                      <children>
                         <AnchorPane fx:id="PlayerStats_TitlePane1">
                            <children>
-                              <Label fx:id="PlayerStats_TitleLabelPlayer" alignment="CENTER" layoutX="69.0" layoutY="30.0" prefHeight="39.0" prefWidth="378.0" styleClass="border" stylesheets="@CSS/style1.css" text="Player 1" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                              <Label fx:id="PlayerStats_TitleLabelPlayer" alignment="CENTER" layoutX="69.0" layoutY="30.0" prefHeight="39.0" prefWidth="378.0" styleClass="border" text="Player 1" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                                  <font>
                                     <Font size="24.0" />
                                  </font>
@@ -32,7 +32,7 @@
                            <children>
                               <AnchorPane>
                                  <children>
-                                    <VBox fx:id="PlayerStats_PlayerInfoVBox1" prefHeight="200.0" prefWidth="88.0" styleClass="border" stylesheets="@CSS/style1.css">
+                                    <VBox fx:id="PlayerStats_PlayerInfoVBox1" prefHeight="200.0" prefWidth="88.0" styleClass="border">
                                        <children>
                                           <Pane>
                                              <VBox.margin>
@@ -72,7 +72,7 @@
                                     </VBox>
                                  </children>
                               </AnchorPane>
-                              <AnchorPane styleClass="border" stylesheets="@CSS/style1.css">
+                              <AnchorPane styleClass="border">
                                  <children>
                                     <VBox layoutX="4.0" layoutY="4.0" prefHeight="200.0" prefWidth="316.0" AnchorPane.bottomAnchor="-2.0" AnchorPane.leftAnchor="2.0" AnchorPane.rightAnchor="2.0" AnchorPane.topAnchor="2.0">
                                        <children>
@@ -107,12 +107,12 @@
                <children>
                   <VBox fx:id="PLayerStats_StatsVBox">
                      <children>
-                        <Label fx:id="playerStats_LabelStats" alignment="CENTER" styleClass="border" stylesheets="@CSS/style1.css" text="Statistiques" textAlignment="CENTER">
+                        <Label fx:id="playerStats_LabelStats" alignment="CENTER" styleClass="border" text="Statistiques" textAlignment="CENTER">
                            <font>
                               <Font size="24.0" />
                            </font>
                         </Label>
-                        <AnchorPane fx:id="PlayerStats_StatsPane" prefHeight="200.0" prefWidth="126.0" styleClass="border" stylesheets="@CSS/style1.css">
+                        <AnchorPane fx:id="PlayerStats_StatsPane" prefHeight="200.0" prefWidth="126.0" styleClass="border">
                            <opaqueInsets>
                               <Insets />
                            </opaqueInsets>
