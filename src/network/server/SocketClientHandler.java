@@ -73,9 +73,7 @@ public class SocketClientHandler implements Runnable{
                 }
 
 
-            } catch (EOFException e) {
-            	e.printStackTrace();
-            } catch (IOException e) {
+            } catch (Exception e){
             	
             	//Déconnexion anormale de l'utilisateur -> fermeture du socket et du thread
             	
@@ -96,9 +94,6 @@ public class SocketClientHandler implements Runnable{
                 e.printStackTrace();
                 
                 return;
-                
-            } catch (ClassNotFoundException e) {
-                e.printStackTrace();
             }
         }
 	}
