@@ -353,7 +353,7 @@ public class ServerDataEngine implements InterfaceDataNetwork {
 		 if(newUser.getSame(this.usersList)!=null)
 			 this.comServer.raiseException(profile.getUUID(),"Profil d�j� connect�. Veuillez r�essayer dans X minutes");
 		 else{
-		this.comServer.newUser(getUUIDList(this.usersList), newUser.getEmptyVersion().getPublicData());
+		this.comServer.newUser(getUUIDList(this.usersList), newUser.getPublicData());
 		this.usersList.add(newUser);
 		this.comServer.sendTablesUsers(this.usersList, this.tableList, newUser.getEmptyVersion().getPublicData());
 		 }
