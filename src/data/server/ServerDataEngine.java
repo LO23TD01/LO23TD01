@@ -349,7 +349,8 @@ public class ServerDataEngine implements InterfaceDataNetwork {
 		 if(false)
 			 this.comServer.raiseException(profile.getUUID(),"Profil non complet lors de la connexion. Profil complet requis.");
 		 //else if (newUser.getSame(this.usersList)!=null)
-		 else if(false)
+		 //else if(false)
+		 if(newUser.getSame(this.usersList)!=null)
 			 this.comServer.raiseException(profile.getUUID(),"Profil d�j� connect�. Veuillez r�essayer dans X minutes");
 		 else{
 		this.comServer.newUser(getUUIDList(this.usersList), newUser.getEmptyVersion().getPublicData());
