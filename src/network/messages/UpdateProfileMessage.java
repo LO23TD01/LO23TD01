@@ -7,6 +7,7 @@ import org.hildan.fxgson.FxGson;
 import data.client.ClientDataEngine;
 import data.Profile;
 import data.server.ServerDataEngine;
+import network.messages.utils.BufferedImageBuilder;
 
 public class UpdateProfileMessage implements IMessage {
 
@@ -14,6 +15,7 @@ public class UpdateProfileMessage implements IMessage {
 	private static final long serialVersionUID = 633369383726455631L;
 
 	private String profile;
+	private byte[] image;
 	private UUID user;
 	
 	/**
@@ -21,13 +23,25 @@ public class UpdateProfileMessage implements IMessage {
 	 * @param profile
 	 */
 	public UpdateProfileMessage(UUID user, Profile profile) {
+		//Handle image serialization 
+		if(profile.getAvatar() != null){
+			image = BufferedImageBuilder.toByteArray(profile.getAvatar());
+			profile.setAvatar(null);
+		}
+				
 		this.user = user;
 		this.profile = FxGson.create().toJson(profile);
 	}
 
     @Override
     public void process(ServerDataEngine dataEngine) {
-    	dataEngine.updateUserProfile(user, FxGson.create().fromJson(profile, Profile.class));
+    	Profile p = FxGson.create().fromJson(profile, Profile.class);
+    	
+    	//Converte bytes to Image and set the profile
+		if(image != null)
+			p.setAvatar(BufferedImageBuilder.toImage(image));
+		
+    	dataEngine.updateUserProfile(user, p);
         
     }
 

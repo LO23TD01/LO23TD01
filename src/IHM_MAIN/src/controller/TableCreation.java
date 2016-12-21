@@ -77,7 +77,8 @@ public class TableCreation{
 				throw new Exception("Veuillez renseigner un nombre de jetons");
 			if(rules.getValue() == null)
 				throw new Exception("Veuillez sélectionner une règle de jeu");
-			
+			if(minPlayers.getValue() > maxPlayers.getValue())
+				throw new Exception ("Veuillez renseigner un nombre de joueurs minimum inferieur ou egale ou nombre de joueurs maximum");
 			if(this.interImplDataMain.getLocalProfile() == null)
 				throw new Exception("Erreur Système: Impossible de charger le profil local");
 			

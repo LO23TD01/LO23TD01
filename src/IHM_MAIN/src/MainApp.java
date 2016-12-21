@@ -88,6 +88,9 @@ public class MainApp extends Application {
 		Button registerBtn = new Button("Inscription");
 		Button editBtn = new Button("Editer Profil");
 		Button tableCreationBtn = new Button("Créer une Table");
+		
+		connectionBtn.defaultButtonProperty().bind(connectionBtn.focusedProperty());
+		registerBtn.defaultButtonProperty().bind(registerBtn.focusedProperty());
 
 		HBox hbBtn = new HBox();
 		hbBtn.setAlignment(Pos.BOTTOM_RIGHT);
@@ -148,7 +151,7 @@ public class MainApp extends Application {
 			ControllerApplication controller = (ControllerApplication) fxmlLoader.getController();
 			controller.setInterfaceData(this.interImplDataMain);
 			controller.init();
-			Scene new_scene = new Scene(root, 780, 500);
+			Scene new_scene = new Scene(root, 915, 500);
 			Stage stage = new Stage();
 			stage.setTitle("Main");
 			stage.setScene(new_scene);
@@ -199,6 +202,7 @@ public class MainApp extends Application {
 			stage.setResizable(false);
 
 			controller.setCurrentStage(stage);
+			controller.setButtonToBeTriggerByEnter();
 
 			stage.show();
 			//we don't close the current window because the user will need to come back after registering

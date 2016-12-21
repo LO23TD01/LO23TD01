@@ -89,7 +89,10 @@ public class ServerDataEngine implements InterfaceDataNetwork {
 		 else if(compUser.getSame(this.usersList)==null)
 			 this.comServer.raiseException(uuid,"Profil non connectï¿½. Il faut que le profil soit		 connectï¿½ pour le mettre ï¿½ jour.");
 		 else
-			 compUser.getSame(this.usersList).setPublicData(profile);
+			 {
+			 	compUser.getSame(this.usersList).setPublicData(profile);
+			 	this.comServer.sendProfileUpdate(getUUIDList(this.usersList), compUser.getPublicData().getUUID(), compUser.getPublicData());
+			 }
 		// La suite du diag de sequence a ï¿½tï¿½ overrided par l'avis du prof.
 	}
 
@@ -151,8 +154,28 @@ public class ServerDataEngine implements InterfaceDataNetwork {
 		 else{
 		tableFull.disconnect(userFull);
 		userFull.setActualTable(null);
-		this.comServer.playerQuitGame(getUUIDList(tableFull.getAllList()), userFull.getPublicData().getUUID());
-		 }}
+		if(tableFull.getPlayerList().size()==0)
+		{
+			//kick les spec
+			for(User u : tableFull.getAllList())
+			{
+				u.setActualTable(null);
+			}
+			this.comServer.kick(getUUIDList(tableFull.getAllList()), "La partie n'existe plus.");
+			//et drop la tbale
+			this.tableList.remove(tableFull);
+			//TODO TABLE REFREHS
+			//this.comServer.refreshtablealflalflaf
+		}
+		else
+			{
+			if(tableFull.getCreator().isSame(user))
+			{
+				//changer creator
+				tableFull.setCreator(tableFull.getPlayerList().get(0));
+			}
+			this.comServer.playerQuitGame(getUUIDList(tableFull.getAllList()), userFull.getPublicData().getUUID());
+		 }}}
 		 }
 
 	@Override
@@ -187,8 +210,7 @@ public class ServerDataEngine implements InterfaceDataNetwork {
 		else if (isPlayer && isFull)
 			this.comServer.raiseException(userFull.getPublicData().getUUID(), "Impossible de rejoindre une partie pleine.");
 		else if (!isPlayer && !isSpecAuthorized)
-			this.comServer.raiseException(userFull.getPublicData().getUUID(),
-					"Impossible de regarder cette partie. Non Autorisï¿½ par le Crï¿½ateur.");
+			this.comServer.raiseException(userFull.getPublicData().getUUID(),"Impossible de regarder cette partie. Non Autorisï¿½ par le Crï¿½ateur.");
 		else {
 			// la table n'a pas reussi ï¿½ connecter le nouveau user malgrï¿½ nos
 			// test en ammonts
@@ -210,15 +232,20 @@ public class ServerDataEngine implements InterfaceDataNetwork {
 			 this.comServer.raiseException(user.getPublicData().getUUID(),"L'utilisateur n'est pas connectï¿½. Il faut ï¿½tre connectï¿½ pour lancer une partie.");
 		 else if(userFull.getActualTable()==null)
 			 this.comServer.raiseException(user.getPublicData().getUUID(),"L'utilisateur n'a rejoint aucune table. Il faut ï¿½tre assit ï¿½ une table pour lancer une partie.");
-		 else if(!userFull.getActualTable().getCreator().isSame(user))
-			 this.comServer.raiseException(user.getPublicData().getUUID(),"L'utilisateur n'est pas le createur de sa partie. Il faut ï¿½tre le createur pour lancer une partie.");
-		GameTable tableFull = userFull.getActualTable().getSame(this.tableList);
-		 if(tableFull==null)
-			 this.comServer.raiseException(user.getPublicData().getUUID(),"La table n'existe pas. Il faut que la table existe pour s'y connecter.");
-		tableFull.initializeGame();
-		this.startLaunchTimer(userFull.getActualTable());
-		gameEngine(tableFull, false);
-
+		 else
+			 {
+			 GameTable tableFull = userFull.getActualTable().getSame(this.tableList);
+			 if(tableFull==null)
+				 this.comServer.raiseException(user.getPublicData().getUUID(),"La table n'existe pas. Il faut que la table existe pour s'y connecter.");
+			 else if(!tableFull.getCreator().isSame(user))
+				 this.comServer.raiseException(user.getPublicData().getUUID(),"L'utilisateur n'est pas le createur de sa partie. Il faut ï¿½tre le createur pour lancer une partie.");
+			 else
+			 {
+				 tableFull.initializeGame();
+				 this.startLaunchTimer(userFull.getActualTable());
+				 gameEngine(tableFull, false);
+			 }
+			 }
 	}
 
 	@Override
@@ -250,6 +277,11 @@ public class ServerDataEngine implements InterfaceDataNetwork {
 				tableFull.disconnect(user);
 		}
 		this.usersList.remove(user.getSame(this.usersList));
+		List<User> toSend = getLightweightList(this.usersList);
+		for(User u : this.usersList)
+		{
+			this.comServer.refreshUserList(u.getPublicData().getUUID(),toSend);
+		}
 	}
 
 
@@ -342,10 +374,11 @@ public class ServerDataEngine implements InterfaceDataNetwork {
 		 if(false)
 			 this.comServer.raiseException(profile.getUUID(),"Profil non complet lors de la connexion. Profil complet requis.");
 		 //else if (newUser.getSame(this.usersList)!=null)
-		 else if(false)
+		 //else if(false)
+		 if(newUser.getSame(this.usersList)!=null)
 			 this.comServer.raiseException(profile.getUUID(),"Profil dï¿½jï¿½ connectï¿½. Veuillez rï¿½essayer dans X minutes");
 		 else{
-		this.comServer.newUser(getUUIDList(this.usersList), newUser.getEmptyVersion().getPublicData());
+		this.comServer.newUser(getUUIDList(this.usersList), newUser.getPublicData());
 		this.usersList.add(newUser);
 		this.comServer.sendTablesUsers(this.usersList, this.tableList, newUser.getEmptyVersion().getPublicData());
 		 }
@@ -861,6 +894,8 @@ public class ServerDataEngine implements InterfaceDataNetwork {
 			this.comServer.raiseException(user,"Vote déjà en cours");
 		else if(tableFull.getCreator().getPublicData().getUUID() != user)
 			this.comServer.raiseException(user,"Vous n'etes pas le créateur de la table.");
+		else if(tableFull.getGameState().getState() == State.PRESTART)
+			this.comServer.raiseException(user,"Partie non commencée.");
 		else{
 		tableFull.startVote();
 		this.comServer.askStopGameEveryUser(getUUIDList(tableFull.getPlayerList()));

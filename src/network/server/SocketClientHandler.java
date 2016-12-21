@@ -5,7 +5,10 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
+import java.util.UUID;
 
+import data.Profile;
+import data.User;
 import network.messages.ConnectionMessage;
 import network.messages.IMessage;
 
@@ -58,7 +61,7 @@ public class SocketClientHandler implements Runnable{
             try {
 
                 IMessage o = (IMessage) inputStream.readObject();
-
+                
                 if(o != null){
                 	if(o.getClass() == ConnectionMessage.class){
                 		ConnectionMessage message = (ConnectionMessage) o;
@@ -70,20 +73,29 @@ public class SocketClientHandler implements Runnable{
                 }
 
 
-            } catch (EOFException e) {
-                try {
+            }catch (EOFException e) {
+            	e.printStackTrace();
+            }catch (Exception e){
+            	
+            	//Déconnexion anormale de l'utilisateur -> fermeture du socket et du thread
+            	
+            	try {
 					outputStream.close();
 					inputStream.close();
 				} catch (IOException e1) {
 					e1.printStackTrace();
 				}
-
-                Thread.currentThread().interrupt();
-                break;
-            } catch (IOException e) {
+            	
+            	String userDisconnected = server.removeClient(this);
+            	
+            	server.getDataEngine().disconnect(new User(new Profile(UUID.fromString(userDisconnected))));
+            	
+            	Thread.currentThread().interrupt();
+            	
+            	System.out.println("Client déconnecté anormalement !");
                 e.printStackTrace();
-            } catch (ClassNotFoundException e) {
-                e.printStackTrace();
+                
+                return;
             }
         }
 	}

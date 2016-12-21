@@ -8,7 +8,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane fx:id="GameStatsView" styleClass="border" stylesheets="@../LO23/LO23TD01/src/ihmTable/resources/view/CSS/style1.css" xmlns="http://javafx.com/javafx/8.0.60" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ihmTable.controller.GameStatsController">
+<AnchorPane fx:id="GameStatsView" styleClass="border" stylesheets="@../css/style1.css" xmlns="http://javafx.com/javafx/8.0.60" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ihmTable.controller.GameStatsController">
    <children>
       <HBox alignment="CENTER" prefHeight="178.0" prefWidth="478.0" spacing="20.0">
          <children>

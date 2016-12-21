@@ -86,13 +86,8 @@ public class ClientDataEngine implements InterfaceDataNetwork {
 
 	@Override
 	public void refreshUsersList(List<User> l) {
-		
-		ObservableList<User> userList = this.userList;
-		Platform.runLater(new Runnable() {
-            @Override public void run() {
-        		userList.setAll(l);
-            }
-        });
+
+		updateUsersList(l);
 	}
 
 	@Override
@@ -103,6 +98,17 @@ public class ClientDataEngine implements InterfaceDataNetwork {
 		Platform.runLater(new Runnable() {
             @Override public void run() {
         		userList.setAll(l);
+            }
+        });
+	}
+
+	//TODO A CLEAN
+	public void refreshTableList(List<GameTable> l) {
+
+		ObservableList<GameTable> tableList = this.tableList;
+		Platform.runLater(new Runnable() {
+            @Override public void run() {
+            	tableList.setAll(l);
             }
         });
 	}
@@ -285,7 +291,16 @@ public class ClientDataEngine implements InterfaceDataNetwork {
 
 	@Override
 	public void playerQuitGame(User u) {
-		this.getActualTable().disconnect(u);
+		int index = this.getActualTable().getPlayerList().indexOf(u.getSame(this.getActualTable().getPlayerList()));
+		if(index != -1)
+		{
+			this.getActualTable().getPlayerList().remove(index, index);
+		}
+		index = this.getActualTable().getSpectatorList().indexOf(u.getSame(this.getActualTable().getSpectatorList()));
+		if(index != -1)
+		{
+			this.getActualTable().getSpectatorList().remove(index, index);
+		}
 	}
 
 	@Override
@@ -320,12 +335,12 @@ public class ClientDataEngine implements InterfaceDataNetwork {
 
 	@Override
 	public void newPlayerOnTable(User u) {
-		getActualTable().connect(u, false);
+		getActualTable().getPlayerList().add(u);
 	}
 
 	@Override
 	public void newSpectatorOnTable(User u) {
-		getActualTable().connect(u, true);
+		getActualTable().getSpectatorList().add(u);
 	}
 
 	@Override
@@ -428,7 +443,7 @@ public class ClientDataEngine implements InterfaceDataNetwork {
 	}
 
 	public void setTableList(List<GameTable> gameTables) {
-		
+
 		List<GameTable> tableList = this.tableList;
 		Platform.runLater(new Runnable() {
             @Override public void run() {

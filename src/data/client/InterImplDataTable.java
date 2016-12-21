@@ -9,6 +9,7 @@ import data.Parameters;
 import data.PlayerData;
 import data.Profile;
 import data.Rules;
+import data.State;
 import data.TurnState;
 import data.User;
 import data.UserRole;
@@ -151,10 +152,12 @@ public InterImplDataTable(ClientDataEngine dataEngine, UserRole actualRole,
 	@Override
 	public void quitGame() {
 
-		if(this.getActualRole() == UserRole.CREATOR)
-			this.dataEngine.getComClientInterface().askQuitTable(this.actualTable.get().getUid(),this.dataEngine.getProfileManager().getCurrentProfile().getUUID());
+
 
 		this.dataEngine.getComClientInterface().quit(this.dataEngine.getProfileManager().getCurrentProfile().getUUID(), this.actualTable.get().getUid());
+
+		if(this.getActualRole() == UserRole.CREATOR && this.getActualTable() != null && this.getActualTable().getGameState().getState() != State.PRESTART)
+			this.dataEngine.getComClientInterface().askQuitTable(this.actualTable.get().getUid(),this.dataEngine.getProfileManager().getCurrentProfile().getUUID());
 
 	}
 

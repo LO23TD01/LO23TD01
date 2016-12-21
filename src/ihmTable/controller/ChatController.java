@@ -8,6 +8,7 @@ import data.ChatMessage;
 import data.GameTable;
 import data.User;
 import data.client.InterImplDataTable;
+import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ListChangeListener;
 import javafx.collections.ObservableList;
@@ -122,7 +123,12 @@ public class ChatController {
                     protected void updateItem(User user, boolean bln) {
                         super.updateItem(user, bln);
                         if (user != null) {
-                            setText(user.getPublicData().getNickName());
+                        	Platform.runLater(new Runnable() {
+    						    @Override
+    						    public void run() {
+    						    	setText(user.getPublicData().getNickName());
+    						    }
+    						});
                         }
                     }
                 };

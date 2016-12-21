@@ -98,8 +98,8 @@ public class GameTable {
 			this.localChat.get().add(u, this.parameters.get().isAuthorizeSpecToChat());
 			return true;
 		}
-		if (isPlayer && this.parameters.get().getNbPlayerMax() <= this.playerList.size()
-				&& !(this.gameState.get().getState() == State.PRESTART || this.gameState.get().getState() == State.END))
+		if (isPlayer &&( this.parameters.get().getNbPlayerMax() <= this.playerList.size()
+				|| !(this.gameState.get().getState() == State.PRESTART || this.gameState.get().getState() == State.END)))
 			return false;
 		if (isPlayer) {
 			this.playerList.add(u);
@@ -195,7 +195,7 @@ public class GameTable {
 
 	public GameTable getSame(List<GameTable> l) {
 		for (GameTable t : l) {
-			if (t!=null) 
+			if (t!=null)
 				if(isSame(t))
 					return t;
 		}
