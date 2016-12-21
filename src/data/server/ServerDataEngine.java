@@ -190,8 +190,7 @@ public class ServerDataEngine implements InterfaceDataNetwork {
 		else if (isPlayer && isFull)
 			this.comServer.raiseException(userFull.getPublicData().getUUID(), "Impossible de rejoindre une partie pleine.");
 		else if (!isPlayer && !isSpecAuthorized)
-			this.comServer.raiseException(userFull.getPublicData().getUUID(),
-					"Impossible de regarder cette partie. Non Autoris� par le Cr�ateur.");
+			this.comServer.raiseException(userFull.getPublicData().getUUID(),"Impossible de regarder cette partie. Non Autoris� par le Cr�ateur.");
 		else {
 			// la table n'a pas reussi � connecter le nouveau user malgr� nos
 			// test en ammonts
