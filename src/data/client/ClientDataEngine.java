@@ -315,12 +315,12 @@ public class ClientDataEngine implements InterfaceDataNetwork {
 
 	@Override
 	public void newPlayerOnTable(User u) {
-		getActualTable().connect(u, false);
+		getActualTable().getPlayerList().add(u);
 	}
 
 	@Override
 	public void newSpectatorOnTable(User u) {
-		getActualTable().connect(u, true);
+		getActualTable().getSpectatorList().add(u);
 	}
 
 	@Override
