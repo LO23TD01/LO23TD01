@@ -199,7 +199,7 @@ public class ControllerApplication {
 		gameName.setCellValueFactory(cellData -> cellData.getValue().nameProperty());
 		players.setCellValueFactory(cellData -> constructPlayers(cellData));
 		spectators.setCellValueFactory(cellData -> constructSpectators(cellData));
-		owner.setCellValueFactory(cellData -> cellData.getValue().creatorProperty().getValue().publicDataProperty().getValue().loginProperty());
+		owner.setCellValueFactory(cellData -> cellData.getValue().creatorProperty().getValue().getSame(interImplDataMain.getUserList()).publicDataProperty().getValue().loginProperty());
 		status.setCellValueFactory(cellData -> constructState(cellData));
 
 		FilteredList<GameTable> filtered = new FilteredList<>(interImplDataMain.getTableList(), p -> true);
