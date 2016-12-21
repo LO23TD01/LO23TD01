@@ -86,13 +86,8 @@ public class ClientDataEngine implements InterfaceDataNetwork {
 
 	@Override
 	public void refreshUsersList(List<User> l) {
-		
-		ObservableList<User> userList = this.userList;
-		Platform.runLater(new Runnable() {
-            @Override public void run() {
-        		userList.setAll(l);
-            }
-        });
+
+		updateUsersList(l);
 	}
 
 	@Override
@@ -428,7 +423,7 @@ public class ClientDataEngine implements InterfaceDataNetwork {
 	}
 
 	public void setTableList(List<GameTable> gameTables) {
-		
+
 		List<GameTable> tableList = this.tableList;
 		Platform.runLater(new Runnable() {
             @Override public void run() {

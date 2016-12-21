@@ -89,7 +89,10 @@ public class ServerDataEngine implements InterfaceDataNetwork {
 		 else if(compUser.getSame(this.usersList)==null)
 			 this.comServer.raiseException(uuid,"Profil non connect�. Il faut que le profil soit		 connect� pour le mettre � jour.");
 		 else
-			 compUser.getSame(this.usersList).setPublicData(profile);
+			 {
+			 	compUser.getSame(this.usersList).setPublicData(profile);
+			 	this.comServer.sendProfileUpdate(getUUIDList(this.usersList), compUser.getPublicData().getUUID(), compUser.getPublicData());
+			 }
 		// La suite du diag de sequence a �t� overrided par l'avis du prof.
 	}
 
