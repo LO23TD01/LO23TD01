@@ -45,14 +45,18 @@ public class RegisterWindow{
         this.currentStage = dialogStage;
     }
 	
+	public void setButtonToBeTriggerByEnter() {
+		this.validerButton.defaultButtonProperty().bind(this.validerButton.focusedProperty());
+	}
+
 	public RegisterWindow(){
-			
 	}
 
 	public void cancel(ActionEvent e){
 		Stage stage = (Stage)((Node)(e.getSource())).getScene().getWindow();
 		stage.close();
 	}
+	
 	
 	//handleValiderButton
 

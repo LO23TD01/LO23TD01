@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<profile>
+    <UUID>db355f45-7a2e-4516-8ed5-7bac596ed64f</UUID>
+    <login>viot</login>
+    <nickName>coucou</nickName>
+    <psw>viot</psw>
+    <firstName>coucouc</firstName>
+    <surName>coucuc</surName>
+    <age>676767</age>
+    <nbGameWon>0</nbGameWon>
+    <nbGameLost>0</nbGameLost>
+    <nbGameAbandonned>0</nbGameAbandonned>
+</profile>
