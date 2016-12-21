@@ -148,7 +148,7 @@ public class MainApp extends Application {
 			ControllerApplication controller = (ControllerApplication) fxmlLoader.getController();
 			controller.setInterfaceData(this.interImplDataMain);
 			controller.init();
-			Scene new_scene = new Scene(root, 780, 500);
+			Scene new_scene = new Scene(root, 915, 500);
 			Stage stage = new Stage();
 			stage.setTitle("Main");
 			stage.setScene(new_scene);

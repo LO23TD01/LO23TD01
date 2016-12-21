@@ -57,6 +57,8 @@ public class ControllerApplication {
 	@FXML
 	TableColumn<GameTable, String> owner;
 	@FXML
+	TableColumn<GameTable, String> status;
+	@FXML
 	Button name;
 	@FXML
 	TextField userSearch;
@@ -179,6 +181,17 @@ public class ControllerApplication {
 		return st;
 	}
 
+	StringProperty constructState(CellDataFeatures<GameTable, String> cd){
+		String ret;
+		ret = cd.getValue().gameStateProperty().getValue().getState().toString();
+		if (ret == "PRESTART")
+			ret = "En attente";
+		else
+			ret = "En cours";
+		StringProperty st = new SimpleStringProperty();
+		st.setValue(ret);
+		return st;
+	}
 
 
 	private void filterTable(){
@@ -187,7 +200,7 @@ public class ControllerApplication {
 		players.setCellValueFactory(cellData -> constructPlayers(cellData));
 		spectators.setCellValueFactory(cellData -> constructSpectators(cellData));
 		owner.setCellValueFactory(cellData -> cellData.getValue().creatorProperty().getValue().publicDataProperty().getValue().loginProperty());
-
+		status.setCellValueFactory(cellData -> constructState(cellData));
 
 		FilteredList<GameTable> filtered = new FilteredList<>(interImplDataMain.getTableList(), p -> true);
 
