@@ -164,12 +164,18 @@ public class ServerDataEngine implements InterfaceDataNetwork {
 			this.comServer.kick(getUUIDList(tableFull.getAllList()), "La partie n'existe plus.");
 			//et drop la tbale
 			this.tableList.remove(tableFull);
-			//TODO
-			//this.comServer.
+			//TODO TABLE REFREHS
+			//this.comServer.refreshtablealflalflaf
 		}
 		else
+			{
+			if(tableFull.getCreator().isSame(user))
+			{
+				//changer creator
+				tableFull.setCreator(tableFull.getPlayerList().get(0));
+			}
 			this.comServer.playerQuitGame(getUUIDList(tableFull.getAllList()), userFull.getPublicData().getUUID());
-		 }}
+		 }}}
 		 }
 
 	@Override
@@ -888,6 +894,8 @@ public class ServerDataEngine implements InterfaceDataNetwork {
 			this.comServer.raiseException(user,"Vote déjà en cours");
 		else if(tableFull.getCreator().getPublicData().getUUID() != user)
 			this.comServer.raiseException(user,"Vous n'etes pas le créateur de la table.");
+		else if(tableFull.getGameState().getState() == State.PRESTART)
+			this.comServer.raiseException(user,"Partie non commencée.");
 		else{
 		tableFull.startVote();
 		this.comServer.askStopGameEveryUser(getUUIDList(tableFull.getPlayerList()));
