@@ -61,7 +61,7 @@ public class SocketClientHandler implements Runnable{
             try {
 
                 IMessage o = (IMessage) inputStream.readObject();
-
+                
                 if(o != null){
                 	if(o.getClass() == ConnectionMessage.class){
                 		ConnectionMessage message = (ConnectionMessage) o;
@@ -73,7 +73,9 @@ public class SocketClientHandler implements Runnable{
                 }
 
 
-            } catch (Exception e){
+            }catch (EOFException e) {
+            	e.printStackTrace();
+            }catch (Exception e){
             	
             	//Déconnexion anormale de l'utilisateur -> fermeture du socket et du thread
             	
