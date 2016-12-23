@@ -5,7 +5,6 @@ import data.Profile;
 import data.User;
 
 import javafx.application.Application;
-import javafx.application.Platform;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.scene.layout.AnchorPane;
@@ -14,17 +13,7 @@ import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
 
-import java.io.File;
 import java.io.IOException;
-import java.util.concurrent.Callable;
-
-import javax.xml.parsers.DocumentBuilder;
-import javax.xml.parsers.DocumentBuilderFactory;
-
-import org.w3c.dom.Document;
-import org.w3c.dom.Element;
-import org.w3c.dom.NodeList;
-
 import data.client.*;
 
 import javafx.event.ActionEvent;
@@ -87,7 +76,6 @@ public class MainApp extends Application {
 		Button connectionBtn = new Button("Connexion");
 		Button registerBtn = new Button("Inscription");
 		Button editBtn = new Button("Editer Profil");
-		Button tableCreationBtn = new Button("Créer une Table");
 		
 		connectionBtn.defaultButtonProperty().bind(connectionBtn.focusedProperty());
 		registerBtn.defaultButtonProperty().bind(registerBtn.focusedProperty());
@@ -103,10 +91,6 @@ public class MainApp extends Application {
 		HBox hbLogo = new HBox();
 		hbLogo.setAlignment(Pos.CENTER);
 		hbLogo.getChildren().add(logo);
-
-		/*HBox hbBtn3 = new HBox();
-		hbBtn3.setAlignment(Pos.BOTTOM_RIGHT);
-		hbBtn3.getChildren().add(editBtn);*/
 
 		grid.add(hbLogo, 1, 0);
 		grid.add(scenetitle, 0, 0);
@@ -235,7 +219,7 @@ public class MainApp extends Application {
 		        // Set the person into the controller.
 		        PersonController controller = loader.getController();
 		        controller.setDialogStage(dialogStage);
-		         Profile profil = interImplDataMain.getLocalProfile();
+		        Profile profil = interImplDataMain.getLocalProfile();
 
 		        User user= new User(profil);
 		        //controller.setPerson(user);
@@ -273,7 +257,7 @@ public class MainApp extends Application {
 
 		public void run(){
 					try {
-						Thread.sleep(500);
+						Thread.sleep(100);
 					} catch (InterruptedException e) {
 						// TODO Auto-generated catch block
 						e.printStackTrace();

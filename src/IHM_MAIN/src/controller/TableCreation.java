@@ -1,12 +1,8 @@
 package IHM_MAIN.src.controller;
 
 import IHM_MAIN.src.IHMLobbyAPI;
-import IHM_MAIN.src.WaitingWindow;
-import data.Parameters;
 import data.Rules;
-import data.User;
 import data.Variant;
-import data.GameTable;
 import data.client.*;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
@@ -16,23 +12,14 @@ import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.layout.AnchorPane;
-import javafx.scene.layout.Pane;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
-import ihmTable.api.*;
-
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
 
 public class TableCreation{
 		
     @FXML
     CheckBox spectatorsAllowed;
-
-    @FXML
-    PasswordField tablePassword;
 
     @FXML
     ComboBox<Integer> maxPlayers;
@@ -78,7 +65,7 @@ public class TableCreation{
 			if(rules.getValue() == null)
 				throw new Exception("Veuillez sélectionner une règle de jeu");
 			if(minPlayers.getValue() > maxPlayers.getValue())
-				throw new Exception ("Veuillez renseigner un nombre de joueurs minimum inferieur ou egale ou nombre de joueurs maximum");
+				throw new Exception ("Veuillez renseigner un nombre de joueurs minimum inférieur ou égal au nombre de joueurs maximum");
 			if(this.interImplDataMain.getLocalProfile() == null)
 				throw new Exception("Erreur Système: Impossible de charger le profil local");
 			
@@ -100,14 +87,12 @@ public class TableCreation{
 		this.interImplDataMain.createNewTable(
 				this.interImplDataMain.getLocalProfile().getUUID(),
 				tableName.getText(), 
-				tablePassword.getText(), 
 				minPlayers.getValue().intValue(),
 				maxPlayers.getValue().intValue(),
 				maxTokens.getValue().intValue(),
 				spectatorsAllowed.isSelected(),
 				chatEnabled.isSelected(),
-				new Rules(Variant.valueOf(rules.getValue()), 3)
-			);
+				new Rules(Variant.valueOf(rules.getValue()), 3));
 		}	
 		catch(Exception e){
 			Alert alert = new Alert(AlertType.ERROR, e.getMessage());
@@ -140,12 +125,5 @@ public class TableCreation{
 			this.waitingWindow = w;
 			this.time = time;
 		}
-	}
-
-	public void init(){
-		this.minPlayers.setValue(3);
-		this.maxPlayers.setValue(7);
-		this.maxTokens.setValue(21);
-		this.tableName.setText("La table du turfu");
 	}
 }
