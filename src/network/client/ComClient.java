@@ -109,9 +109,9 @@ public class ComClient implements ComClientInterface{
 	 * @see network.client.ComClientInterface#createNewTable(java.util.UUID, java.lang.String, java.lang.String, int, int, int, boolean, boolean, data.Rules)
 	 */
 	@Override
-	public void createNewTable(UUID user, String name, String pwd, int min, int max, int token, boolean withSpec,
+	public void createNewTable(UUID user, String name, int min, int max, int token, boolean withSpec,
 			boolean withChat, Rules rules) {
-		CreateTableMessage msg = new CreateTableMessage(user, name, pwd, min, max, token, withSpec, withChat, rules);
+		CreateTableMessage msg = new CreateTableMessage(user, name, min, max, token, withSpec, withChat, rules);
 		sendMessage(msg);
 	}
 

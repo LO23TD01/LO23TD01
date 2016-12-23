@@ -20,7 +20,6 @@
       <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
     <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
     <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-    <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
       <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
       <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
       <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
@@ -28,7 +27,6 @@
       <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
   </rowConstraints>
    <children>
-      <Label prefHeight="20.0" prefWidth="127.0" text="Mot de passe" GridPane.rowIndex="2" />
       <Label prefHeight="25.0" prefWidth="260.0" text="Nombre de joueurs max." GridPane.rowIndex="3" />
       <Label prefHeight="20.0" prefWidth="127.0" text="Nom de la Table" GridPane.rowIndex="1" />
       <TextField id="tableName" fx:id="tableName" alignment="BASELINE_LEFT" promptText="Nom de la Table" GridPane.columnIndex="1" GridPane.rowIndex="1">
@@ -36,11 +34,10 @@
             <Insets />
          </opaqueInsets>
       </TextField>
-      <PasswordField id="tablePassword" fx:id="tablePassword" promptText="*********" GridPane.columnIndex="1" GridPane.rowIndex="2" />
-      <Label prefHeight="25.0" prefWidth="260.0" text="Nombre de joueurs min." GridPane.rowIndex="4" />
+      <Label prefHeight="25.0" prefWidth="260.0" text="Nombre de joueurs min." GridPane.rowIndex="2" />
       <HBox alignment="CENTER" GridPane.columnIndex="1" GridPane.rowIndex="3">
          <children>
-            <ComboBox fx:id="maxPlayers" prefHeight="27.0" prefWidth="210.0" GridPane.columnIndex="1" GridPane.rowIndex="2">
+            <ComboBox fx:id="maxPlayers" prefHeight="27.0" prefWidth="210.0" GridPane.columnIndex="1" GridPane.rowIndex="3">
                <items>
             		<FXCollections fx:factory="observableArrayList">
             			<Integer fx:value="2" />
@@ -54,11 +51,14 @@
             			<Integer fx:value="10" />
             		</FXCollections>
             	</items>
+            	<value>
+        			<Integer fx:value="5" />
+    			</value>
             </ComboBox>
          
          </children>
       </HBox>
-      <HBox alignment="CENTER" GridPane.columnIndex="1" GridPane.rowIndex="4">
+      <HBox alignment="CENTER" GridPane.columnIndex="1" GridPane.rowIndex="2">
          <children>
             <ComboBox fx:id="minPlayers" prefHeight="27.0" prefWidth="207.0" GridPane.columnIndex="1" GridPane.rowIndex="2">
                <items>
@@ -70,46 +70,47 @@
             			<Integer fx:value="6" />
             		</FXCollections>
             	</items>
+            	<value>
+        			<Integer fx:value="2" />
+    			</value>
             </ComboBox>
          	
          </children>
       </HBox>
-      <Label prefHeight="25.0" prefWidth="260.0" text="Nombre de jetons" GridPane.rowIndex="5" />
-      <HBox alignment="CENTER" GridPane.columnIndex="1" GridPane.rowIndex="5">
+      <Label prefHeight="25.0" prefWidth="260.0" text="Nombre de jetons" GridPane.rowIndex="4" />
+      <HBox alignment="CENTER" GridPane.columnIndex="1" GridPane.rowIndex="4">
          <children>
             <ComboBox id="maxTokens" fx:id="maxTokens" prefHeight="27.0" prefWidth="223.0" GridPane.columnIndex="1" GridPane.rowIndex="4">
             	<items>
             		<FXCollections fx:factory="observableArrayList">
-            			<Integer fx:value="2" />
-            			<Integer fx:value="3" />
-            			<Integer fx:value="4" />
-            			<Integer fx:value="5" />
-            			<Integer fx:value="6" />
-            			<Integer fx:value="7" />
-            			<Integer fx:value="8" />
-            			<Integer fx:value="9" />
-            			<Integer fx:value="10" />
+            			<Integer fx:value="21" />
+            			<Integer fx:value="26" />
+            			<Integer fx:value="31" />
             		</FXCollections>
             	</items>
+            	<value>
+        			<Integer fx:value="21" />
+    			</value>
+            	
             </ComboBox>
          </children>
       </HBox>
-      <HBox alignment="CENTER" GridPane.rowIndex="7">
+      <HBox alignment="CENTER" GridPane.rowIndex="6">
          <children>
             <CheckBox id="chatEnabled" fx:id="chatEnabled" mnemonicParsing="false" text="Autoriser le chat " GridPane.rowIndex="5" />
          </children>
       </HBox>
-      <HBox alignment="CENTER" GridPane.columnIndex="1" GridPane.rowIndex="7">
+      <HBox alignment="CENTER" GridPane.columnIndex="1" GridPane.rowIndex="6">
          <children>
             <CheckBox id="spectatorsAllowed" fx:id="spectatorsAllowed" mnemonicParsing="false" text="Autoriser les spectateurs" GridPane.columnIndex="1" GridPane.rowIndex="6" />
          </children>
       </HBox>
-      <HBox alignment="CENTER" GridPane.rowIndex="8">
+      <HBox alignment="CENTER" GridPane.rowIndex="7">
          <children>
             <Button mnemonicParsing="false" onAction="#ok" prefHeight="42.0" prefWidth="183.0" text="Créer" GridPane.rowIndex="6" />
          </children>
       </HBox>
-      <HBox alignment="CENTER" GridPane.columnIndex="1" GridPane.rowIndex="8">
+      <HBox alignment="CENTER" GridPane.columnIndex="1" GridPane.rowIndex="7">
          <children>
             <Button mnemonicParsing="false" onAction="#cancel" prefHeight="42.0" prefWidth="183.0" text="Annuler" GridPane.columnIndex="1" GridPane.rowIndex="6" />
          </children>
@@ -119,15 +120,18 @@
             <Font name="Tahoma" size="20.0" />
          </font>
       </Text>
-      <Label prefHeight="17.0" prefWidth="172.0" text="Variante des règles" GridPane.rowIndex="6" />
-      <ComboBox fx:id="rules" prefHeight="30.0" prefWidth="206.0" GridPane.columnIndex="1" GridPane.rowIndex="6">
+      <Label prefHeight="17.0" prefWidth="172.0" text="Variante des règles" GridPane.rowIndex="5" />
+      <ComboBox fx:id="rules" prefHeight="30.0" prefWidth="206.0" GridPane.columnIndex="1" GridPane.rowIndex="5">
                 <items>
             		<FXCollections fx:factory="observableArrayList">
             			<String fx:value="FIXED_DISCHARGE" />
             			<String fx:value="CONSTRAINED_DISCHARGE" />
             			<String fx:value="FREE_DISCHARGE" />
             		</FXCollections>
-            	</items>   
+            	</items> 
+            	<value>
+        			<String fx:value="FIXED_DISCHARGE" />
+    			</value>	
       </ComboBox>
    </children>
    <padding>

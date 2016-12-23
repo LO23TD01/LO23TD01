@@ -52,7 +52,7 @@ public interface ComClientInterface {
 	 * @param withChat	a boolean indicating whether or not the chat should be enabled
 	 * @param rules		a Rule object indicating the rules of the game
 	 */
-	public void createNewTable(UUID user, String name, String pwd, int min, int max, int token, boolean withSpec,
+	public void createNewTable(UUID user, String name, int min, int max, int token, boolean withSpec,
 			boolean withChat, Rules rules);
 
 	/**

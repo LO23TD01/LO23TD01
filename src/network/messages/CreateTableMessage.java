@@ -17,7 +17,6 @@ public class CreateTableMessage implements IMessage{
 	private UUID userUUID;
 	private String name;
 	// TODO : check the utility of pwd (not used by data)
-	private String pwd;
 	private Integer min;
 	private Integer max;
 	private Integer token;
@@ -25,10 +24,9 @@ public class CreateTableMessage implements IMessage{
 	private Boolean withChat;
 	private String rules;
 	
-    public CreateTableMessage(UUID userUUID, String name, String pwd, int min, int max, int token, boolean withSpec, boolean withChat, Rules rules){
+    public CreateTableMessage(UUID userUUID, String name, int min, int max, int token, boolean withSpec, boolean withChat, Rules rules){
         this.userUUID = userUUID;
         this.name = name;
-        this.pwd = pwd;
         this.min = min;
         this.max = max;
         this.token = token;
@@ -39,7 +37,7 @@ public class CreateTableMessage implements IMessage{
 
     @Override
     public void process(ServerDataEngine dataEngine) {
-    	System.out.println("Appel du process côté serveur");
+    	System.out.println("Appel du process cï¿½tï¿½ serveur");
         User user = new User(new Profile(userUUID));
         Parameters parameters = new Parameters(min, max, token, withSpec, withChat, FxGson.create().fromJson(rules, Rules.class)); 
     	try {

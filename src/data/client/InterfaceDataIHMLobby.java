@@ -63,7 +63,6 @@ public interface InterfaceDataIHMLobby {
 
 	public boolean removeContactFromCategory(UUID uuidContact, UUID uuidCategory);
 
-	public void createNewTable(UUID user, String name, String pwd, int min, int max, int token, boolean withSpec,
-			boolean withChat, Rules rules);
+	public void createNewTable(UUID user, String name, int min, int max, int token, boolean withSpec, boolean withChat, Rules rules);
 
 }
