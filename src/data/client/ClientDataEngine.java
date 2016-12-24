@@ -180,8 +180,9 @@ public class ClientDataEngine implements InterfaceDataNetwork {
 		}
 		else if(g.isSame(this.getActualTable())) // on remplace la table qui doit contenir de nouvelles informations
 			this.actualTable.set(g);
-//		else
-//			throw new Exception("Erreur reception table. On est déjà à une table");
+		else
+			System.out.println("Erreur reception table. On est déjà à une table");
+			//throw new Exception("Erreur reception table. On est déjà à une table");
 
 
 	}
