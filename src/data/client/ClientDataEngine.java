@@ -335,6 +335,7 @@ public class ClientDataEngine implements InterfaceDataNetwork {
 
 	@Override
 	public void newPlayerOnTable(User u) {
+		getActualTable().getGameState().add(u.getLightWeightVersion()); // cette ligne doit être avant car sinon la ligne d' dessous trigger direct un listner sur cette valeur (qui sinon n'ets pas créée)
 		getActualTable().getPlayerList().add(u);
 	}
 

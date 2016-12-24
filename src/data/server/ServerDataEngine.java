@@ -674,6 +674,7 @@ public class ServerDataEngine implements InterfaceDataNetwork {
 			this.comServer.changeTurnState(getUUIDList(tableFull.getAllList()), TurnState.FIRST_ROUND);
 			this.comServer.startTurn(getUUIDList(tableFull.getAllList()),
 					tableFull.getGameState().getActualPlayer().getPublicData().getUUID(), false);
+			System.out.println("StartTurn : " + tableFull.getGameState().getActualPlayer().getPublicData().getLogin());
 
 		} else {
 			boolean canReroll = tableFull.getGameState().getRules().canReroll(tableFull.getGameState().getDataList(),
