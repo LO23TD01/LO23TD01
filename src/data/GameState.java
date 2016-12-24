@@ -147,21 +147,15 @@ public class GameState {
 	 *
 	 */
 	public void remove(User user) {
-		User playerToRemove = null;
-		for (User player : playerList) {
-			if (player.isSame(user))
-				playerToRemove = player;
-		}
-		if(playerToRemove != null) {
+		User playerToRemove = user.getSame(this.playerList);
+		if(playerToRemove != null)
+		{
 			playerList.remove(playerToRemove);
-		}
-		PlayerData dataToRemove = null;
-		for (PlayerData data : dataList) {
-			if (data.getPlayer().isSame(user))
-				dataToRemove = data;
-		}
-		if(dataToRemove != null) {
-			dataList.remove(dataToRemove);
+			List<PlayerData> dataToRemove = this.dataList.stream().filter(p->p.getPlayer().isSame(playerToRemove)).collect(Collectors.toList());
+			for(PlayerData p : dataToRemove)
+			{
+				this.dataList.remove(p);
+			}
 		}
 	}
 

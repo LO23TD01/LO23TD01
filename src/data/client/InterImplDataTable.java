@@ -56,15 +56,14 @@ public class InterImplDataTable implements InterfaceDataIHMTable{
 		this.dataEngine = dataEngine;
 
 		if(this.dataEngine.getActualTable()==null)
-			;//throw exception
-		if(this.dataEngine.getActualRole()==null)
-			;//thwor new Escpetion
-		if(this.dataEngine.getSelectionList()==null)
-			;//thwor new Escpetion
+			System.out.println("FAILURE INSTANCIATION INTERFACE TABLE : Table");//throw exception
+		else if(this.dataEngine.getActualRole()==null)
+			System.out.println("FAILURE INSTANCIATION INTERFACE TABLE : Role");//thwor new Escpetion
+		else if(this.dataEngine.getSelectionList()==null)
+			System.out.println("FAILURE INSTANCIATION INTERFACE TABLE : SelectionList");//thwor new Escpetion
 
-		this.actualTable = new SimpleObjectProperty<GameTable>(this.dataEngine.getActualTable());
-		this.actualRole = new SimpleObjectProperty<UserRole>(this.dataEngine.getActualRole());
-
+		this.actualTable = this.dataEngine.actualTableProperty();
+		this.actualRole = this.dataEngine.actualRoleProperty();
 		this.setSelectionList(this.dataEngine.getSelectionList());
 		this.currentProfile = this.dataEngine.getProfileManager().currentProfileProperty();
 		this.voteText = this.dataEngine.voteTextProperty();
@@ -153,11 +152,11 @@ public InterImplDataTable(ClientDataEngine dataEngine, UserRole actualRole,
 	public void quitGame() {
 
 
-
 		this.dataEngine.getComClientInterface().quit(this.dataEngine.getProfileManager().getCurrentProfile().getUUID(), this.actualTable.get().getUid());
-
-		if(this.getActualRole() == UserRole.CREATOR && this.getActualTable() != null && this.getActualTable().getGameState().getState() != State.PRESTART)
-			this.dataEngine.getComClientInterface().askQuitTable(this.actualTable.get().getUid(),this.dataEngine.getProfileManager().getCurrentProfile().getUUID());
+		this.setActualTable(null);
+		//fait au niveau serveur pour eviter les prob
+//		if(this.getActualRole() == UserRole.CREATOR && this.getActualTable() != null && this.getActualTable().getGameState().getState() != State.PRESTART)
+//			this.dataEngine.getComClientInterface().askQuitTable(this.actualTable.get().getUid(),this.dataEngine.getProfileManager().getCurrentProfile().getUUID());
 
 	}
 

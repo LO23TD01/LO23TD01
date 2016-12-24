@@ -91,7 +91,7 @@ public class GameTable {
 	}
 
 	public boolean connect(User u, boolean isPlayer) {
-		if (!isPlayer && !this.parameters.get().isAuthorizeSpecToChat())
+		if (!isPlayer && !this.parameters.get().isAuthorizeSpec())
 			return false;
 		if (!isPlayer) {
 			this.spectatorList.add(u);
@@ -112,11 +112,13 @@ public class GameTable {
 
 	public void disconnect(User u) {
 
-		if (this.spectatorList.remove(u)) // TOREWROK
+		if (this.spectatorList.remove(u)) // TOREWROKà
 		{
 			this.localChat.get().remove(u);
 		} else {
-			this.playerList.remove(u);
+			User user = u.getSame(this.playerList);
+			if(user!=null)
+				this.playerList.remove(user);
 			this.localChat.get().remove(u);
 			this.gameState.get().remove(u);
 			// if(this.creator.isSame(u))
