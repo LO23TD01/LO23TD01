@@ -3,11 +3,9 @@ package ihmTable.controller;
 import java.io.IOException;
 import java.util.Random;
 
-import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.SimpleBooleanProperty;
 import javafx.beans.property.SimpleIntegerProperty;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.StackPane;
@@ -21,9 +19,7 @@ public class DiceController {
 	private static final Image DICE4 = new Image("/ihmTable/resources/png/4.png");
 	private static final Image DICE5 = new Image("/ihmTable/resources/png/5.png");
 	private static final Image DICE6 = new Image("/ihmTable/resources/png/6.png");
-	
 
-	
     @FXML
     private StackPane diceContainer;
 
@@ -131,7 +127,7 @@ public class DiceController {
 	private void setZero() {
 		dice.setImage(DICE0);
 	}
-	
+
 	private void setOne() {
 		dice.setImage(DICE1);
 	}
@@ -155,5 +151,5 @@ public class DiceController {
 	private void setSix() {
 		dice.setImage(DICE6);
 	}
-	
+
 }
