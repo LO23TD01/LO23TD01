@@ -1,7 +1,5 @@
 package ihmTable.util;
 
-import java.awt.Graphics2D;
-import java.awt.image.BufferedImage;
 import java.util.HashMap;
 import java.util.NoSuchElementException;
 import java.util.Optional;
@@ -14,12 +12,10 @@ import data.client.InterImplDataTable;
 import javafx.application.Platform;
 import javafx.collections.ListChangeListener;
 import javafx.collections.ObservableList;
-import javafx.embed.swing.SwingFXUtils;
 import javafx.scene.control.Alert;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.Label;
-import javafx.scene.image.Image;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.ImagePattern;
@@ -145,7 +141,9 @@ public class PlayerWaitingAlert extends Alert {
 						});
 					}
 				}
-				this.getDialogPane().lookupButton(buttonStart).setDisable(players.size() != parameters.getNbPlayerMin());
+				if (user.isSame(gameTable.getCreator())) {
+					this.getDialogPane().lookupButton(buttonStart).setDisable(players.size() < parameters.getNbPlayerMin());
+				}
 			}
 		};
 		players.addListener(playersChangeListener);
@@ -174,27 +172,7 @@ public class PlayerWaitingAlert extends Alert {
 
 	private Rectangle getPlayerAvatar(User user) {
 		Rectangle rectangle = new Rectangle(20, 30);
-		Image image = null;
-		java.awt.Image avatarImage = user.getPublicData().getAvatar();
-		if (avatarImage != null) {
-			image = SwingFXUtils.toFXImage(toBufferedImage(avatarImage), null);
-		} else {
-			image = new Image("/ihmTable/resources/png/user.png");
-		}
-		rectangle.setFill(new ImagePattern(image));
+		rectangle.setFill(new ImagePattern(Utility.getPlayerAvatar(user)));
 		return rectangle;
 	}
-
-	// convert java.awt.Image to javafx.scene.Image
-	private BufferedImage toBufferedImage(java.awt.Image img) {
-		if (img instanceof BufferedImage) {
-			return (BufferedImage) img;
-		}
-		BufferedImage bimage = new BufferedImage(img.getWidth(null), img.getHeight(null), BufferedImage.TYPE_INT_ARGB);
-		Graphics2D bGr = bimage.createGraphics();
-		bGr.drawImage(img, 0, 0, null);
-		bGr.dispose();
-		return bimage;
-	}
-
 }

@@ -2,19 +2,13 @@ package ihmTable.controller;
 
 import java.io.IOException;
 
-import data.GameTable;
 import data.User;
-import data.UserRole;
 import data.client.InterImplDataTable;
+import javafx.beans.value.ObservableValue;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.control.Button;
 import javafx.scene.layout.HBox;
-import javafx.beans.property.IntegerProperty;
-import javafx.beans.property.SimpleBooleanProperty;
-import javafx.beans.property.SimpleIntegerProperty;
-import javafx.beans.value.ObservableValue;
-import javafx.collections.ObservableIntegerArray;
 
 public class DiceLauncherController {
 
