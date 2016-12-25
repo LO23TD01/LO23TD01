@@ -64,7 +64,7 @@ public class Rules {
 			}
 			return false;
 		}
-		
+
 		public boolean isNenette() {
 			if (this.dice[0] == 2 && this.dice[0] ==2 && this.dice[0] ==1) {
 				return true;
@@ -84,10 +84,10 @@ public class Rules {
 				}
 				return this.dice[2];
 			}
-			if (isTriple()) 
+			if (isTriple())
 				return this.dice[2];
 
-			if (isSuite()) 
+			if (isSuite())
 				return 2;
 
 			return 1;
@@ -141,10 +141,10 @@ public class Rules {
 		for(PlayerData p : l)
 			listDice.add(new DiceThrow(p.getPlayer(),p.getDices()));
 		Collections.sort(listDice);
-		
+
 		if(listDice.get(0).valeur()==1 && listDice.get(listDice.size()-1).isNenette())
 			Collections.reverse(listDice);
-		
+
 		List<User> listWinners = new ArrayList<User>();
 		for(DiceThrow d : listDice)
 		{
@@ -153,18 +153,18 @@ public class Rules {
 		}
 		return listWinners;
 	}
-	
-	
+
+
 	public List<User> getLoser(List<PlayerData> l)
 	{
 		List<DiceThrow> listDice = new ArrayList<DiceThrow>();
 		for(PlayerData p : l)
 			listDice.add(new DiceThrow(p.getPlayer(),p.getDices()));
 		Collections.sort(listDice);
-		
+
 		if(listDice.get(0).valeur()==1 && listDice.get(listDice.size()-1).isNenette())
 			Collections.reverse(listDice);
-		
+
 		List<User> listLosers = new ArrayList<User>();
 		for(DiceThrow d : listDice)
 		{
@@ -173,26 +173,26 @@ public class Rules {
 		}
 		return listLosers;
 	}
-	
+
 	public int getChip(List<PlayerData> l)
 	{
 		List<DiceThrow> listDice = new ArrayList<DiceThrow>();
 		for(PlayerData p : l)
 			listDice.add(new DiceThrow(p.getPlayer(),p.getDices()));
 		Collections.sort(listDice);
-		
+
 		if(listDice.get(0).valeur()==1 && listDice.get(listDice.size()-1).isNenette())
 			Collections.reverse(listDice);
-		
+
 		if(listDice.get(0).isNenette())
 			return 2;
-		return listDice.get(0).valeur(); 
+		return listDice.get(0).valeur();
 	}
-	
+
 	public boolean canReroll(List<PlayerData> l, User actualPlayer, User firstPlayer)
 	{
-		PlayerData actualPlayerData = null; 
-		PlayerData firstPlayerData = null; 
+		PlayerData actualPlayerData = null;
+		PlayerData firstPlayerData = null;
 		for(PlayerData p : l)
 		{
 			if(p.getPlayer().isSame(actualPlayer))
@@ -202,7 +202,6 @@ public class Rules {
 		}
 //		if(actualPlayerData==null || firstPlayerData==null)
 //			throw new Exception("Player not found.");
-		
 		switch(this.variant.get()){
 		case FREE_DISCHARGE:
 			if (actualPlayerData.getRerollCount() == this.throwMax.get()
@@ -222,9 +221,9 @@ public class Rules {
 			// throw new Exception("Etat Incoherent : Rules.java");
 			return false;
 		}
-		
-		
-		
+
+
+
 	}
 
 	public boolean hasToReroll(List<PlayerData> l, User actualPlayer, User firstPlayer) {
@@ -234,13 +233,13 @@ public class Rules {
 		case FIXED_DISCHARGE:
 			return true;
 		case CONSTRAINED_DISCHARGE:
-			return !actualPlayer.isSame(firstPlayer);
+			return this.canReroll(l, actualPlayer, firstPlayer);
 		default:
 			// throw new Exception("Etat Incoherent : Rules.java");
 			return false;
 		}
 	}
-	
+
 
 	public final ObjectProperty<Variant> variantProperty() {
 		return this.variant;

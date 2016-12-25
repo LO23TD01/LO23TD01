@@ -317,7 +317,7 @@ public class ServerDataEngine implements InterfaceDataNetwork {
 						userFull, tableFull.getGameState().getFirstPlayer());
 				if(!canReroll && !isFirstRoll)
 				{
-					//ne devrait pas pouvoir arriver
+					//si le joueur clique et n'a pas le droit de cliquer/lancer
 					this.comServer.raiseException(uuid,"Le joueur ne peux pas rejouer. Il doit pouvoir rejouer pour rejouer.");
 				}
 				 else
@@ -671,7 +671,7 @@ public class ServerDataEngine implements InterfaceDataNetwork {
 
 	private int Dice() {
 		int number = -1;
-		while (number < 0 && number > 6) // m�thode du rejet
+		while (number < 0 || number > 6) // m�thode du rejet
 			number = (int) (Math.random() * 6 + 1);
 		return number;
 	}
@@ -686,8 +686,7 @@ public class ServerDataEngine implements InterfaceDataNetwork {
 			this.comServer.changeTurnState(getUUIDList(tableFull.getAllList()), TurnState.FIRST_ROUND);
 			this.comServer.startTurn(getUUIDList(tableFull.getAllList()),
 					tableFull.getGameState().getActualPlayer().getPublicData().getUUID(), false);
-			System.out.println("StartTurn : " + tableFull.getGameState().getActualPlayer().getPublicData().getLogin());
-
+			System.out.println("StartTurn Init Sec : " + tableFull.getGameState().getActualPlayer().getPublicData().getUUID());
 		} else {
 			boolean canReroll = tableFull.getGameState().getRules().canReroll(tableFull.getGameState().getDataList(),
 					tableFull.getGameState().getActualPlayer(), tableFull.getGameState().getFirstPlayer());
@@ -718,7 +717,7 @@ public class ServerDataEngine implements InterfaceDataNetwork {
 			// la fonction gameEngine est appel� de Onethrow , il faut cahnger
 			// de joueur
 			tableFull.getGameState().setActualPlayer(tableFull.getGameState().getNextPlayer());
-			if (tableFull.getGameState().getDataList().stream().filter(d -> d.getRerollCount() != 0).count() != 0) // alors
+			if (tableFull.getGameState().getDataList().stream().filter(d -> d.getRerollCount() == 0).count() != 0) // alors
 																													// on
 																													// n'a
 																													// pas
@@ -728,6 +727,8 @@ public class ServerDataEngine implements InterfaceDataNetwork {
 			{
 				this.comServer.startTurn(getUUIDList(tableFull.getAllList()),
 						tableFull.getGameState().getActualPlayer().getPublicData().getUUID(), false);
+
+				System.out.println("StartTurn FirstRound Sec : " + tableFull.getGameState().getActualPlayer().getPublicData().getUUID());
 			} else // On a fini de dsitribuer
 			{
 				tableFull.getGameState().setTurnState(TurnState.WINNER_TIE_ROUND);
@@ -749,7 +750,7 @@ public class ServerDataEngine implements InterfaceDataNetwork {
 																	// doit
 																	// arreter
 			{
-				if (tableFull.getGameState().getDataList().stream().filter(d -> d.getRerollCount() != 0).count() != 0) // et
+				if (tableFull.getGameState().getDataList().stream().filter(d -> d.getRerollCount() == 0).count() != 0) // et
 																														// que
 																														// l'
 																														// on
@@ -806,7 +807,7 @@ public class ServerDataEngine implements InterfaceDataNetwork {
 												// sans trop de souci.
 				return;
 			}
-			if (tableFull.getGameState().getDataTieList().stream().filter(d -> d.getRerollCount() != 0).count() != 0) // alors
+			if (tableFull.getGameState().getDataTieList().stream().filter(d -> d.getRerollCount() == 0).count() != 0) // alors
 																														// on
 																														// n'a
 																														// pas
@@ -862,7 +863,7 @@ public class ServerDataEngine implements InterfaceDataNetwork {
 												// sans trop de souci.
 				return;
 			}
-			if (tableFull.getGameState().getDataTieList().stream().filter(d -> d.getRerollCount() != 0).count() != 0) // alors
+			if (tableFull.getGameState().getDataTieList().stream().filter(d -> d.getRerollCount() == 0).count() != 0) // alors
 																														// on
 																														// n'a
 																														// pas

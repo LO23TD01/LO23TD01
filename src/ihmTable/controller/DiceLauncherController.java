@@ -62,12 +62,17 @@ public class DiceLauncherController {
 
 	private void launch() {
 		// TODO: *** A tester
-		this.interImplDataTable.throwDice(dice1.isSelected(), dice2.isSelected(), dice3.isSelected());
 
+		//debug pour avoir des dés ...
+		dice1.setSelected(true);
+		dice2.setSelected(true);
+		dice3.setSelected(true);
+		this.interImplDataTable.throwDice(dice1.isSelected(), dice2.isSelected(), dice3.isSelected());
 		System.out.println("dice1: "+ dice1.isSelected() +", dice2:"+ dice2.isSelected()+", dice3:"+ dice3.isSelected());
 		dice1.setSelected(false);
 		dice2.setSelected(false);
 		dice3.setSelected(false);
+
 	}
 
 	// Rend le bouton lancer les dés cliquable

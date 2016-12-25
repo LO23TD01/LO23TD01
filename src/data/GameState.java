@@ -166,11 +166,11 @@ public class GameState {
 	public User getNextPlayer() {
 		int nextIndex;
 		if (this.turnState.get() == TurnState.WINNER_TIE_ROUND) {
-			nextIndex = this.winners.indexOf(this.actualPlayer); // -1 si pas trouv�
+			nextIndex = this.winners.indexOf(this.actualPlayer.getValue()); // -1 si pas trouv�
 			nextIndex = (nextIndex + 1) % this.winners.size();
 			return this.winners.get(nextIndex);
 		} else if (this.turnState.get() == TurnState.LOSER_TIE_ROUND) {
-			nextIndex = this.losers.indexOf(this.actualPlayer); // -1 si pas trouv�
+			nextIndex = this.losers.indexOf(this.actualPlayer.getValue()); // -1 si pas trouv�
 			nextIndex = (nextIndex + 1) % this.losers.size();
 			return this.losers.get(nextIndex);
 		} else {
@@ -178,10 +178,14 @@ public class GameState {
 			case PRESTART:
 			case SELECTION:
 			case CHARGING: // tous les 3 les m�mes
-				nextIndex = (this.playerList.indexOf(this.actualPlayer) + 1) % this.playerList.size();
+				int debug = this.playerList.indexOf(this.actualPlayer.getValue());
+				int a = debug +1;
+				int b = this.playerList.size();
+				nextIndex = a %b;
+				//nextIndex = (this.playerList.indexOf(this.actualPlayer) + 1) % this.playerList.size();
 				return playerList.get(nextIndex);
 			case DISCHARGING:
-				nextIndex = (this.playerList.indexOf(this.actualPlayer) + 1) % this.playerList.size();
+				nextIndex = (this.playerList.indexOf(this.actualPlayer.getValue()) + 1) % this.playerList.size();
 				while (this.getData(this.playerList.get(nextIndex), false).getChip() != 0)
 					nextIndex = (nextIndex + 1) % this.playerList.size();
 				return this.playerList.get(nextIndex);
@@ -189,7 +193,7 @@ public class GameState {
 				// TOREVIEW envoyer exception ? ca devrait pas �tre ici
 			default:
 				// TOREVIEW envoyer exception ? ca devrait pas �tre ici
-				nextIndex = (this.playerList.indexOf(this.actualPlayer) + 1) % this.playerList.size();
+				nextIndex = (this.playerList.indexOf(this.actualPlayer.getValue()) + 1) % this.playerList.size();
 				return this.playerList.get(nextIndex);
 			}
 
