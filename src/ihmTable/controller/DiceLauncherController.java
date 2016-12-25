@@ -68,7 +68,7 @@ public class DiceLauncherController {
 		dice2.setSelected(true);
 		dice3.setSelected(true);
 		this.interImplDataTable.throwDice(dice1.isSelected(), dice2.isSelected(), dice3.isSelected());
-		System.out.println("dice1: "+ dice1.isSelected() +", dice2:"+ dice2.isSelected()+", dice3:"+ dice3.isSelected());
+		//System.out.println("dice1: "+ dice1.isSelected() +", dice2:"+ dice2.isSelected()+", dice3:"+ dice3.isSelected());
 		dice1.setSelected(false);
 		dice2.setSelected(false);
 		dice3.setSelected(false);
@@ -94,19 +94,19 @@ public class DiceLauncherController {
 	// Listener sur les valeurs des dés
 	private Object valueDice1Change(ObservableValue<? extends Number> observable, Number oldValue, Number newValue) {
 		dice1.setValue(newValue.intValue()); // Mise a jour de l'image correspondant nouvelle valeur du dé
-		System.out.println("value dice1 change");
+		//System.out.println("value dice1 change");
 		return null;
 	}
 
 	private Object valueDice2Change(ObservableValue<? extends Number> observable, Number oldValue, Number newValue) {
 		dice2.setValue(newValue.intValue()); // Mise a jour de l'image correspondant nouvelle valeur du dé
-		System.out.println("value dice2 change");
+		//System.out.println("value dice2 change");
 		return null;
 	}
 
 	private Object valueDice3Change(ObservableValue<? extends Number> observable, Number oldValue, Number newValue) {
 		dice3.setValue(newValue.intValue()); // Mise a jour de l'image correspondant nouvelle valeur du dé
-		System.out.println("value dice3 change");
+		//System.out.println("value dice3 change");
 		return null;
 	}
 

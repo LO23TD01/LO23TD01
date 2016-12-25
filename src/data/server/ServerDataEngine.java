@@ -62,7 +62,7 @@ public class ServerDataEngine implements InterfaceDataNetwork {
 	{
 		GameTable tableFull = table.getSame(this.tableList);
 		 if(tableFull==null)
-			 this.comServer.raiseException(getUUIDList(tableFull.getAllList()), "La table n'existe pas. Il faut que la table existe pour s'y connecter.");
+			 System.out.println("Failure Launch Timer");//this.comServer.raiseException(getUUIDList(tableFull.getAllList()), "La table n'existe pas. Il faut que la table existe pour s'y connecter.");
 		 else
 			 this.comServer.showTimer(getUUIDList(table.getAllList()));
 	}
@@ -245,6 +245,8 @@ public class ServerDataEngine implements InterfaceDataNetwork {
 				 this.comServer.raiseException(user.getPublicData().getUUID(),"La table n'existe pas. Il faut que la table existe pour s'y connecter.");
 			 else if(!tableFull.getCreator().isSame(user))
 				 this.comServer.raiseException(user.getPublicData().getUUID(),"L'utilisateur n'est pas le createur de sa partie. Il faut ï¿½tre le createur pour lancer une partie.");
+			 else if(!(tableFull.getGameState().getState()==State.PRESTART || tableFull.getGameState().getState()==State.END))
+				 this.comServer.raiseException(user.getPublicData().getUUID(),"Ce n'est pas le moment de lancer une partie.");
 			 else
 			 {
 				 tableFull.initializeGame();
@@ -306,52 +308,73 @@ public class ServerDataEngine implements InterfaceDataNetwork {
 				 this.comServer.raiseException(uuid,"Le lanceur de dï¿½s n'est pas le joueur actuel. Il faut ï¿½tre le joueur actuel pour lancer les dï¿½s.");
 			 else
 			 {
-				 boolean tie = (tableFull.getGameState().getTurnState() == TurnState.LOSER_TIE_ROUND
+				boolean tie = (tableFull.getGameState().getTurnState() == TurnState.LOSER_TIE_ROUND
 						|| tableFull.getGameState().getTurnState() == TurnState.WINNER_TIE_ROUND);
-				PlayerData pData = new PlayerData(tableFull.getGameState().getData(userFull, tie));
-				boolean isFirstRoll = (pData.getRerollCount() == 0);
-				boolean isStop = !(d1 || d2 || d3);
-				boolean canReroll = tableFull.getGameState().getRules().canReroll(tableFull.getGameState().getDataList(),
-						userFull, tableFull.getGameState().getFirstPlayer());
-				boolean hasToReroll = tableFull.getGameState().getRules().hasToReroll(tableFull.getGameState().getDataList(),
-						userFull, tableFull.getGameState().getFirstPlayer());
-				if(!canReroll && !isFirstRoll)
+				if(tie && tableFull.getGameState().getDataTieList().size() ==0)
 				{
-					//si le joueur clique et n'a pas le droit de cliquer/lancer
-					this.comServer.raiseException(uuid,"Le joueur ne peux pas rejouer. Il doit pouvoir rejouer pour rejouer.");
+					//le mec clique trop ou au mauvais moment, il ne laisse pas le temps au données de s'init correctement.
+					 this.comServer.raiseException(uuid,"Vous avez cliqué trop vite. Veuillez patientez quelque "+/*"milli"+*/ "secondes avant de recliquer.");
 				}
-				 else
-				 if(hasToReroll && isStop)
-				 {
-					 this.comServer.raiseException(uuid,"Le joueur ne peux pas s'arreter. Il est obligï¿½ de rejouer.");
-				 }
-				 else
-				if (!isStop) { //le fait de tester le firstRoll ici n'etait pas necessaire et pouvait engranger des erreurs
-					int r1, r2, r3;
-					if (d1 || isFirstRoll)
-						r1 = Dice();
-					else
-						r1 = pData.getDices()[0];
-					if (d2 || isFirstRoll)
-						r2 = Dice();
-					else
-						r2 = pData.getDices()[1];
-					if (d3 || isFirstRoll)
-						r3 = Dice();
-					else
-						r3 = pData.getDices()[2];
-					int[] tDice = { r1, r2, r3 };
-					pData.setDices(tDice);
-					pData.setRerollCount(pData.getRerollCount() + 1);
-					tableFull.getGameState().replaceData(pData);
-					this.comServer.sendResult(getUUIDList(tableFull.getAllList()), r1, r2, r3);
-					gameEngine(tableFull, false);
-				} else {
-					this.comServer.sendResult(getUUIDList(tableFull.getAllList()), pData.getDices()[0], pData.getDices()[1],
-							pData.getDices()[2]);
-					gameEngine(tableFull, true);
+				else
+				{
+				 	PlayerData pData = new PlayerData(tableFull.getGameState().getData(userFull, tie));
+					boolean isFirstRoll = (pData.getRerollCount() == 0);
+					boolean isStop = !(d1 || d2 || d3);
+					boolean canReroll,hasToReroll;
+					if(tie)
+					{
+						canReroll = tableFull.getGameState().getRules().canReroll(tableFull.getGameState().getDataTieList(),
+								userFull, tableFull.getGameState().getFirstPlayer(),false);
+						hasToReroll = tableFull.getGameState().getRules().hasToReroll(tableFull.getGameState().getDataTieList(),
+								userFull, tableFull.getGameState().getFirstPlayer(),false);
 					}
-			 	}
+					else
+					{
+						canReroll = tableFull.getGameState().getRules().canReroll(tableFull.getGameState().getDataList(),
+							userFull, tableFull.getGameState().getFirstPlayer(),tableFull.getGameState().getState()==State.DISCHARGING);
+						hasToReroll = tableFull.getGameState().getRules().hasToReroll(tableFull.getGameState().getDataList(),
+							userFull, tableFull.getGameState().getFirstPlayer(),tableFull.getGameState().getState()==State.DISCHARGING);
+					}
+					if(!canReroll && !isFirstRoll)
+					{
+						//si le joueur clique et n'a pas le droit de cliquer/lancer
+						this.comServer.raiseException(uuid,"Le joueur ne peux pas rejouer. Il doit pouvoir rejouer pour rejouer.");
+					}
+					 else
+					 if(hasToReroll && isStop)
+					 {
+						 this.comServer.raiseException(uuid,"Le joueur ne peux pas s'arreter. Il est obligï¿½ de rejouer.");
+					 }
+					 else
+					 {
+					 		if (!isStop) { //le fait de tester le firstRoll ici n'etait pas necessaire et pouvait engranger des erreurs
+								int r1, r2, r3;
+								if (d1 || isFirstRoll)
+									r1 = Dice();
+								else
+									r1 = pData.getDices()[0];
+								if (d2 || isFirstRoll)
+									r2 = Dice();
+								else
+									r2 = pData.getDices()[1];
+								if (d3 || isFirstRoll)
+									r3 = Dice();
+								else
+									r3 = pData.getDices()[2];
+								int[] tDice = { r1, r2, r3 };
+								pData.setDices(tDice);
+								pData.setRerollCount(pData.getRerollCount() + 1);
+								tableFull.getGameState().replaceData(pData);
+								this.comServer.sendResult(getUUIDList(tableFull.getAllList()), r1, r2, r3);
+								gameEngine(tableFull, false);
+					 		} else {
+								this.comServer.sendResult(getUUIDList(tableFull.getAllList()), pData.getDices()[0], pData.getDices()[1],
+										pData.getDices()[2]);
+								gameEngine(tableFull, true);
+							}
+					 	}
+					}
+				}
 			 }
 		 }
 
@@ -382,8 +405,8 @@ public class ServerDataEngine implements InterfaceDataNetwork {
 		//Proposition : utiliser des lightweigth à la place est ce que ca existe ?
 		//En attendant que ce problème soit resolue on accepte la connexion pour pouvoir continuer à tester les autres fonctionnalités
 		 //if(!newUser.isFullVersion())
-		 if(false)
-			 this.comServer.raiseException(profile.getUUID(),"Profil non complet lors de la connexion. Profil complet requis.");
+//		 if(false)
+//			 this.comServer.raiseException(profile.getUUID(),"Profil non complet lors de la connexion. Profil complet requis.");
 		 //else if(false)
 		 if(newUser.getSame(this.usersList)!=null)
 			 this.comServer.raiseException(profile.getUUID(),"Profil dï¿½jï¿½ connectï¿½. Veuillez rï¿½essayer dans X minutes");
@@ -460,6 +483,20 @@ public class ServerDataEngine implements InterfaceDataNetwork {
 		// throw new Exception("La table n'existe pas. La table doit exister
 		// pour jouer dessus.");
 
+		//Debug afficher Etat :
+		System.out.println("Etat Jeu : " + tableFull.getGameState().getState());
+		System.out.println("Etat Tour : " + tableFull.getGameState().getTurnState());
+		System.out.println("Jetons Banque : " + tableFull.getGameState().getTurnState());
+		for(PlayerData p : tableFull.getGameState().getDataList())
+		{
+			System.out.println("Joueur : " + p.getPlayer().getPublicData().getUUID());
+			System.out.println("Jetons : " + p.getChip());
+			System.out.println("Jets : " + p.getRerollCount());
+			System.out.println("Des : " + p.getDices()[0] +" "+ p.getDices()[1]+" "+ p.getDices()[2]);
+		}
+		System.out.println();
+
+
 		// detecte la phase
 		switch (tableFull.getGameState().getState()) {
 		case PRESTART:
@@ -517,8 +554,8 @@ public class ServerDataEngine implements InterfaceDataNetwork {
 				loserRoundRoutine(tableFull, true);
 				break;
 			case END:
-				PlayerData pDataW = tableFull.getGameState().getData(tableFull.getGameState().getWinners().get(0),
-						false);
+//				PlayerData pDataW = tableFull.getGameState().getData(tableFull.getGameState().getWinners().get(0),
+//						false);
 				PlayerData pDataL = new PlayerData(
 						tableFull.getGameState().getData(tableFull.getGameState().getLosers().get(0), false));
 				int value = tableFull.getGameState().getRules().getChip(tableFull.getGameState().getDataList());
@@ -689,10 +726,11 @@ public class ServerDataEngine implements InterfaceDataNetwork {
 			System.out.println("StartTurn Init Sec : " + tableFull.getGameState().getActualPlayer().getPublicData().getUUID());
 		} else {
 			boolean canReroll = tableFull.getGameState().getRules().canReroll(tableFull.getGameState().getDataList(),
-					tableFull.getGameState().getActualPlayer(), tableFull.getGameState().getFirstPlayer());
+					tableFull.getGameState().getActualPlayer(), tableFull.getGameState().getFirstPlayer(),tableFull.getGameState().getState()==State.DISCHARGING);
 			boolean hasToReroll = tableFull.getGameState().getRules().hasToReroll(
 					tableFull.getGameState().getDataList(), tableFull.getGameState().getActualPlayer(),
-					tableFull.getGameState().getFirstPlayer());
+					tableFull.getGameState().getFirstPlayer(),
+					tableFull.getGameState().getState()==State.DISCHARGING);
 
 			if (!(tableFull.getGameState().getData(tableFull.getGameState().getActualPlayer(), false)
 					.getRerollCount() == 0) // si il a dï¿½jï¿½ commencï¿½
@@ -738,10 +776,11 @@ public class ServerDataEngine implements InterfaceDataNetwork {
 			}
 		} else {
 			boolean canReroll = tableFull.getGameState().getRules().canReroll(tableFull.getGameState().getDataList(),
-					tableFull.getGameState().getActualPlayer(), tableFull.getGameState().getFirstPlayer());
+					tableFull.getGameState().getActualPlayer(), tableFull.getGameState().getFirstPlayer(),tableFull.getGameState().getState()==State.DISCHARGING);
 			boolean hasToReroll = tableFull.getGameState().getRules().hasToReroll(
 					tableFull.getGameState().getDataList(), tableFull.getGameState().getActualPlayer(),
-					tableFull.getGameState().getFirstPlayer());
+					tableFull.getGameState().getFirstPlayer()
+					,tableFull.getGameState().getState()==State.DISCHARGING);
 
 			if (!(tableFull.getGameState().getData(tableFull.getGameState().getActualPlayer(), false)
 					.getRerollCount() == 0) // si il a dï¿½jï¿½ commencï¿½
@@ -780,22 +819,23 @@ public class ServerDataEngine implements InterfaceDataNetwork {
 
 	private void winnerRoundRoutine(GameTable tableFull, boolean calculateWinners) {
 		if (calculateWinners) {
-			if (tableFull.getGameState().getWinners() == null) {
+			if (tableFull.getGameState().getWinners().size() == 0) {
 				// on calcule les winners
 				tableFull.getGameState().setWinners(
 						tableFull.getGameState().getRules().getWinner(tableFull.getGameState().getDataList()));
-
 				if (tableFull.getGameState().getWinners().size() != 1) {
 					// on preinit le tie
 					List<PlayerData> newList = new ArrayList<PlayerData>();
 					for (User u : tableFull.getGameState().getWinners())
 						newList.add(new PlayerData(u));
+					tableFull.getGameState().setDataTieList(newList);
 					tableFull.getGameState().setActualPlayer(tableFull.getGameState().getWinners().get(0));
 					tableFull.getGameState().setFirstPlayer(tableFull.getGameState().getWinners().get(0));
 					// this.comServer.exAequoCase(getUuidList(tableFull.getAllList()),
 					// tableFull.getGameState().getWinners(),true);
 				}
 			}
+
 			if (tableFull.getGameState().getWinners().size() == 1) // un seul
 																	// winner la
 																	// solution
@@ -807,7 +847,7 @@ public class ServerDataEngine implements InterfaceDataNetwork {
 												// sans trop de souci.
 				return;
 			}
-			if (tableFull.getGameState().getDataTieList().stream().filter(d -> d.getRerollCount() == 0).count() != 0) // alors
+			else if (tableFull.getGameState().getDataTieList().stream().filter(d -> d.getRerollCount() == 0).count() != 0) // alors
 																														// on
 																														// n'a
 																														// pas
@@ -821,7 +861,13 @@ public class ServerDataEngine implements InterfaceDataNetwork {
 			} else {
 				// on recalcule les winners
 				tableFull.getGameState().setWinners(
-						tableFull.getGameState().getRules().getWinner(tableFull.getGameState().getDataList()));
+						tableFull.getGameState().getRules().getWinner(tableFull.getGameState().getDataTieList()));
+				List<PlayerData> newList = new ArrayList<PlayerData>();
+				for (User u : tableFull.getGameState().getWinners())
+					newList.add(new PlayerData(u));
+				tableFull.getGameState().setDataTieList(newList);
+				tableFull.getGameState().setActualPlayer(tableFull.getGameState().getWinners().get(0));
+				tableFull.getGameState().setFirstPlayer(tableFull.getGameState().getWinners().get(0));
 				gameEngine(tableFull, false);
 				return;
 			}
@@ -836,7 +882,7 @@ public class ServerDataEngine implements InterfaceDataNetwork {
 
 	private void loserRoundRoutine(GameTable tableFull, boolean calculateLosers) {
 		if (calculateLosers) {
-			if (tableFull.getGameState().getLosers() == null) {
+			if (tableFull.getGameState().getLosers().size() == 0) {
 				// on calcule les losers
 				tableFull.getGameState().setLosers(
 						tableFull.getGameState().getRules().getLoser(tableFull.getGameState().getDataList()));
@@ -846,8 +892,10 @@ public class ServerDataEngine implements InterfaceDataNetwork {
 					List<PlayerData> newList = new ArrayList<PlayerData>();
 					for (User u : tableFull.getGameState().getWinners())
 						newList.add(new PlayerData(u));
+					tableFull.getGameState().setDataTieList(newList);
 					tableFull.getGameState().setActualPlayer(tableFull.getGameState().getLosers().get(0));
 					tableFull.getGameState().setFirstPlayer(tableFull.getGameState().getLosers().get(0));
+					//TODO !!!!!!
 					// this.comServer.exAequoCase(getUuidList(tableFull.getAllList()),
 					// tableFull.getGameState().getLosers(),false);
 				}
@@ -877,7 +925,13 @@ public class ServerDataEngine implements InterfaceDataNetwork {
 			} else {
 				// on recalcule les losers
 				tableFull.getGameState().setLosers(
-						tableFull.getGameState().getRules().getLoser(tableFull.getGameState().getDataList()));
+						tableFull.getGameState().getRules().getLoser(tableFull.getGameState().getDataTieList()));
+				List<PlayerData> newList = new ArrayList<PlayerData>();
+				for (User u : tableFull.getGameState().getWinners())
+					newList.add(new PlayerData(u));
+				tableFull.getGameState().setDataTieList(newList);
+				tableFull.getGameState().setActualPlayer(tableFull.getGameState().getLosers().get(0));
+				tableFull.getGameState().setFirstPlayer(tableFull.getGameState().getLosers().get(0));
 				gameEngine(tableFull, false);
 				return;
 			}

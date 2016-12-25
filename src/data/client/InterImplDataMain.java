@@ -13,7 +13,7 @@ import data.Rights;
 import data.Rules;
 import data.User;
 import javafx.beans.property.ObjectProperty;
-import javafx.beans.property.SimpleObjectProperty;
+//import javafx.beans.property.SimpleObjectProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import network.client.ComClient;
@@ -187,10 +187,10 @@ public class InterImplDataMain implements InterfaceDataIHMLobby{
 	}
 
 	@Override
-	public void createNewTable(UUID user, String name, int min, int max, int token, boolean withSpec,
+	public void createNewTable(UUID user, String name, String pwd, int min, int max, int token, boolean withSpec,
 			boolean withChat, Rules rules){
 		
-		this.dataEngine.getComClientInterface().createNewTable(user, name, min, max, token, withSpec, withChat, rules);
+		this.dataEngine.getComClientInterface().createNewTable(user, name, pwd, min, max, token, withSpec, withChat, rules);
 	
 	}
 	

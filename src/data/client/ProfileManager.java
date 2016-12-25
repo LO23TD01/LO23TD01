@@ -22,9 +22,9 @@ import data.Profile;
 import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.SimpleBooleanProperty;
-import javafx.beans.property.SimpleIntegerProperty;
+//import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.property.SimpleObjectProperty;
-import javafx.beans.property.SimpleStringProperty;
+//import javafx.beans.property.SimpleStringProperty;
 
 public class ProfileManager {
 	private final BooleanProperty hasProfileOpened = new SimpleBooleanProperty();
@@ -34,12 +34,12 @@ public class ProfileManager {
 	 */
 	private ObjectProperty<Document> parsedProfileXML = new SimpleObjectProperty<Document>();
 
-	
+
 	//Diff�rentes fa�on de cr�er un Profile
 	public Profile createProfile() {
 		return new Profile();
 	}
-	
+
 	public Profile createProfile(UUID uuid) {
 		return new Profile(uuid);
 	}
@@ -47,12 +47,12 @@ public class ProfileManager {
 	public Profile createProfile(UUID uuid, String nickname, String firstName, String surName, int age) {
 		return new Profile(uuid,nickname,firstName,surName,age);
 	}
-	
+
 	// Normalement, c'est celui la que doit appeler IHM lobby lors de la cr�ation du premier profil
 	public Profile createProfile(String login, String psw) {
 		return new Profile(login,psw);
 	}
-	
+
 	public Profile createProfile(String login, String nickname, String psw, String firstName, String surName, int age) {
 		return new Profile(login,nickname,psw,firstName,surName,age);
 	}
@@ -112,12 +112,12 @@ public class ProfileManager {
 	public void logout(Profile profile) {
 
 	}
-    
+
 	public Profile getLocalProfile(String login, String password) {
-		JAXBContext jaxbContext;
+//		JAXBContext jaxbContext;
 		Profile prof = null;
 		String path = "MesProfiles\\"+login+"-"+password+".xml";
-		
+
         try {
             JAXBContext context = JAXBContext.newInstance(Profile.class);
             Unmarshaller un = context.createUnmarshaller();
@@ -125,7 +125,7 @@ public class ProfileManager {
         } catch (JAXBException e) {
             e.printStackTrace();
         }
-        
+
 		return prof;
 	}
 
@@ -133,20 +133,20 @@ public class ProfileManager {
 		// On r�cup�re tous les fichiers du dossier "MesProfiles"
 		File repertoire = new File("MesProfiles");
 		String[] L_fichiers =  repertoire.list();
-		
+
 		// On parcourt tous les fichiers se terminant bien par .xml .
 		for (int i=0; i<L_fichiers.length; i++){
 			if (L_fichiers[i].endsWith(".xml")){
-				
-				JAXBContext jaxbContext;
+
+//				JAXBContext jaxbContext;
 				Profile prof = null;
 				String path = "MesProfiles\\"+L_fichiers[i];
-				
+
 		        try {
 		            JAXBContext context = JAXBContext.newInstance(Profile.class);
 		            Unmarshaller un = context.createUnmarshaller();
 		            prof = (Profile) un.unmarshal(new File(path));
-		            
+
 		            // Si le profile contient bien le bon UUID on le retourne
 		            if (id.compareTo(prof.getUUID()) == 0){
 		            	return prof;
@@ -154,7 +154,7 @@ public class ProfileManager {
 		        } catch (JAXBException e) {
 		            e.printStackTrace();
 		        }
-				
+
 			}
 		}
 		return null;
@@ -174,7 +174,7 @@ public class ProfileManager {
 		profile_to_modify.setNickName(new_profile.getNickName());
 		profile_to_modify.setPsw(new_profile.getPsw());
 		profile_to_modify.setSurName(new_profile.getSurName());
-		
+
 		return profile_to_modify;
 	}
 
