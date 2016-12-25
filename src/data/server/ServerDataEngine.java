@@ -138,6 +138,7 @@ public class ServerDataEngine implements InterfaceDataNetwork {
 			 }
 			 this.comServer.kick(getUUIDList(tableFull.getAllList()), "La partie n'existe plus.");
 			 this.tableList.remove(tableFull);
+			 //TODO refresh
 		 }
 	}
 
@@ -957,6 +958,7 @@ public class ServerDataEngine implements InterfaceDataNetwork {
 								 userFull2.setActualTable(null);
 						 }
 						 this.tableList.remove(tableFull);
+						 //TODO Refresh
 					}
 					else
 					{
