@@ -1,32 +1,32 @@
 package data.client;
 
-import java.io.File;
-import java.io.IOException;
+//import java.io.File;
+//import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 import data.ChatMessage;
-import data.Contact;
-import data.ContactCategory;
+//import data.Contact;
+//import data.ContactCategory;
 import data.GameTable;
-import data.IPData;
+//import data.IPData;
 import data.PlayerData;
 import data.Profile;
-import data.Rights;
+//import data.Rights;
 import data.State;
 import data.TurnState;
 import data.User;
 import data.UserRole;
 import IHM_MAIN.src.IHMLobbyAPI;
 import data.Vote;
-import ihmTable.api.IHMTableLobbyImpl;
+//import ihmTable.api.IHMTableLobbyImpl;
 import javafx.application.Platform;
 import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.beans.property.StringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import network.client.ComClient;
+//import network.client.ComClient;
 import network.client.ComClientInterface;
 
 public class ClientDataEngine implements InterfaceDataNetwork {
@@ -42,7 +42,7 @@ public class ClientDataEngine implements InterfaceDataNetwork {
 	private final ObservableList<Boolean> selectionList = FXCollections.observableArrayList();
 	private StringProperty voteText;
 
-	private InterImplDataMain interfaceMain;
+	private InterImplDataMain interfaceMain; //Warning correct, mais on le garde quand meme pour savoir où il est.
 	//si on fait pas confiance Ã  main on decommente cette ligne
 	//private InterImplDataTable interfaceTable;
 

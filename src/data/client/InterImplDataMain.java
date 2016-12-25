@@ -13,7 +13,7 @@ import data.Rights;
 import data.Rules;
 import data.User;
 import javafx.beans.property.ObjectProperty;
-import javafx.beans.property.SimpleObjectProperty;
+//import javafx.beans.property.SimpleObjectProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import network.client.ComClient;
@@ -37,7 +37,7 @@ public class InterImplDataMain implements InterfaceDataIHMLobby{
 		this.tableList = this.dataEngine.getTableList();
 		this.currentProfile = this.dataEngine.getProfileManager().currentProfileProperty();
 	}
-	
+
 
 	/**
 	 * Cette méthode vérifie si le login/mot de passe est correct. Elle connecte ensuite le client au serveur de jeu.
@@ -189,12 +189,12 @@ public class InterImplDataMain implements InterfaceDataIHMLobby{
 	@Override
 	public void createNewTable(UUID user, String name, String pwd, int min, int max, int token, boolean withSpec,
 			boolean withChat, Rules rules){
-		
+
 		this.dataEngine.getComClientInterface().createNewTable(user, name, pwd, min, max, token, withSpec, withChat, rules);
-	
+
 	}
-	
-	
+
+
 
 //////////////////////////////////////////:
 

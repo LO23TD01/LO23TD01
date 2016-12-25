@@ -189,7 +189,7 @@ public class Rules {
 		return listDice.get(0).valeur();
 	}
 
-	public boolean canReroll(List<PlayerData> l, User actualPlayer, User firstPlayer)
+	public boolean canReroll(List<PlayerData> l, User actualPlayer, User firstPlayer, boolean isDischarge)
 	{
 		PlayerData actualPlayerData = null;
 		PlayerData firstPlayerData = null;
@@ -200,40 +200,51 @@ public class Rules {
 			if(p.getPlayer().isSame(firstPlayer))
 				firstPlayerData=p;
 		}
-//		if(actualPlayerData==null || firstPlayerData==null)
+		if(actualPlayerData==null || firstPlayerData==null)
+		{
 //			throw new Exception("Player not found.");
-		switch(this.variant.get()){
-		case FREE_DISCHARGE:
-			if (actualPlayerData.getRerollCount() == this.throwMax.get()
-					|| (actualPlayerData.getRerollCount() == firstPlayerData.getRerollCount() && !actualPlayer.isSame(firstPlayer)))
-				return false;
-			return true;
-		case FIXED_DISCHARGE:
-			if (actualPlayerData.getRerollCount() == this.throwMax.get())
-				return false;
-			return true;
-		case CONSTRAINED_DISCHARGE:
-			if (actualPlayerData.getRerollCount() == this.throwMax.get()
-					|| (actualPlayerData.getRerollCount() == firstPlayerData.getRerollCount() && !actualPlayer.isSame(firstPlayer)))
-				return false;
-			return true;
-		default:
-			// throw new Exception("Etat Incoherent : Rules.java");
+			System.out.println("Failed to find Data : Rules.java");
 			return false;
+		}
+		else if(isDischarge)
+		{
+			switch(this.variant.get()){
+			case FREE_DISCHARGE:
+				if (actualPlayerData.getRerollCount() == this.throwMax.get()
+						|| (actualPlayerData.getRerollCount() == firstPlayerData.getRerollCount() && !actualPlayer.isSame(firstPlayer)))
+					return false;
+				return true;
+			case FIXED_DISCHARGE:
+				if (actualPlayerData.getRerollCount() == this.throwMax.get())
+					return false;
+				return true;
+			case CONSTRAINED_DISCHARGE:
+				if (actualPlayerData.getRerollCount() == this.throwMax.get()
+						|| (actualPlayerData.getRerollCount() == firstPlayerData.getRerollCount() && !actualPlayer.isSame(firstPlayer)))
+					return false;
+				return true;
+			default:
+				// throw new Exception("Etat Incoherent : Rules.java");
+				return false;
+			}
+		}
+		else
+		{
+			return actualPlayerData.getRerollCount() ==0;
 		}
 
 
 
 	}
 
-	public boolean hasToReroll(List<PlayerData> l, User actualPlayer, User firstPlayer) {
+	public boolean hasToReroll(List<PlayerData> l, User actualPlayer, User firstPlayer, boolean isDischarge) {
 		switch (this.variant.get()) {
 		case FREE_DISCHARGE:
 			return false;
 		case FIXED_DISCHARGE:
 			return true;
 		case CONSTRAINED_DISCHARGE:
-			return this.canReroll(l, actualPlayer, firstPlayer);
+			return this.canReroll(l, actualPlayer, firstPlayer, isDischarge);
 		default:
 			// throw new Exception("Etat Incoherent : Rules.java");
 			return false;

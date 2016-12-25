@@ -58,7 +58,7 @@ public class PlayerWaitingAlert extends Alert {
 		this.players = gameTable.getPlayerList();
 		this.stage = stage;
 		this.playerViews = new HashMap<UUID, Rectangle>();
-		this.gameTable.getGameState().stateProperty().addListener(event -> Platform.runLater(new Runnable() {
+		this.gameTable.getGameState().stateProperty().addListener(event -> Platform.runLater(new Runnable() { //TODO ALERT WARNING, à cahnger cette ligne car elle lance pendant la partie le fait de lancer la partie
 		    @Override
 		    public void run() {
 		    	start();

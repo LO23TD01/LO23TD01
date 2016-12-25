@@ -129,9 +129,9 @@ public class GameState {
 		this.setDataList(newList);
 		this.setFirstPlayer(firstPlayer);
 		this.setActualPlayer(firstPlayer);
-		this.winners = null;
-		this.losers = null;
-		this.dataTieList = null;
+		this.winners.clear();
+		this.losers.clear();
+		this.dataTieList.clear();
 		this.setTurnState(TurnState.INIT);
 	}
 

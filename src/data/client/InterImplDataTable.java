@@ -9,12 +9,12 @@ import data.Parameters;
 import data.PlayerData;
 import data.Profile;
 import data.Rules;
-import data.State;
+//import data.State;
 import data.TurnState;
 import data.User;
 import data.UserRole;
 import data.Variant;
-import data.Vote;
+//import data.Vote;
 import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.beans.property.SimpleStringProperty;
@@ -27,8 +27,8 @@ public class InterImplDataTable implements InterfaceDataIHMTable{
 	private ClientDataEngine dataEngine;
 	private final ObjectProperty<UserRole> actualRole;
 	private final ObservableList<Boolean> selectionList = FXCollections.observableArrayList();
-	private ObjectProperty<Profile> currentProfile;
-	private StringProperty voteText;
+	private ObjectProperty<Profile> currentProfile; //Warning faux car utilisé par IHM
+	private StringProperty voteText; //Warning faux car utilisé par IHM
 
 	//constructeur  de test pour ihm table
 	public InterImplDataTable() {
