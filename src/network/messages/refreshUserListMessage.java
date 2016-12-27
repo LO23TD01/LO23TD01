@@ -17,7 +17,7 @@ public class refreshUserListMessage implements IMessage{
 	private String usersToRefresh;
 	
 	public refreshUserListMessage(List<User> usersToRefresh) {
-		User[] users = usersToRefresh.toArray(new User[1]);
+		User[] users = usersToRefresh.toArray(new User[0]);
 		this.usersToRefresh = FxGson.create().toJson(users);
 	}
 
