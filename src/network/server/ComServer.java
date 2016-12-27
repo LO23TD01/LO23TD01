@@ -577,4 +577,15 @@ public class ComServer implements Runnable, ComServerInterface {
             	handler.sendMessage(new SetCreatorMessage(creator));
         }
 	}
+
+	@Override
+	public void exAequoCase(List<UUID> receivers, List<User> users, boolean win) {
+		SocketClientHandler  handler;
+		for (UUID user : receivers) {
+            handler = connectedClients.get(user.toString());
+            if (handler != null)
+            	handler.sendMessage(new ExAequoMessage(users, win));
+        }
+	}
+	
 }

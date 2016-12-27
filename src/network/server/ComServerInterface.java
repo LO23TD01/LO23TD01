@@ -231,4 +231,11 @@ public interface ComServerInterface {
 	 * @param creator ID of the creator
 	 */
 	public void setCreator(List<UUID> receivers, UUID creator);
+	
+	/**
+	 * Notify players of an exaequo result
+	 * @param receivers List of receivers' ID
+	 * @param users Users that are exaequo
+	 */
+	public void exAequoCase(List<UUID> receivers, List<User> users, boolean win);
 }
