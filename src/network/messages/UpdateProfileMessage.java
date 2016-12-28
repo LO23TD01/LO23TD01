@@ -6,7 +6,7 @@ import org.hildan.fxgson.FxGson;
 
 import data.client.ClientDataEngine;
 import data.Profile;
-import data.server.ServerDataEngine;
+import data.server.InterfaceSingleThreadData;
 import network.messages.utils.BufferedImageBuilder;
 
 public class UpdateProfileMessage implements IMessage {
@@ -34,7 +34,7 @@ public class UpdateProfileMessage implements IMessage {
 	}
 
     @Override
-    public void process(ServerDataEngine dataEngine) {
+    public void process(InterfaceSingleThreadData dataEngine) {
     	Profile p = FxGson.create().fromJson(profile, Profile.class);
     	
     	//Converte bytes to Image and set the profile

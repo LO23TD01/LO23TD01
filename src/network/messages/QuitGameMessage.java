@@ -8,7 +8,7 @@ import data.GameTable;
 import data.Profile;
 import data.User;
 import data.client.ClientDataEngine;
-import data.server.ServerDataEngine;
+import data.server.InterfaceSingleThreadData;
 
 public class QuitGameMessage implements IMessage {
 
@@ -27,7 +27,7 @@ public class QuitGameMessage implements IMessage {
 	
 	
 	@Override
-	public void process(ServerDataEngine dataEngine) {
+	public void process(InterfaceSingleThreadData dataEngine) {
 		// dataEngine.quit(user, table); problème je n'ai pas de table, la méthode est quit(UUID user), conformément au diagramme de sÃ©quence
 		// conformément au même diagramme la méthode de l'interface Data devrait prendre uniquement un User
 		

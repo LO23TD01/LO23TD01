@@ -50,7 +50,7 @@ public class PlayerData {
 	 * @param dices
 	 * @param rerollCount
 	 */
-	//aucune id�e ???
+	//cote client
 	public PlayerData(PlayerData pData) {
 		this.player = new SimpleObjectProperty<User>(pData.getPlayer());
 		this.chip = new SimpleIntegerProperty(pData.getChip());

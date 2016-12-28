@@ -1,7 +1,7 @@
 package network.messages;
 
 import data.client.ClientDataEngine;
-import data.server.ServerDataEngine;
+import data.server.InterfaceSingleThreadData;
 
 import org.hildan.fxgson.FxGson;
 
@@ -18,7 +18,7 @@ public class NewSpectatorOnTableMessage implements IMessage {
     }
 
     @Override
-    public void process(ServerDataEngine dataEngine) {
+    public void process(InterfaceSingleThreadData dataEngine) {
 
     }
 

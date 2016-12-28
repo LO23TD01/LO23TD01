@@ -5,7 +5,7 @@ import java.util.UUID;
 import data.Profile;
 import data.User;
 import data.client.ClientDataEngine;
-import data.server.ServerDataEngine;
+import data.server.InterfaceSingleThreadData;
 
 public class HasThrownMessage implements IMessage{
 
@@ -24,7 +24,7 @@ public class HasThrownMessage implements IMessage{
 	}
 	
 	@Override
-	public void process(ServerDataEngine dataEngine) {
+	public void process(InterfaceSingleThreadData dataEngine) {
 		// TODO Auto-generated method stub
 		
 	}

@@ -58,44 +58,46 @@ public class SocketClientHandler implements Runnable{
 	@Override
 	public void run() {
 		while (true) {
-            try {
 
-                IMessage o = (IMessage) inputStream.readObject();
-                
-                if(o != null){
-                	if(o.getClass() == ConnectionMessage.class){
-                		ConnectionMessage message = (ConnectionMessage) o;
-                		server.replaceWithUUID(clientSocket.getInetAddress().toString(), message.uuid);
-                	}
+				try {
+	                IMessage o = (IMessage) inputStream.readObject();
 
-
-                	o.process(server.getDataEngine());
-                }
+	                if(o != null){
+	                	if(o.getClass() == ConnectionMessage.class){
+	                		ConnectionMessage message = (ConnectionMessage) o;
+	                		server.replaceWithUUID(clientSocket.getInetAddress().toString(), message.uuid);
+	                	}
 
 
-            }catch (Exception e){
-            	
-            	//Déconnexion anormale de l'utilisateur -> fermeture du socket et du thread
-            	
-            	try {
-					outputStream.close();
-					inputStream.close();
-				} catch (IOException e1) {
-					e1.printStackTrace();
-				}
-            	
-            	String userDisconnected = server.removeClient(this);
-            	
-            	server.getDataEngine().disconnect(new User(new Profile(UUID.fromString(userDisconnected))));
-            	
-            	Thread.currentThread().interrupt();
-            	
-            	System.out.println("Client déconnecté anormalement !");
-                e.printStackTrace();
-                
-                return;
+	                	o.process(server.getDataEngine());
+	                }
+
+
+	            }
+				catch (Exception e){
+
+	            	//Déconnexion anormale de l'utilisateur -> fermeture du socket et du thread
+
+	            	try {
+						outputStream.close();
+						inputStream.close();
+					} catch (IOException e1) {
+						e1.printStackTrace();
+					}
+
+	            	String userDisconnected = server.removeClient(this);
+
+	            	server.getDataEngine().disconnectUser(new User(new Profile(UUID.fromString(userDisconnected))));
+
+	            	Thread.currentThread().interrupt();
+
+	            	System.out.println("Client déconnecté anormalement !");
+	                e.printStackTrace();
+
+	                return;
+	            }
             }
-        }
+
 	}
 
 	/**
@@ -103,12 +105,13 @@ public class SocketClientHandler implements Runnable{
 	 * @param message Message to send
 	 */
 	public void sendMessage(IMessage message){
-		try {
 
-            outputStream.writeObject(message);
-            outputStream.flush();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+			try {
+	            outputStream.writeObject(message);
+	            outputStream.flush();
+	        } catch (IOException e) {
+	            e.printStackTrace();
+	        }
+
 	}
 }

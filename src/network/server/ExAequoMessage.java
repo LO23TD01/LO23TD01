@@ -7,7 +7,7 @@ import org.hildan.fxgson.FxGson;
 
 import data.User;
 import data.client.ClientDataEngine;
-import data.server.ServerDataEngine;
+import data.server.InterfaceSingleThreadData;
 import network.messages.IMessage;
 
 public class ExAequoMessage implements IMessage {
@@ -23,7 +23,7 @@ public class ExAequoMessage implements IMessage {
 	}
 	
 	@Override
-	public void process(ServerDataEngine dataEngine) {
+	public void process(InterfaceSingleThreadData dataEngine) {
 		// TODO Auto-generated method stub
 
 	}

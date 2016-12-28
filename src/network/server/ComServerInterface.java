@@ -23,7 +23,7 @@ public interface ComServerInterface {
 	 * @param r2 Value of second dice
 	 * @param r3 Value of third dice
 	 */
-	public void sendResult(List<UUID> receivers, int r1, int r2, int r3);
+	public void sendResult(List<UUID> receivers, UUID user, int r1, int r2, int r3);
 
 	/**
 	 * Sends message to all players
@@ -231,7 +231,7 @@ public interface ComServerInterface {
 	 * @param creator ID of the creator
 	 */
 	public void setCreator(List<UUID> receivers, UUID creator);
-	
+
 	/**
 	 * Notify players of an exaequo result
 	 * @param receivers List of receivers' ID

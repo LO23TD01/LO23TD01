@@ -8,7 +8,7 @@ import data.client.ClientDataEngine;
 import data.Parameters;
 import data.Profile;
 import data.Rules;
-import data.server.ServerDataEngine;
+import data.server.InterfaceSingleThreadData;
 import data.User;
 
 public class CreateTableMessage implements IMessage{
@@ -36,7 +36,7 @@ public class CreateTableMessage implements IMessage{
     }
 
     @Override
-    public void process(ServerDataEngine dataEngine) {
+    public void process(InterfaceSingleThreadData dataEngine) {
     	System.out.println("Appel du process c�t� serveur");
         User user = new User(new Profile(userUUID));
         Parameters parameters = new Parameters(min, max, token, withSpec, withChat, FxGson.create().fromJson(rules, Rules.class)); 

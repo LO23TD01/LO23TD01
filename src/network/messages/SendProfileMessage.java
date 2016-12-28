@@ -12,7 +12,7 @@ import org.hildan.fxgson.FxGson;
 import data.client.ClientDataEngine;
 import data.Profile;
 import data.User;
-import data.server.ServerDataEngine;
+import data.server.InterfaceSingleThreadData;
 import network.messages.utils.BufferedImageBuilder;
 
 public class SendProfileMessage implements IMessage{
@@ -36,7 +36,7 @@ public class SendProfileMessage implements IMessage{
 	}
 
     @Override
-    public void process(ServerDataEngine dataEngine) {
+    public void process(InterfaceSingleThreadData dataEngine) {
         // TODO Auto-generated method stub
         
     }

@@ -6,7 +6,7 @@ import data.GameTable;
 import data.Profile;
 import data.User;
 import data.client.ClientDataEngine;
-import data.server.ServerDataEngine;
+import data.server.InterfaceSingleThreadData;
 
 public class AskQuitTableMessage implements IMessage {
 
@@ -21,7 +21,7 @@ public class AskQuitTableMessage implements IMessage {
 
 	
 	@Override
-	public void process(ServerDataEngine dataEngine) {
+	public void process(InterfaceSingleThreadData dataEngine) {
 		// Ce n'est pas la bonne méthode, il faut une méthode askQuitTable spécifique lorsque le user est admin selon le diagramme
 		// dataEngine.quit(new User(new Profile(user)), new GameTable(tableId));
 	}

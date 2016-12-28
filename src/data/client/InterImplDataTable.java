@@ -139,7 +139,9 @@ public InterImplDataTable(ClientDataEngine dataEngine, UserRole actualRole,
 		//pas besoin de changer icic la selection, le server va renvoyer à tout le monde y coimpris le joueur
 		//sinon risque de conflit et de trucs pas beau
 		//en plus ca permet de voir le temps de réponse du server
-		this.dataEngine.getComClientInterface().selectDice(this.dataEngine.getProfileManager().getCurrentProfile().getUUID(), a, b, c);
+
+		//Debug :
+		//this.dataEngine.getComClientInterface().selectDice(this.dataEngine.getProfileManager().getCurrentProfile().getUUID(), a, b, c);
 	}
 
 	@Override

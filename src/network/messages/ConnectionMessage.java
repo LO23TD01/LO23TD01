@@ -20,7 +20,7 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
 import data.Profile;
-import data.server.ServerDataEngine;
+import data.server.InterfaceSingleThreadData;
 import network.messages.utils.BufferedImageBuilder;
 import sun.nio.ch.IOUtil;
 
@@ -43,7 +43,7 @@ public class ConnectionMessage implements IMessage{
 		profile = FxGson.create().toJson(p);
 	}
 	@Override
-	public void process(ServerDataEngine dataEngine) {
+	public void process(InterfaceSingleThreadData dataEngine) {
 		
 		Profile p = FxGson.create().fromJson(profile, Profile.class);
 		

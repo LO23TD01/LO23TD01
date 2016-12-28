@@ -10,7 +10,7 @@ import org.hildan.fxgson.FxGson;
 
 import com.sun.media.sound.FFT;
 
-import data.server.ServerDataEngine;
+import data.server.InterfaceSingleThreadData;
 
 public class NetworkChatMessage implements IMessage{
 	
@@ -22,7 +22,7 @@ public class NetworkChatMessage implements IMessage{
 	}
 	
 	@Override
-	public void process(ServerDataEngine dataEngine) {
+	public void process(InterfaceSingleThreadData dataEngine) {
 		dataEngine.sendMessage(FxGson.create().fromJson(msg, ChatMessage.class));
 	}
 

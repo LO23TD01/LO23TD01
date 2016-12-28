@@ -1,6 +1,8 @@
 package data.client;
 
+import java.util.Arrays;
 import java.util.List;
+import java.util.UUID;
 
 import data.ChatMessage;
 import data.GameTable;
@@ -9,6 +11,11 @@ import data.TurnState;
 import data.User;
 
 public interface InterfaceDataNetwork {
+
+
+	public void exAequoCase(List<User>users, boolean win);
+
+	public void setCreator(UUID u);
 
 	public void raiseException(String msg);
 

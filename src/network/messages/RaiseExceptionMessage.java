@@ -3,7 +3,7 @@ package network.messages;
 import java.util.UUID;
 
 import data.client.ClientDataEngine;
-import data.server.ServerDataEngine;
+import data.server.InterfaceSingleThreadData;
 
 public class RaiseExceptionMessage implements IMessage{
 
@@ -17,7 +17,7 @@ public class RaiseExceptionMessage implements IMessage{
 	}
 	
 	@Override
-	public void process(ServerDataEngine dataEngine) {
+	public void process(InterfaceSingleThreadData dataEngine) {
 		// TODO Auto-generated method stub
 		
 	}
