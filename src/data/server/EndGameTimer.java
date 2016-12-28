@@ -9,7 +9,7 @@ public class EndGameTimer extends TimerTask{
 
 	private GameTable table;
 	private ServerDataEngine engine;
-	
+
 
 	public EndGameTimer(GameTable table, ServerDataEngine engine) {
 		super();
@@ -22,5 +22,5 @@ public class EndGameTimer extends TimerTask{
 	    	engine.dropTable(table);
 	   	this.cancel();
 	}
-	
+
 }

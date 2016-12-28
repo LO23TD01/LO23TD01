@@ -6,7 +6,7 @@ import com.google.gson.Gson;
 
 import data.TurnState;
 import data.client.ClientDataEngine;
-import data.server.ServerDataEngine;
+import data.server.InterfaceSingleThreadData;
 
 public class ChangeTurnStateMessage implements IMessage {
 
@@ -19,7 +19,7 @@ public class ChangeTurnStateMessage implements IMessage {
 	}
 
 	@Override
-	public void process(ServerDataEngine dataEngine) {
+	public void process(InterfaceSingleThreadData dataEngine) {
 		// TODO Auto-generated method stub
 
 	}

@@ -3,7 +3,7 @@ package network.messages;
 import java.util.UUID;
 
 import data.client.ClientDataEngine;
-import data.server.ServerDataEngine;
+import data.server.InterfaceSingleThreadData;
 
 public class AnswerStopGameMessage implements IMessage {
 
@@ -20,7 +20,7 @@ public class AnswerStopGameMessage implements IMessage {
     }
 	
 	@Override
-	public void process(ServerDataEngine dataEngine) {
+	public void process(InterfaceSingleThreadData dataEngine) {
 		// Appeler :
 		// dataEngine.answerStopGame(tableId,answer,user);
 	}

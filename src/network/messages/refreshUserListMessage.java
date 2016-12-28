@@ -7,7 +7,7 @@ import java.util.List;
 import org.hildan.fxgson.FxGson;
 
 import data.client.ClientDataEngine;
-import data.server.ServerDataEngine;
+import data.server.InterfaceSingleThreadData;
 import data.User;
 
 public class refreshUserListMessage implements IMessage{
@@ -22,7 +22,7 @@ public class refreshUserListMessage implements IMessage{
 	}
 
     @Override
-    public void process(ServerDataEngine dataEngine) {
+    public void process(InterfaceSingleThreadData dataEngine) {
         // TODO Auto-generated method stub
         
     }

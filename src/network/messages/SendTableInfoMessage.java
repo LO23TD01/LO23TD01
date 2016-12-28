@@ -4,7 +4,7 @@ import org.hildan.fxgson.FxGson;
 
 import data.GameTable;
 import data.client.ClientDataEngine;
-import data.server.ServerDataEngine;
+import data.server.InterfaceSingleThreadData;
 
 public class SendTableInfoMessage implements IMessage {
 
@@ -17,7 +17,7 @@ public class SendTableInfoMessage implements IMessage {
 	}
 
 	@Override
-	public void process(ServerDataEngine dataEngine) {
+	public void process(InterfaceSingleThreadData dataEngine) {
 		// TODO Auto-generated method stub
 
 	}

@@ -2,7 +2,7 @@ package network.messages;
 
 import java.util.UUID;
 import data.client.ClientDataEngine;
-import data.server.ServerDataEngine;
+import data.server.InterfaceSingleThreadData;
 import data.Profile;
 import data.User;
 import data.GameTable;
@@ -21,7 +21,7 @@ public class AskJoinTableMessage implements IMessage {
     }
 
     @Override
-    public void process(ServerDataEngine dataEngine) {
+    public void process(InterfaceSingleThreadData dataEngine) {
         // TODO Auto-generated method stub
         dataEngine.askJoinTable(new User(new Profile(this.userID)), new GameTable(this.tableID), this.asPlayer);
     }

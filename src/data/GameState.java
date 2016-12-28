@@ -73,7 +73,7 @@ public class GameState {
 	// Va automatiquement l� o� necessaire : dataList dans le premier tour de table, dataTieList dans les tours de Tie Breaker.
 	// il va remplacer la data du player par celle en argument;
 	public void replaceData(PlayerData pData) {
-		if (this.turnState.get() == TurnState.INIT || this.turnState.get() == TurnState.FIRST_ROUND) {
+		if (this.turnState.get() == TurnState.INIT || this.turnState.get() == TurnState.FIRST_ROUND || this.turnState.get() == TurnState.END) {
 			// if(pData.getPlayer().getSame(this.playerList)==null)
 			// throw new Exception("Le joueur n'appartient pas � cette partie. Le joueur doit appartient � cette partie pour remplacer ses donn�es.");
 			// else if(pData.getPlayer().getSame(this.dataList.stream().map(d->d.getPlayer()).collect(Collectors.toList()))==null)
@@ -198,6 +198,22 @@ public class GameState {
 			}
 
 		}
+	}
+
+	public void debugDisplay()
+	{
+		//Debug afficher Etat :
+		System.out.println("Etat Jeu : " + getState());
+		System.out.println("Etat Tour : " + getTurnState());
+		System.out.println("Jetons Banque : " + getChipStack());
+		for(PlayerData p : getDataList())
+		{
+			System.out.println("Joueur : " + p.getPlayer().getPublicData().getUUID());
+			System.out.println("Jetons : " + p.getChip());
+			System.out.println("Jets : " + p.getRerollCount());
+			System.out.println("Des : " + p.getDices()[0] +" "+ p.getDices()[1]+" "+ p.getDices()[2]);
+		}
+		System.out.println();
 	}
 
 	public ObservableList<User> getPlayerList() {

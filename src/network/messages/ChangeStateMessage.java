@@ -2,7 +2,7 @@ package network.messages;
 
 import data.State;
 import data.client.ClientDataEngine;
-import data.server.ServerDataEngine;
+import data.server.InterfaceSingleThreadData;
 
 public class ChangeStateMessage implements IMessage {
 
@@ -15,7 +15,7 @@ public class ChangeStateMessage implements IMessage {
 	}
 
 	@Override
-	public void process(ServerDataEngine dataEngine) {
+	public void process(InterfaceSingleThreadData dataEngine) {
 		// TODO Auto-generated method stub
 
 	}

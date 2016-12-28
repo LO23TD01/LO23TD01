@@ -4,7 +4,7 @@ import java.util.UUID;
 
 import data.client.ClientDataEngine;
 import data.Profile;
-import data.server.ServerDataEngine;
+import data.server.InterfaceSingleThreadData;
 import data.User;
 
 public class LaunchGameMessage implements IMessage{
@@ -17,7 +17,7 @@ public class LaunchGameMessage implements IMessage{
     }
 
     @Override
-    public void process(ServerDataEngine dataEngine) {
+    public void process(InterfaceSingleThreadData dataEngine) {
         User user = new User(new Profile(userUUID));
     	dataEngine.launchGame(user);        
     }

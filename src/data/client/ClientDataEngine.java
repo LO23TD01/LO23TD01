@@ -69,7 +69,30 @@ public class ClientDataEngine implements InterfaceDataNetwork {
 		comClientInterface.selectDice(profileManager.getCurrentProfile().getUUID(), a, b, c);
 	}*/
 
-	//TODO A CLEAN
+
+	@Override
+	public void exAequoCase(List<User> users, boolean win) {
+
+		if(getActualTable() == null)
+			System.out.println("Erreur Pas de table");
+		else
+		{
+			if(win && getActualTable().getGameState().getTurnState()!=TurnState.WINNER_TIE_ROUND)
+				getActualTable().getGameState().setTurnState(TurnState.WINNER_TIE_ROUND);
+			else if(!win && getActualTable().getGameState().getTurnState()!=TurnState.LOSER_TIE_ROUND)
+				getActualTable().getGameState().setTurnState(TurnState.WINNER_TIE_ROUND);
+			if(win)
+				getActualTable().getGameState().setWinners(users);
+			else
+				getActualTable().getGameState().setLosers(users);
+			List<PlayerData> newList = new ArrayList<PlayerData>();
+			for(User u : users)
+				newList.add(new PlayerData(u));
+			getActualTable().getGameState().setDataTieList(newList);
+		}
+	}
+
+	@Override
 	public void setCreator(UUID u){
 		User newCreator = new User(new Profile(u));
 		if(this.getActualTable() !=null)
@@ -203,17 +226,24 @@ public class ClientDataEngine implements InterfaceDataNetwork {
 	//Le modèle du serveur contient plus d'information que le modèle client aprsè cette fonction.
 	//TOREVIEW : p-être renvoyer la table complète pour eviter ce problème.
 	//TOREVIEW : autre solution, faire environ 500 lignes de codes pour retro enginneerer l'état.
+
+	//WARNING JAMAIS APPELE
+	//du coup la passe en obsolete car hasThrown fait la meme chose
 	@Override
 	public void setDice(int a, int b, int c) {
-		int[] dices = {a,b,c};
-		getActualTable().getGameState().getData(new User(this.getProfileManager().getCurrentProfile()), false).setDices(dices); //On check avec soi-meme.
 
-		//fix pour la Selection
-		List<Boolean>  newList = new ArrayList<Boolean>();
-		newList.add(false);
-		newList.add(false);
-		newList.add(false);
-		this.setSelectionList(newList);
+		System.out.println("Fonction obselete appel� : ClientDataEngine.setDice");
+//		int[] dices = {a,b,c};
+//		getActualTable().getGameState().getData(new User(this.getProfileManager().getCurrentProfile()), false).setDices(dices); //On check avec soi-meme.
+//
+//		//fix pour la Selection
+//		List<Boolean>  newList = new ArrayList<Boolean>();
+//		newList.add(false);
+//		newList.add(false);
+//		newList.add(false);
+//		this.setSelectionList(newList);
+//
+//		getActualTable().getGameState().debugDisplay();
 	}
 
 	@Override
@@ -243,23 +273,30 @@ public class ClientDataEngine implements InterfaceDataNetwork {
 		newList.add(false);
 		newList.add(false);
 		this.setSelectionList(newList);
+
+		getActualTable().getGameState().debugDisplay();
 	}
 
 	//c'est une addition ici
 	@Override
 	public void updateChips(User u, int a) {
-		PlayerData p1 = actualTable.get().getGameState().getData(u, false);
+		PlayerData p1 = new PlayerData(actualTable.get().getGameState().getData(u, false));
 		p1.setChip(p1.getChip()+a);
+		getActualTable().getGameState().replaceData(p1);
+		int newChipStack = getActualTable().getGameState().getChipStack()-a;
+		getActualTable().getGameState().setChipStack(newChipStack);
 		getActualTable().getGameState().nextTurn(u); //ne pas oublier de passer au prochain tour.
 	}
 
 	@Override
 	public void updateChips(User u1, User u2, int a) {
-		PlayerData p1 = actualTable.get().getGameState().getData(u1, false);
-		PlayerData p2 = actualTable.get().getGameState().getData(u2, false);
+		PlayerData p1 = new PlayerData(actualTable.get().getGameState().getData(u1, false));
+		PlayerData p2 = new PlayerData(actualTable.get().getGameState().getData(u2, false));
 
 		p1.setChip(p1.getChip()-a);
 		p2.setChip(p2.getChip()+a);
+		getActualTable().getGameState().replaceData(p1);
+		getActualTable().getGameState().replaceData(p2);
 		getActualTable().getGameState().nextTurn(u1); //ne pas oublier de passer au prochain tour.
 	}
 
@@ -360,6 +397,8 @@ public class ClientDataEngine implements InterfaceDataNetwork {
 	public void  changeState(State s)
 	{
 		getActualTable().getGameState().setState(s);
+		if(s == State.CHARGING)
+			getActualTable().getGameState().nextTurn(getActualTable().getGameState().getFirstPlayer()); //TODO a clean bidouillage
 	}
 
 	@Override
@@ -486,6 +525,8 @@ public class ClientDataEngine implements InterfaceDataNetwork {
 	public final void setVoteText(final String voteText) {
 		this.voteTextProperty().set(voteText);
 	}
+
+
 
 
 }

@@ -15,7 +15,7 @@ import com.google.gson.Gson;
 
 import data.Profile;
 import data.User;
-import data.server.ServerDataEngine;
+import data.server.InterfaceSingleThreadData;
 import network.messages.utils.BufferedImageBuilder;
 
 public class NewUserMessage implements IMessage {
@@ -37,7 +37,7 @@ public class NewUserMessage implements IMessage {
 	}
 		
 	@Override
-	public void process(ServerDataEngine dataEngine) {
+	public void process(InterfaceSingleThreadData dataEngine) {
 		// TODO Auto-generated method stub
 		
 	}

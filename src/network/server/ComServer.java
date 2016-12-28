@@ -14,7 +14,7 @@ import data.GameTable;
 import data.Profile;
 import data.State;
 import data.TurnState;
-import data.server.ServerDataEngine;
+import data.server.InterfaceSingleThreadData;
 import network.messages.NewUserMessage;
 import network.messages.HasSelectedMessage;
 import network.messages.IsTurnMessage;
@@ -60,7 +60,7 @@ public class ComServer implements Runnable, ComServerInterface {
 	private ServerSocket	serverSocket;
 	private boolean			isStopped    = false;
 	private 			HashMap<String, SocketClientHandler> connectedClients = new HashMap<String, SocketClientHandler>();
-	private ServerDataEngine dataEngine;
+	private InterfaceSingleThreadData dataEngine;
 
 	/*
 	 *
@@ -143,7 +143,7 @@ public class ComServer implements Runnable, ComServerInterface {
 	            connectedClients.put(clientSocket.getInetAddress().toString(), client);
 	    }
 	}
-	
+
 	/**
 	 * @param SocketClientHandler à supprimer
 	 */
@@ -153,7 +153,7 @@ public class ComServer implements Runnable, ComServerInterface {
 				connectedClients.remove(key);
 				return key;
 			}
-				
+
 		}
 		return null;
 	}
@@ -168,12 +168,12 @@ public class ComServer implements Runnable, ComServerInterface {
 	 * @see network.server.ComServerInterface#sendResult(java.util.List, int, int, int)
 	 */
 	@Override
-	public void sendResult(List<UUID> receivers, int r1, int r2, int r3) {
+	public void sendResult(List<UUID> receivers, UUID user, int r1, int r2, int r3) {
 		SocketClientHandler handler;
 		for (UUID receiver : receivers) {
 			handler = connectedClients.get(receiver.toString());
 			if (handler != null) {
-				handler.sendMessage(new HasThrownMessage(receiver, r1, r2, r3));
+				handler.sendMessage(new HasThrownMessage(user, r1, r2, r3));
 			}
 		}
 
@@ -418,7 +418,7 @@ public class ComServer implements Runnable, ComServerInterface {
 	 * Returns the server data engine
 	 * @return dataEngine
 	 */
-	public ServerDataEngine getDataEngine() {
+	public InterfaceSingleThreadData getDataEngine() {
 		return dataEngine;
 	}
 
@@ -426,7 +426,7 @@ public class ComServer implements Runnable, ComServerInterface {
 	 * Sets server data engine attribute
 	 * @param dataEngine
 	 */
-	public void setDataEngine(ServerDataEngine dataEngine) {
+	public void setDataEngine(InterfaceSingleThreadData dataEngine) {
 		this.dataEngine = dataEngine;
 	}
 
@@ -587,5 +587,5 @@ public class ComServer implements Runnable, ComServerInterface {
             	handler.sendMessage(new ExAequoMessage(users, win));
         }
 	}
-	
+
 }

@@ -3,7 +3,7 @@ package network.messages;
 import java.util.UUID;
 
 import data.client.ClientDataEngine;
-import data.server.ServerDataEngine;
+import data.server.InterfaceSingleThreadData;
 
 public class SelectDiceMessage implements IMessage{
 
@@ -22,7 +22,7 @@ public class SelectDiceMessage implements IMessage{
 	}
 
 	@Override
-	public void process(ServerDataEngine dataEngine) {
+	public void process(InterfaceSingleThreadData dataEngine) {
 		dataEngine.hasSelected(player, dice1, dice2, dice3);
 	}
 
