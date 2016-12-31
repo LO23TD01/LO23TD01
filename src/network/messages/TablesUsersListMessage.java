@@ -6,6 +6,7 @@ import java.util.List;
 import org.hildan.fxgson.FxGson;
 
 import data.client.ClientDataEngine;
+import data.client.InterfaceSingleThreadDataClient;
 import data.GameTable;
 import data.server.InterfaceSingleThreadData;
 import data.User;
@@ -32,7 +33,7 @@ public class TablesUsersListMessage implements IMessage {
 	}
 
 	@Override
-	public void process(ClientDataEngine dataEngine) {
+	public void process(InterfaceSingleThreadDataClient dataEngine) {
 		User[] users = FxGson.create().fromJson(userList, User[].class);
 		dataEngine.updateUsersList(Arrays.asList(users));
 		

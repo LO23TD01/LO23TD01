@@ -58,7 +58,8 @@ public class ClientDataEngine implements InterfaceDataNetwork {
 	public ClientDataEngine() {
 		super();
 		this.profileManager = new ProfileManager();
-		this.interfaceMain = new InterImplDataMain(this);
+		InterfaceSingleThreadDataClient clientThread = new InterfaceSingleThreadDataClient(this);
+		this.interfaceMain = new InterImplDataMain(clientThread);
 		//si on fait pas confiance à main on decommente cette ligne
 		//this.interfaceTable = new InterImplDataTable(this);
 	}

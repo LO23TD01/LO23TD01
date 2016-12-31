@@ -5,6 +5,7 @@ import java.util.UUID;
 import org.hildan.fxgson.FxGson;
 
 import data.client.ClientDataEngine;
+import data.client.InterfaceSingleThreadDataClient;
 import data.Parameters;
 import data.Profile;
 import data.Rules;
@@ -48,5 +49,5 @@ public class CreateTableMessage implements IMessage{
     }
 
     @Override
-    public void process(ClientDataEngine dataEngine) {}
+    public void process(InterfaceSingleThreadDataClient dataEngine) {}
 }

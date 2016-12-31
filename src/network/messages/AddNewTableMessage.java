@@ -4,6 +4,7 @@ import org.hildan.fxgson.FxGson;
 
 import data.GameTable;
 import data.client.ClientDataEngine;
+import data.client.InterfaceSingleThreadDataClient;
 import data.server.InterfaceSingleThreadData;
 
 public class AddNewTableMessage implements IMessage {
@@ -22,7 +23,7 @@ public class AddNewTableMessage implements IMessage {
 	}
 
 	@Override
-	public void process(ClientDataEngine dataEngine) {
+	public void process(InterfaceSingleThreadDataClient dataEngine) {
 		dataEngine.addNewTable(FxGson.create().fromJson(tableInfo, GameTable.class));
 	}
 

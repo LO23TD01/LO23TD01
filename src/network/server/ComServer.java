@@ -24,6 +24,7 @@ import network.messages.HasWonMessage;
 import network.messages.AskStopGameMessage;
 import network.messages.ChangeStateMessage;
 import network.messages.ChangeTurnStateMessage;
+import network.messages.ExAequoMessage;
 import network.messages.HasAcceptedMessage;
 import network.messages.HasRefusedMessage;
 import network.messages.KickedMessage;
@@ -561,7 +562,9 @@ public class ComServer implements Runnable, ComServerInterface {
         for (UUID user : receivers) {
             handler = connectedClients.get(user.toString());
             if (handler != null)
+            {
                 handler.sendMessage(new ChangeTurnStateMessage(turnState));
+            }
         }
 	}
 

@@ -5,6 +5,7 @@ import java.util.UUID;
 import data.Profile;
 import data.User;
 import data.client.ClientDataEngine;
+import data.client.InterfaceSingleThreadDataClient;
 import data.server.InterfaceSingleThreadData;
 
 public class IsTurnMessage implements IMessage{
@@ -24,7 +25,7 @@ public class IsTurnMessage implements IMessage{
 	}
 
 	@Override
-	public void process(ClientDataEngine dataEngine) {
+	public void process(InterfaceSingleThreadDataClient dataEngine) {
 		dataEngine.isTurn(new User(new Profile(player)));
 	}
 

@@ -10,6 +10,7 @@ import javax.imageio.ImageIO;
 import org.hildan.fxgson.FxGson;
 
 import data.client.ClientDataEngine;
+import data.client.InterfaceSingleThreadDataClient;
 import data.Profile;
 import data.User;
 import data.server.InterfaceSingleThreadData;
@@ -42,7 +43,7 @@ public class SendProfileMessage implements IMessage{
     }
 
     @Override
-    public void process(ClientDataEngine dataEngine) {
+    public void process(InterfaceSingleThreadDataClient dataEngine) {
     	Profile p = FxGson.create().fromJson(profile, Profile.class);
     	
     	//Converte bytes to Image and set the profile

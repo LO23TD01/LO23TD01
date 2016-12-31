@@ -1,6 +1,7 @@
 package network.messages;
 
 import data.client.ClientDataEngine;
+import data.client.InterfaceSingleThreadDataClient;
 import data.server.InterfaceSingleThreadData;
 
 import org.hildan.fxgson.FxGson;
@@ -23,7 +24,7 @@ public class NewPlayerOnTableMessage implements IMessage {
     }
 
     @Override
-    public void process(ClientDataEngine dataEngine) {
+    public void process(InterfaceSingleThreadDataClient dataEngine) {
         dataEngine.newPlayerOnTable(new User(FxGson.create().fromJson(userProfile, Profile.class)));
     }
 

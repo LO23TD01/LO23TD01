@@ -1,6 +1,7 @@
 package network.messages;
 
 import data.client.ClientDataEngine;
+import data.client.InterfaceSingleThreadDataClient;
 
 import java.awt.Graphics2D;
 import java.awt.Image;
@@ -55,7 +56,7 @@ public class ConnectionMessage implements IMessage{
 	}
 
 	@Override
-	public void process(ClientDataEngine dataEngine) {
+	public void process(InterfaceSingleThreadDataClient dataEngine) {
 		// TODO Auto-generated method stub
 		
 	}

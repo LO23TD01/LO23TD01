@@ -7,6 +7,8 @@ import data.GameTable;
 import data.Profile;
 import data.Rules;
 import data.client.ClientDataEngine;
+import data.client.InterfaceSingleThreadDataClient;
+import data.server.InterfaceSingleThreadData;
 
 /**
  * Interface presenting the methods of ComClient
@@ -143,6 +145,6 @@ public interface ComClientInterface {
 	 * Sends the client data over the network from the client to the server
 	 * @param clientData
 	 */
-	public void setClientData(ClientDataEngine clientData);
+	public void setClientData(InterfaceSingleThreadDataClient clientData);
 
 }

@@ -1,6 +1,7 @@
 package network.messages;
 
 import data.client.ClientDataEngine;
+import data.client.InterfaceSingleThreadDataClient;
 
 import java.awt.image.BufferedImage;
 import java.io.ByteArrayInputStream;
@@ -43,7 +44,7 @@ public class NewUserMessage implements IMessage {
 	}
 
 	@Override
-	public void process(ClientDataEngine dataEngine) {
+	public void process(InterfaceSingleThreadDataClient dataEngine) {
 		
 		Profile p = FxGson.create().fromJson(profile, Profile.class);
 		

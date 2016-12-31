@@ -68,7 +68,7 @@ public class SocketServerHandler implements Runnable {
             	Thread.currentThread().interrupt();
             	
             	System.out.println("Client déconnecté anormalement !");
-                
+                e.printStackTrace();
                 return;
             }
         }
@@ -78,7 +78,7 @@ public class SocketServerHandler implements Runnable {
 	 * Sends a message from the client to ther server using the open socket.
 	 * @param message	the message to be sent
 	 */
-	public void sendMessage(IMessage message){
+	public synchronized void sendMessage(IMessage message){
 		try {
         	
             outputStream.writeObject(message);

@@ -3,9 +3,12 @@ package network.client;
 import java.io.IOException;
 import java.net.Socket;
 import java.net.UnknownHostException;
+import java.util.Date;
 import java.util.UUID;
 
 import data.client.ClientDataEngine;
+import data.client.InterfaceSingleThreadDataClient;
+import data.server.InterfaceSingleThreadData;
 import data.ChatMessage;
 import data.GameTable;
 import data.Profile;
@@ -38,7 +41,7 @@ public class ComClient implements ComClientInterface{
 	private Socket 					socketToServer;
 	private boolean 				isStopped = false;
 	private SocketServerHandler 	server;
-	private ClientDataEngine		clientData;
+	private InterfaceSingleThreadDataClient		clientData;
 	
 	
 	/*
@@ -77,8 +80,10 @@ public class ComClient implements ComClientInterface{
 	 * @param message	IMessage to be sent 
 	 */
 	public void sendMessage(IMessage message){
-		if(server != null)
+		if(server != null){
+			System.out.println("SendMessage : "+new Date().getTime());
 			server.sendMessage(message);
+		}
 	}
 	
 	
@@ -227,7 +232,7 @@ public class ComClient implements ComClientInterface{
 	 * Getter for the clientData attribute
 	 * @return	a ClientDataEngine object
 	 */
-	public ClientDataEngine getClientData() {
+	public InterfaceSingleThreadDataClient getClientData() {
 		return clientData;
 	}
 
@@ -235,7 +240,7 @@ public class ComClient implements ComClientInterface{
 	 * Setter for the clientData attribute
 	 * @param	the clientData to set
 	 */
-	public void setClientData(ClientDataEngine clientData) {
+	public void setClientData(InterfaceSingleThreadDataClient clientData) {
 		this.clientData = clientData;
 	}
 	

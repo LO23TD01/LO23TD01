@@ -313,7 +313,7 @@ public class MainApp extends Application {
 	}
 
 	public void init(){
-		this.interImplDataMain = new InterImplDataMain(new ClientDataEngine());
+		this.interImplDataMain = new InterImplDataMain(new InterfaceSingleThreadDataClient(new ClientDataEngine()));
 		System.out.println(this.interImplDataMain);
 	}
 

@@ -1,6 +1,7 @@
 package network.messages;
 
 import data.client.ClientDataEngine;
+import data.client.InterfaceSingleThreadDataClient;
 import data.server.InterfaceSingleThreadData;
 
 import org.hildan.fxgson.FxGson;
@@ -22,7 +23,7 @@ public class UpdateTableInfoMessage implements IMessage {
     }
 
     @Override
-    public void process(ClientDataEngine dataEngine) {
+    public void process(InterfaceSingleThreadDataClient dataEngine) {
     	//UpdateTableInfo équivaut à sendTableInfo
         dataEngine.sendTableInfo((FxGson.create().fromJson(tableInfo, GameTable.class)));
     }

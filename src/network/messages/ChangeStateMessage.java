@@ -2,6 +2,7 @@ package network.messages;
 
 import data.State;
 import data.client.ClientDataEngine;
+import data.client.InterfaceSingleThreadDataClient;
 import data.server.InterfaceSingleThreadData;
 
 public class ChangeStateMessage implements IMessage {
@@ -21,7 +22,7 @@ public class ChangeStateMessage implements IMessage {
 	}
 
 	@Override
-	public void process(ClientDataEngine dataEngine) {
+	public void process(InterfaceSingleThreadDataClient dataEngine) {
 		dataEngine.changeState(state);
 	}
 

@@ -2,6 +2,7 @@ package network.messages;
 
 import data.ChatMessage;
 import data.client.ClientDataEngine;
+import data.client.InterfaceSingleThreadDataClient;
 
 import java.util.List;
 import java.util.UUID;
@@ -27,7 +28,7 @@ public class NetworkChatMessage implements IMessage{
 	}
 
 	@Override
-	public void process(ClientDataEngine dataEngine) {
+	public void process(InterfaceSingleThreadDataClient dataEngine) {
 		// En attente de DATA : issue #126
 		//dataEngine.writeMessage(msg);
 	}
