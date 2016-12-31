@@ -20,8 +20,8 @@ import network.client.ComClient;
 
 public class InterImplDataMain implements InterfaceDataIHMLobby{
 
-	private ClientDataEngine dataEngine;
-	public ClientDataEngine getDataEngine() {
+	private InterfaceSingleThreadDataClient dataEngine;
+	public InterfaceSingleThreadDataClient getDataEngine() {
 		return dataEngine;
 	}
 
@@ -30,7 +30,7 @@ public class InterImplDataMain implements InterfaceDataIHMLobby{
 	private ObjectProperty<Profile> currentProfile;
 
 	//appel� uniquement par le ClientDataEngine
-	public InterImplDataMain(ClientDataEngine dataEngine) {
+	public InterImplDataMain(InterfaceSingleThreadDataClient dataEngine) {
 		super();
 		this.dataEngine = dataEngine;
 		this.userList = this.dataEngine.getUserList();

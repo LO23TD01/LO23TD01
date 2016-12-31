@@ -5,6 +5,7 @@ import java.util.UUID;
 import org.hildan.fxgson.FxGson;
 
 import data.client.ClientDataEngine;
+import data.client.InterfaceSingleThreadDataClient;
 import data.Profile;
 import data.server.InterfaceSingleThreadData;
 import network.messages.utils.BufferedImageBuilder;
@@ -46,7 +47,7 @@ public class UpdateProfileMessage implements IMessage {
     }
 
     @Override
-    public void process(ClientDataEngine dataEngine) {
+    public void process(InterfaceSingleThreadDataClient dataEngine) {
         // TODO Auto-generated method stub
         
     }

@@ -5,6 +5,7 @@ import java.util.UUID;
 import data.Profile;
 import data.User;
 import data.client.ClientDataEngine;
+import data.client.InterfaceSingleThreadDataClient;
 import data.server.InterfaceSingleThreadData;
 
 public class HasLostMessage implements IMessage{
@@ -23,7 +24,7 @@ public class HasLostMessage implements IMessage{
     }
 
     @Override
-    public void process(ClientDataEngine dataEngine) {
+    public void process(InterfaceSingleThreadDataClient dataEngine) {
         dataEngine.hasLost(new User(new Profile(this.user)));
     }
 

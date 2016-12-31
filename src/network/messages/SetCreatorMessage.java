@@ -3,6 +3,7 @@ package network.messages;
 import java.util.UUID;
 
 import data.client.ClientDataEngine;
+import data.client.InterfaceSingleThreadDataClient;
 import data.server.InterfaceSingleThreadData;
 
 public class SetCreatorMessage implements IMessage {
@@ -20,7 +21,7 @@ public class SetCreatorMessage implements IMessage {
 	}
 
 	@Override
-	public void process(ClientDataEngine dataEngine) {
+	public void process(InterfaceSingleThreadDataClient dataEngine) {
 		dataEngine.setCreator(creator);
 	}
 

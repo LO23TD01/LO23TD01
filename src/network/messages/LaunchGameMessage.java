@@ -3,6 +3,7 @@ package network.messages;
 import java.util.UUID;
 
 import data.client.ClientDataEngine;
+import data.client.InterfaceSingleThreadDataClient;
 import data.Profile;
 import data.server.InterfaceSingleThreadData;
 import data.User;
@@ -23,5 +24,5 @@ public class LaunchGameMessage implements IMessage{
     }
 
     @Override
-    public void process(ClientDataEngine dataEngine) {}
+    public void process(InterfaceSingleThreadDataClient dataEngine) {}
 }

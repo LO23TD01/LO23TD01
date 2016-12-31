@@ -1,6 +1,7 @@
 package network.messages;
 
 import data.client.ClientDataEngine;
+import data.client.InterfaceSingleThreadDataClient;
 import data.server.InterfaceSingleThreadData;
 
 public class SetSelectionMessage implements IMessage {
@@ -24,7 +25,7 @@ public class SetSelectionMessage implements IMessage {
 	}
 
 	@Override
-	public void process(ClientDataEngine dataEngine) {
+	public void process(InterfaceSingleThreadDataClient dataEngine) {
 		dataEngine.setSelection(dice1, dice2, dice3);
 	}
 

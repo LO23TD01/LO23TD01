@@ -8,6 +8,7 @@ import data.GameTable;
 import data.Profile;
 import data.User;
 import data.client.ClientDataEngine;
+import data.client.InterfaceSingleThreadDataClient;
 import data.server.InterfaceSingleThreadData;
 
 public class QuitGameMessage implements IMessage {
@@ -42,7 +43,7 @@ public class QuitGameMessage implements IMessage {
 	}
 
 	@Override
-	public void process(ClientDataEngine dataEngine) {
+	public void process(InterfaceSingleThreadDataClient dataEngine) {
 		// TODO Auto-generated method stub
 		
 	}

@@ -1,4 +1,4 @@
-package network.server;
+package network.messages;
 
 import java.util.Arrays;
 import java.util.List;
@@ -7,8 +7,8 @@ import org.hildan.fxgson.FxGson;
 
 import data.User;
 import data.client.ClientDataEngine;
+import data.client.InterfaceSingleThreadDataClient;
 import data.server.InterfaceSingleThreadData;
-import network.messages.IMessage;
 
 public class ExAequoMessage implements IMessage {
 
@@ -29,7 +29,7 @@ public class ExAequoMessage implements IMessage {
 	}
 
 	@Override
-	public void process(ClientDataEngine dataEngine) {
+	public void process(InterfaceSingleThreadDataClient dataEngine) {
 		User[] users = FxGson.create().fromJson(usersExaequo, User[].class);
 		dataEngine.exAequoCase(Arrays.asList(users), win);
 	}

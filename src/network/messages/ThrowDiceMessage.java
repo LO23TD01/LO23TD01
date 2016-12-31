@@ -3,6 +3,7 @@ package network.messages;
 import java.util.UUID;
 
 import data.client.ClientDataEngine;
+import data.client.InterfaceSingleThreadDataClient;
 import data.server.InterfaceSingleThreadData;
 
 public class ThrowDiceMessage implements IMessage{
@@ -27,7 +28,7 @@ public class ThrowDiceMessage implements IMessage{
 	}
 
 	@Override
-	public void process(ClientDataEngine dataEngine) {
+	public void process(InterfaceSingleThreadDataClient dataEngine) {
 		// TODO Auto-generated method stub
 		
 	}
