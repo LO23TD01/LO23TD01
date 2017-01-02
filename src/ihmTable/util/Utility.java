@@ -4,8 +4,10 @@ import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
 
 import data.User;
+import javafx.beans.value.ObservableValue;
 import javafx.embed.swing.SwingFXUtils;
 import javafx.scene.image.Image;
+import javafx.scene.layout.Pane;
 
 public final class Utility {
 
@@ -30,6 +32,11 @@ public final class Utility {
 		bGr.drawImage(img, 0, 0, null);
 		bGr.dispose();
 		return bimage;
+	}
+
+	public static void bindPrefProperties(Pane pane, ObservableValue<? extends Number> widthProperty, ObservableValue<? extends Number> heightProperty) {
+		pane.prefWidthProperty().bind(widthProperty);
+		pane.prefHeightProperty().bind(heightProperty);
 	}
 
 }

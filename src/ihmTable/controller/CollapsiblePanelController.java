@@ -2,12 +2,14 @@ package ihmTable.controller;
 
 import java.io.IOException;
 
+import ihmTable.util.Utility;
+import javafx.beans.property.ReadOnlyDoubleProperty;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.geometry.Pos;
 import javafx.scene.control.Button;
-import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.Pane;
 
 public class CollapsiblePanelController {
 
@@ -17,21 +19,23 @@ public class CollapsiblePanelController {
 	private Button collapseButton;
 	private boolean opened;
 	private Position position;
-	private AnchorPane content;
-	private double defaultSize;
+	private Pane content;
+	private ReadOnlyDoubleProperty width;
+	private ReadOnlyDoubleProperty height;
 	private double collapsedSize;
 
 	public void initialize() {
 		this.opened = true;
 	}
 
-	public void setContent(AnchorPane content, Position position, double defaultSize) throws IOException {
+	public void setContent(Pane content, Position position, Pane parent) throws IOException {
 		this.position = position;
 		this.content = content;
 		this.collapsiblePanel.setCenter(content);
 		this.collapseButton = getCollapseButton();
 		BorderPane.setAlignment(collapseButton, Pos.CENTER);
-		this.defaultSize = defaultSize;
+		this.width = parent.widthProperty();
+		this.height = parent.heightProperty();
 		this.collapsedSize = this.collapseButton.getPrefWidth();
 		setCollapsiblePanelSize();
 		setCollapseButtonPosition();
@@ -57,11 +61,13 @@ public class CollapsiblePanelController {
 	private void setCollapsiblePanelSize() {
 		if(opened) {
 			if(position == Position.left || position == Position.right) {
-				collapsiblePanel.setPrefWidth(defaultSize);
+				Utility.bindPrefProperties(collapsiblePanel, width.multiply(TableController.PANELS_PERCENTAGE), height);
 			} else {
-				collapsiblePanel.setPrefHeight(defaultSize);
+				Utility.bindPrefProperties(collapsiblePanel, width, height.multiply(TableController.PANELS_PERCENTAGE));
 			}
 		} else {
+			collapsiblePanel.prefWidthProperty().unbind();
+			collapsiblePanel.prefHeightProperty().unbind();
 			if(position == Position.left || position == Position.right) {
 				collapsiblePanel.setPrefWidth(collapsedSize);
 			} else {
@@ -73,7 +79,6 @@ public class CollapsiblePanelController {
 	private Button getCollapseButton() throws IOException {
 		FXMLLoader buttonLoader = new FXMLLoader(getClass().getResource("/ihmTable/resources/view/CollapseButton.fxml"));
 		Button button = buttonLoader.load();
-
 		CollapseButtonController collapseButtonController = (CollapseButtonController) buttonLoader.getController();
 		collapseButtonController.setCollapseButton(this);
 		return button;

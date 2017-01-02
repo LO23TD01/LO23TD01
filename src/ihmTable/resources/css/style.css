@@ -1,0 +1,161 @@
+/* DICE */
+.dice {
+	-fx-border-radius : 5px;
+	-fx-border-width : 2px;
+	-fx-border-color : black;
+	-fx-border-style: solid;
+}
+
+.dice.selected {
+	-fx-border-color : red;
+}
+
+/* --------- */
+/* CHAT */
+#chatTitle {
+	-fx-text-align : center;
+	-fx-background-color : #393939;
+}
+
+#chatView, #listMessages{
+	-fx-background-color : darkgray;
+	-fx-text-fill : white;
+}
+
+#listUsers {
+   -fx-background-color :  white;
+   -fx-border-color : #666;
+   -fx-border-width : 2px;
+}
+
+#messageArea {
+   -fx-background-color : white;
+}
+
+#sendButton {
+   -fx-background-color : white;
+}
+
+/* -------- */
+/* RULES */
+#rulesBox {
+   -fx-background-color : linear-gradient(to bottom right, #545454, #545454);
+   -fx-text-fill : white;
+   -fx-pref-width : 300px;
+   -fx-pref-height : 840px;
+}
+
+#rulesTitle{
+	-fx-text-align : center;
+	-fx-background-color : #393939;
+}
+
+.rulesItem {
+   -fx-background-color : black;
+   -fx-text-fill : #133924;
+}
+
+.rulesArea {
+   -fx-background-color : linear-gradient(to bottom right, #545454, derive(#545454, 25%));
+}
+
+/*------------- */
+/*   MENU     */
+#menuView{
+	-fx-background-color : #393939;
+}
+
+/*---------- */
+/* TABLE */
+#Table{
+	-fx-background-color : #fdffba;
+}
+
+/* --------- */
+/* DICE LAUNCHER */
+#launchButton {
+	-fx-background-color :
+        darkgrey,
+        linear-gradient(black, darkgrey),
+        linear-gradient( derive(#ffd08b , 40%) 0%, derive(#ffd08b , 0%) 49%, derive(#ffd08b, 0%) 50%, derive(#ffd08b, 40%)  100%);
+    -fx-background-insets : 0,1,2;
+    -fx-background-radius : 30;
+    -fx-text-fill : black;
+    -fx-font-size : 14px;
+}
+
+/*---------- */
+/* STATS */
+.bottomBox {
+	-fx-background-color : #393939;
+	-fx-border-color : black;
+	-fx-border-width : 1;
+	-fx-max-height : 200;
+	-fx-text-fill : white;
+}
+
+/*  ----------- */
+/* Player Stats */
+#PLayerStats_VBoxLeft1 {
+	-fx-background-color : transparent;
+    -fx-text-fill : white;
+    -fx-font-size : 14px;
+}
+
+#PlayerStats_InfosHBoxParent1{
+	-fx-border-color : black;
+    -fx-border-width : 0 1 0 0;
+}
+
+#PLayerStats_StatsVBox {
+	-fx-background-color : #222222;
+    -fx-text-fill : white;
+    -fx-font-size : 14px;
+}
+
+#PlayerStats_TitleLabelPlayer, #playerStats_LabelStats{
+	-fx-background-color : linear-gradient( #999 , #777);
+    -fx-text-fill : black;
+    -fx-font-size : 14px;
+	-fx-border-color : black;
+    -fx-border-width : 0 0 2 0;
+    -fx-pref-height : 32;
+}
+
+/* ------------ */
+/* Game Stats */
+#GameStats_LeftBox{
+
+}
+
+#GameStats_BestScore, #GameStats_ToWin{
+	-fx-background-color : #4e4e4e;
+	-fx-padding : 5;
+	-fx-pref-height : 30px;
+
+}
+
+#GameStats_ToBeat{
+	-fx-padding : 5;
+	-fx-pref-height : 30px;
+	-fx-border-color : darkgrey;
+	-fx-border-width : 1 0 1 0;
+}
+
+#GameStats_LaunchButton {
+	-fx-background-color :
+        darkgrey,
+        linear-gradient(black, darkgrey),
+        linear-gradient( derive(#278fc5 , 80%) 0%, derive(#278fc5 , 30%) 49%, derive(#278fc5, 0%) 50%, derive(#278fc5, 40%)  100%);
+    -fx-background-insets : 0,1,2;
+    -fx-background-radius : 15;
+}
+
+#GameStats_LaunchButton:pressed {
+	-fx-background-color :
+        darkgrey,
+        linear-gradient(darkgrey,black),
+        linear-gradient( derive(#278fc5 , 40%) 0%, derive(#278fc5 , 0%) 49%, derive(#278fc5, 0%) 50%, derive(#278fc5, 40%)  100%);
+    -fx-background-insets : 0,1,2;
+    -fx-background-radius : 15;
+}

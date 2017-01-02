@@ -22,6 +22,8 @@ public class IHMTableLobbyImpl implements IHMTableLobby {
 		Stage stage = new Stage();
 		stage.setTitle(interImplDataTable.getActualTable().getName());
 		stage.setScene(new Scene(table));
+		stage.setMinWidth(800);
+		stage.setMinHeight(600);
 		stage.setMaximized(true);
 		stage.initModality(Modality.WINDOW_MODAL);
 		stage.show();
