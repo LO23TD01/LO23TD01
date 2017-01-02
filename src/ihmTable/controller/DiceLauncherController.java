@@ -8,15 +8,15 @@ import javafx.beans.value.ObservableValue;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.control.Button;
-import javafx.scene.layout.HBox;
+import javafx.scene.layout.TilePane;
 
 public class DiceLauncherController {
 
 	@FXML
-	private HBox diceContainer;
+    private TilePane diceContainer;
 
-	@FXML
-	private Button launchButton;
+    @FXML
+    private Button launchButton;
 
 	private DiceController dice1, dice2, dice3;
 

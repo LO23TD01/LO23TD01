@@ -6,6 +6,41 @@
 	-fx-border-style: solid;
 }
 
+.dice.dice0 {
+	-fx-background-image: url("../png/0.png");
+	-fx-background-size: cover;
+}
+
+.dice.dice1 {
+	-fx-background-image: url("../png/1.png");
+	-fx-background-size: cover;
+}
+
+.dice.dice2 {
+	-fx-background-image: url("../png/2.png");
+	-fx-background-size: cover;
+}
+
+.dice.dice3 {
+	-fx-background-image: url("../png/3.png");
+	-fx-background-size: cover;
+}
+
+.dice.dice4 {
+	-fx-background-image: url("../png/4.png");
+	-fx-background-size: cover;
+}
+
+.dice.dice5 {
+	-fx-background-image: url("../png/5.png");
+	-fx-background-size: cover;
+}
+
+.dice.dice6 {
+	-fx-background-image: url("../png/6.png");
+	-fx-background-size: cover;
+}
+
 .dice.selected {
 	-fx-border-color : red;
 }
@@ -90,72 +125,61 @@
 	-fx-background-color : #393939;
 	-fx-border-color : black;
 	-fx-border-width : 1;
-	-fx-max-height : 200;
+}
+
+.bottomBox .label {
 	-fx-text-fill : white;
+	-fx-padding: 5;
+	-fx-font-size : 14px;
 }
 
 /*  ----------- */
 /* Player Stats */
-#PLayerStats_VBoxLeft1 {
-	-fx-background-color : transparent;
-    -fx-text-fill : white;
-    -fx-font-size : 14px;
-}
-
-#PlayerStats_InfosHBoxParent1{
+#playerRightContainer, #playerRightContainer {
 	-fx-border-color : black;
     -fx-border-width : 0 1 0 0;
 }
 
-#PLayerStats_StatsVBox {
+#stats {
 	-fx-background-color : #222222;
-    -fx-text-fill : white;
-    -fx-font-size : 14px;
 }
 
-#PlayerStats_TitleLabelPlayer, #playerStats_LabelStats{
+#titleLabelPlayer, #labelStats{
 	-fx-background-color : linear-gradient( #999 , #777);
     -fx-text-fill : black;
-    -fx-font-size : 14px;
 	-fx-border-color : black;
     -fx-border-width : 0 0 2 0;
-    -fx-pref-height : 32;
 }
 
 /* ------------ */
 /* Game Stats */
-#GameStats_LeftBox{
-
+#phaseTitleLabel {
+	-fx-font-size: 18px;
 }
 
-#GameStats_BestScore, #GameStats_ToWin{
+#bestScore, #toWin{
 	-fx-background-color : #4e4e4e;
 	-fx-padding : 5;
-	-fx-pref-height : 30px;
-
 }
 
-#GameStats_ToBeat{
+#bestScoreLabel {
+	-fx-text-fill : #6aa3ff;
+}
+
+#scoreToBeatLabel {
+	-fx-text-fill : #ff7171;
+}
+
+#bestScorePlayer, #scoreToBeatPlayer {
+	-fx-text-fill : #616161;
+}
+
+#stakeLabel {
+	-fx-text-fill : #50c94b;
+}
+
+#toBeat{
 	-fx-padding : 5;
-	-fx-pref-height : 30px;
 	-fx-border-color : darkgrey;
 	-fx-border-width : 1 0 1 0;
-}
-
-#GameStats_LaunchButton {
-	-fx-background-color :
-        darkgrey,
-        linear-gradient(black, darkgrey),
-        linear-gradient( derive(#278fc5 , 80%) 0%, derive(#278fc5 , 30%) 49%, derive(#278fc5, 0%) 50%, derive(#278fc5, 40%)  100%);
-    -fx-background-insets : 0,1,2;
-    -fx-background-radius : 15;
-}
-
-#GameStats_LaunchButton:pressed {
-	-fx-background-color :
-        darkgrey,
-        linear-gradient(darkgrey,black),
-        linear-gradient( derive(#278fc5 , 40%) 0%, derive(#278fc5 , 0%) 49%, derive(#278fc5, 0%) 50%, derive(#278fc5, 40%)  100%);
-    -fx-background-insets : 0,1,2;
-    -fx-background-radius : 15;
 }

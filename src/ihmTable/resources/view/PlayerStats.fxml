@@ -5,162 +5,99 @@
 <?import javafx.scene.control.Separator?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
-<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.Pane?>
+<?import javafx.scene.layout.TilePane?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane stylesheets="@../css/style1.css" xmlns="http://javafx.com/javafx/8.0.60" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ihmTable.controller.PlayerStatsController">
+<HBox fx:id="playerStatsView" styleClass="bottomBox" stylesheets="@../css/style.css" xmlns="http://javafx.com/javafx/8.0.60" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ihmTable.controller.PlayerStatsController">
    <children>
-      <HBox prefHeight="236.0" prefWidth="534.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
-         <children>
-            <AnchorPane>
+      <BorderPane fx:id="playerContainer">
+         <top>
+            <Label fx:id="titleLabelPlayer" alignment="CENTER" maxWidth="1.7976931348623157E308" styleClass="border" text="Player 1" BorderPane.alignment="CENTER">
+               <font>
+                  <Font size="24.0" />
+               </font>
+            </Label>
+         </top>
+         <left>
+            <TilePane fx:id="playerLeftContainer" orientation="VERTICAL" prefColumns="1" prefRows="2" BorderPane.alignment="CENTER">
                <children>
-                  <VBox fx:id="PLayerStats_VBoxLeft1" alignment="TOP_CENTER" layoutX="58.0" layoutY="51.0" prefHeight="236.0" prefWidth="408.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                  <Pane>
                      <children>
-                        <AnchorPane fx:id="PlayerStats_TitlePane1">
-                           <children>
-                              <Label fx:id="PlayerStats_TitleLabelPlayer" alignment="CENTER" layoutX="69.0" layoutY="30.0" prefHeight="39.0" prefWidth="378.0" styleClass="border" text="Player 1" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
-                                 <font>
-                                    <Font size="24.0" />
-                                 </font>
-                              </Label>
-                           </children>
-                        </AnchorPane>
-                        <HBox fx:id="PlayerStats_InfosHBoxParent1">
-                           <children>
-                              <AnchorPane>
-                                 <children>
-                                    <VBox fx:id="PlayerStats_PlayerInfoVBox1" prefHeight="200.0" prefWidth="88.0" styleClass="border">
-                                       <children>
-                                          <Pane>
-                                             <VBox.margin>
-                                                <Insets bottom="2.0" left="2.0" right="2.0" top="2.0" />
-                                             </VBox.margin>
-                                             <children>
-                                                <ImageView fx:id="PlayerStats_Jetons" fitHeight="80.0" fitWidth="80.0" pickOnBounds="true" preserveRatio="true">
-                                                   <image>
-                                                      <Image url="@../png/JetonOk.png" />
-                                                   </image>
-                                                </ImageView>
-                                                <Label fx:id="PlayerStats_Jeton_Score_Label" alignment="CENTER_RIGHT" layoutX="23.0" layoutY="34.0" text="21">
-                                                   <font>
-                                                      <Font name="System Bold" size="12.0" />
-                                                   </font>
-                                                </Label>
-                                             </children>
-                                          </Pane>
-                                          <Pane>
-                                             <VBox.margin>
-                                                <Insets bottom="2.0" left="2.0" right="2.0" top="2.0" />
-                                             </VBox.margin>
-                                             <children>
-                                                <ImageView fx:id="PlayerStats_PartiesPerdues" fitHeight="80.0" fitWidth="80.0" pickOnBounds="true" preserveRatio="true">
-                                                   <image>
-                                                      <Image url="@../png/JetonLoss.png" />
-                                                   </image>
-                                                </ImageView>
-                                                <Label fx:id="PlayerStats_Jeton_Loss_Score_Label" alignment="CENTER_RIGHT" layoutX="23.0" layoutY="34.0" text="21" textFill="RED">
-                                                   <font>
-                                                      <Font name="System Bold" size="12.0" />
-                                                   </font>
-                                                </Label>
-                                             </children>
-                                          </Pane>
-                                       </children>
-                                    </VBox>
-                                 </children>
-                              </AnchorPane>
-                              <AnchorPane styleClass="border">
-                                 <children>
-                                    <VBox layoutX="4.0" layoutY="4.0" prefHeight="200.0" prefWidth="316.0" AnchorPane.bottomAnchor="-2.0" AnchorPane.leftAnchor="2.0" AnchorPane.rightAnchor="2.0" AnchorPane.topAnchor="2.0">
-                                       <children>
-                                          <AnchorPane>
-                                             <children>
-                                                <HBox fx:id="PlayerStats_DicesHBox1" alignment="CENTER" prefHeight="90.0" prefWidth="320.0" spacing="10.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
-                                             </children>
-                                          </AnchorPane>
-                                          <AnchorPane fx:id="PLayersStats_ScoreNumberAnchorPane1">
-                                             <children>
-                                                <Label fx:id="PlayerStats_ScoreLabel" alignment="CENTER" layoutX="69.0" layoutY="59.0" prefHeight="55.0" prefWidth="282.0" text="Score : 123" textAlignment="CENTER" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
-                                                   <font>
-                                                      <Font size="24.0" />
-                                                   </font>
-                                                   <opaqueInsets>
-                                                      <Insets />
-                                                   </opaqueInsets>
-                                                </Label>
-                                             </children>
-                                          </AnchorPane>
-                                       </children>
-                                    </VBox>
-                                 </children>
-                              </AnchorPane>
-                           </children>
-                        </HBox>
-                     </children>
-                  </VBox>
-               </children>
-            </AnchorPane>
-          <AnchorPane depthTest="DISABLE">
-               <children>
-                  <VBox fx:id="PLayerStats_StatsVBox">
-                     <children>
-                        <Label fx:id="playerStats_LabelStats" alignment="CENTER" styleClass="border" text="Statistiques" textAlignment="CENTER">
+                        <ImageView fx:id="jetons" fitHeight="80.0" fitWidth="80.0" pickOnBounds="true" preserveRatio="true">
+                           <image>
+                              <Image url="@../png/JetonOk.png" />
+                           </image>
+                        </ImageView>
+                        <Label fx:id="jetonScoreLabel" alignment="CENTER_RIGHT" layoutX="23.0" layoutY="34.0" text="21">
                            <font>
-                              <Font size="24.0" />
+                              <Font name="System Bold" size="12.0" />
                            </font>
                         </Label>
-                        <AnchorPane fx:id="PlayerStats_StatsPane" prefHeight="200.0" prefWidth="126.0" styleClass="border">
-                           <opaqueInsets>
-                              <Insets />
-                           </opaqueInsets>
-                           <children>
-                              <VBox prefHeight="200.0" prefWidth="100.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
-                                 <children>
-                                    <AnchorPane>
-                                       <children>
-                                          <Label fx:id="PlayerStats_Label_Wins" alignment="CENTER" text="Label" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
-                                             <font>
-                                                <Font size="18.0" />
-                                             </font>
-                                          </Label>
-                                       </children>
-                                    </AnchorPane>
-                                    <Separator prefHeight="20.0" prefWidth="122.0" />
-                                    <AnchorPane>
-                                       <children>
-                                          <Label fx:id="PlayerStats_Label_Lose" alignment="CENTER" text="Label" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
-                                             <font>
-                                                <Font size="18.0" />
-                                             </font>
-                                          </Label>
-                                       </children>
-                                    </AnchorPane>
-                                    <Separator prefHeight="20.0" prefWidth="122.0" />
-                                    <AnchorPane>
-                                       <children>
-                                          <Label fx:id="PlayerStats_Label_Forfeit" alignment="CENTER" text="Label" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
-                                             <font>
-                                                <Font size="18.0" />
-                                             </font>
-                                          </Label>
-                                       </children>
-                                    </AnchorPane>
-                                    <Separator prefWidth="200.0" />
-                                 </children>
-                              </VBox>
-                           </children>
-                        </AnchorPane>
                      </children>
-                  </VBox>
+                  </Pane>
+                  <Pane>
+                     <children>
+                        <ImageView fx:id="partiesPerdues" fitHeight="80.0" fitWidth="80.0" pickOnBounds="true" preserveRatio="true">
+                           <image>
+                              <Image url="@../png/JetonLoss.png" />
+                           </image>
+                        </ImageView>
+                        <Label fx:id="jetonLossScoreLabel" alignment="CENTER_RIGHT" layoutX="23.0" layoutY="34.0" text="21" textFill="RED">
+                           <font>
+                              <Font name="System Bold" size="12.0" />
+                           </font>
+                        </Label>
+                     </children>
+                  </Pane>
                </children>
-               <opaqueInsets>
-                  <Insets />
-               </opaqueInsets>
-            </AnchorPane>
+            </TilePane>
+         </left>
+         <center>
+            <VBox fx:id="playerRightContainer" alignment="CENTER" BorderPane.alignment="CENTER">
+               <children>
+                  <TilePane fx:id="diceContainer" hgap="5.0" prefColumns="3" prefRows="1" />
+                  <Label fx:id="scoreLabel" alignment="CENTER" maxWidth="1.7976931348623157E308" text="Score : 123" textAlignment="CENTER">
+                     <font>
+                        <Font size="24.0" />
+                     </font>
+                     <opaqueInsets>
+                        <Insets />
+                     </opaqueInsets>
+                  </Label>
+               </children>
+            </VBox>
+         </center>
+      </BorderPane>
+      <VBox fx:id="stats">
+         <children>
+            <Label fx:id="labelStats" alignment="CENTER" maxWidth="1.7976931348623157E308" styleClass="border" text="Statistiques" textAlignment="CENTER">
+               <font>
+                  <Font size="24.0" />
+               </font>
+            </Label>
+            <Label fx:id="labelWins" alignment="CENTER" maxWidth="1.7976931348623157E308" text="Label">
+               <font>
+                  <Font size="18.0" />
+               </font>
+            </Label>
+            <Separator />
+            <Label fx:id="labelLose" alignment="CENTER" maxWidth="1.7976931348623157E308" text="Label">
+               <font>
+                  <Font size="18.0" />
+               </font>
+            </Label>
+            <Separator />
+            <Label fx:id="labelForfeit" alignment="CENTER" maxWidth="1.7976931348623157E308" text="Label">
+               <font>
+                  <Font size="18.0" />
+               </font>
+            </Label>
+            <Separator />
          </children>
-      </HBox>
+      </VBox>
    </children>
-</AnchorPane>
+</HBox>
