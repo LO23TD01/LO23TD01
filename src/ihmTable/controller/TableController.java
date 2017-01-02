@@ -8,25 +8,28 @@ import data.User;
 import data.client.InterImplDataTable;
 import ihmTable.controller.CollapsiblePanelController.Position;
 import ihmTable.util.PlayerWaitingAlert;
-import javafx.beans.value.ChangeListener;
-import javafx.beans.value.ObservableValue;
+import ihmTable.util.Utility;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.ButtonType;
-import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 import javafx.stage.WindowEvent;
 
 public class TableController {
 
+	public static final double PANELS_PERCENTAGE = 0.20;
+	public static final double CENTER_WIDTH_PERCENTAGE = 0.60;
+	public static final double MENU_HEIGHT_PERCENTAGE = 0.05;
+	public static final double BOTTOM_CONTENT_WIDTH_PERCENTAGE = 0.50;
+
 	private static final String EXIT_GAME_ALERT_HEADER = "Partie en cours";
 	private static final String EXIT_GAME_ALERT_CONTENT = "Vous allez quitter une partie en cours.\nVoulez-vous continuer ?";
-	private static final double PANELS_PERCENTAGE = 0.25;
 
 	@FXML
 	private BorderPane tableView;
@@ -94,24 +97,28 @@ public class TableController {
 	// TableCenterView view's initialization
 	private void initTableCenter() throws IOException {
 		FXMLLoader tableCenterLoader = new FXMLLoader(getClass().getResource("/ihmTable/resources/view/TableCenter.fxml"));
-		setPosition(tableCenterLoader.load(), Position.center);
+		Pane tableCenter = tableCenterLoader.load();
+		Utility.bindPrefProperties(tableCenter, tableView.widthProperty().multiply(CENTER_WIDTH_PERCENTAGE), tableView.heightProperty());
+		setPosition(tableCenter, Position.center);
 		TableCenterController tableCenterController = (TableCenterController) tableCenterLoader.getController();
 		tableCenterController.setData(interImplDataTable, user);
 	}
 
 	// PlayerStats view's initialization
-	private AnchorPane initPlayerStats() throws IOException {
+	private Pane initPlayerStats(Pane parent) throws IOException {
 		FXMLLoader playerStatsLoader = new FXMLLoader(getClass().getResource("/ihmTable/resources/view/PlayerStats.fxml"));
-		AnchorPane playerStats = playerStatsLoader.load();
+		Pane playerStats = playerStatsLoader.load();
+		Utility.bindPrefProperties(playerStats, parent.widthProperty().multiply(BOTTOM_CONTENT_WIDTH_PERCENTAGE), parent.heightProperty());
 		PlayerStatsController playerStatsController = playerStatsLoader.getController();
 		playerStatsController.setData(interImplDataTable, user);
 		return playerStats;
 	}
 
 	// GameStats view's initialization
-	private AnchorPane initGameStats() throws IOException {
+	private Pane initGameStats(Pane parent) throws IOException {
 		FXMLLoader gameStatsLoader = new FXMLLoader(getClass().getResource("/ihmTable/resources/view/GameStats.fxml"));
-		AnchorPane gameStats = gameStatsLoader.load();
+		Pane gameStats = gameStatsLoader.load();
+		Utility.bindPrefProperties(gameStats, parent.widthProperty().multiply(BOTTOM_CONTENT_WIDTH_PERCENTAGE), parent.heightProperty());
 		GameStatsController gameStatsController = gameStatsLoader.getController();
 		gameStatsController.setData(interImplDataTable, user);
 		return gameStats;
@@ -120,61 +127,52 @@ public class TableController {
 	// Menu view's initialization
 	private void initMenu() throws IOException {
 		FXMLLoader menuLoader = new FXMLLoader(getClass().getResource("/ihmTable/resources/view/Menu.fxml"));
-		setPosition(menuLoader.load(), Position.top);
+		Pane menu = menuLoader.load();
+		Utility.bindPrefProperties(menu, tableCenterView.widthProperty(), tableCenterView.heightProperty().multiply(MENU_HEIGHT_PERCENTAGE));
+		setPosition(menu, Position.top);
 		MenuController menuController = (MenuController) menuLoader.getController();
 	}
 
 	// Bottom view's initialization
 	private void initBottom() throws IOException {
-		AnchorPane bottomContainer = new AnchorPane();
-		AnchorPane playerStats = initPlayerStats();
-		AnchorPane gameStats = initGameStats();
-
-		AnchorPane.setLeftAnchor(playerStats, 0.0);
-		AnchorPane.setRightAnchor(gameStats, 0.0);
-		bottomContainer.widthProperty().addListener(new ChangeListener<Number>() {
-			@Override
-			public void changed(ObservableValue<? extends Number> observable, Number oldValue, Number newValue) {
-				playerStats.setPrefWidth(newValue.doubleValue() / 2);
-				gameStats.setPrefWidth(newValue.doubleValue() / 2);
-			}
-		});
-		bottomContainer.getChildren().addAll(playerStats, gameStats);
+		BorderPane bottomContainer = new BorderPane();
+		Pane playerStats = initPlayerStats(bottomContainer);
+		Pane gameStats = initGameStats(bottomContainer);
+		bottomContainer.setLeft(playerStats);
+		bottomContainer.setRight(gameStats);
 		setPosition(getCollapsiblePane(bottomContainer, Position.bottom), Position.bottom);
 	}
 
-	private void setPosition(AnchorPane anchorPane, Position position) {
+	private void setPosition(Pane pane, Position position) {
 		switch (position) {
 		case left:
-			tableView.setLeft(anchorPane);
+			tableView.setLeft(pane);
 			break;
 		case right:
-			tableView.setRight(anchorPane);
+			tableView.setRight(pane);
 			break;
 		case bottom:
-			tableCenterView.setBottom(anchorPane);
+			tableCenterView.setBottom(pane);
 			break;
 		case top:
-			tableCenterView.setTop(anchorPane);
+			tableCenterView.setTop(pane);
 			break;
 		case center:
-			tableCenterView.setCenter(anchorPane);
+			tableCenterView.setCenter(pane);
 			break;
 		default:
 			break;
 		}
 	}
 
-	private AnchorPane getCollapsiblePane(AnchorPane anchorPane, Position position) throws IOException {
+	private Pane getCollapsiblePane(Pane pane, Position position) throws IOException {
 		FXMLLoader collapsiblePanelLoader = new FXMLLoader(getClass().getResource("/ihmTable/resources/view/CollapsiblePanel.fxml"));
-		AnchorPane panel = collapsiblePanelLoader.load();
-
-		CollapsiblePanelController panelController = (CollapsiblePanelController) collapsiblePanelLoader
-				.getController();
+		Pane panel = collapsiblePanelLoader.load();
+		CollapsiblePanelController panelController = (CollapsiblePanelController) collapsiblePanelLoader.getController();
 		if (position == Position.left || position == Position.right) {
-			panelController.setContent(anchorPane, position, tableView.getPrefWidth() * PANELS_PERCENTAGE);
+			panelController.setContent(pane, position, tableView);
 		} else {
-			panelController.setContent(anchorPane, position, tableView.getPrefHeight() * PANELS_PERCENTAGE);
+			panelController.setContent(pane, position, tableCenterView);
 		}
 		return panel;
 	}
