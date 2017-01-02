@@ -5,26 +5,23 @@ import java.util.Random;
 
 import javafx.beans.property.SimpleBooleanProperty;
 import javafx.beans.property.SimpleIntegerProperty;
+import javafx.beans.value.ObservableValue;
 import javafx.fxml.FXML;
-import javafx.scene.image.Image;
-import javafx.scene.image.ImageView;
 import javafx.scene.layout.StackPane;
 
 public class DiceController {
 	private static final String SELECTED_CLASS = "selected";
-	private static final Image DICE0 = new Image("/ihmTable/resources/png/0.png");
-	private static final Image DICE1 = new Image("/ihmTable/resources/png/1.png");
-	private static final Image DICE2 = new Image("/ihmTable/resources/png/2.png");
-	private static final Image DICE3 = new Image("/ihmTable/resources/png/3.png");
-	private static final Image DICE4 = new Image("/ihmTable/resources/png/4.png");
-	private static final Image DICE5 = new Image("/ihmTable/resources/png/5.png");
-	private static final Image DICE6 = new Image("/ihmTable/resources/png/6.png");
+	private static final String DICE0 = "dice0", DICE1 = "dice1", DICE2 = "dice2", DICE3 = "dice3", DICE4 = "dice4", DICE5 = "dice5", DICE6 = "dice6";
+//	private static final Image DICE0 = new Image("/ihmTable/resources/png/0.png");
+//	private static final Image DICE1 = new Image("/ihmTable/resources/png/1.png");
+//	private static final Image DICE2 = new Image("/ihmTable/resources/png/2.png");
+//	private static final Image DICE3 = new Image("/ihmTable/resources/png/3.png");
+//	private static final Image DICE4 = new Image("/ihmTable/resources/png/4.png");
+//	private static final Image DICE5 = new Image("/ihmTable/resources/png/5.png");
+//	private static final Image DICE6 = new Image("/ihmTable/resources/png/6.png");
 
     @FXML
-    private StackPane diceContainer;
-
-    @FXML
-    private ImageView dice;
+    private StackPane dice;
 
 	private Random random;
 	private boolean selectable;
@@ -34,21 +31,27 @@ public class DiceController {
 
 	private Integer position;
 	public SimpleBooleanProperty selected;
+	private ObservableValue<? extends Number> widthProperty, heightProperty;
 
 	public void initialize() throws IOException {
 		random = new Random();
 		value = new SimpleIntegerProperty();
-		setValue();
+		setRandomValue();
 		dice.setOnMouseClicked(event -> clicked());
 		selected = new SimpleBooleanProperty(false);
 		selectable = true;
-		dice.setPreserveRatio(true);
-		dice.setSmooth(true);
-		dice.setCache(true);
 	}
 
-	public void setValue() {
-		setValue(1 + random.nextInt(6 - 1 + 1));
+	public void setDice(boolean selectable, ObservableValue<? extends Number> widthProperty, ObservableValue<? extends Number> heightProperty) {
+		setSelectable(selectable);
+		this.widthProperty = widthProperty;
+		this.heightProperty = heightProperty;
+		this.widthProperty.addListener((observable, oldValue, newValue) -> updateSize());
+		this.heightProperty.addListener((observable, oldValue, newValue) -> updateSize());
+	}
+
+	public void setRandomValue() {
+		setValue(1 + random.nextInt(6));
 	}
 
 	public int getValue() {
@@ -56,45 +59,39 @@ public class DiceController {
 	}
 
 	public void setValue(int value) {
-		diceContainer.setVisible(true);
+		dice.setVisible(true);
 		switch (value) {
 		case 1:
-			setOne();
+			setStyleClass(DICE1);
 			break;
 		case 2:
-			setTwo();
+			setStyleClass(DICE2);
 			break;
 		case 3:
-			setThree();
+			setStyleClass(DICE3);
 			break;
 		case 4:
-			setFour();
+			setStyleClass(DICE4);
 			break;
 		case 5:
-			setFive();
+			setStyleClass(DICE5);
 			break;
 		case 6:
-			setSix();
+			setStyleClass(DICE6);
 			break;
 		default:
-			setZero();
+			setStyleClass(DICE0);
 			break;
 		}
 		this.value.setValue(value);
 	}
 
-	public void setPosition(Integer pos)
-	{
+	public void setPosition(Integer pos) {
 		this.position = pos;
 	}
 
-	public boolean isSelected(){
+	public boolean isSelected() {
 		return this.selected.getValue();
-	}
-
-	public void setDice(boolean selectable, int size) {
-	    setSelectable(selectable);
-	    setSize(size);
 	}
 
 	public void setSelectable(boolean selectable) {
@@ -105,51 +102,36 @@ public class DiceController {
 		this.selected.setValue(selected);
 	}
 
-	public void setSize(int size) {
-	    diceContainer.setPrefSize(size, size);
-	    dice.setFitHeight(size);
-	    dice.setFitWidth(size);
+	private void updateSize() {
+		double width = widthProperty.getValue().doubleValue();
+		double height = heightProperty.getValue().doubleValue();
+		if(width < height) {
+			setSize(width);
+		} else {
+			setSize(height);
+		}
+	}
+
+	public void setSize(double size) {
+		dice.setPrefSize(size, size);
 	}
 
 	private void clicked() {
 		if(selectable) {
 			selected.setValue(!selected.getValue());
 			if(selected.getValue()) {
-			    diceContainer.getStyleClass().add(SELECTED_CLASS);
-			    System.out.println("dice "+ position.intValue() +" is select");
+			    dice.getStyleClass().add(SELECTED_CLASS);
+			    System.out.println("dice "+ position.intValue() +" is selected");
 			} else {
-			    diceContainer.getStyleClass().remove(SELECTED_CLASS);
-			    System.out.println("dice "+ position.intValue() +" is not select");
+			    dice.getStyleClass().remove(SELECTED_CLASS);
+			    System.out.println("dice "+ position.intValue() +" is not selected");
 			}
 		}
 	}
 
-	private void setZero() {
-		dice.setImage(DICE0);
-	}
-
-	private void setOne() {
-		dice.setImage(DICE1);
-	}
-
-	private void setTwo() {
-		dice.setImage(DICE2);
-	}
-
-	private void setThree() {
-		dice.setImage(DICE3);
-	}
-
-	private void setFour() {
-		dice.setImage(DICE4);
-	}
-
-	private void setFive() {
-		dice.setImage(DICE5);
-	}
-
-	private void setSix() {
-		dice.setImage(DICE6);
+	private void setStyleClass(String styleClass) {
+		dice.getStyleClass().removeAll(DICE0, DICE1, DICE2, DICE3, DICE4, DICE5, DICE6);
+		dice.getStyleClass().add(styleClass);
 	}
 
 }

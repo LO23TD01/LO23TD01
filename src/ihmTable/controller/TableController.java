@@ -15,6 +15,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.ButtonType;
+import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
@@ -24,9 +25,7 @@ import javafx.stage.WindowEvent;
 public class TableController {
 
 	public static final double PANELS_PERCENTAGE = 0.20;
-	public static final double CENTER_WIDTH_PERCENTAGE = 0.60;
 	public static final double MENU_HEIGHT_PERCENTAGE = 0.05;
-	public static final double BOTTOM_CONTENT_WIDTH_PERCENTAGE = 0.50;
 
 	private static final String EXIT_GAME_ALERT_HEADER = "Partie en cours";
 	private static final String EXIT_GAME_ALERT_CONTENT = "Vous allez quitter une partie en cours.\nVoulez-vous continuer ?";
@@ -54,14 +53,15 @@ public class TableController {
 		    }
 		});
 
+		Utility.bindPrefProperties(tableCenterView, tableView.widthProperty().multiply(100 - 2 * PANELS_PERCENTAGE), tableView.heightProperty());
 		initChat();
 		initRules();
 		initTableCenter();
 		initBottom();
 		initMenu();
 
+		//Waiting for other players in prestart state
 		if(this.interImplDataTable.getActualTable().getGameState().getState() == State.PRESTART) {
-			//Waiting for other players
 			new PlayerWaitingAlert(interImplDataTable, user, stage);
 		}
 	}
@@ -98,7 +98,7 @@ public class TableController {
 	private void initTableCenter() throws IOException {
 		FXMLLoader tableCenterLoader = new FXMLLoader(getClass().getResource("/ihmTable/resources/view/TableCenter.fxml"));
 		Pane tableCenter = tableCenterLoader.load();
-		Utility.bindPrefProperties(tableCenter, tableView.widthProperty().multiply(CENTER_WIDTH_PERCENTAGE), tableView.heightProperty());
+		Utility.bindPrefProperties(tableCenter, tableCenterView.widthProperty(), tableCenterView.heightProperty().multiply(100 - MENU_HEIGHT_PERCENTAGE - PANELS_PERCENTAGE));
 		setPosition(tableCenter, Position.center);
 		TableCenterController tableCenterController = (TableCenterController) tableCenterLoader.getController();
 		tableCenterController.setData(interImplDataTable, user);
@@ -108,7 +108,7 @@ public class TableController {
 	private Pane initPlayerStats(Pane parent) throws IOException {
 		FXMLLoader playerStatsLoader = new FXMLLoader(getClass().getResource("/ihmTable/resources/view/PlayerStats.fxml"));
 		Pane playerStats = playerStatsLoader.load();
-		Utility.bindPrefProperties(playerStats, parent.widthProperty().multiply(BOTTOM_CONTENT_WIDTH_PERCENTAGE), parent.heightProperty());
+		Utility.bindPrefProperties(playerStats, parent.widthProperty().multiply(0.5), parent.heightProperty());
 		PlayerStatsController playerStatsController = playerStatsLoader.getController();
 		playerStatsController.setData(interImplDataTable, user);
 		return playerStats;
@@ -118,7 +118,7 @@ public class TableController {
 	private Pane initGameStats(Pane parent) throws IOException {
 		FXMLLoader gameStatsLoader = new FXMLLoader(getClass().getResource("/ihmTable/resources/view/GameStats.fxml"));
 		Pane gameStats = gameStatsLoader.load();
-		Utility.bindPrefProperties(gameStats, parent.widthProperty().multiply(BOTTOM_CONTENT_WIDTH_PERCENTAGE), parent.heightProperty());
+		Utility.bindPrefProperties(gameStats, parent.widthProperty().multiply(0.5), parent.heightProperty());
 		GameStatsController gameStatsController = gameStatsLoader.getController();
 		gameStatsController.setData(interImplDataTable, user);
 		return gameStats;
@@ -135,11 +135,12 @@ public class TableController {
 
 	// Bottom view's initialization
 	private void initBottom() throws IOException {
-		BorderPane bottomContainer = new BorderPane();
+		AnchorPane bottomContainer = new AnchorPane();
 		Pane playerStats = initPlayerStats(bottomContainer);
+		AnchorPane.setLeftAnchor(playerStats, 0.0);
 		Pane gameStats = initGameStats(bottomContainer);
-		bottomContainer.setLeft(playerStats);
-		bottomContainer.setRight(gameStats);
+		AnchorPane.setRightAnchor(gameStats, 0.0);
+		bottomContainer.getChildren().addAll(playerStats, gameStats);
 		setPosition(getCollapsiblePane(bottomContainer, Position.bottom), Position.bottom);
 	}
 

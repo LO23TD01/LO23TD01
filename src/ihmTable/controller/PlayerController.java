@@ -10,7 +10,7 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
-import javafx.scene.layout.VBox;
+import javafx.scene.layout.TilePane;
 import javafx.scene.paint.Color;
 import javafx.scene.paint.ImagePattern;
 import javafx.scene.shape.Circle;
@@ -28,7 +28,7 @@ public class PlayerController {
 	private Text playerName;
 
 	@FXML
-	private VBox diceContainer;
+    private TilePane diceContainer;
 
 	@FXML
 	private Label PlayerStats_Jeton_Score_Label;
@@ -89,16 +89,16 @@ public class PlayerController {
 		FXMLLoader diceLoader1 = new FXMLLoader(getClass().getResource(DICE_FXML));
 		diceContainer.getChildren().add(diceLoader1.load());
 		dice1 = (DiceController) diceLoader1.getController();
-		dice1.setDice(false, DICE_SIZE);
+		dice1.setDice(false, diceContainer.widthProperty(), diceContainer.heightProperty().multiply(0.3));
 
 		FXMLLoader diceLoader2 = new FXMLLoader(getClass().getResource(DICE_FXML));
 		diceContainer.getChildren().add(diceLoader2.load());
 		dice2 = (DiceController) diceLoader2.getController();
-		dice2.setDice(false, DICE_SIZE);
+		dice2.setDice(false, diceContainer.widthProperty(), diceContainer.heightProperty().multiply(0.3));
 
 		FXMLLoader diceLoader3 = new FXMLLoader(getClass().getResource(DICE_FXML));
 		diceContainer.getChildren().add(diceLoader3.load());
 		dice3 = (DiceController) diceLoader3.getController();
-		dice3.setDice(false, DICE_SIZE);
+		dice3.setDice(false, diceContainer.widthProperty(), diceContainer.heightProperty().multiply(0.3));
 	}
 }

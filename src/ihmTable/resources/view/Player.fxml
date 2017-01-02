@@ -5,6 +5,7 @@
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.TilePane?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.shape.Circle?>
 <?import javafx.scene.text.Font?>
@@ -29,7 +30,7 @@
                   <Text fx:id="playerName" strokeType="OUTSIDE" strokeWidth="0.0" wrappingWidth="27.6708984375" />
                </children>
             </VBox>
-            <VBox fx:id="diceContainer" alignment="CENTER" prefHeight="120.0" prefWidth="44.0" />
+            <TilePane fx:id="diceContainer" orientation="VERTICAL" prefHeight="200.0" prefWidth="200.0" />
          </children>
       </HBox>
       <ImageView fx:id="PlayerStats_PartiesPerdues1" fitHeight="41.0" fitWidth="45.0" layoutY="60.0" pickOnBounds="true" preserveRatio="true">

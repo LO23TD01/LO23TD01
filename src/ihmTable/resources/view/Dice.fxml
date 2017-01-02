@@ -1,15 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.scene.image.ImageView?>
-<?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.StackPane?>
 
-<AnchorPane stylesheets="@../css/style1.css" xmlns="http://javafx.com/javafx/8.0.60" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ihmTable.controller.DiceController">
-   <children>
-      <StackPane fx:id="diceContainer" styleClass="dice">
-         <children>
-            <ImageView fx:id="dice" fitHeight="60.0" fitWidth="60.0" pickOnBounds="true" preserveRatio="true" StackPane.alignment="CENTER" />
-         </children>
-      </StackPane>
-   </children>
-</AnchorPane>
+
+<StackPane fx:id="dice" prefHeight="60.0" prefWidth="60.0" styleClass="dice" stylesheets="@../css/style.css" xmlns="http://javafx.com/javafx/8.0.60" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ihmTable.controller.DiceController" />
