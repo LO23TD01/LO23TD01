@@ -25,7 +25,7 @@ public class RaiseExceptionMessage implements IMessage{
 
 	@Override
 	public void process(InterfaceSingleThreadDataClient dataEngine) {
-		// dataEngine.raiseException(error);
+		dataEngine.raiseException(errorMessage);
 	}
 
 }
