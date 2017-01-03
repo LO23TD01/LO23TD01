@@ -617,6 +617,7 @@ public class ServerDataEngine implements InterfaceDataNetwork {
 				pDataW.setChip(pDataW.getChip() - value);
 				pDataL.setChip(pDataL.getChip() + value);
 				tableFull.getGameState().replaceData(pDataL);
+				tableFull.getGameState().replaceData(pDataW);
 				this.comServer.updateChips(getUUIDList(tableFull.getAllList()),
 						pDataW.getPlayer().getPublicData().getUUID(), pDataL.getPlayer().getPublicData().getUUID(),
 						value);
