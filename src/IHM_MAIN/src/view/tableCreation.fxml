@@ -83,6 +83,8 @@
             <ComboBox id="maxTokens" fx:id="maxTokens" prefHeight="27.0" prefWidth="223.0" GridPane.columnIndex="1" GridPane.rowIndex="4">
             	<items>
             		<FXCollections fx:factory="observableArrayList">
+            			<Integer fx:value="11" />
+            			<Integer fx:value="16" />
             			<Integer fx:value="21" />
             			<Integer fx:value="26" />
             			<Integer fx:value="31" />
@@ -97,7 +99,7 @@
       </HBox>
       <HBox alignment="CENTER" GridPane.rowIndex="6">
          <children>
-            <CheckBox id="chatEnabled" fx:id="chatEnabled" mnemonicParsing="false" text="Autoriser le chat " GridPane.rowIndex="5" />
+            <CheckBox id="chatEnabled" fx:id="chatEnabled" mnemonicParsing="false" text="Autoriser le chat pour les spectateurs" GridPane.rowIndex="5" />
          </children>
       </HBox>
       <HBox alignment="CENTER" GridPane.columnIndex="1" GridPane.rowIndex="6">

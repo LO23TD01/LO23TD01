@@ -38,7 +38,6 @@ import data.User;
 import data.client.*;
 import data.GameTable;
 import data.Profile;
-import IHM_MAIN.src.model.Game;
 import IHM_MAIN.src.model.ModelApplication;
 import data.client.*;
 import data.Profile;
@@ -162,7 +161,7 @@ public class ControllerApplication {
 
 	StringProperty constructPlayers(CellDataFeatures<GameTable, String> cd){
 		String ret = cd.getValue().getPlayerList().size() + "/" + cd.getValue().parametersProperty().getValue().getNbPlayerMax();
-		System.out.println(cd.getValue().getCreator().getPublicData().getLogin());
+		//System.out.println(cd.getValue().getCreator().getPublicData().getNickName());
 		//ObservableValue<String> obss = new ReadOnlyObjectWrapper<String>(ret);
 		StringProperty st = new SimpleStringProperty();
 		st.setValue(ret);
@@ -199,7 +198,7 @@ public class ControllerApplication {
 		gameName.setCellValueFactory(cellData -> cellData.getValue().nameProperty());
 		players.setCellValueFactory(cellData -> constructPlayers(cellData));
 		spectators.setCellValueFactory(cellData -> constructSpectators(cellData));
-		owner.setCellValueFactory(cellData -> cellData.getValue().creatorProperty().getValue().getSame(interImplDataMain.getUserList()).publicDataProperty().getValue().loginProperty());
+		owner.setCellValueFactory(cellData -> cellData.getValue().creatorProperty().getValue().getSame(interImplDataMain.getUserList()).publicDataProperty().getValue().nickNameProperty());
 		status.setCellValueFactory(cellData -> constructState(cellData));
 
 		FilteredList<GameTable> filtered = new FilteredList<>(interImplDataMain.getTableList(), p -> true);
@@ -227,7 +226,6 @@ public class ControllerApplication {
 
 	private void fillListView(){
 		ObservableList<User> items = interImplDataMain.getUserList();
-		System.out.println(items);
 		connectedUsers.setItems(items);
 		connectedUsers.setCellFactory(new Callback<ListView<User>, ListCell<User>>(){
             public ListCell<User> call(ListView<User> p) {
@@ -236,7 +234,7 @@ public class ControllerApplication {
                     protected void updateItem(User u, boolean bln) {
                         super.updateItem(u, bln);
                         if (u != null) {
-                            setText(u.getPublicData().getLogin());
+                            setText(u.getPublicData().getNickName());
                         }
                     }
                 };
