@@ -186,7 +186,7 @@ public class GameState {
 				return playerList.get(nextIndex);
 			case DISCHARGING:
 				nextIndex = (this.playerList.indexOf(this.actualPlayer.getValue()) + 1) % this.playerList.size();
-				while (this.getData(this.playerList.get(nextIndex), false).getChip() != 0)
+				while (this.getData(this.playerList.get(nextIndex), false).getChip() == 0)
 					nextIndex = (nextIndex + 1) % this.playerList.size();
 				return this.playerList.get(nextIndex);
 			case END:
