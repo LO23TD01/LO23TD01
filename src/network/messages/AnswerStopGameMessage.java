@@ -22,8 +22,7 @@ public class AnswerStopGameMessage implements IMessage {
 	
 	@Override
 	public void process(InterfaceSingleThreadData dataEngine) {
-		// Appeler :
-		// dataEngine.answerStopGame(tableId,answer,user);
+		dataEngine.answerStopGame(tableId,answer,user);
 	}
 
 	@Override

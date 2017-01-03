@@ -19,10 +19,7 @@ public class ChangeTurnStateMessage implements IMessage {
 
 	public ChangeTurnStateMessage(TurnState turnState) {
 		TurnState t = TurnState.valueOf(turnState.toString());
-		System.out.println(t+" | "+turnState);
-		System.out.println(turnState.name());
 		this.turnStateStr = FxGson.create().toJson(turnState);
-		System.out.println(this.turnStateStr);
 	}
 
 	@Override
@@ -33,7 +30,6 @@ public class ChangeTurnStateMessage implements IMessage {
 
 	@Override
 	public void process(InterfaceSingleThreadDataClient dataEngine) {
-		System.out.println("ChangeTurnMessage : "+new Date().getTime());
 		dataEngine.changeTurnState(FxGson.create().fromJson(turnStateStr, TurnState.class));
 	}
 }
