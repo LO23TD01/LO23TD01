@@ -235,6 +235,8 @@ public class ControllerApplication {
                         super.updateItem(u, bln);
                         if (u != null) {
                             setText(u.getPublicData().getNickName());
+                        } else {
+                        	setText("");
                         }
                     }
                 };
