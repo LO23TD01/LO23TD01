@@ -53,6 +53,13 @@ public class ProfileManager {
 		return new Profile(login,psw);
 	}
 
+	// version autonicname
+	public Profile createProfile(String login, String psw, String nick) {
+		Profile newProfile = new Profile(login,psw);
+		newProfile.setNickName(nick);
+		return newProfile;
+	}
+
 	public Profile createProfile(String login, String nickname, String psw, String firstName, String surName, int age) {
 		return new Profile(login,nickname,psw,firstName,surName,age);
 	}
