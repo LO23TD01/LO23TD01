@@ -79,9 +79,7 @@ public class InterImplDataMain implements InterfaceDataIHMLobby{
 	@Override
 	// Cette fonction est appel�e par IHM lobby lors de la cr�ation d'un profil c'est pour cela que l'on xmlise ce profile.
 	public void createProfile(String login, String psw) {
-		this.dataEngine.getProfileManager().createProfile(login,psw).Xmlise();
-		this.dataEngine.getProfileManager().getCurrentProfile().setNickName(login);
-		this.dataEngine.getProfileManager().getCurrentProfile().Xmlise();
+		this.dataEngine.getProfileManager().createProfile(login,psw,login).Xmlise();
 	}
 
 
