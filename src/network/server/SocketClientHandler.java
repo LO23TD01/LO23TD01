@@ -65,11 +65,16 @@ public class SocketClientHandler implements Runnable{
 	                if(o != null){
 	                	if(o.getClass() == ConnectionMessage.class){
 	                		ConnectionMessage message = (ConnectionMessage) o;
-	                		server.replaceWithUUID(clientSocket.getInetAddress().toString(), message.uuid);
+	                		
+	                		if(server.getDataEngine().exist(new User(new Profile(message.uuid)))){
+	                			server.removeSocket(clientSocket.getInetAddress().toString());
+	                		}else{
+	                			server.replaceWithUUID(clientSocket.getInetAddress().toString(), message.uuid);
+	                			o.process(server.getDataEngine());
+	                		}
+	                	}else{
+	                		o.process(server.getDataEngine());
 	                	}
-
-
-	                	o.process(server.getDataEngine());
 	                }
 
 

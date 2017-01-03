@@ -111,6 +111,13 @@ public class ComServer implements Runnable, ComServerInterface {
 		connectedClients.put(uuid.toString(), connectedClients.get(adresse));
 		connectedClients.remove(adresse);
 	}
+	
+	/**
+	 * @param adresse Connected client address
+	 */
+	public void removeSocket (String adresse){
+		connectedClients.remove(adresse);
+	}
 
 
 	/*
