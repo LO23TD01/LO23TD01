@@ -128,6 +128,13 @@ public interface ComServerInterface {
 	 * @param userList Liste of all players
 	 */
 	public void refreshUserList(UUID user, List<User> userList);
+	
+	/**
+	 * Sends list of all players to a player
+	 * @param user Receiver's ID
+	 * @param userList Liste of all players
+	 */
+	public void refreshTableList(List<UUID> receivers, List<GameTable> tableList);
 
 	/**
 	 * Raises an exception
@@ -238,4 +245,5 @@ public interface ComServerInterface {
 	 * @param users Users that are exaequo
 	 */
 	public void exAequoCase(List<UUID> receivers, List<User> users, boolean win);
+	
 }
