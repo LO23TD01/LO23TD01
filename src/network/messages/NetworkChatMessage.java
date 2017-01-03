@@ -29,8 +29,7 @@ public class NetworkChatMessage implements IMessage{
 
 	@Override
 	public void process(InterfaceSingleThreadDataClient dataEngine) {
-		// En attente de DATA : issue #126
-		//dataEngine.writeMessage(msg);
+		dataEngine.writeMessage(FxGson.create().fromJson(msg, ChatMessage.class));
 	}
 
 }
