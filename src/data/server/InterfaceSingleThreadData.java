@@ -22,6 +22,12 @@ public class InterfaceSingleThreadData implements InterfaceDataNetwork {
 		this.server = server;
 	}
 
+	public boolean exist(User user)
+	{
+		return this.server.exist(user);
+	}
+
+
 
 	@Override
 	public Profile getProfile(User user) {
