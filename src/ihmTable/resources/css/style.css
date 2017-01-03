@@ -48,8 +48,10 @@
 /* --------- */
 /* CHAT */
 #chatTitle {
-	-fx-text-align : center;
+	-fx-alignment : center;
+	-fx-text-fill : white;
 	-fx-background-color : #393939;
+	-fx-font-size : 20;
 }
 
 #chatView, #listMessages{
@@ -61,6 +63,11 @@
    -fx-background-color :  white;
    -fx-border-color : #666;
    -fx-border-width : 2px;
+}
+
+#messageControlContainer {
+	-fx-pref-height : 40px;
+	-fx-spacing : 5px;
 }
 
 #messageArea {
@@ -81,8 +88,10 @@
 }
 
 #rulesTitle{
-	-fx-text-align : center;
+	-fx-alignment : center;
 	-fx-background-color : #393939;
+	-fx-text-fill : white;
+	-fx-font-size : 20px;
 }
 
 .rulesItem {

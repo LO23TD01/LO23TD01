@@ -8,6 +8,7 @@ import data.ChatMessage;
 import data.GameTable;
 import data.User;
 import data.client.InterImplDataTable;
+import ihmTable.util.Utility;
 import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ListChangeListener;
@@ -18,6 +19,7 @@ import javafx.scene.control.ListCell;
 import javafx.scene.control.ListView;
 import javafx.scene.control.TextArea;
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.Priority;
@@ -32,8 +34,9 @@ public class ChatController {
 
     private static final DateFormat DATE_FORMAT = new SimpleDateFormat("HH:mm:ss");
 
+
     @FXML
-    private AnchorPane chatView;
+    private BorderPane chatView;
 
     @FXML
     private ListView<ChatMessage> listMessages;
@@ -47,6 +50,15 @@ public class ChatController {
     @FXML
     private ListView<User> listUsers;
 
+    @FXML
+    private HBox messageControlContainer;
+
+    @FXML
+    private BorderPane chatLeftContainer;
+
+    @FXML
+    private AnchorPane chatRightContainer;
+
     private InterImplDataTable interImplDataTable;
     private Chat localChat;
     private User user;
@@ -57,6 +69,7 @@ public class ChatController {
     public void initialize() {
     	initListMessagesCellFactory();
     	initListUsersCellFactory();
+    	setPrefProperties();
     	sendButton.setOnAction(event -> onSendButtonClick());
     }
 
@@ -161,5 +174,12 @@ public class ChatController {
 	private void onSendButtonClick() {
 		interImplDataTable.sendMessage(new ChatMessage(user, messageArea.getText()));
 		messageArea.clear();
+	}
+
+	private void setPrefProperties() {
+		Utility.bindPrefProperties(chatLeftContainer, chatView.widthProperty().multiply(0.7), chatView.heightProperty().subtract(messageControlContainer.heightProperty()));
+		Utility.bindPrefProperties(chatRightContainer, chatView.widthProperty().multiply(0.3), chatView.heightProperty().subtract(messageControlContainer.heightProperty()));
+//		listMessages.prefWidthProperty().bind(chatView.widthProperty().multiply(0.4));
+//		listMessages.prefHeightProperty().bind(chatView.heightProperty());
 	}
 }
