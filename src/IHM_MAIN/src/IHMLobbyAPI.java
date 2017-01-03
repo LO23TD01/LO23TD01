@@ -15,32 +15,34 @@ import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.stage.Window;
 
+/**
+*	IHMLobbyAPI is the API used by Data to display
+*	tables or profiles after a request
+*
+*/
 public class IHMLobbyAPI {
 	
 	public static class IncompleteProfileException extends Exception{
-
-		/**
-		 * 
-		 */
-		private static final long serialVersionUID = 1L;}
+		private static final long serialVersionUID = 1L;
+	}
 
 	// The API to display specific windows
 	// in the Lobby Module
 	private static Stage window_to_kill;
 	
-	public IHMLobbyAPI(){
-		
-	}
+	public IHMLobbyAPI(){}
 
-	// DATA will use this method to display
-	// a user's profile after requesting it
+	/**
+	*	IHMLobbyAPI#displayProfile allows the opening of a profile window, 
+	*	and takes a Profile and a parent Window.
+	*	<br>This method is to be used by Data after a profile request.
+	*	@param profil A Profile object, containing the profile to be displayed.
+	*	@param parent The parent Window, used to give the profile window a parent to attach to.
+	*	@throws IncompleteProfileException
+	*	@see Profile
+	*	@see Window
+	*/
 	public void displayProfile(Profile profil, Window parent) throws IncompleteProfileException{
-		/*System.out.println(profile.getLogin());
-		FXMLLoader loader = new FXMLLoader();
-		loader.setLocation(MainApp.class.getResource("view/GestionProfil.fxml"));
-		PersonController controller = loader.getController();
-		controller.setProfile(profile);
-		controller.disableButtonsAndFields();*/
 		try {
  			FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("./view/GestionProfil.fxml"));
  			AnchorPane root;
@@ -63,6 +65,15 @@ public class IHMLobbyAPI {
  		}
 	}
 	
+	/**
+	*	IHMLobbyAPI#displayTable allows the opening of a table window, 
+	*	and takes a Table implementation and a User.
+	*	<br>This method is to be used by Data after a table request.
+	*	@param inter An InterImplDataTable object, containing the table data to be displayed.
+	*	@param user The User object used to display the table to.
+	*	@see InterImplDataTable
+	*	@see User
+	*/
 	public void displayTable(InterImplDataTable inter, User user){
 		IHMTableLobbyImpl it = new IHMTableLobbyImpl();
 		try {
@@ -76,6 +87,13 @@ public class IHMLobbyAPI {
 			e.printStackTrace();
 		}
 	}
+
+	/**
+	*	IHMLobbyAPI#setWindowToDestroy sets the next window to kill when displaying a table.
+	*	<br>This method is <b>only</b> to be used when killing the window that requested the table.
+	*	@param target A Stage object, containing the window to be destroyed.
+	*	@see Stage
+	*/
 	public void setWindowToDestroy(Stage target){
 		IHMLobbyAPI.window_to_kill = target;
 	}
