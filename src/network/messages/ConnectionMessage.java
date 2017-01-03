@@ -24,6 +24,11 @@ import data.server.ServerDataEngine;
 import network.messages.utils.BufferedImageBuilder;
 import sun.nio.ch.IOUtil;
 
+/**
+ * Message to be sent when a plyer connects
+ * @author lenovo
+ *
+ */
 public class ConnectionMessage implements IMessage{
 
 	private static final long serialVersionUID = -2428194153289587089L;
@@ -31,6 +36,10 @@ public class ConnectionMessage implements IMessage{
 	public byte[] image;
 	public UUID uuid;
 
+	/**
+	 * Constructor
+	 * @param p Profile of the connecting player
+	 */
 	public ConnectionMessage(Profile p){
 		uuid = p.getUUID();
 
@@ -42,6 +51,9 @@ public class ConnectionMessage implements IMessage{
 
 		profile = FxGson.create().toJson(p);
 	}
+	/* (non-Javadoc)
+	 * @see network.messages.IMessage#process(data.server.ServerDataEngine)
+	 */
 	@Override
 	public void process(ServerDataEngine dataEngine) {
 
@@ -54,6 +66,9 @@ public class ConnectionMessage implements IMessage{
 		dataEngine.connectUser(FxGson.create().fromJson(profile, Profile.class));
 	}
 
+	/* (non-Javadoc)
+	 * @see network.messages.IMessage#process(data.client.ClientDataEngine)
+	 */
 	@Override
 	public void process(ClientDataEngine dataEngine) {}
 
