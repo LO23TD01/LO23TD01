@@ -5,7 +5,7 @@
 <?import javafx.scene.layout.*?>
 
 
-<AnchorPane maxHeight="65.0" maxWidth="86.0" minHeight="65.0" minWidth="86.0" prefHeight="65.0" prefWidth="86.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="IHM_MAIN.src.controller.LoadingController">
+<AnchorPane maxHeight="65.0" maxWidth="86.0" minHeight="65.0" minWidth="86.0" prefHeight="65.0" prefWidth="86.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1">
    <children>
       <ImageView layoutX="31.0" layoutY="21.0">
          <image>

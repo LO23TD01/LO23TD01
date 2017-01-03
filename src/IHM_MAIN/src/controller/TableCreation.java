@@ -18,73 +18,94 @@ import javafx.stage.StageStyle;
 
 public class TableCreation{
 		
-    @FXML
-    CheckBox spectatorsAllowed;
+	@FXML
+	CheckBox spectatorsAllowed;
 
-    @FXML
-    ComboBox<Integer> maxPlayers;
+	@FXML
+	ComboBox<Integer> maxPlayers;
 
-    @FXML
-    ComboBox<Integer> minPlayers;
+	@FXML
+	ComboBox<Integer> minPlayers;
 
-    @FXML
-    ComboBox<Integer> maxTokens;
+	@FXML
+	ComboBox<Integer> maxTokens;
 
-    @FXML
-    CheckBox chatEnabled;
+	@FXML
+	CheckBox chatEnabled;
 
-    @FXML
-    TextField tableName;
+	@FXML
+	TextField tableName;
 
-    @FXML
-    ComboBox<String> rules;
+	@FXML
+	ComboBox<String> rules;
 
-    InterImplDataMain interImplDataMain;
-    
+	InterImplDataMain interImplDataMain;
+	
+	/**
+	*	Sets the Data API implementation.
+	*	@param interf An InterImplDataMain object containing the Data API Implementation.
+	*/
 	public void setInterfaceData(InterImplDataMain interf){
 		this.interImplDataMain = interf;
 	}
 	
-
+	/**
+	*	Handles the cancellation of a given event
+	*	@param e An ActionEvent object.
+	*/
 	public void cancel(ActionEvent e){
 		Stage stage = (Stage)((Node)(e.getSource())).getScene().getWindow();
 		stage.close();
 	}
 	
+	/**
+	*	Handles the validation of the table creation. 
+	*	<br>This method will verify the validity of the inputs and create the table if ok.
+	*/
 	public void ok(){
 		try{
 			
-			if(tableName.getText().isEmpty())
+			if(tableName.getText().isEmpty()){
 				throw new Exception("Veuillez renseigner le nom de la Table");
-			if(minPlayers.getValue() == null)
+			}
+			if(minPlayers.getValue() == null){
 				throw new Exception("Veuillez renseigner un nombre de joueurs minimum");
-			if(maxPlayers.getValue() == null)
+			}
+			if(maxPlayers.getValue() == null){
 				throw new Exception("Veuillez renseigner un nombre de joueurs maximum");
-			if(maxTokens.getValue() == null)
+			}
+			if(maxTokens.getValue() == null){
 				throw new Exception("Veuillez renseigner un nombre de jetons");
-			if(rules.getValue() == null)
+			}
+			if(rules.getValue() == null){
 				throw new Exception("Veuillez sélectionner une règle de jeu");
-			if(minPlayers.getValue() > maxPlayers.getValue())
+			}
+			if(minPlayers.getValue() > maxPlayers.getValue()){
 				throw new Exception ("Veuillez renseigner un nombre de joueurs minimum inférieur ou égal au nombre de joueurs maximum");
-			if(this.interImplDataMain.getLocalProfile() == null)
+			}
+			if(this.interImplDataMain.getLocalProfile() == null){
 				throw new Exception("Erreur Système: Impossible de charger le profil local");
+			}
+				
+			Stage stage = (Stage) tableName.getScene().getWindow();
+			FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("../view/Loading.fxml"));
+			AnchorPane root;
+			root = (AnchorPane) fxmlLoader.load();
+
+			Scene new_scene = new Scene(root);
+			Stage waiting = new Stage();
+			waiting.initStyle(StageStyle.UNDECORATED);
+			waiting.initModality(Modality.WINDOW_MODAL);
+			waiting.initOwner(stage);
+			waiting.setScene(new_scene);
 			
-		Stage stage = (Stage) tableName.getScene().getWindow();
-		FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("../view/Loading.fxml"));
-		AnchorPane root;
-		root = (AnchorPane) fxmlLoader.load();
-		Scene new_scene = new Scene(root);
-		Stage waiting = new Stage();
-		waiting.initStyle(StageStyle.UNDECORATED);
-		waiting.initModality(Modality.WINDOW_MODAL);
-		waiting.initOwner(stage);
-		waiting.setScene(new_scene);
-		new IHMLobbyAPI().setWindowToDestroy(stage);
-		waiting.show();
-		Thread.sleep(500);
-		Timeout timeout = new Timeout(waiting, 3000);
-		timeout.start();
-		this.interImplDataMain.createNewTable(
+			new IHMLobbyAPI().setWindowToDestroy(stage);
+			waiting.show();
+			Thread.sleep(500);
+			Timeout timeout = new Timeout(waiting, 3000);
+			timeout.start();
+
+			this.interImplDataMain.createNewTable(
 				this.interImplDataMain.getLocalProfile().getUUID(),
 				tableName.getText(), 
 				minPlayers.getValue().intValue(),
@@ -99,6 +120,10 @@ public class TableCreation{
 			alert.showAndWait();
 		}		
 	}
+
+	/**
+	*	Thread to wait and handle the server timeout.
+	*/
 	public class Timeout extends Thread{
 		Stage waitingWindow;
 		int time;
@@ -108,17 +133,19 @@ public class TableCreation{
 						Thread.sleep(this.time);
 						if(waitingWindow.isShowing()){
 							Platform.runLater(new Runnable() {
-					            @Override public void run() {
+								@Override public void run() {
 									waitingWindow.close();
 									Alert alert = new Alert(AlertType.ERROR, "Temps de réponse du serveur dépassé.");
 									alert.showAndWait();
-					            }
+								}
 							});
 						}
 
 					} catch (InterruptedException e) {
-						// TODO Auto-generated catch block
-						e.printStackTrace();						
+						e.printStackTrace();
+						
+						Alert alert = new Alert(AlertType.ERROR, "Le serveur n'a pas repondu dans le temps donné");
+						alert.showAndWait();
 					}
 		}
 		public Timeout(Stage w, int time){

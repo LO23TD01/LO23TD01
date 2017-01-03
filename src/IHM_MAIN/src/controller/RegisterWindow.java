@@ -25,52 +25,55 @@ public class RegisterWindow{
 	
 	//this is an instance of the current stage so we can close it when the user validate his new profile
 	private Stage currentStage;
-	
-	//we need these tow instances and the corresponding setters so we can then use them to access the data/IHM-Lobby interface methods
-	data.client.ClientDataEngine clientData;
-    data.client.InterfaceDataIHMLobby interfaceData;
     data.client.InterImplDataMain interImplDataMain;
-    //setters for the ClientDataEngine and InterfaceDataIHMLobby instances
-    public void setClientData(ClientDataEngine client){
-		this.clientData = client;
-	}
-	public void setInterfaceDataIHM(InterfaceDataIHMLobby interf){
-		this.interfaceData = interf;
-	}
+    
+    public RegisterWindow(){}
+
+	/**
+	*	Sets the Data API we need to call the utility methods.
+	*	@param interImplDataMain An InterImplDataMain object containing the implementation of the Data API.
+	*/
 	public void setInterImplDataMain(InterImplDataMain interImplDataMain) {
 		this.interImplDataMain = interImplDataMain;
 	}
 	
+	/**
+	*	Sets the current stage for the window.
+	*	@param dialogStage The Stage to be used when displaying the window.
+	*/
 	public void setCurrentStage(Stage dialogStage) {
         this.currentStage = dialogStage;
     }
 	
+	/**
+	*	Sets the focused button so that when pressing enter that button will be triggered.
+	*/
 	public void setButtonToBeTriggerByEnter() {
 		this.validerButton.defaultButtonProperty().bind(this.validerButton.focusedProperty());
 	}
 
-	public RegisterWindow(){
-	}
-
+	/**
+	*	Cancels a given event and closes the stage.
+	*	@param e An ActionEvent object. 
+	*/
 	public void cancel(ActionEvent e){
 		Stage stage = (Stage)((Node)(e.getSource())).getScene().getWindow();
 		stage.close();
 	}
 	
-	
-	//handleValiderButton
-
-	 @FXML
-	 private void handleValiderButton(ActionEvent event) {
+	/**
+	*	Handles the form validation.
+	*	@param event An ActionEvent object.
+	*/
+	@FXML
+	private void handleValiderButton(ActionEvent event) {
 		try{
 			if(this.loginField.getText().equals(""))
 				throw new Exception();
 			if(this.pswdField.getText().equals(""))
 				throw new Exception();
 			try{
-				System.out.print("\ncreate a new profile with \nlogin : "+this.loginField.getText() + "\npassword : " + this.pswdField.getText() +"\n");
 				this.interImplDataMain.createProfile(this.loginField.getText(), this.pswdField.getText());
-				System.out.print("just created a new profile\n");
 				currentStage.close();
 			}
 			catch(Exception e){
@@ -88,6 +91,5 @@ public class RegisterWindow{
             alert.setContentText("You should not have a blank password or login");
             alert.showAndWait();
 		}
-		
-	 }
+	}
 }
