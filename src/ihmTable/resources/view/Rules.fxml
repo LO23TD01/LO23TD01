@@ -1,24 +1,26 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import javafx.scene.control.Accordion?>
+<?import javafx.scene.control.Label?>
 <?import javafx.scene.control.TitledPane?>
-<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.VBox?>
 
-<AnchorPane prefHeight="800.0" prefWidth="300.0" xmlns="http://javafx.com/javafx/8.0.60" xmlns:fx="http://javafx.com/fxml/1">
+<VBox fx:id="rulesBox" stylesheets="@../css/style.css" xmlns="http://javafx.com/javafx/8.0.60" xmlns:fx="http://javafx.com/fxml/1">
    <children>
-      <Accordion prefHeight="800.0" prefWidth="300.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+      <Label fx:id="rulesTitle" maxWidth="1.7976931348623157E308" text="Règles" />
+      <Accordion prefHeight="800.0" prefWidth="300.0">
         <panes>
           <TitledPane animated="false" text="Règles">
-            <content>
-              <AnchorPane />
-            </content>
+               <content>
+                  <Label alignment="TOP_CENTER" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" text="On joue le 421 en deux manches, la « charge » et la « décharge ».&#10;&#10;Lors de la première partie du jeu, la « charge », les joueurs vont se répartir les 21 jetons entre eux en espérant en récupérer le moins possible. Lors de la deuxième partie, la « décharge », les joueurs devront se débarrasser du plus de jetons possible.&#10;&#10;Le joueur ayant remporté le jeu de dés démarrera la partie en lançant les trois dés. Pour chacun des trois dés, il peut choisir de relancer ou non. Le joueur peut, si il le désire, relancer une deuxième et une troisième fois tout ou partie des trois dés. Ceci va influer sur le reste de la manche car les autres joueurs devront effectuer le même nombre de lancers que le premier joueur ou moins.&#10;&#10;Au cours de la « charge », celui qui fait la moins bonne combinaison reçoit des jetons du « pot ». Le nombre de jetons distribué au joueur est déterminé par la meilleure combinaison (voir les valeurs des combinaisons ci-dessous)." wrapText="true" />
+               </content>
           </TitledPane>
           <TitledPane animated="false" text="Ordre">
-            <content>
-              <AnchorPane />
-            </content>
+               <content>
+                  <Label alignment="TOP_CENTER" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" text="Calcul des combinaisons gagnantes : &#10;&#10;N°1 : 421&#10;N°2 : 3 As&#10;N°3 : 3 Six&#10;N°4 : 2 As – Six&#10;N°5 : 3 Cinq&#10;N°6 : 2 As – Cinq&#10;N°7  : 3 Quatre&#10;N°8 : 2 As – Quatre&#10;N°9 : 3 Trois&#10;N°10 : 2 As – Trois&#10;N°11 : 3 Deux&#10;N°12 : 2 As – Deux&#10;N°13 : Six – Cinq – Quatre&#10;N°14 : Cinq – Quatre – Trois&#10;N°15 : Quatre – Trois – Deux&#10;N°16 : Trois – Deux – As&#10;N°17 : Le reste&#10;N°18 : Deux Deux As&#10;&#10;&#10;Jetons reçus : &#10;&#10;421 : 10 jetons&#10;3 As : 7 jetons&#10;2 As – Six /ou/ 3 Six : 6 jetons&#10;2 As – Cinq /ou/ 3 Cinq : 5 jetons&#10;2 As – Quatre  /ou/ 3 Quatre : 4 jetons" />
+               </content>
           </TitledPane>
         </panes>
       </Accordion>
    </children>
-</AnchorPane>
+</VBox>
