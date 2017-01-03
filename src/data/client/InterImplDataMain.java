@@ -37,7 +37,7 @@ public class InterImplDataMain implements InterfaceDataIHMLobby{
 		this.tableList = this.dataEngine.getTableList();
 		this.currentProfile = this.dataEngine.getProfileManager().currentProfileProperty();
 	}
-	
+
 
 	/**
 	 * Cette méthode vérifie si le login/mot de passe est correct. Elle connecte ensuite le client au serveur de jeu.
@@ -80,6 +80,8 @@ public class InterImplDataMain implements InterfaceDataIHMLobby{
 	// Cette fonction est appel�e par IHM lobby lors de la cr�ation d'un profil c'est pour cela que l'on xmlise ce profile.
 	public void createProfile(String login, String psw) {
 		this.dataEngine.getProfileManager().createProfile(login,psw).Xmlise();
+		this.dataEngine.getProfileManager().getCurrentProfile().setNickName(login);
+		this.dataEngine.getProfileManager().getCurrentProfile().Xmlise();
 	}
 
 
@@ -189,12 +191,12 @@ public class InterImplDataMain implements InterfaceDataIHMLobby{
 	@Override
 	public void createNewTable(UUID user, String name, int min, int max, int token, boolean withSpec,
 			boolean withChat, Rules rules){
-		
+
 		this.dataEngine.getComClientInterface().createNewTable(user, name, min, max, token, withSpec, withChat, rules);
-	
+
 	}
-	
-	
+
+
 
 //////////////////////////////////////////:
 

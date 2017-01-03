@@ -30,7 +30,7 @@ public class InterfaceSingleThreadDataClient implements InterfaceDataNetwork {
 		this.es =  Executors.newSingleThreadExecutor();
 		this.client = client;
 	}
-	
+
 	@Override
 	public void exAequoCase(List<User> users, boolean win) {
 		es.execute(new Runnable() {
@@ -63,6 +63,15 @@ public class InterfaceSingleThreadDataClient implements InterfaceDataNetwork {
 		es.execute(new Runnable() {
 		    public void run() {
 		    	client.refreshUsersList(l);
+		    }
+		});
+	}
+
+
+	public void refreshTableList(List<GameTable> l) {
+		es.execute(new Runnable() {
+		    public void run() {
+		    	client.refreshTableList(l);
 		    }
 		});
 	}
@@ -309,7 +318,7 @@ public class InterfaceSingleThreadDataClient implements InterfaceDataNetwork {
 		    }
 		});
 	}
-	
+
 	public final ProfileManager getProfileManager() {
 		return this.client.getProfileManager();
 	}

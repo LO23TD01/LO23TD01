@@ -195,6 +195,7 @@ public class ClientDataEngine implements InterfaceDataNetwork {
 				inter.setActualRole(UserRole.CREATOR);
 			else
 				inter.setActualRole(UserRole.PLAYER);
+
 			User user = new User(this.getProfileManager().getCurrentProfile());
 			Platform.runLater(new Runnable() {
 		            @Override public void run() {
