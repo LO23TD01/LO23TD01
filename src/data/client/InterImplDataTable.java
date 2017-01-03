@@ -58,7 +58,7 @@ public class InterImplDataTable implements InterfaceDataIHMTable{
 		if(this.dataEngine.getActualTable()==null)
 			System.out.println("FAILURE INSTANCIATION INTERFACE TABLE : Table");//throw exception
 		else if(this.dataEngine.getActualRole()==null)
-			System.out.println("FAILURE INSTANCIATION INTERFACE TABLE : Role");//thwor new Escpetion
+			;//regle jsute apres la creation//System.out.println("FAILURE INSTANCIATION INTERFACE TABLE : Role");//thwor new Escpetion
 		else if(this.dataEngine.getSelectionList()==null)
 			System.out.println("FAILURE INSTANCIATION INTERFACE TABLE : SelectionList");//thwor new Escpetion
 

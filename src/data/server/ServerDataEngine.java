@@ -144,8 +144,7 @@ public class ServerDataEngine implements InterfaceDataNetwork {
 			 }
 			 this.comServer.kick(getUUIDList(tableFull.getAllList()), "La partie n'existe plus.");
 			 this.tableList.remove(tableFull);
-			 //TODO refresh
-			 //this.comServer.refresh table
+			 this.comServer.refreshTableList(getUUIDList(this.usersList),this.tableList);
 		 }
 	}
 
@@ -165,7 +164,8 @@ public class ServerDataEngine implements InterfaceDataNetwork {
 				 this.comServer.raiseException(user.getPublicData().getUUID(),"L'utilisateur est à une table qui n'existe pas. La table doit exister pour quitter la table..");
 			 else{
 					tableFull.disconnect(userFull);
-					userFull.setActualTable(null);;
+					userFull.setActualTable(null);
+					 this.comServer.refreshTableList(getUUIDList(this.usersList),this.tableList);
 					if(tableFull.getPlayerList().size()==0)
 					{
 						//kick les spec
@@ -176,8 +176,7 @@ public class ServerDataEngine implements InterfaceDataNetwork {
 						this.comServer.kick(getUUIDList(tableFull.getAllList()), "La partie n'existe plus.");
 						//et drop la tbale
 						this.tableList.remove(tableFull);
-						//TODO TABLE REFREHS
-						//this.comServer.refreshtablealflalflaf
+						 this.comServer.refreshTableList(getUUIDList(this.usersList),this.tableList);
 					}
 					else
 					{
@@ -219,6 +218,7 @@ public class ServerDataEngine implements InterfaceDataNetwork {
 				else
 					this.comServer.newSpectatorOnTable(currentReceivers, userFull.getPublicData(), tableFull);
 
+				 this.comServer.refreshTableList(getUUIDList(this.usersList),this.tableList);
 
 			} else if (isPlayer && isLaunched)
 				this.comServer.raiseException(userFull.getPublicData().getUUID(),
@@ -261,6 +261,7 @@ public class ServerDataEngine implements InterfaceDataNetwork {
 				 tableFull.initializeGame();
 				 this.startLaunchTimer(userFull.getActualTable());
 				 gameEngine(tableFull, false);
+				 this.comServer.refreshTableList(getUUIDList(this.usersList),this.tableList);
 			 }
 		 }
 	}

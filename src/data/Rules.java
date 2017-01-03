@@ -94,7 +94,11 @@ public class Rules {
 		}
 
 		public int compareTo(DiceThrow lancerDes2) {
-			if (this.valeur() > lancerDes2.valeur()) {
+			if((this.dice[0] == lancerDes2.dice[0]) &&
+					(this.dice[1] == lancerDes2.dice[1]) &&
+					(this.dice[2] == lancerDes2.dice[2]))
+				return 0;
+			else if (this.valeur() > lancerDes2.valeur()) {
 				return 1;
 			} else if (this.valeur() < lancerDes2.valeur()) {
 				return -1;
@@ -129,7 +133,7 @@ public class Rules {
 				if (this.dice[0] < lancerDes2.dice[0]) {
 					return -1;
 				}
-				return 0;
+				return 0; //devrait ne pas être atteint
 			}
 		}
 	}
