@@ -193,7 +193,7 @@ public class ComServer implements Runnable, ComServerInterface {
     @Override
     public void sendMessage(List<UUID> receivers, ChatMessage chatMsg) {
         for (UUID receiver : receivers) {
-            SocketClientHandler handler = connectedClients.get(receiver);
+            SocketClientHandler handler = connectedClients.get(receiver.toString());
             if (handler != null) {
                 handler.sendMessage(new NetworkChatMessage(chatMsg));
             }
