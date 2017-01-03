@@ -509,6 +509,18 @@ public class ComServer implements Runnable, ComServerInterface {
 			handler.sendMessage(new refreshUserListMessage(userList));
 
     }
+    
+    /* (non-Javadoc)
+     * @see network.server.ComServerInterface#refreshUserList(java.util.List<UUID> , java.util.List)
+     */
+    @Override
+    public void refreshTableList(List<UUID> receivers, List<GameTable> tableList) {
+    	for (UUID uuid : receivers) {
+			SocketClientHandler client = connectedClients.get(uuid.toString());
+			if(client != null)
+				client.sendMessage(new RefreshTableListMessage(tableList));
+		}
+    }
 
 	/* (non-Javadoc)
 	 * @see network.server.ComServerInterface#playerQuitGame(java.util.List, java.util.UUID)
