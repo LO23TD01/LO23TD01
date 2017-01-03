@@ -74,6 +74,10 @@ public class ServerDataEngine implements InterfaceDataNetwork {
 	 *
 	 */
 
+	public boolean exist(User user){
+		return user.getSame(this.usersList) != null;
+	}
+
 	@Override
 	public Profile getProfile(User user) {
 		 return user.getSame(this.usersList).getPublicData();
