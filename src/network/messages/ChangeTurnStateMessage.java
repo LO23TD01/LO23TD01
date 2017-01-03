@@ -7,7 +7,7 @@ import data.server.ServerDataEngine;
 public class ChangeTurnStateMessage implements IMessage {
 
 	private static final long serialVersionUID = 5206001651371255612L;
-	
+
 	private TurnState turnState;
 
 	public ChangeTurnStateMessage(TurnState turnState) {
@@ -15,10 +15,7 @@ public class ChangeTurnStateMessage implements IMessage {
 	}
 
 	@Override
-	public void process(ServerDataEngine dataEngine) {
-		// TODO Auto-generated method stub
-
-	}
+	public void process(ServerDataEngine dataEngine) {}
 
 	@Override
 	public void process(ClientDataEngine dataEngine) {

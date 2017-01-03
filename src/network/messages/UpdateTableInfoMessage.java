@@ -17,13 +17,11 @@ public class UpdateTableInfoMessage implements IMessage {
     }
 
     @Override
-    public void process(ServerDataEngine dataEngine) {
-
-    }
+    public void process(ServerDataEngine dataEngine) {}
 
     @Override
     public void process(ClientDataEngine dataEngine) {
-    	//UpdateTableInfo équivaut à sendTableInfo
+    	//UpdateTableInfo is equivalent to sendTableInfo
         dataEngine.sendTableInfo((FxGson.create().fromJson(tableInfo, GameTable.class)));
     }
 

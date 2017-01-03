@@ -22,14 +22,10 @@ public class AskJoinTableMessage implements IMessage {
 
     @Override
     public void process(ServerDataEngine dataEngine) {
-        // TODO Auto-generated method stub
         dataEngine.askJoinTable(new User(new Profile(this.userID)), new GameTable(this.tableID), this.asPlayer);
     }
 
     @Override
-    public void process(ClientDataEngine dataEngine) {
-        // TODO Auto-generated method stub
-
-    }
+    public void process(ClientDataEngine dataEngine) {}
 
 }

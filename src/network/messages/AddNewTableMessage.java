@@ -10,16 +10,13 @@ public class AddNewTableMessage implements IMessage {
 
 	private static final long serialVersionUID = 210924804738395566L;
 	private String tableInfo;
-	
+
 	public AddNewTableMessage(GameTable tableInfo) {
 		this.tableInfo = FxGson.create().toJson(tableInfo);
 	}
 
 	@Override
-	public void process(ServerDataEngine dataEngine) {
-		// TODO Auto-generated method stub
-
-	}
+	public void process(ServerDataEngine dataEngine) {}
 
 	@Override
 	public void process(ClientDataEngine dataEngine) {

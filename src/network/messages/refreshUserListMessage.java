@@ -15,17 +15,14 @@ public class refreshUserListMessage implements IMessage{
 	private static final long serialVersionUID = 2537929372539873650L;
 
 	private String usersToRefresh;
-	
+
 	public refreshUserListMessage(List<User> usersToRefresh) {
 		User[] users = usersToRefresh.toArray(new User[1]);
 		this.usersToRefresh = FxGson.create().toJson(users);
 	}
 
     @Override
-    public void process(ServerDataEngine dataEngine) {
-        // TODO Auto-generated method stub
-        
-    }
+    public void process(ServerDataEngine dataEngine) {}
 
     @Override
     public void process(ClientDataEngine dataEngine) {

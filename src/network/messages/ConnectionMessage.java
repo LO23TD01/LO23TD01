@@ -30,34 +30,31 @@ public class ConnectionMessage implements IMessage{
 	public String profile;
 	public byte[] image;
 	public UUID uuid;
-	
+
 	public ConnectionMessage(Profile p){
 		uuid = p.getUUID();
-		
-		//Handle image serialization 
+
+		//Handle image serialization
 		if(p.getAvatar() != null){
 			image = BufferedImageBuilder.toByteArray(p.getAvatar());
 			p.setAvatar(null);
 		}
-		
+
 		profile = FxGson.create().toJson(p);
 	}
 	@Override
 	public void process(ServerDataEngine dataEngine) {
-		
+
 		Profile p = FxGson.create().fromJson(profile, Profile.class);
-		
-		//Converte bytes to Image and set the profile
+
+		//Converts bytes to Image and set the profile
 		if(image != null)
 			p.setAvatar(BufferedImageBuilder.toImage(image));
-		
+
 		dataEngine.connectUser(FxGson.create().fromJson(profile, Profile.class));
 	}
 
 	@Override
-	public void process(ClientDataEngine dataEngine) {
-		// TODO Auto-generated method stub
-		
-	}
+	public void process(ClientDataEngine dataEngine) {}
 
 }

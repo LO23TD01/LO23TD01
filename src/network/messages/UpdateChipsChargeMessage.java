@@ -13,19 +13,16 @@ public class UpdateChipsChargeMessage implements IMessage {
 
 	private UUID player;
 	private int nb;
-	
-	
-	
+
+
+
 	public UpdateChipsChargeMessage(UUID player, int nb) {
 		this.player = player;
 		this.nb = nb;
 	}
 
 	@Override
-	public void process(ServerDataEngine dataEngine) {
-		// TODO Auto-generated method stub
-		
-	}
+	public void process(ServerDataEngine dataEngine) {}
 
 	@Override
 	public void process(ClientDataEngine dataEngine) {

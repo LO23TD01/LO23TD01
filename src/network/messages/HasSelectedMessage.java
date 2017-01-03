@@ -10,12 +10,12 @@ import data.server.ServerDataEngine;
 public class HasSelectedMessage implements IMessage {
 
 	private static final long serialVersionUID = -5674362211027759000L;
-	
+
 	private UUID player;
 	private boolean dice1;
 	private boolean dice2;
 	private boolean dice3;
-	
+
 	public HasSelectedMessage(UUID player, boolean dice1, boolean dice2, boolean dice3) {
 		this.player = player;
 		this.dice1 = dice1;
@@ -24,10 +24,7 @@ public class HasSelectedMessage implements IMessage {
 	}
 
 	@Override
-	public void process(ServerDataEngine dataEngine) {
-		// TODO Auto-generated method stub
-		
-	}
+	public void process(ServerDataEngine dataEngine) {}
 
 	@Override
 	public void process(ClientDataEngine dataEngine) {

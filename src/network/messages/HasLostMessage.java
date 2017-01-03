@@ -17,10 +17,7 @@ public class HasLostMessage implements IMessage{
     }
 
     @Override
-    public void process(ServerDataEngine dataEngine) {
-        // TODO Auto-generated method stub
-
-    }
+    public void process(ServerDataEngine dataEngine) {}
 
     @Override
     public void process(ClientDataEngine dataEngine) {

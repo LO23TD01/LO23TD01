@@ -11,12 +11,9 @@ public class AskStopGameMessage implements IMessage {
 
 	public AskStopGameMessage() {
     }
-	
-	@Override
-	public void process(ServerDataEngine dataEngine) {
-		// TODO Auto-generated method stub
 
-	}
+	@Override
+	public void process(ServerDataEngine dataEngine) {}
 
 	@Override
 	public void process(ClientDataEngine dataEngine) {

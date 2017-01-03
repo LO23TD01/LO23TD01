@@ -11,12 +11,12 @@ public class GetProfileMessage implements IMessage {
 	private static final long serialVersionUID = 3379374689137731613L;
 	private UUID user;
 	private UUID sender;
-	
+
 	public GetProfileMessage(UUID user, UUID sender) {
 		this.user = user;
 		this.sender = sender;
 	}
-	
+
 	@Override
 	public void process(ServerDataEngine dataEngine) {
 		Profile profile = dataEngine.getProfile(new User(new Profile(user)));
@@ -24,9 +24,6 @@ public class GetProfileMessage implements IMessage {
 	}
 
 	@Override
-	public void process(ClientDataEngine dataEngine) {
-		// TODO Auto-generated method stub
-		
-	}
+	public void process(ClientDataEngine dataEngine) {}
 
 }

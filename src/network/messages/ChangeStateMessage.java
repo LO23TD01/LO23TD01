@@ -7,7 +7,7 @@ import data.server.ServerDataEngine;
 public class ChangeStateMessage implements IMessage {
 
 	private static final long serialVersionUID = -656713210432341649L;
-	
+
 	private State state;
 
 	public ChangeStateMessage(State state) {
@@ -15,10 +15,7 @@ public class ChangeStateMessage implements IMessage {
 	}
 
 	@Override
-	public void process(ServerDataEngine dataEngine) {
-		// TODO Auto-generated method stub
-
-	}
+	public void process(ServerDataEngine dataEngine) {}
 
 	@Override
 	public void process(ClientDataEngine dataEngine) {

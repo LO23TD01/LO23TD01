@@ -9,20 +9,17 @@ public class AcceptReplayMessage implements IMessage {
 
 	private static final long serialVersionUID = 5399551477085698202L;
 	private UUID user;
-	
+
 	public AcceptReplayMessage(UUID user) {
 		this.user = user;
 	}
-	
+
 	@Override
 	public void process(ServerDataEngine dataEngine) {
 		dataEngine.hasAcceptedReplay(user);
 	}
 
 	@Override
-	public void process(ClientDataEngine dataEngine) {
-		// TODO Auto-generated method stub
-
-	}
+	public void process(ClientDataEngine dataEngine) {}
 
 }

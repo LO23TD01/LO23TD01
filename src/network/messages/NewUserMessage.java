@@ -21,36 +21,33 @@ import network.messages.utils.BufferedImageBuilder;
 public class NewUserMessage implements IMessage {
 
 	private static final long serialVersionUID = 611407636768645351L;
-	
+
 	public String profile;
 	public byte[] image;
-	
+
 	public NewUserMessage(Profile p){
-		
-		//Handle image serialization 
+
+		//Handle image serialization
 		if(p.getAvatar() != null){
 			image = BufferedImageBuilder.toByteArray(p.getAvatar());
 			p.setAvatar(null);
 		}
-				
+
 		profile = FxGson.create().toJson(p);
-	}
-		
-	@Override
-	public void process(ServerDataEngine dataEngine) {
-		// TODO Auto-generated method stub
-		
 	}
 
 	@Override
+	public void process(ServerDataEngine dataEngine) {}
+
+	@Override
 	public void process(ClientDataEngine dataEngine) {
-		
+
 		Profile p = FxGson.create().fromJson(profile, Profile.class);
-		
-		//Converte bytes to Image and set the profile
+
+		//Converts bytes to Image and set the profile
     	if(image != null)
 			p.setAvatar(BufferedImageBuilder.toImage(image));
-		
+
 		dataEngine.updateUsers(new User(p));
 	}
 

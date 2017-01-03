@@ -19,12 +19,9 @@ public class LogoutUserRequestMessage implements IMessage{
 
     @Override
     public void process(ServerDataEngine dataEngine) {
-    	dataEngine.disconnect(new User(new Profile(user)));   
+    	dataEngine.disconnect(new User(new Profile(user)));
     }
 
     @Override
-    public void process(ClientDataEngine dataEngine) {
-        // TODO Auto-generated method stub
-        
-    }
+    public void process(ClientDataEngine dataEngine) {}
 }

@@ -18,9 +18,7 @@ public class NewPlayerOnTableMessage implements IMessage {
     }
 
     @Override
-    public void process(ServerDataEngine dataEngine) {
-
-    }
+    public void process(ServerDataEngine dataEngine) {}
 
     @Override
     public void process(ClientDataEngine dataEngine) {

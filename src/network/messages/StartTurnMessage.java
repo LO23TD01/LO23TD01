@@ -8,14 +8,11 @@ public class StartTurnMessage implements IMessage {
 	private static final long serialVersionUID = -4969602909055242890L;
 
 	@Override
-	public void process(ServerDataEngine dataEngine) {
-		// TODO Auto-generated method stub
-		
-	}
+	public void process(ServerDataEngine dataEngine) {}
 
 	@Override
 	public void process(ClientDataEngine dataEngine) {
 		dataEngine.startTurn();
 	}
-	
+
 }

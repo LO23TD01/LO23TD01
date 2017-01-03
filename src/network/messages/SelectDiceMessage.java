@@ -8,12 +8,12 @@ import data.server.ServerDataEngine;
 public class SelectDiceMessage implements IMessage{
 
 	private static final long serialVersionUID = 5658668394311606107L;
-	
+
 	private UUID player;
 	private boolean dice1;
 	private boolean dice2;
 	private boolean dice3;
-	
+
 	public SelectDiceMessage(UUID player, boolean dice1, boolean dice2, boolean dice3) {
 		this.player = player;
 		this.dice1 = dice1;
@@ -27,9 +27,6 @@ public class SelectDiceMessage implements IMessage{
 	}
 
 	@Override
-	public void process(ClientDataEngine dataEngine) {
-		// TODO Auto-generated method stub
-		
-	}
+	public void process(ClientDataEngine dataEngine) {}
 
 }

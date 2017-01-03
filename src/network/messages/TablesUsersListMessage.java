@@ -13,29 +13,26 @@ import data.User;
 public class TablesUsersListMessage implements IMessage {
 
 	private static final long serialVersionUID = 7188120721853249541L;
-	
+
 	String userList;
 	String tableList;
-	
+
 	public TablesUsersListMessage(List<User> userList, List<GameTable> tableList) {
 		User[] users = userList.toArray(new User[0]);
 		GameTable[] tables = tableList.toArray(new GameTable[0]);
-		
+
 		this.userList = FxGson.create().toJson(users);
 		this.tableList = FxGson.create().toJson(tables);
 	}
 
 	@Override
-	public void process(ServerDataEngine dataEngine) {
-		// TODO Auto-generated method stub
-		
-	}
+	public void process(ServerDataEngine dataEngine) {}
 
 	@Override
 	public void process(ClientDataEngine dataEngine) {
 		User[] users = FxGson.create().fromJson(userList, User[].class);
 		dataEngine.updateUsersList(Arrays.asList(users));
-		
+
 		GameTable[] tables = FxGson.create().fromJson(tableList, GameTable[].class);
 		dataEngine.updateTablesList(Arrays.asList(tables));
 	}

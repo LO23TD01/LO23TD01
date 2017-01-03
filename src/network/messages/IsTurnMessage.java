@@ -12,16 +12,13 @@ public class IsTurnMessage implements IMessage{
 	private static final long serialVersionUID = -1022076184764195866L;
 
 	private UUID player;
-	
+
 	public IsTurnMessage(UUID player) {
 		this.player = player;
 	}
 
 	@Override
-	public void process(ServerDataEngine dataEngine) {
-		// TODO Auto-generated method stub
-		
-	}
+	public void process(ServerDataEngine dataEngine) {}
 
 	@Override
 	public void process(ClientDataEngine dataEngine) {

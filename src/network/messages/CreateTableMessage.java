@@ -16,7 +16,6 @@ public class CreateTableMessage implements IMessage{
 	private static final long serialVersionUID = 1L;
 	private UUID userUUID;
 	private String name;
-	// TODO : check the utility of pwd (not used by data)
 	private String pwd;
 	private Integer min;
 	private Integer max;
@@ -24,7 +23,7 @@ public class CreateTableMessage implements IMessage{
 	private Boolean withSpec;
 	private Boolean withChat;
 	private String rules;
-	
+
     public CreateTableMessage(UUID userUUID, String name, String pwd, int min, int max, int token, boolean withSpec, boolean withChat, Rules rules){
         this.userUUID = userUUID;
         this.name = name;
@@ -41,12 +40,12 @@ public class CreateTableMessage implements IMessage{
     public void process(ServerDataEngine dataEngine) {
     	System.out.println("Appel du process côté serveur");
         User user = new User(new Profile(userUUID));
-        Parameters parameters = new Parameters(min, max, token, withSpec, withChat, FxGson.create().fromJson(rules, Rules.class)); 
+        Parameters parameters = new Parameters(min, max, token, withSpec, withChat, FxGson.create().fromJson(rules, Rules.class));
     	try {
 			dataEngine.createNewTable(user, name, parameters);
 		} catch (Exception e) {
 			e.printStackTrace();
-		}        
+		}
     }
 
     @Override

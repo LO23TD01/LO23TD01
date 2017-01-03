@@ -18,38 +18,35 @@ import network.messages.utils.BufferedImageBuilder;
 public class SendProfileMessage implements IMessage{
 
 	private static final long serialVersionUID = 5676541305074045177L;
-	
+
 	private String profile;
 	private byte[] image;
 	private UUID receiver;
-	
+
 	public SendProfileMessage(UUID receiver, Profile profile) {
 		this.receiver = receiver;
-		
-		//Handle image serialization 
+
+		//Handle image serialization
 		if(profile.getAvatar() != null){
 			image = BufferedImageBuilder.toByteArray(profile.getAvatar());
 			profile.setAvatar(null);
 		}
-				
+
 		this.profile = FxGson.create().toJson(profile);
 	}
 
     @Override
-    public void process(ServerDataEngine dataEngine) {
-        // TODO Auto-generated method stub
-        
-    }
+    public void process(ServerDataEngine dataEngine) {}
 
     @Override
     public void process(ClientDataEngine dataEngine) {
     	Profile p = FxGson.create().fromJson(profile, Profile.class);
-    	
-    	//Converte bytes to Image and set the profile
+
+    	//Converts bytes to Image and set the profile
     	if(image != null)
 			p.setAvatar(BufferedImageBuilder.toImage(image));
-    	
-    	//Display profile peut utiliser updateUsers pour afficher le profile
+
+    	//Display profile can use updateUsers to display the profile
         dataEngine.updateUsers(new User(p));
     }
 }

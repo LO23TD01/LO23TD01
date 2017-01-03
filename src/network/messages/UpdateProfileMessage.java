@@ -17,18 +17,18 @@ public class UpdateProfileMessage implements IMessage {
 	private String profile;
 	private byte[] image;
 	private UUID user;
-	
+
 	/**
 	 * @param user
 	 * @param profile
 	 */
 	public UpdateProfileMessage(UUID user, Profile profile) {
-		//Handle image serialization 
+		//Handle image serialization
 		if(profile.getAvatar() != null){
 			image = BufferedImageBuilder.toByteArray(profile.getAvatar());
 			profile.setAvatar(null);
 		}
-				
+
 		this.user = user;
 		this.profile = FxGson.create().toJson(profile);
 	}
@@ -36,18 +36,15 @@ public class UpdateProfileMessage implements IMessage {
     @Override
     public void process(ServerDataEngine dataEngine) {
     	Profile p = FxGson.create().fromJson(profile, Profile.class);
-    	
-    	//Converte bytes to Image and set the profile
+
+    	//Converts bytes to Image and set the profile
 		if(image != null)
 			p.setAvatar(BufferedImageBuilder.toImage(image));
-		
+
     	dataEngine.updateUserProfile(user, p);
-        
+
     }
 
     @Override
-    public void process(ClientDataEngine dataEngine) {
-        // TODO Auto-generated method stub
-        
-    }
+    public void process(ClientDataEngine dataEngine) {}
 }

@@ -15,12 +15,9 @@ public class HasWonMessage implements IMessage{
 	public HasWonMessage(UUID user) {
 		this.user = user;
 	}
-	
+
 	@Override
-	public void process(ServerDataEngine dataEngine) {
-		// TODO Auto-generated method stub
-		
-	}
+	public void process(ServerDataEngine dataEngine) {}
 
 	@Override
 	public void process(ClientDataEngine dataEngine) {

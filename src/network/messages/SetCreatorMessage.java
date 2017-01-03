@@ -9,15 +9,13 @@ public class SetCreatorMessage implements IMessage {
 
 	private static final long serialVersionUID = -7893459222716162647L;
 	private UUID creator;
-	
+
 	public SetCreatorMessage(UUID creator) {
 		this.creator = creator;
 	}
 
 	@Override
-	public void process(ServerDataEngine dataEngine) {
-		// TODO Auto-generated method stub
-	}
+	public void process(ServerDataEngine dataEngine) {}
 
 	@Override
 	public void process(ClientDataEngine dataEngine) {

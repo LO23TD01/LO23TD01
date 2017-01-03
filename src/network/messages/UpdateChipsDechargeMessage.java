@@ -14,7 +14,7 @@ public class UpdateChipsDechargeMessage implements IMessage{
 	private UUID winner;
 	private UUID loser;
 	private int nb;
-	
+
 	public UpdateChipsDechargeMessage(UUID winner, UUID loser, int nb) {
 		this.winner = winner;
 		this.loser = loser;
@@ -22,10 +22,7 @@ public class UpdateChipsDechargeMessage implements IMessage{
 	}
 
 	@Override
-	public void process(ServerDataEngine dataEngine) {
-		// TODO Auto-generated method stub
-		
-	}
+	public void process(ServerDataEngine dataEngine) {}
 
 	@Override
 	public void process(ClientDataEngine dataEngine) {

@@ -12,13 +12,13 @@ public class AnswerStopGameMessage implements IMessage {
     private UUID tableId;
     private boolean answer;
     private UUID user;
-    
+
     public AnswerStopGameMessage(UUID tableId, boolean answer, UUID userID) {
     	this.tableId = tableId;
     	this.answer = answer;
     	this.user = userID;
     }
-	
+
 	@Override
 	public void process(ServerDataEngine dataEngine) {
 		// Appeler :
@@ -26,9 +26,6 @@ public class AnswerStopGameMessage implements IMessage {
 	}
 
 	@Override
-	public void process(ClientDataEngine dataEngine) {
-		// TODO Auto-generated method stub
-
-	}
+	public void process(ClientDataEngine dataEngine) {}
 
 }
