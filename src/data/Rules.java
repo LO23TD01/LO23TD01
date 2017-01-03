@@ -106,9 +106,9 @@ public class Rules {
 				return 1;
 			} else if (this.isSuite() && !lancerDes2.isSuite()) {
 				return -1;
-			} else if (this.isSuite() && lancerDes2.isSuite() && this.dice[0] > this.dice[1]) {
+			} else if (this.isSuite() && lancerDes2.isSuite() && this.dice[0] > lancerDes2.dice[0]) {
 				return 1;
-			} else if (this.isSuite() && lancerDes2.isSuite() && this.dice[0] < this.dice[1]) {
+			} else if (this.isSuite() && lancerDes2.isSuite() && this.dice[0] < lancerDes2.dice[0]) {
 				return -1;
 			} else {
 				if (this.dice[2] > lancerDes2.dice[2]) {
