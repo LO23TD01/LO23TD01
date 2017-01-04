@@ -50,47 +50,45 @@ public class GameStatsController {
 
 	/**
 	 * Set data to the controller
-	 * @param interImplDataTable Interface with Data
+	 * @param interImplDataTable the Data's interface
 	 */
 	public void setData(InterImplDataTable interImplDataTable) {
 		this.interImplDataTable = interImplDataTable;
 		this.gameState = this.interImplDataTable.getActualTable().getGameState();
-		bindings();
+		addListeners();
 	}
 
 	/**
-	 * Binds needed properties in order to update the view
+	 * Add listeners to properties in order to update the view
 	 */
-	private void bindings() {
-		this.gameState.stateProperty().addListener((observable, oldValue, newValue) -> stateListener(newValue));
-		this.gameState.actualPlayerProperty().addListener(event -> actualPlayerChange());
-		this.gameState.chipStackProperty().addListener((observable, oldValue, newValue) -> chipStackListener(newValue));
+	private void addListeners() {
+		this.gameState.stateProperty().addListener((observable, oldValue, newValue) -> onStateChange(newValue));
+		this.gameState.actualPlayerProperty().addListener(event -> onActualPlayerChange());
+		this.gameState.chipStackProperty().addListener((observable, oldValue, newValue) -> onChipStackChange(newValue));
 	}
 
 	/**
 	 * Update the view when the actual player changes
 	 */
-	private void actualPlayerChange() {
+	private void onActualPlayerChange() {
 		Platform.runLater(new Runnable() {
 			@Override
 			public void run() {
 				turnOf.setText(gameState.getData(gameState.getActualPlayer(), false).getPlayer().getPublicData().getNickName());
-				//TODO vérifier avec Data si les valeurs récupérées sont correctes et pour erreur indexoutofbound
-				if(!gameState.getDataTieList().isEmpty()) {
-					bestScore.setText(Arrays.toString(interImplDataTable.getBest().getDices()));
-					bestScorePlayer.setText(interImplDataTable.getBest().getPlayer().getPublicData().getNickName());
-					scoreToBeat.setText(Arrays.toString(interImplDataTable.getWorst().getDices()));
-					scoreToBeatPlayer.setText(interImplDataTable.getWorst().getPlayer().getPublicData().getNickName());
-				}
+				//TODO voir avec Data si les valeurs récupérées sont correctes et pour erreur indexoutofbound
+				bestScore.setText(Arrays.toString(interImplDataTable.getBest().getDices()));
+				bestScorePlayer.setText(interImplDataTable.getBest().getPlayer().getPublicData().getNickName());
+				scoreToBeat.setText(Arrays.toString(interImplDataTable.getWorst().getDices()));
+				scoreToBeatPlayer.setText(interImplDataTable.getWorst().getPlayer().getPublicData().getNickName());
 			}
 		});
 	}
 
 	/**
-	 * Update the phase label when the phase changes
-	 * @param newValue New phase name
+	 * Update the phase's label when the phase changes
+	 * @param newValue the new phase's name
 	 */
-	private void stateListener(State newValue) {
+	private void onStateChange(State newValue) {
 		Platform.runLater(new Runnable() {
 			@Override
 			public void run() {
@@ -100,10 +98,10 @@ public class GameStatsController {
 	}
 
 	/**
-	 * Update chips label when the chip stack changes
-	 * @param newValue New chips count
+	 * Update chips' label when the chip stack changes
+	 * @param newValue the new chips count
 	 */
-	private void chipStackListener(Number newValue) {
+	private void onChipStackChange(Number newValue) {
 		Platform.runLater(new Runnable() {
 			@Override
 			public void run() {
