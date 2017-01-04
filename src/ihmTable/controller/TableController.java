@@ -120,7 +120,7 @@ public class TableController {
 		Pane gameStats = gameStatsLoader.load();
 		Utility.bindPrefProperties(gameStats, parent.widthProperty().multiply(0.5), parent.heightProperty());
 		GameStatsController gameStatsController = gameStatsLoader.getController();
-		gameStatsController.setData(interImplDataTable, user);
+		gameStatsController.setData(interImplDataTable);
 		return gameStats;
 	}
 

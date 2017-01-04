@@ -1,43 +1,66 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import java.lang.String?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<VBox fx:id="gameStatsView" styleClass="bottomBox" stylesheets="@../css/style.css" xmlns="http://javafx.com/javafx/8.0.60" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ihmTable.controller.GameStatsController">
+<VBox id="gameStatsView" stylesheets="@../css/style.css" xmlns="http://javafx.com/javafx/8.0.60" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ihmTable.controller.GameStatsController">
    <children>
-      <HBox fx:id="phase" alignment="CENTER_LEFT">
+      <HBox alignment="CENTER_LEFT" styleClass="hbox">
          <children>
-            <Label fx:id="phaseTitleLabel" maxHeight="1.7976931348623157E308" text="Phase :">
+            <Label id="phaseTitle" maxHeight="1.7976931348623157E308" text="Phase :">
                <font>
                   <Font size="30.0" />
                </font>
             </Label>
-									<Label fx:id="phaseLabel" maxHeight="1.7976931348623157E308" text="PRESTART" />
+									<Label fx:id="phase" maxHeight="1.7976931348623157E308" text="PRESTART" />
          </children>
       </HBox>
-      <HBox fx:id="bestScore">
+      <HBox>
          <children>
-            <Label maxWidth="1.7976931348623157E308" text="Meilleur score a  battre :" />
-            <Label fx:id="bestScoreLabel" maxWidth="1.7976931348623157E308" text="5 6 4" />
-            <Label maxWidth="1.7976931348623157E308" text="-" />
-            <Label fx:id="bestScorePlayer" maxWidth="1.7976931348623157E308" text="6" />
+            <Label text="Tour de :" />
+            <Label fx:id="turnOf" text="Unknown" />
          </children>
+         <styleClass>
+            <String fx:value="hbox" />
+            <String fx:value="odd" />
+         </styleClass>
       </HBox>
-      <HBox fx:id="toBeat">
+      <HBox>
+         <children>
+            <Label maxWidth="1.7976931348623157E308" text="Meilleur score a battre :" />
+            <Label fx:id="bestScore" maxWidth="1.7976931348623157E308" text="0 0 0" />
+            <Label maxWidth="1.7976931348623157E308" text="-" />
+            <Label fx:id="bestScorePlayer" maxWidth="1.7976931348623157E308" text="Unknown" />
+         </children>
+         <styleClass>
+            <String fx:value="hbox" />
+            <String fx:value="even" />
+         </styleClass>
+      </HBox>
+      <HBox>
          <children>
             <Label maxHeight="1.7976931348623157E308" text="Score a  battre :" />
-            <Label fx:id="scoreToBeatLabel" maxHeight="1.7976931348623157E308" text="1 4 2" />
-            <Label maxHeight="1.7976931348623157E308" text="- " />
-            <Label fx:id="scoreToBeatPlayer" maxHeight="1.7976931348623157E308" text="5" />
+            <Label fx:id="scoreToBeat" maxHeight="1.7976931348623157E308" text="0 0 0" />
+            <Label maxHeight="1.7976931348623157E308" text="-" />
+            <Label fx:id="scoreToBeatPlayer" maxHeight="1.7976931348623157E308" text="Unknown" />
          </children>
+         <styleClass>
+            <String fx:value="hbox" />
+            <String fx:value="odd" />
+         </styleClass>
       </HBox>
-      <HBox fx:id="toWin">
+      <HBox>
          <children>
             <Label maxHeight="1.7976931348623157E308" text="Enjeu :" />
-            <Label fx:id="stakeLabel" maxHeight="1.7976931348623157E308" text="6" />
+            <Label fx:id="chips" maxHeight="1.7976931348623157E308" text="0" />
          </children>
+         <styleClass>
+            <String fx:value="hbox" />
+            <String fx:value="even" />
+         </styleClass>
       </HBox>
    </children>
 </VBox>
