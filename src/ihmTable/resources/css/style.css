@@ -129,16 +129,15 @@
 }
 
 /*---------- */
-/* STATS */
-.bottomBox {
+/* Bottom Containers */
+#playerStatsView, #gameStatsView {
 	-fx-background-color : #393939;
 	-fx-border-color : black;
 	-fx-border-width : 1;
 }
 
-.bottomBox .label {
+#playerStatsView .label, #gameStatsView .label {
 	-fx-text-fill : white;
-	-fx-padding: 5;
 	-fx-font-size : 14px;
 }
 
@@ -162,33 +161,29 @@
 
 /* ------------ */
 /* Game Stats */
-#phaseTitleLabel {
+#gameStatsView #phaseTitle {
 	-fx-font-size: 18px;
 }
 
-#bestScore, #toWin{
-	-fx-background-color : #4e4e4e;
-	-fx-padding : 5;
+#gameStatsView .hbox {
+	-fx-padding: 5;
+	-fx-spacing: 4;
 }
 
-#bestScoreLabel {
+#gameStatsView .hbox.odd {
+	-fx-background-color : #4e4e4e;
+	-fx-border-color : darkgrey;
+	-fx-border-width : 1 0 1 0;
+}
+
+#gameStatsView #turnOf {
 	-fx-text-fill : #6aa3ff;
 }
 
-#scoreToBeatLabel {
-	-fx-text-fill : #ff7171;
-}
-
-#bestScorePlayer, #scoreToBeatPlayer {
-	-fx-text-fill : #616161;
-}
-
-#stakeLabel {
+#gameStatsView #bestScore, #gameStatsView #bestScorePlayer {
 	-fx-text-fill : #50c94b;
 }
 
-#toBeat{
-	-fx-padding : 5;
-	-fx-border-color : darkgrey;
-	-fx-border-width : 1 0 1 0;
+#gameStatsView #scoreToBeat,  #gameStatsView #scoreToBeatPlayer{
+	-fx-text-fill : #ff7171;
 }

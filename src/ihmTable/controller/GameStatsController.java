@@ -1,134 +1,114 @@
 package ihmTable.controller;
 
-import java.io.IOException;
+import java.util.Arrays;
 
-import data.GameTable;
+import data.GameState;
 import data.State;
-import data.User;
 import data.client.InterImplDataTable;
 import javafx.application.Platform;
-import javafx.beans.value.ObservableValue;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
-import javafx.scene.layout.HBox;
-import javafx.scene.layout.VBox;
 
 public class GameStatsController {
 
 	@FXML
-	private VBox gameStatsView;
+	private Label phase;
 
 	@FXML
-	private HBox phase;
+	private Label turnOf;
 
 	@FXML
-	private Label phaseTitleLabel;
-
-	@FXML
-	private Label phaseLabel;
-
-	@FXML
-	private HBox bestScore;
-
-	@FXML
-	private Label bestScoreLabel;
+	private Label bestScore;
 
 	@FXML
 	private Label bestScorePlayer;
 
 	@FXML
-	private HBox toBeat;
-
-	@FXML
-	private Label scoreToBeatLabel;
+	private Label scoreToBeat;
 
 	@FXML
 	private Label scoreToBeatPlayer;
 
 	@FXML
-	private HBox toWin;
+	private Label chips;
 
-	@FXML
-	private Label stakeLabel;
-
-	public GameTable gameTableInstance;
-
+	private GameState gameState;
 	private InterImplDataTable interImplDataTable;
 
-	public void initialize() throws IOException {
-		handleAsserts();
+	/**
+	 * Initialize the controller
+	 */
+	public void initialize() {
+		this.phase.setText(String.valueOf(State.PRESTART));
+		this.turnOf.setText("Unknown");
+		this.bestScore.setText("0 0 0");
+		this.bestScorePlayer.setText("Unknown");
+		this.scoreToBeat.setText("0 0 0");
+		this.scoreToBeatPlayer.setText("Unknown");
+		this.chips.setText("0");
 	}
 
-	private void setLabel() {
-		if (gameTableInstance != null)
-			phaseLabel.setText(String.valueOf(gameTableInstance.getGameState().getState()));
-		stakeLabel.setText("0");
-		bestScoreLabel.setText("0 0 0");
-		bestScorePlayer.setText("0");
-		scoreToBeatLabel.setText("0 0 0");
-		scoreToBeatPlayer.setText("0");
-	}
-
-	public void setData(InterImplDataTable interImplDataTable, User user) {
+	/**
+	 * Set data to the controller
+	 * @param interImplDataTable Interface with Data
+	 */
+	public void setData(InterImplDataTable interImplDataTable) {
 		this.interImplDataTable = interImplDataTable;
-		gameTableInstance = this.interImplDataTable.getActualTable();
-		setLabel();
-		Bindings();
+		this.gameState = this.interImplDataTable.getActualTable().getGameState();
+		bindings();
 	}
 
-	private void Bindings() {
-		this.gameTableInstance.getGameState().stateProperty()
-				.addListener((observable, oldValue, newValue) -> stateListener(observable, oldValue, newValue));
-
-		this.gameTableInstance.getGameState().getActualPlayer().getPublicData().uuidProperty()
-				.addListener(event -> actualPlayerChange());
-
-		this.gameTableInstance.getGameState().chipStackProperty()
-				.addListener((observable, oldValue, newValue) -> chipStackListener(observable, oldValue, newValue));
+	/**
+	 * Binds needed properties in order to update the view
+	 */
+	private void bindings() {
+		this.gameState.stateProperty().addListener((observable, oldValue, newValue) -> stateListener(newValue));
+		this.gameState.actualPlayerProperty().addListener(event -> actualPlayerChange());
+		this.gameState.chipStackProperty().addListener((observable, oldValue, newValue) -> chipStackListener(newValue));
 	}
 
+	/**
+	 * Update the view when the actual player changes
+	 */
 	private void actualPlayerChange() {
 		Platform.runLater(new Runnable() {
 			@Override
 			public void run() {
-				bestScoreLabel.setText(String.valueOf(interImplDataTable.getValueCurrentTurn()));
-				bestScorePlayer.setText(
-						String.valueOf(interImplDataTable.getBest().getPlayer().getPublicData().loginProperty()));
-				scoreToBeatLabel.setText(String.valueOf(interImplDataTable.getValueCurrentTurn()));
-				scoreToBeatPlayer.setText(
-						String.valueOf(interImplDataTable.getBest().getPlayer().getPublicData().loginProperty()));
+				turnOf.setText(gameState.getData(gameState.getActualPlayer(), false).getPlayer().getPublicData().getNickName());
+				//TODO vérifier avec Data si les valeurs récupérées sont correctes et pour erreur indexoutofbound
+				if(!gameState.getDataTieList().isEmpty()) {
+					bestScore.setText(Arrays.toString(interImplDataTable.getBest().getDices()));
+					bestScorePlayer.setText(interImplDataTable.getBest().getPlayer().getPublicData().getNickName());
+					scoreToBeat.setText(Arrays.toString(interImplDataTable.getWorst().getDices()));
+					scoreToBeatPlayer.setText(interImplDataTable.getWorst().getPlayer().getPublicData().getNickName());
+				}
 			}
 		});
 	}
 
-	private Object stateListener(ObservableValue<? extends State> observable, State oldValue, State newValue) {
+	/**
+	 * Update the phase label when the phase changes
+	 * @param newValue New phase name
+	 */
+	private void stateListener(State newValue) {
 		Platform.runLater(new Runnable() {
 			@Override
 			public void run() {
-				phaseLabel.setText(String.valueOf(newValue));
+				phase.setText(String.valueOf(newValue));
 			}
 		});
-		return null;
 	}
 
-	private Object chipStackListener(ObservableValue<? extends Number> observable, Number oldValue, Number newValue) {
+	/**
+	 * Update chips label when the chip stack changes
+	 * @param newValue New chips count
+	 */
+	private void chipStackListener(Number newValue) {
 		Platform.runLater(new Runnable() {
 			@Override
 			public void run() {
-				stakeLabel.setText(String.valueOf(newValue));
+				chips.setText(String.valueOf(newValue));
 			}
 		});
-		return null;
 	}
-
-	private void handleAsserts() {
-		assert gameStatsView != null : "fx:id=\"GameStatsView\" was not injected: check your FXML file 'GameStats.fxml'.";
-		assert phaseLabel != null : "fx:id=\"GameStats_PhaseLabel\" was not injected: check your FXML file 'GameStats.fxml'.";
-		assert bestScoreLabel != null : "fx:id=\"GameStats_BestScoreLabel\" was not injected: check your FXML file 'GameStats.fxml'.";
-		assert scoreToBeatLabel != null : "fx:id=\"GameStats_ScoreToBeatLabel\" was not injected: check your FXML file 'GameStats.fxml'.";
-		assert stakeLabel != null : "fx:id=\"GameStats_StakeLabel\" was not injected: check your FXML file 'GameStats.fxml'.";
-		assert bestScorePlayer != null : "fx:id=\"GameStats_BestScorePlayer\" was not injected: check your FXML file 'GameStats.fxml'.";
-		assert scoreToBeatPlayer != null : "fx:id=\"GameStats_ScoreToBeatPlayer\" was not injected: check your FXML file 'GameStats.fxml'.";
-	}
-
 }
