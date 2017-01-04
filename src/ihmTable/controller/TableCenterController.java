@@ -2,7 +2,6 @@ package ihmTable.controller;
 
 import java.io.IOException;
 import java.util.HashMap;
-import java.util.UUID;
 
 import data.GameTable;
 import data.User;
@@ -14,70 +13,67 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.geometry.HPos;
 import javafx.geometry.VPos;
-import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Pane;
-import javafx.scene.paint.Color;
-import javafx.scene.shape.Ellipse;
 
 public class TableCenterController {
 
     @FXML
-    private AnchorPane tableCenterView;
+    private GridPane tableCenterView;
 
-    @FXML
-    private GridPane tableGrid;
-
-    @FXML
-    private AnchorPane centerAnchor;
-
-    private GameTable gameTableInstance;
-    private InterImplDataTable interImplDataTable;
+    private GameTable gameTable;
     private DiceLauncherController diceLaunchController;
+	private HashMap<User, Pane> playerViews;
+	private ObservableList<User> playersList;
 
-	private Ellipse tableEllipse;
-	private Pane diceLauncher;
-	private HashMap<UUID, AnchorPane> playerViews;
-
-	private ObservableList<User> players;
-
+	/**
+	 * Initialize the controller
+	 */
 	public void initialize() throws IOException {
-		this.tableEllipse = new Ellipse();
-		this.tableEllipse.setStrokeWidth(3);
-		this.tableEllipse.setStroke(Color.BLACK);
-		this.tableEllipse.setFill(Color.CADETBLUE);
+		this.playerViews = new HashMap<User, Pane>();
 
-		this.playerViews = new HashMap<UUID, AnchorPane>();
-
+		//DiceLaucher creation
 		FXMLLoader diceLauncherLoader = new FXMLLoader(getClass().getResource("/ihmTable/resources/view/DiceLauncher.fxml"));
-		this.diceLauncher = diceLauncherLoader.load();
-		this.diceLaunchController = (DiceLauncherController) diceLauncherLoader.getController();
-
-		AnchorPane.setBottomAnchor(this.diceLauncher, 0.0);
-		this.centerAnchor.getChildren().addAll(this.tableEllipse, this.diceLauncher);
-		this.centerAnchor.heightProperty().addListener(event -> setEllipse());
-		this.centerAnchor.widthProperty().addListener(event -> setEllipse());
+		addToTableCenterView(diceLauncherLoader.load(), 1, 1, VPos.CENTER, HPos.CENTER);
+		this.diceLaunchController = diceLauncherLoader.getController();
 	}
 
+	/**
+	 * Set data to the controller
+	 * @param interImplDataTable Data's interface
+	 * @param user Connected user
+	 * @throws IOException
+	 */
 	public void setData(InterImplDataTable interImplDataTable, User user) throws IOException {
-		this.interImplDataTable = interImplDataTable;
-		this.gameTableInstance = interImplDataTable.getActualTable();
-		this.diceLaunchController.setData(this.interImplDataTable, user);
+		this.gameTable = interImplDataTable.getActualTable();
+		this.diceLaunchController.setData(interImplDataTable, user);
+		this.playersList = this.gameTable.getPlayerList();
 		initPlayers();
 	}
 
+	/**
+	 * Create view for each players and add listener to player list
+	 * @throws IOException
+	 */
 	private void initPlayers() throws IOException {
-		this.players = this.gameTableInstance.getPlayerList();
-		for(User player : this.players) {
-			addPlayer(player);
+		for(User player : this.playersList) {
+			createPlayerView(player);
 		}
-		ListChangeListener<User> playersChangeListener;
-		playersChangeListener = change -> {
+		this.playersList.addListener(getPlayersListChangeListener());
+	}
+
+	/**
+	 * Return a listener for players list in order to update players view if a player is removed or added
+	 * @return a list change listener
+	 */
+	private ListChangeListener<User> getPlayersListChangeListener() {
+		ListChangeListener<User> playersListChangeListener;
+		playersListChangeListener = change -> {
 			while(change.next()) {
 				if (change.wasAdded()) {
 					for (User addedUser : change.getAddedSubList()) {
 						try {
-							addPlayer(addedUser);
+							createPlayerView(addedUser);
 						} catch (IOException e) {
 							e.printStackTrace();
 						}
@@ -85,68 +81,74 @@ public class TableCenterController {
 				}
 				if(change.wasRemoved()) {
 					for(User removedUser : change.getRemoved()) {
-						this.tableGrid.getChildren().remove(this.playerViews.get(removedUser.getPublicData().getUUID()));
+						this.tableCenterView.getChildren().remove(this.playerViews.get(removedUser.getPublicData().getUUID()));
+						this.playerViews.remove(removedUser);
 					}
 				}
 			}
 		};
-		players.addListener(playersChangeListener);
+		return playersListChangeListener;
 	}
 
-	private void setEllipse() {
-		this.tableEllipse.setCenterX(this.centerAnchor.getWidth() / 2);
-		this.tableEllipse.setCenterY(this.centerAnchor.getHeight() / 2);
-		this.tableEllipse.setRadiusX(this.tableCenterView.getWidth() / 6);
-		this.tableEllipse.setRadiusY(this.tableCenterView.getHeight() / 6);
-		AnchorPane.setLeftAnchor(this.diceLauncher, (this.centerAnchor.getWidth() / 2) - (this.diceLauncher.getWidth() / 2));
-	}
-
-	private void addPlayer(User user) throws IOException {
+	/**
+	 * Create a view for the given user
+	 * @param user user for who the view should be created
+	 * @throws IOException
+	 */
+	private void createPlayerView(User user) throws IOException {
 		int playersCount = playerViews.size() + 1;
 		if(playersCount < 9) {
 			FXMLLoader playerLoader = new FXMLLoader(getClass().getResource("/ihmTable/resources/view/Player.fxml"));
-			AnchorPane player = playerLoader.load();
+			Pane player = playerLoader.load();
 			PlayerController playerController = playerLoader.getController();
-			playerController.setData(gameTableInstance, user);
-			playerViews.put(user.getPublicData().getUUID(), player);
+			playerController.setData(this.gameTable, user);
+			this.playerViews.put(user, player);
+			//depending on the player number a position is given in the grid
 			switch(playersCount) {
 			case 1:
-				addToTableGrid(player, 1, 0, VPos.TOP, HPos.CENTER);
+				addToTableCenterView(player, 1, 0, VPos.TOP, HPos.CENTER);
 				break;
 			case 2:
-				addToTableGrid(player, 1, 2, VPos.BOTTOM, HPos.CENTER);
+				addToTableCenterView(player, 1, 2, VPos.BOTTOM, HPos.CENTER);
 				break;
 			case 3:
-				addToTableGrid(player, 0, 1, VPos.CENTER, HPos.CENTER);
+				addToTableCenterView(player, 0, 1, VPos.CENTER, HPos.CENTER);
 				break;
 			case 4:
-				addToTableGrid(player, 2, 1, VPos.CENTER, HPos.CENTER);
+				addToTableCenterView(player, 2, 1, VPos.CENTER, HPos.CENTER);
 				break;
 			case 5:
-				addToTableGrid(player, 0, 0, VPos.BOTTOM, HPos.RIGHT);
+				addToTableCenterView(player, 0, 0, VPos.BOTTOM, HPos.RIGHT);
 				break;
 			case 6:
-				addToTableGrid(player, 2, 2, VPos.TOP, HPos.LEFT);
+				addToTableCenterView(player, 2, 2, VPos.TOP, HPos.LEFT);
 				break;
 			case 7:
-				addToTableGrid(player, 2, 0, VPos.BOTTOM, HPos.LEFT);
+				addToTableCenterView(player, 2, 0, VPos.BOTTOM, HPos.LEFT);
 				break;
 			case 8:
-				addToTableGrid(player, 0, 2, VPos.TOP, HPos.RIGHT);
+				addToTableCenterView(player, 0, 2, VPos.TOP, HPos.RIGHT);
 				break;
 			}
 		}
 	}
 
-	private void addToTableGrid(AnchorPane player, int columnIndex, int rowIndex, VPos vPos, HPos hPos) {
+	/**
+	 * Add the given pane the grid according to the given column, row, vertical position and horizontal position
+	 * @param pane pane to add to the grid
+	 * @param columnIndex column in which the pane should be added
+	 * @param rowIndex row in which the pane should be added
+	 * @param vPos vertical position of the pane in the cell
+	 * @param hPos horizontal position of the pane in the cell
+	 */
+	private void addToTableCenterView(Pane pane, int columnIndex, int rowIndex, VPos vPos, HPos hPos) {
 		Platform.runLater(new Runnable() {
 		    @Override
 		    public void run() {
-		    	GridPane.setHalignment(player, hPos);
-				GridPane.setValignment(player, vPos);
-		    	tableGrid.add(player, columnIndex, rowIndex);
+		    	GridPane.setHalignment(pane, hPos);
+				GridPane.setValignment(pane, vPos);
+		    	tableCenterView.add(pane, columnIndex, rowIndex);
 		    }
 		});
 	}
-
 }

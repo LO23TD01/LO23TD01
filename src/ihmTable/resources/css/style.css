@@ -1,8 +1,8 @@
 /* DICE */
 .dice {
-	-fx-border-radius : 5px;
-	-fx-border-width : 2px;
-	-fx-border-color : black;
+	-fx-border-radius: 5px;
+	-fx-border-width: 2px;
+	-fx-border-color: black;
 	-fx-border-style: solid;
 }
 
@@ -42,110 +42,119 @@
 }
 
 .dice.selected {
-	-fx-border-color : red;
+	-fx-border-color: red;
 }
 
 /* --------- */
 /* CHAT */
 #chatTitle {
-	-fx-alignment : center;
-	-fx-text-fill : white;
-	-fx-background-color : #393939;
-	-fx-font-size : 20;
+	-fx-alignment: center;
+	-fx-text-fill: white;
+	-fx-background-color: #393939;
+	-fx-font-size: 20;
 }
 
 #chatView, #listMessages{
-	-fx-background-color : darkgray;
-	-fx-text-fill : white;
+	-fx-background-color: darkgray;
+	-fx-text-fill: white;
 }
 
 #listUsers {
-   -fx-background-color :  white;
-   -fx-border-color : #666;
-   -fx-border-width : 2px;
+   -fx-background-color:  white;
+   -fx-border-color: #666;
+   -fx-border-width: 2px;
 }
 
 #messageControlContainer {
-	-fx-pref-height : 40px;
-	-fx-spacing : 5px;
+	-fx-pref-height: 40px;
+	-fx-spacing: 5px;
 }
 
 #messageArea {
-   -fx-background-color : white;
+   -fx-background-color: white;
 }
 
 #sendButton {
-   -fx-background-color : white;
+   -fx-background-color: white;
 }
 
 /* -------- */
 /* RULES */
 #rulesBox {
-   -fx-background-color : linear-gradient(to bottom right, #545454, #545454);
-   -fx-text-fill : white;
-   -fx-pref-width : 300px;
-   -fx-pref-height : 840px;
+   -fx-background-color: linear-gradient(to bottom right, #545454, #545454);
+   -fx-text-fill: white;
+   -fx-pref-width: 300px;
+   -fx-pref-height: 840px;
 }
 
 #rulesTitle{
-	-fx-alignment : center;
-	-fx-background-color : #393939;
-	-fx-text-fill : white;
-	-fx-font-size : 20px;
+	-fx-alignment: center;
+	-fx-background-color: #393939;
+	-fx-text-fill: white;
+	-fx-font-size: 20px;
 }
 
 .rulesItem {
-   -fx-background-color : black;
-   -fx-text-fill : #133924;
+   -fx-background-color: black;
+   -fx-text-fill: #133924;
 }
 
 .rulesArea {
-   -fx-background-color : linear-gradient(to bottom right, #545454, derive(#545454, 25%));
+   -fx-background-color: linear-gradient(to bottom right, #545454, derive(#545454, 25%));
 }
 
 /*------------- */
 /*   MENU     */
 #menuView{
-	-fx-background-color : #393939;
+	-fx-background-color: #393939;
 }
 
 /*---------- */
 /* TABLE */
 #Table{
-	-fx-background-color : #fdffba;
+	-fx-background-color: #fdffba;
 }
 
 /* --------- */
 /* DICE LAUNCHER */
-#launchButton {
-	-fx-background-color :
+#diceLauncherView {
+	-fx-background-color: #6fa8dc;
+	-fx-background-radius: 100px;
+	-fx-border-radius: 100px;
+	-fx-border-style: solid;
+	-fx-border-color: black;
+	-fx-spacing: 5px;
+	-fx-alignment: center;
+}
+
+#diceLauncherView #launchButton {
+	-fx-background-color:
         darkgrey,
         linear-gradient(black, darkgrey),
         linear-gradient( derive(#ffd08b , 40%) 0%, derive(#ffd08b , 0%) 49%, derive(#ffd08b, 0%) 50%, derive(#ffd08b, 40%)  100%);
-    -fx-background-insets : 0,1,2;
-    -fx-background-radius : 30;
-    -fx-text-fill : black;
-    -fx-font-size : 14px;
+    -fx-background-radius: 30;
+    -fx-text-fill: black;
+    -fx-font-size: 14px;
 }
 
 /*---------- */
 /* Bottom Containers */
 #playerStatsView, #gameStatsView {
-	-fx-background-color : #393939;
-	-fx-border-color : black;
-	-fx-border-width : 1;
+	-fx-background-color: #393939;
+	-fx-border-color: black;
+	-fx-border-width: 1;
 }
 
 #playerStatsView .label, #gameStatsView .label {
-	-fx-text-fill : white;
-	-fx-font-size : 14px;
+	-fx-text-fill: white;
+	-fx-font-size: 14px;
 }
 
 /*  ----------- */
 /* Player Stats */
 #playerRightContainer, #playerRightContainer {
-	-fx-border-color : black;
-    -fx-border-width : 0 1 0 0;
+	-fx-border-color: black;
+    -fx-border-width: 0 1 0 0;
 }
 
 #stats {
@@ -153,10 +162,10 @@
 }
 
 #titleLabelPlayer, #labelStats{
-	-fx-background-color : linear-gradient( #999 , #777);
-    -fx-text-fill : black;
-	-fx-border-color : black;
-    -fx-border-width : 0 0 2 0;
+	-fx-background-color: linear-gradient( #999 , #777);
+    -fx-text-fill: black;
+	-fx-border-color: black;
+    -fx-border-width: 0 0 2 0;
 }
 
 /* ------------ */
@@ -171,19 +180,19 @@
 }
 
 #gameStatsView .hbox.odd {
-	-fx-background-color : #4e4e4e;
-	-fx-border-color : darkgrey;
-	-fx-border-width : 1 0 1 0;
+	-fx-background-color: #4e4e4e;
+	-fx-border-color: darkgrey;
+	-fx-border-width: 1 0 1 0;
 }
 
 #gameStatsView #turnOf {
-	-fx-text-fill : #6aa3ff;
+	-fx-text-fill: #6aa3ff;
 }
 
 #gameStatsView #bestScore, #gameStatsView #bestScorePlayer {
-	-fx-text-fill : #50c94b;
+	-fx-text-fill: #50c94b;
 }
 
 #gameStatsView #scoreToBeat,  #gameStatsView #scoreToBeatPlayer{
-	-fx-text-fill : #ff7171;
+	-fx-text-fill: #ff7171;
 }
