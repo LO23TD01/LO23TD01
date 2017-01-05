@@ -72,6 +72,18 @@ public class ClientDataEngine implements InterfaceDataNetwork {
 		comClientInterface.selectDice(profileManager.getCurrentProfile().getUUID(), a, b, c);
 	}*/
 
+	//TO CLEAN crado
+	public void replay()
+	{
+		if(getActualTable() == null)
+			System.out.println("Erreur Pas de table");
+		else
+		{
+			getActualTable().initializeGame();
+		}
+	}
+
+
 
 	@Override
 	public void exAequoCase(List<User> users, boolean win) {
@@ -309,12 +321,12 @@ public class ClientDataEngine implements InterfaceDataNetwork {
 		// TODO : Vérifier que ce soit la bonne méthode appelée car il y a aussi GameState.nextTurn(User)
 		//
 		User currentUser = new User(getProfileManager().getCurrentProfile());
-		getActualTable().getGameState().setActualPlayer(currentUser);
+		getActualTable().getGameState().setActualPlayer(currentUser.getSame(getActualTable().getGameState().getPlayerList()));
 	}
 
 	@Override
 	public void isTurn(User u) {
-		getActualTable().getGameState().setActualPlayer(u);
+		getActualTable().getGameState().setActualPlayer(u.getSame(getActualTable().getGameState().getPlayerList()));
 	}
 
 	@Override
@@ -364,6 +376,7 @@ public class ClientDataEngine implements InterfaceDataNetwork {
 
 	@Override
 	public void hasLost(User u) {
+		this.getActualTable().getGameState().setState(State.END);
 		this.getActualTable().startVote();
 		this.setVoteText("Voulez-vous recommencer la partie ?");
 		getActualTable().getGameState().setLoserGame(u);

@@ -145,6 +145,7 @@ public class Rules {
 		for(PlayerData p : l)
 			listDice.add(new DiceThrow(p.getPlayer(),p.getDices()));
 		Collections.sort(listDice);
+		Collections.reverse(listDice);
 
 		if(listDice.get(0).valeur()==1 && listDice.get(listDice.size()-1).isNenette())
 			Collections.reverse(listDice);
@@ -167,6 +168,7 @@ public class Rules {
 		for(PlayerData p : l)
 			listDice.add(new DiceThrow(p.getPlayer(),p.getDices()));
 		Collections.sort(listDice);
+		Collections.reverse(listDice);
 
 		if(listDice.get(0).valeur()==1 && listDice.get(listDice.size()-1).isNenette())
 			Collections.reverse(listDice);
