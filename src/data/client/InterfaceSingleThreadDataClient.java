@@ -31,6 +31,13 @@ public class InterfaceSingleThreadDataClient implements InterfaceDataNetwork {
 		this.client = client;
 	}
 	
+	//crado aussi
+	public void kill()
+	{
+		this.es.shutdown();
+	}
+	
+	
 	//todo à clean CRADO
 	
 	public void replay()

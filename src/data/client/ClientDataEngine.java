@@ -346,16 +346,8 @@ public class ClientDataEngine implements InterfaceDataNetwork {
 
 	@Override
 	public void playerQuitGame(User u) {
-		int index = this.getActualTable().getPlayerList().indexOf(u.getSame(this.getActualTable().getPlayerList()));
-		if(index != -1)
-		{
-			this.getActualTable().getPlayerList().remove(index, index);
-		}
-		index = this.getActualTable().getSpectatorList().indexOf(u.getSame(this.getActualTable().getSpectatorList()));
-		if(index != -1)
-		{
-			this.getActualTable().getSpectatorList().remove(index, index);
-		}
+		if(this.getActualTable()!=null)
+			this.getActualTable().disconnect(u);
 	}
 
 	@Override
