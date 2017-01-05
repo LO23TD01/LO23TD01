@@ -11,13 +11,15 @@ import javafx.scene.layout.Pane;
 
 public final class Utility {
 
+	private static final String DEFAULT_USER_AVATAR = "/ihmTable/resources/png/user.png";
+
 	public static Image getPlayerAvatar(User user) {
 		Image image = null;
 		java.awt.Image avatar = user.getPublicData().getAvatar();
 		if(avatar != null) {
 			image = SwingFXUtils.toFXImage(toBufferedImage(avatar), null);
 		} else {
-			image = new Image("/ihmTable/resources/png/user.png");
+			image = new Image(DEFAULT_USER_AVATAR);
 		}
 		return image;
 	}
@@ -38,5 +40,4 @@ public final class Utility {
 		pane.prefWidthProperty().bind(widthProperty);
 		pane.prefHeightProperty().bind(heightProperty);
 	}
-
 }

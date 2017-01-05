@@ -312,20 +312,17 @@ public class PlayerStatsController {
 	 */
 	private void setPlayerDice() throws IOException {
 		FXMLLoader diceLoader1 = new FXMLLoader(getClass().getResource("/ihmTable/resources/view/Dice.fxml"));
-		Pane d1 = diceLoader1.load();
-		diceContainer.getChildren().add(d1);
+		diceContainer.getChildren().add(diceLoader1.load());
 		dice1 = (DiceController) diceLoader1.getController();
 		dice1.setDice(false, diceContainer.widthProperty().multiply(0.3), diceContainer.heightProperty());
 
 		FXMLLoader diceLoader2 = new FXMLLoader(getClass().getResource("/ihmTable/resources/view/Dice.fxml"));
-		Pane d2 = diceLoader2.load();
-		diceContainer.getChildren().add(d2);
+		diceContainer.getChildren().add(diceLoader2.load());
 		dice2 = (DiceController) diceLoader2.getController();
 		dice2.setDice(false, diceContainer.widthProperty().multiply(0.3), diceContainer.heightProperty());
 
 		FXMLLoader diceLoader3 = new FXMLLoader(getClass().getResource("/ihmTable/resources/view/Dice.fxml"));
-		Pane d3 = diceLoader3.load();
-		diceContainer.getChildren().add(d3);
+		diceContainer.getChildren().add(diceLoader3.load());
 		dice3 = (DiceController) diceLoader3.getController();
 		dice3.setDice(false, diceContainer.widthProperty().multiply(0.3), diceContainer.heightProperty());
 	}
