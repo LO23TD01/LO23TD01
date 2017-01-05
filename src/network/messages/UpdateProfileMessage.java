@@ -1,5 +1,6 @@
 package network.messages;
 
+import java.awt.Image;
 import java.util.UUID;
 
 import org.hildan.fxgson.FxGson;
@@ -23,15 +24,20 @@ public class UpdateProfileMessage implements IMessage {
 	 * @param user
 	 * @param profile
 	 */
-	public UpdateProfileMessage(UUID user, Profile profile) {
+	public UpdateProfileMessage(UUID user, Profile p) {
+		
+		Image avatar = p.getAvatar();
 		//Handle image serialization 
-		if(profile.getAvatar() != null){
-			image = BufferedImageBuilder.toByteArray(profile.getAvatar());
-			profile.setAvatar(null);
+		if(avatar != null){
+			image = BufferedImageBuilder.toByteArray(avatar);
+			p.setAvatar(null);
+			this.profile = FxGson.create().toJson(profile);
+			p.setAvatar(avatar);
+		}else{
+			this.profile = FxGson.create().toJson(profile);
 		}
 				
 		this.user = user;
-		this.profile = FxGson.create().toJson(profile);
 	}
 
     @Override
