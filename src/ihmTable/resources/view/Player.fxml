@@ -7,37 +7,35 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.shape.Circle?>
 <?import javafx.scene.text.Font?>
-<?import javafx.scene.text.Text?>
 
-
-<HBox alignment="CENTER" stylesheets="@../css/style.css" xmlns="http://javafx.com/javafx/8.0.60" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ihmTable.controller.PlayerController">
+<HBox fx:id="playerView" alignment="CENTER" stylesheets="@../css/style.css" xmlns="http://javafx.com/javafx/8.0.60" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ihmTable.controller.PlayerController">
    <children>
-      <VBox>
+      <VBox fx:id="leftContainer" alignment="CENTER">
          <children>
-            <Label fx:id="tokens" prefHeight="60.0" prefWidth="60.0" text="21" textFill="WHITE">
+            <Label fx:id="tokens" maxWidth="1.7976931348623157E308" prefHeight="50.0" prefWidth="50.0" text="0" textFill="WHITE">
                <font>
                   <Font name="System Bold" size="14.0" />
                </font>
                <padding>
-                  <Insets left="13.0" />
+                  <Insets left="14.0" />
                </padding>
             </Label>
-            <Label fx:id="lostScore" prefHeight="60.0" prefWidth="60.0" text="21" textFill="WHITE">
+            <Label fx:id="lostScore" maxWidth="1.7976931348623157E308" prefHeight="50.0" prefWidth="50.0" text="0" textFill="WHITE">
                <font>
                   <Font name="System Bold" size="14.0" />
                </font>
                <padding>
-                  <Insets left="13.0" />
+                  <Insets left="14.0" />
                </padding>
             </Label>
          </children>
       </VBox>
-      <VBox alignment="CENTER" fillWidth="false">
+      <VBox fx:id="centerContainer" alignment="CENTER">
          <children>
-            <Circle fx:id="avatarContainer" fill="WHITE" radius="40.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="2.0" />
-            <Text fx:id="playerName" strokeType="OUTSIDE" strokeWidth="0.0" wrappingWidth="27.6708984375" />
+            <Circle fx:id="avatarContainer" fill="WHITE" radius="30.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="2.0" />
+            <Label fx:id="playerName" alignment="CENTER" maxHeight="-Infinity" maxWidth="1.7976931348623157E308" text="Unknown" />
          </children>
       </VBox>
-      <TilePane fx:id="diceContainer" orientation="VERTICAL" />
+      <TilePane fx:id="diceContainer" alignment="CENTER" orientation="VERTICAL" />
    </children>
 </HBox>

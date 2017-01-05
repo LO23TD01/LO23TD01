@@ -22,14 +22,14 @@ public class DiceController {
 	private ObservableValue<? extends Number> widthProperty, heightProperty;
 
 	public void initialize() throws IOException {
-		random = new Random();
+		this.random = new Random();
 		setRandomValue();
-		dice.setOnMouseClicked(event -> clicked());
-		selected = new SimpleBooleanProperty(false);
-		selectable = true;
+		this.dice.setOnMouseClicked(event -> clicked());
+		this.selected = new SimpleBooleanProperty(false);
+		this.selectable = true;
 	}
 
-	public void setDice(boolean selectable, ObservableValue<? extends Number> widthProperty, ObservableValue<? extends Number> heightProperty) {
+	public void setProperties(boolean selectable, ObservableValue<? extends Number> widthProperty, ObservableValue<? extends Number> heightProperty) {
 		setSelectable(selectable);
 		this.widthProperty = widthProperty;
 		this.heightProperty = heightProperty;
@@ -38,7 +38,7 @@ public class DiceController {
 	}
 
 	public void setRandomValue() {
-		setValue(1 + random.nextInt(6));
+		setValue(1 + this.random.nextInt(6));
 	}
 
 	public int getValue() {
@@ -88,9 +88,17 @@ public class DiceController {
 		this.selected.setValue(selected);
 	}
 
+	public void setSize(double size) {
+		this.dice.setPrefSize(size, size);
+	}
+
+	public double getPrefSize() {
+		return this.dice.getPrefWidth();
+	}
+
 	private void updateSize() {
-		double width = widthProperty.getValue().doubleValue();
-		double height = heightProperty.getValue().doubleValue();
+		double width = this.widthProperty.getValue().doubleValue();
+		double height = this.heightProperty.getValue().doubleValue();
 		if(width < height) {
 			setSize(width);
 		} else {
@@ -98,23 +106,19 @@ public class DiceController {
 		}
 	}
 
-	public void setSize(double size) {
-		dice.setPrefSize(size, size);
-	}
-
 	private void clicked() {
-		if(selectable) {
-			setSelected(!selected.getValue());
+		if(this.selectable) {
+			setSelected(!this.selected.getValue());
 			if(this.selected.getValue()) {
-			    dice.getStyleClass().add(SELECTED_CLASS);
+				this.dice.getStyleClass().add(SELECTED_CLASS);
 			} else {
-			    dice.getStyleClass().remove(SELECTED_CLASS);
+				this.dice.getStyleClass().remove(SELECTED_CLASS);
 			}
 		}
 	}
 
 	private void setStyleClass(String styleClass) {
-		dice.getStyleClass().removeAll(DICE0, DICE1, DICE2, DICE3, DICE4, DICE5, DICE6);
-		dice.getStyleClass().add(styleClass);
+		this.dice.getStyleClass().removeAll(DICE0, DICE1, DICE2, DICE3, DICE4, DICE5, DICE6);
+		this.dice.getStyleClass().add(styleClass);
 	}
 }

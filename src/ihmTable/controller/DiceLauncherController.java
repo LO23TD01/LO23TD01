@@ -5,7 +5,6 @@ import java.io.IOException;
 import data.GameState;
 import data.User;
 import data.client.InterImplDataTable;
-import ihmTable.util.PlayerDiceController;
 import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
