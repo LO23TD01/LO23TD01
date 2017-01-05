@@ -254,7 +254,7 @@ public class ServerDataEngine implements InterfaceDataNetwork {
 				 this.comServer.raiseException(user.getPublicData().getUUID(),"La table n'existe pas. Il faut que la table existe pour s'y connecter.");
 			 else if(!tableFull.getCreator().isSame(user))
 				 this.comServer.raiseException(user.getPublicData().getUUID(),"L'utilisateur n'est pas le createur de sa partie. Il faut �tre le createur pour lancer une partie.");
-			 else if(!(tableFull.getGameState().getState()==State.PRESTART || tableFull.getGameState().getState()==State.END))
+			 else if(!(tableFull.getGameState().getState()==State.PRESTART))//fix car ihmtable lance la partie en permmanence  // || tableFull.getGameState().getState()==State.END))
 				 this.comServer.raiseException(user.getPublicData().getUUID(),"Ce n'est pas le moment de lancer une partie.");
 			 else
 			 {
@@ -913,7 +913,7 @@ public class ServerDataEngine implements InterfaceDataNetwork {
 												// sans trop de souci.
 				return;
 			}
-			
+
 			if (tableFull.getGameState().getDataTieList().stream().filter(d -> d.getRerollCount() == 0).count() != 0) // alors
 																														// on
 																														// n'a

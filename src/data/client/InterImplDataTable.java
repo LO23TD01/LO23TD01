@@ -112,7 +112,7 @@ public InterImplDataTable(ClientDataEngine dataEngine, UserRole actualRole,
  		{
  			if(this.getActualTable()==null)
  				;//exception
- 				return this.getActualTable().getGameState().getRules().getChip(this.getActualTable().getGameState().getDataList());
+ 			return this.getActualTable().getGameState().getRules().getChip(this.getActualTable().getGameState().getDataList());
  		}
 
 
@@ -153,9 +153,12 @@ public InterImplDataTable(ClientDataEngine dataEngine, UserRole actualRole,
 	@Override
 	public void quitGame() {
 
-
-		this.dataEngine.getComClientInterface().quit(this.dataEngine.getProfileManager().getCurrentProfile().getUUID(), this.actualTable.get().getUid());
-		this.setActualTable(null);
+		if(this.actualTable.get() != null)
+		{
+			//la table sert à rien et fait planter ... GG
+			this.dataEngine.getComClientInterface().quit(this.dataEngine.getProfileManager().getCurrentProfile().getUUID(), this.actualTable.get().getUid());
+			this.setActualTable(null);
+		}
 		//fait au niveau serveur pour eviter les prob
 //		if(this.getActualRole() == UserRole.CREATOR && this.getActualTable() != null && this.getActualTable().getGameState().getState() != State.PRESTART)
 //			this.dataEngine.getComClientInterface().askQuitTable(this.actualTable.get().getUid(),this.dataEngine.getProfileManager().getCurrentProfile().getUUID());
