@@ -128,25 +128,21 @@ public class ChatController {
 	}
 
 	private void initListUsersCellFactory() {
-		listUsers.setCellFactory(new Callback<ListView<User>, ListCell<User>>(){
-            @Override
-            public ListCell<User> call(ListView<User> p) {
-                ListCell<User> cell = new ListCell<User>(){
-                    @Override
-                    protected void updateItem(User user, boolean bln) {
-                        super.updateItem(user, bln);
-                        if (user != null) {
-                        	Platform.runLater(new Runnable() {
-    						    @Override
-    						    public void run() {
-    						    	setText(user.getPublicData().getNickName());
-    						    }
-    						});
-                        }
+		listUsers.setCellFactory((p) -> {
+            return new ListCell<User>(){
+                @Override
+                protected void updateItem(User user, boolean bln) {
+                    super.updateItem(user, bln);
+                    if (user != null) {
+                    	Platform.runLater(new Runnable() {
+						    @Override
+						    public void run() {
+						    	setText(user.getPublicData().getNickName());
+						    }
+						});
                     }
-                };
-                return cell;
-            }
+                }
+            };
         });
 	}
 
