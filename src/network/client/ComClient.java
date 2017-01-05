@@ -81,7 +81,7 @@ public class ComClient implements ComClientInterface{
 	 */
 	public void sendMessage(IMessage message){
 		if(server != null){
-			System.out.println("SendMessage : "+new Date().getTime());
+			//System.out.println("SendMessage : "+new Date().getTime());
 			server.sendMessage(message);
 		}
 	}

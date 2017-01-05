@@ -161,6 +161,8 @@ public class Rules {
 
 	public List<User> getLoser(List<PlayerData> l)
 	{
+		if(l.size()==0)
+			return null;
 		List<DiceThrow> listDice = new ArrayList<DiceThrow>();
 		for(PlayerData p : l)
 			listDice.add(new DiceThrow(p.getPlayer(),p.getDices()));

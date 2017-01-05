@@ -74,7 +74,7 @@ public class GameStatsController {
 		Platform.runLater(new Runnable() {
 			@Override
 			public void run() {
-				turnOf.setText(gameState.getData(gameState.getActualPlayer(), false).getPlayer().getPublicData().getNickName());
+				turnOf.setText(gameState.getData(gameState.getActualPlayer(), false).getPlayer().getSame(gameState.getPlayerList()).getPublicData().getNickName());
 				//TODO vérifier avec Data si les valeurs récupérées sont correctes et pour erreur indexoutofbound
 				if(!gameState.getDataTieList().isEmpty()) {
 					bestScore.setText(Arrays.toString(interImplDataTable.getBest().getDices()));
