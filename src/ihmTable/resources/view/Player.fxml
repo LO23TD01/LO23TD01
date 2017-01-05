@@ -1,9 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Label?>
-<?import javafx.scene.image.Image?>
-<?import javafx.scene.image.ImageView?>
-<?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.TilePane?>
 <?import javafx.scene.layout.VBox?>
@@ -11,42 +9,35 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="120.0" prefWidth="158.0" xmlns="http://javafx.com/javafx/8.0.60" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ihmTable.controller.PlayerController">
+
+<HBox alignment="CENTER" stylesheets="@../css/style.css" xmlns="http://javafx.com/javafx/8.0.60" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ihmTable.controller.PlayerController">
    <children>
-      <HBox prefHeight="120.0" prefWidth="144.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+      <VBox>
          <children>
-            <VBox prefHeight="120.0" prefWidth="40.0">
-               <children>
-                  <ImageView fx:id="PlayerStats_Jetons" fitHeight="42.0" fitWidth="50.0" pickOnBounds="true" preserveRatio="true">
-                     <image>
-                        <Image url="@../png/JetonOk.png" />
-                     </image>
-                  </ImageView>
-               </children>
-            </VBox>
-            <VBox alignment="CENTER">
-               <children>
-                  <Circle fx:id="imgView" fill="DODGERBLUE" radius="40.0" stroke="BLACK" strokeType="INSIDE" />
-                  <Text fx:id="playerName" strokeType="OUTSIDE" strokeWidth="0.0" wrappingWidth="27.6708984375" />
-               </children>
-            </VBox>
-            <TilePane fx:id="diceContainer" orientation="VERTICAL" prefHeight="200.0" prefWidth="200.0" />
+            <Label fx:id="tokens" prefHeight="60.0" prefWidth="60.0" text="21" textFill="WHITE">
+               <font>
+                  <Font name="System Bold" size="14.0" />
+               </font>
+               <padding>
+                  <Insets left="13.0" />
+               </padding>
+            </Label>
+            <Label fx:id="lostScore" prefHeight="60.0" prefWidth="60.0" text="21" textFill="WHITE">
+               <font>
+                  <Font name="System Bold" size="14.0" />
+               </font>
+               <padding>
+                  <Insets left="13.0" />
+               </padding>
+            </Label>
          </children>
-      </HBox>
-      <ImageView fx:id="PlayerStats_PartiesPerdues1" fitHeight="41.0" fitWidth="45.0" layoutY="60.0" pickOnBounds="true" preserveRatio="true">
-         <image>
-            <Image url="@../png/JetonLoss.png" />
-         </image>
-      </ImageView>
-      <Label fx:id="PlayerStats_Jeton_Loss_Score_Label" alignment="CENTER_RIGHT" layoutX="5.0" layoutY="73.0" prefHeight="17.0" prefWidth="16.0" text="21" textFill="RED">
-         <font>
-            <Font name="System Bold" size="12.0" />
-         </font>
-      </Label>
-      <Label fx:id="PlayerStats_Jeton_Score_Label" alignment="CENTER_RIGHT" layoutX="7.0" layoutY="9.0" prefHeight="24.0" prefWidth="15.0" text="21">
-         <font>
-            <Font name="System Bold" size="12.0" />
-         </font>
-      </Label>
+      </VBox>
+      <VBox alignment="CENTER" fillWidth="false">
+         <children>
+            <Circle fx:id="avatarContainer" fill="WHITE" radius="40.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="2.0" />
+            <Text fx:id="playerName" strokeType="OUTSIDE" strokeWidth="0.0" wrappingWidth="27.6708984375" />
+         </children>
+      </VBox>
+      <TilePane fx:id="diceContainer" orientation="VERTICAL" />
    </children>
-</AnchorPane>
+</HBox>

@@ -1,3 +1,13 @@
+#tokens {
+	-fx-background-image: url("../png/JetonOk.png");
+	-fx-background-size: cover;
+}
+
+#lostScore {
+	-fx-background-image: url("../png/JetonLoss.png");
+	-fx-background-size: cover;
+}
+
 /* DICE */
 .dice {
 	-fx-border-radius: 5px;
@@ -105,14 +115,14 @@
 
 /*------------- */
 /*   MENU     */
-#menuView{
+#menuView {
 	-fx-background-color: #393939;
 }
 
 /*---------- */
 /* TABLE */
-#Table{
-	-fx-background-color: #fdffba;
+#tableView {
+	-fx-background-color: #4e4e4e;
 }
 
 /* --------- */

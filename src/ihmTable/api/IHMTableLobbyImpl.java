@@ -7,7 +7,7 @@ import data.client.InterImplDataTable;
 import ihmTable.controller.TableController;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
-import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.Pane;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 
@@ -16,7 +16,7 @@ public class IHMTableLobbyImpl implements IHMTableLobby {
 	public void displayTable(InterImplDataTable interImplDataTable, User user) throws IOException {
 		// Loading table
 		FXMLLoader tableLoader = new FXMLLoader(getClass().getResource("/ihmTable/resources/view/Table.fxml"));
-		AnchorPane table = (AnchorPane) tableLoader.load();
+		Pane table = (Pane) tableLoader.load();
 
 		// Displaying the new stage
 		Stage stage = new Stage();

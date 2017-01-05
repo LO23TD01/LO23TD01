@@ -101,7 +101,7 @@ public class TableCenterController {
 			FXMLLoader playerLoader = new FXMLLoader(getClass().getResource("/ihmTable/resources/view/Player.fxml"));
 			Pane player = playerLoader.load();
 			PlayerController playerController = playerLoader.getController();
-			playerController.setData(this.gameTable, user);
+			playerController.setData(this.gameTable.getGameState(), user);
 			this.playerViews.put(user, player);
 			//depending on the player number a position is given in the grid
 			switch(playersCount) {
