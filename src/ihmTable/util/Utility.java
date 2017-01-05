@@ -6,6 +6,7 @@ import java.awt.image.BufferedImage;
 import data.User;
 import javafx.beans.value.ObservableValue;
 import javafx.embed.swing.SwingFXUtils;
+import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.layout.Pane;
 
@@ -39,5 +40,10 @@ public final class Utility {
 	public static void bindPrefProperties(Pane pane, ObservableValue<? extends Number> widthProperty, ObservableValue<? extends Number> heightProperty) {
 		pane.prefWidthProperty().bind(widthProperty);
 		pane.prefHeightProperty().bind(heightProperty);
+	}
+
+	public static void bindPrefProperties(Label label, ObservableValue<? extends Number> widthProperty, ObservableValue<? extends Number> heightProperty) {
+		label.prefWidthProperty().bind(widthProperty);
+		label.prefHeightProperty().bind(heightProperty);
 	}
 }
