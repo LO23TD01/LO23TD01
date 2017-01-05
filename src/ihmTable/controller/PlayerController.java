@@ -7,7 +7,6 @@ import data.User;
 import ihmTable.util.Utility;
 import javafx.beans.InvalidationListener;
 import javafx.beans.Observable;
-import javafx.beans.binding.Bindings;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
 import javafx.scene.layout.HBox;
@@ -85,8 +84,5 @@ public class PlayerController extends PlayerDiceController {
 		Utility.bindPrefProperties(diceContainer, playerView.widthProperty().multiply(diceController1.getPrefSize() / playerView.getWidth()), playerView.heightProperty());
 		Utility.bindPrefProperties(tokens, leftContainer.widthProperty(), leftContainer.widthProperty());
 		Utility.bindPrefProperties(lostScore, leftContainer.widthProperty(), leftContainer.widthProperty());
-		centerContainer.widthProperty().addListener(event -> System.out.println("testw " + centerContainer.getWidth()));
-		centerContainer.heightProperty().addListener(event -> System.out.println("testh " + centerContainer.getHeight()));
-		this.avatarContainer.radiusProperty().bind(Bindings.min(centerContainer.widthProperty().divide(2), centerContainer.heightProperty().divide(2)));
 	}
 }
