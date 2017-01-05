@@ -467,6 +467,7 @@ public class ServerDataEngine implements InterfaceDataNetwork {
 					{
 						tableFull.initializeGame();
 						tableFull.setVote(false);
+						this.getComServer().replay(getUUIDList(tableFull.getAllList()));
 						this.gameEngine(tableFull, false);
 					}
 					else
