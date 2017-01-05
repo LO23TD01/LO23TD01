@@ -5,8 +5,7 @@ import java.io.IOException;
 import data.GameState;
 import data.User;
 import ihmTable.util.Utility;
-import javafx.beans.InvalidationListener;
-import javafx.beans.Observable;
+import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
 import javafx.scene.layout.HBox;
@@ -26,9 +25,6 @@ public class PlayerController extends PlayerDiceController {
     private Label tokens;
 
     @FXML
-    private Label lostScore;
-
-    @FXML
     private VBox centerContainer;
 
     @FXML
@@ -43,29 +39,25 @@ public class PlayerController extends PlayerDiceController {
 	public void initialize() throws IOException {
 		super.initialize();
 		this.tokens.setText("0");
-		this.lostScore.setText("0");
-		InvalidationListener listener = new InvalidationListener() {
-
-		    @Override
-		    public void invalidated(Observable observable) {
-		    	playerView.widthProperty().removeListener(this);
-		        setPrefProperties();
-		    }
-		};
-		playerView.widthProperty().addListener(listener);
+		setPrefProperties();
 	}
 
 	public void setData(GameState gameState, User user) {
 		this.user = user;
 		this.gameState = gameState;
-		setPlayerData(this.gameState.getData(this.user, false));
+		this.gameState.actualPlayerProperty().addListener((observable, oldValue, newValue) -> onActualPlayerChange(newValue));
+		setPlayerData();
 		setPlayer();
-		this.gameState.actualPlayerProperty().addListener(event -> onActualPlayerChange());
 	}
 
-	private void onActualPlayerChange() {
-		if(this.gameState.getActualPlayer().getPublicData().getUUID().equals(this.user.getPublicData().getUUID())) {
-			setPlayerData(this.gameState.getData(this.user, false));
+	protected void setPlayerData() {
+		super.setPlayerData(this.gameState.getData(this.user, false));
+		updateTokens();
+	}
+
+	private void onActualPlayerChange(User actualPlayer) {
+		if(this.user.isSame(actualPlayer)) {
+			setPlayerData();
 		}
 	}
 
@@ -78,11 +70,19 @@ public class PlayerController extends PlayerDiceController {
 		this.diceController3.setValue(dice[2]);
 	}
 
+	private void updateTokens() {
+		Platform.runLater(new Runnable() {
+		    @Override
+		    public void run() {
+		    	tokens.setText(String.valueOf(playerData.getChip()));
+		    }
+		});
+	}
+
 	private void setPrefProperties() {
-		Utility.bindPrefProperties(leftContainer, playerView.widthProperty().multiply(tokens.getPrefWidth() / playerView.getWidth()), playerView.heightProperty());
-		Utility.bindPrefProperties(centerContainer, playerView.widthProperty().multiply(avatarContainer.getRadius() * 2 / playerView.getWidth()), playerView.heightProperty());
-		Utility.bindPrefProperties(diceContainer, playerView.widthProperty().multiply(diceController1.getPrefSize() / playerView.getWidth()), playerView.heightProperty());
+		Utility.bindPrefProperties(leftContainer, playerView.widthProperty().multiply(0.12), playerView.heightProperty());
+		Utility.bindPrefProperties(centerContainer, playerView.widthProperty().multiply(0.2), playerView.heightProperty());
+		Utility.bindPrefProperties(diceContainer, playerView.widthProperty().multiply(0.2), playerView.heightProperty());
 		Utility.bindPrefProperties(tokens, leftContainer.widthProperty(), leftContainer.widthProperty());
-		Utility.bindPrefProperties(lostScore, leftContainer.widthProperty(), leftContainer.widthProperty());
 	}
 }
