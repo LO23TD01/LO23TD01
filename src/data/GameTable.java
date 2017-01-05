@@ -112,18 +112,21 @@ public class GameTable {
 
 	public void disconnect(User u) {
 
-		if (this.spectatorList.remove(u)) // TOREWROKà
+		int index = this.getPlayerList().indexOf(u.getSame(this.getPlayerList()));
+		if(index != -1)
 		{
-			this.localChat.get().remove(u);
-		} else {
-			User user = u.getSame(this.playerList);
-			if(user!=null)
-				this.playerList.remove(user);
-			this.localChat.get().remove(u);
-			this.gameState.get().remove(u);
+			this.getPlayerList().remove(index, index+1);
+		}
+		index = this.getSpectatorList().indexOf(u.getSame(this.getSpectatorList()));
+		if(index != -1)
+		{
+			this.getSpectatorList().remove(index, index+1);
+		}
+		this.localChat.get().remove(u);
+		this.gameState.get().remove(u);
 			// if(this.creator.isSame(u))
 			// throw new Exception("User disconnecting from table is the creator.");
-		}
+		
 	}
 
 	public void startVote() {

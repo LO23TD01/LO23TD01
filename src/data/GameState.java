@@ -150,12 +150,22 @@ public class GameState {
 		User playerToRemove = user.getSame(this.playerList);
 		if(playerToRemove != null)
 		{
-			playerList.remove(playerToRemove);
+			int index = this.getPlayerList().indexOf(playerToRemove);
+			if(index != -1)
+			{
+				this.getPlayerList().remove(index, index+1);
+			}
 			List<PlayerData> dataToRemove = this.dataList.stream().filter(p->p.getPlayer().isSame(playerToRemove)).collect(Collectors.toList());
 			for(PlayerData p : dataToRemove)
 			{
-				this.dataList.remove(p);
+				index = this.getDataList().indexOf(p);
+				if(index != -1)
+				{
+					this.getDataList().remove(index, index+1);
+				}
 			}
+			if(this.getActualPlayer().isSame(playerToRemove))
+				this.setActualPlayer(this.getNextPlayer());
 		}
 	}
 
