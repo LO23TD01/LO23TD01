@@ -10,6 +10,8 @@ import data.Parameters;
 import data.User;
 import data.client.InterImplDataTable;
 import javafx.application.Platform;
+import javafx.beans.InvalidationListener;
+import javafx.beans.Observable;
 import javafx.collections.ListChangeListener;
 import javafx.collections.ObservableList;
 import javafx.scene.control.Alert;
@@ -45,6 +47,7 @@ public class PlayerWaitingAlert extends Alert {
 	private HBox playersHBox;
 	private ButtonType buttonStart;
 	private ButtonType buttonQuit;
+	private InvalidationListener listener;
 
 	public PlayerWaitingAlert(InterImplDataTable interImplDataTable, User user, Stage stage) {
 		super(AlertType.INFORMATION);
@@ -58,16 +61,18 @@ public class PlayerWaitingAlert extends Alert {
 		this.players = gameTable.getPlayerList();
 		this.stage = stage;
 		this.playerViews = new HashMap<UUID, Rectangle>();
-		this.gameTable.getGameState().stateProperty().addListener(event -> Platform.runLater(new Runnable() { //TODO ALERT WARNING, à cahnger cette ligne car elle lance pendant la partie le fait de lancer la partie
-		    @Override
-		    public void run() {
-		    	start();
-		    }
-		}));
+
+		//Create a lambda listener to perform a one shot listener
+		this.listener = new InvalidationListener() {
+			@Override
+			public void invalidated(Observable observable) {
+				start();
+			}
+		};
+		this.gameTable.getGameState().stateProperty().addListener(listener);
 		this.playersHBox = new HBox();
 		this.vBox = new VBox(playersHBox);
 		this.getDialogPane().setContent(vBox);
-
 		displayTableParameters();
 		initPlayersHBox();
 		initButtons();
@@ -98,10 +103,16 @@ public class PlayerWaitingAlert extends Alert {
 	}
 
 	private void start() {
-		if(user.isSame(gameTable.getCreator())) {
+		gameTable.getGameState().stateProperty().removeListener(listener);
+		if (user.isSame(gameTable.getCreator())) {
 			this.interImplDataTable.launchGame();
 		}
-		this.close();
+		Platform.runLater(new Runnable() {
+			@Override
+			public void run() {
+				close();
+			}
+		});
 	}
 
 	private void quit() {
@@ -123,10 +134,10 @@ public class PlayerWaitingAlert extends Alert {
 					for (User addedUser : change.getAddedSubList()) {
 						Rectangle rectangle = getPlayerAvatar(addedUser);
 						Platform.runLater(new Runnable() {
-						    @Override
-						    public void run() {
-						    	playersHBox.getChildren().add(rectangle);
-						    }
+							@Override
+							public void run() {
+								playersHBox.getChildren().add(rectangle);
+							}
 						});
 						this.playerViews.put(addedUser.getPublicData().getUUID(), rectangle);
 					}
@@ -134,15 +145,19 @@ public class PlayerWaitingAlert extends Alert {
 				if (change.wasRemoved()) {
 					for (User removedUser : change.getRemoved()) {
 						Platform.runLater(new Runnable() {
-						    @Override
-						    public void run() {
-						    	playersHBox.getChildren().remove(playerViews.remove(removedUser.getPublicData().getUUID()));
-						    }
+
+							@Override
+							public void run() {
+								playersHBox.getChildren()
+										.remove(playerViews.remove(removedUser.getPublicData().getUUID()));
+							}
+
 						});
 					}
 				}
 				if (user.isSame(gameTable.getCreator())) {
-					this.getDialogPane().lookupButton(buttonStart).setDisable(players.size() < parameters.getNbPlayerMin());
+					this.getDialogPane().lookupButton(buttonStart)
+							.setDisable(players.size() < parameters.getNbPlayerMin());
 				}
 			}
 		};
@@ -165,7 +180,7 @@ public class PlayerWaitingAlert extends Alert {
 			} else {
 				quit();
 			}
-		}catch(NoSuchElementException noSuchElementException) {
+		} catch (NoSuchElementException noSuchElementException) {
 
 		}
 	}
