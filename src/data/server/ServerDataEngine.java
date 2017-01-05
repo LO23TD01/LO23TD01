@@ -367,6 +367,13 @@ public class ServerDataEngine implements InterfaceDataNetwork {
 									r3 = Dice();
 								else
 									r3 = pData.getDices()[2];
+//								//debug egalite
+//								if(tableFull.getGameState().getState()==State.CHARGING)
+//								{
+//								r1=1;
+//								r2=2;
+//								r3=3;
+//								}
 								int[] tDice = { r1, r2, r3 };
 								pData.setDices(tDice);
 								pData.setRerollCount(pData.getRerollCount() + 1);
@@ -886,13 +893,13 @@ public class ServerDataEngine implements InterfaceDataNetwork {
 				if (tableFull.getGameState().getLosers().size() > 1) {
 					// on preinit le tie
 					List<PlayerData> newList = new ArrayList<PlayerData>();
-					for (User u : tableFull.getGameState().getWinners())
+					for (User u : tableFull.getGameState().getLosers())
 						newList.add(new PlayerData(u));
 					tableFull.getGameState().setDataTieList(newList);
 					tableFull.getGameState().setActualPlayer(tableFull.getGameState().getLosers().get(0));
 					tableFull.getGameState().setFirstPlayer(tableFull.getGameState().getLosers().get(0));
 					this.comServer.exAequoCase(getUUIDList(tableFull.getAllList()),
-					 tableFull.getGameState().getLosers(),false);
+					tableFull.getGameState().getLosers(),false);
 				}
 			}
 			if (tableFull.getGameState().getLosers().size() == 1) // un seul
@@ -906,6 +913,7 @@ public class ServerDataEngine implements InterfaceDataNetwork {
 												// sans trop de souci.
 				return;
 			}
+			
 			if (tableFull.getGameState().getDataTieList().stream().filter(d -> d.getRerollCount() == 0).count() != 0) // alors
 																														// on
 																														// n'a

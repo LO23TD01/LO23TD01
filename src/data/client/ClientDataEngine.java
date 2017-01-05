@@ -23,6 +23,7 @@ import data.Vote;
 import javafx.application.Platform;
 import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.SimpleObjectProperty;
+import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -40,7 +41,7 @@ public class ClientDataEngine implements InterfaceDataNetwork {
 	private final ObjectProperty<GameTable> actualTable = new SimpleObjectProperty<>();
 	private final ObjectProperty<UserRole> actualRole = new SimpleObjectProperty<>();
 	private final ObservableList<Boolean> selectionList = FXCollections.observableArrayList();
-	private StringProperty voteText;
+	private final StringProperty voteText;
 
 	private InterImplDataMain interfaceMain; //Warning correct, mais on le garde quand meme pour savoir o� il est.
 	//si on fait pas confiance à main on decommente cette ligne
@@ -60,6 +61,7 @@ public class ClientDataEngine implements InterfaceDataNetwork {
 		this.profileManager = new ProfileManager();
 		InterfaceSingleThreadDataClient clientThread = new InterfaceSingleThreadDataClient(this);
 		this.interfaceMain = new InterImplDataMain(clientThread);
+		this.voteText = new SimpleStringProperty();
 		//si on fait pas confiance à main on decommente cette ligne
 		//this.interfaceTable = new InterImplDataTable(this);
 	}
