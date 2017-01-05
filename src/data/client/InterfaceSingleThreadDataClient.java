@@ -30,6 +30,17 @@ public class InterfaceSingleThreadDataClient implements InterfaceDataNetwork {
 		this.es =  Executors.newSingleThreadExecutor();
 		this.client = client;
 	}
+	
+	//todo à clean CRADO
+	
+	public void replay()
+	{
+		es.execute(new Runnable() {
+		    public void run() {
+		    	client.replay();
+		    }
+		});
+	}
 
 	@Override
 	public void exAequoCase(List<User> users, boolean win) {
