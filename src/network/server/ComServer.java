@@ -610,4 +610,14 @@ public class ComServer implements Runnable, ComServerInterface {
         }
 	}
 
+	@Override
+	public void replay(List<UUID> receivers) {
+		SocketClientHandler  handler;
+		for (UUID user : receivers) {
+            handler = connectedClients.get(user.toString());
+            if (handler != null)
+            	handler.sendMessage(new ReplayMessage());
+        }
+	}
+
 }
