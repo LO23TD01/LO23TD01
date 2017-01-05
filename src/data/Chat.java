@@ -29,13 +29,17 @@ public class Chat {
 	}
 
 	public void remove(User user) {
-
-		User u = user.getSame(this.listeningUserList);
-		if(u !=null)
-			this.listeningUserList.remove(u);
-		u = user.getSame(this.voicedUserList);
-		if(u !=null)
-			this.voicedUserList.remove(u);
+		int index = this.getListeningUserList().indexOf(user);
+		if(index != -1)
+		{
+			this.getListeningUserList().remove(index, index+1);
+		}
+		
+		index = this.getVoicedUserList().indexOf(user);
+		if(index != -1)
+		{
+			this.getVoicedUserList().remove(index, index+1);
+		}
 	}
 
 

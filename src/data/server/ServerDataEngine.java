@@ -166,6 +166,18 @@ public class ServerDataEngine implements InterfaceDataNetwork {
 					tableFull.disconnect(userFull);
 					userFull.setActualTable(null);
 					 this.comServer.refreshTableList(getUUIDList(this.usersList),this.tableList);
+					 if(tableFull.getGameState().getState() != State.PRESTART && tableFull.getPlayerList().size()<2)
+					 {
+							//kick les spec
+							for(User u : tableFull.getAllList())
+							{
+								u.setActualTable(null);
+							}
+							this.comServer.kick(getUUIDList(tableFull.getAllList()), "Plus personne ne joue.");
+							//et drop la tbale
+							this.tableList.remove(tableFull);
+							 this.comServer.refreshTableList(getUUIDList(this.usersList),this.tableList);
+					 }
 					if(tableFull.getPlayerList().size()==0)
 					{
 						//kick les spec
