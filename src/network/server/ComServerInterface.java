@@ -246,4 +246,11 @@ public interface ComServerInterface {
 	 */
 	public void exAequoCase(List<UUID> receivers, List<User> users, boolean win);
 	
+	/**
+	 * Notify players of replay
+	 * @param receivers List of receivers' ID
+	 * @param users Users that are exaequo
+	 */
+	public void replay(List<UUID> receivers);
+	
 }
