@@ -3,17 +3,16 @@ package ihmTable.controller;
 import java.io.IOException;
 
 import data.GameState;
-import data.PlayerData;
 import data.User;
 import data.client.InterImplDataTable;
+import ihmTable.util.PlayerDiceController;
 import javafx.application.Platform;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
 import javafx.scene.control.Button;
 import javafx.scene.layout.TilePane;
 import javafx.scene.layout.VBox;
 
-public class DiceLauncherController {
+public class DiceLauncherController extends PlayerDiceController {
 
 	@FXML
 	private VBox diceLauncherView;
@@ -24,7 +23,6 @@ public class DiceLauncherController {
     @FXML
     private Button launchButton;
 
-	private DiceController diceController1, diceController2, diceController3;
 	private InterImplDataTable interImplDataTable;
 	private GameState gameState;
 	private User localUser;
@@ -34,9 +32,7 @@ public class DiceLauncherController {
 	 * @throws IOException
 	 */
 	public void initialize() throws IOException {
-		this.diceController1 = addDice();
-		this.diceController2 = addDice();
-		this.diceController3 = addDice();
+		super.initialize();
 	}
 
 	/**
@@ -68,28 +64,17 @@ public class DiceLauncherController {
 	 */
 	private void onActualPlayerChange(){
 		User actualPlayer = this.gameState.getActualPlayer();
-		setDisableDiceLauncher(actualPlayer.getPublicData().uuidProperty() != this.localUser.getPublicData().uuidProperty());
-		PlayerData actualPlayerData = this.gameState.getData(actualPlayer, false);
-		actualPlayerData.d1Property().addListener((observable, oldValue, newValue) -> onDiceChange(diceController1, newValue));
-		actualPlayerData.d2Property().addListener((observable, oldValue, newValue) -> onDiceChange(diceController2, newValue));
-		actualPlayerData.d3Property().addListener((observable, oldValue, newValue) -> onDiceChange(diceController3, newValue));
+		setDisableDiceLauncher(!actualPlayer.getPublicData().getUUID().equals(this.localUser.getPublicData().getUUID()));
+		setPlayerData(this.gameState.getData(actualPlayer, false));
+
 		//TODO voir avec Data comment gérer la sélection des dés (rerollCount toujours à 0)
-		if(actualPlayerData.getRerollCount() == 1) {
+		if(this.playerData.getRerollCount() == 1) {
 			setDiceSelectionOptions(true, false);
-		} else if(actualPlayerData.getRerollCount() > 1) {
+		} else if(this.playerData.getRerollCount() > 1) {
 			setDiceSelectable(true);
 		} else {
 			setDiceSelectionOptions(false, true);
 		}
-	}
-
-	/**
-	 * Update the dice's view when the dice's value changes
-	 * @param diceController the controller of the dice's view
-	 * @param newValue the new dice's value
-	 */
-	private void onDiceChange(DiceController diceController, Number newValue) {
-		diceController.setValue(newValue.intValue());
 	}
 
 	//TODO à remove car selection des dés non pris en compte par Data
@@ -143,9 +128,9 @@ public class DiceLauncherController {
 	 * @param selectable whether the dice are selectable
 	 */
 	private void setDiceSelectable(boolean selectable) {
-		diceController1.setSelectable(selectable);
-		diceController2.setSelectable(selectable);
-		diceController3.setSelectable(selectable);
+		this.diceController1.setSelectable(selectable);
+		this.diceController2.setSelectable(selectable);
+		this.diceController3.setSelectable(selectable);
 	}
 
 	/**
@@ -153,20 +138,8 @@ public class DiceLauncherController {
 	 * @param selected whether the dice are selected
 	 */
 	private void setDiceSelected(boolean selected) {
-		diceController1.setSelected(selected);
-		diceController2.setSelected(selected);
-		diceController3.setSelected(selected);
-	}
-
-	/**
-	 * Add a new dice's view into the diceContainer and return its controller
-	 * @return the controller of the dice's view
-	 * @throws IOException
-	 */
-	private DiceController addDice() throws IOException {
-		FXMLLoader diceLoader = new FXMLLoader(getClass().getResource("/ihmTable/resources/view/Dice.fxml"));
-		diceContainer.getChildren().add(diceLoader.load());
-		DiceController diceController = (DiceController) diceLoader.getController();
-		return diceController;
+		this.diceController1.setSelected(selected);
+		this.diceController2.setSelected(selected);
+		this.diceController3.setSelected(selected);
 	}
 }

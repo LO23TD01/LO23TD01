@@ -86,11 +86,6 @@ public class DiceController {
 
 	public void setSelected(boolean selected) {
 		this.selected.setValue(selected);
-		if(this.selected.getValue()) {
-		    dice.getStyleClass().add(SELECTED_CLASS);
-		} else {
-		    dice.getStyleClass().remove(SELECTED_CLASS);
-		}
 	}
 
 	private void updateSize() {
@@ -110,6 +105,11 @@ public class DiceController {
 	private void clicked() {
 		if(selectable) {
 			setSelected(!selected.getValue());
+			if(this.selected.getValue()) {
+			    dice.getStyleClass().add(SELECTED_CLASS);
+			} else {
+			    dice.getStyleClass().remove(SELECTED_CLASS);
+			}
 		}
 	}
 
