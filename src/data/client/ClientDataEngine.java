@@ -282,6 +282,7 @@ public class ClientDataEngine implements InterfaceDataNetwork {
 	public void hasThrown(User u, int a, int b, int c) {
 		int[] dices = {a,b,c};
 		getActualTable().getGameState().getData(u, false).setDices(dices);
+		getActualTable().getGameState().getData(u, false).setRerollCount(getActualTable().getGameState().getData(u, false).getRerollCount()+1);
 
 		//fix pour la Selection
 		List<Boolean>  newList = new ArrayList<Boolean>();
