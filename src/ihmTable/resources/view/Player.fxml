@@ -10,17 +10,9 @@
 
 <HBox fx:id="playerView" alignment="CENTER" stylesheets="@../css/style.css" xmlns="http://javafx.com/javafx/8.0.60" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ihmTable.controller.PlayerController">
    <children>
-      <VBox fx:id="leftContainer" alignment="CENTER">
+      <VBox fx:id="leftContainer" alignment="TOP_CENTER">
          <children>
             <Label fx:id="tokens" maxWidth="1.7976931348623157E308" prefHeight="50.0" prefWidth="50.0" text="0" textFill="WHITE">
-               <font>
-                  <Font name="System Bold" size="14.0" />
-               </font>
-               <padding>
-                  <Insets left="14.0" />
-               </padding>
-            </Label>
-            <Label fx:id="lostScore" maxWidth="1.7976931348623157E308" prefHeight="50.0" prefWidth="50.0" text="0" textFill="WHITE">
                <font>
                   <Font name="System Bold" size="14.0" />
                </font>

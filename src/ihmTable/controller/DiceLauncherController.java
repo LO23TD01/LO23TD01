@@ -63,7 +63,7 @@ public class DiceLauncherController extends PlayerDiceController {
 	 */
 	private void onActualPlayerChange(){
 		User actualPlayer = this.gameState.getActualPlayer();
-		setDisableDiceLauncher(!actualPlayer.getPublicData().getUUID().equals(this.localUser.getPublicData().getUUID()));
+		setDisableDiceLauncher(!this.localUser.isSame(actualPlayer));
 		setPlayerData(this.gameState.getData(actualPlayer, false));
 
 		//TODO voir avec Data comment gérer la sélection des dés (rerollCount toujours à 0)
