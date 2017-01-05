@@ -1,5 +1,6 @@
 package network.messages;
 
+import java.awt.Image;
 import java.awt.image.BufferedImage;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
@@ -24,16 +25,20 @@ public class SendProfileMessage implements IMessage{
 	private byte[] image;
 	private UUID receiver;
 	
-	public SendProfileMessage(UUID receiver, Profile profile) {
+	public SendProfileMessage(UUID receiver, Profile p) {
 		this.receiver = receiver;
 		
+		Image avatar = p.getAvatar();
+		
 		//Handle image serialization 
-		if(profile.getAvatar() != null){
-			image = BufferedImageBuilder.toByteArray(profile.getAvatar());
-			profile.setAvatar(null);
+		if(avatar != null){
+			image = BufferedImageBuilder.toByteArray(avatar);
+			p.setAvatar(null);
+			this.profile = FxGson.create().toJson(p);
+			p.setAvatar(avatar);
+		}else{
+			this.profile = FxGson.create().toJson(p);
 		}
-				
-		this.profile = FxGson.create().toJson(profile);
 	}
 
     @Override

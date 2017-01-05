@@ -3,6 +3,7 @@ package network.messages;
 import data.client.ClientDataEngine;
 import data.client.InterfaceSingleThreadDataClient;
 
+import java.awt.Image;
 import java.awt.image.BufferedImage;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
@@ -28,13 +29,17 @@ public class NewUserMessage implements IMessage {
 	
 	public NewUserMessage(Profile p){
 		
+		Image avatar = p.getAvatar();
+		
 		//Handle image serialization 
-		if(p.getAvatar() != null){
-			image = BufferedImageBuilder.toByteArray(p.getAvatar());
+		if(avatar != null){
+			image = BufferedImageBuilder.toByteArray(avatar);
 			p.setAvatar(null);
+			profile = FxGson.create().toJson(p);
+			p.setAvatar(avatar);
+		}else{
+			profile = FxGson.create().toJson(p);
 		}
-				
-		profile = FxGson.create().toJson(p);
 	}
 		
 	@Override

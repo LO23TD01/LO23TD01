@@ -35,13 +35,17 @@ public class ConnectionMessage implements IMessage{
 	public ConnectionMessage(Profile p){
 		uuid = p.getUUID();
 		
-		//Handle image serialization 
-		if(p.getAvatar() != null){
-			image = BufferedImageBuilder.toByteArray(p.getAvatar());
-			p.setAvatar(null);
-		}
+		Image avatar = p.getAvatar();
 		
-		profile = FxGson.create().toJson(p);
+		//Handle image serialization 
+		if(avatar != null){
+			image = BufferedImageBuilder.toByteArray(avatar);
+			p.setAvatar(null);
+			profile = FxGson.create().toJson(p);
+			p.setAvatar(avatar);
+		}else{
+			profile = FxGson.create().toJson(p);
+		}
 	}
 	@Override
 	public void process(InterfaceSingleThreadData dataEngine) {
@@ -52,7 +56,7 @@ public class ConnectionMessage implements IMessage{
 		if(image != null)
 			p.setAvatar(BufferedImageBuilder.toImage(image));
 		
-		dataEngine.connectUser(FxGson.create().fromJson(profile, Profile.class));
+		dataEngine.connectUser(p);
 	}
 
 	@Override
