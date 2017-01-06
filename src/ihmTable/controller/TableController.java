@@ -1,7 +1,6 @@
 package ihmTable.controller;
 
 import java.io.IOException;
-import java.util.Optional;
 
 import data.State;
 import data.User;
@@ -9,26 +8,17 @@ import data.client.InterImplDataTable;
 import ihmTable.controller.CollapsiblePanelController.Position;
 import ihmTable.util.PlayerWaitingAlert;
 import ihmTable.util.Utility;
-import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
-import javafx.scene.control.Alert;
-import javafx.scene.control.Alert.AlertType;
-import javafx.scene.control.ButtonType;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
-import javafx.stage.StageStyle;
-import javafx.stage.WindowEvent;
 
 public class TableController {
 
 	public static final double PANELS_PERCENTAGE = 0.20;
 	public static final double MENU_HEIGHT_PERCENTAGE = 0.05;
-
-	private static final String EXIT_GAME_ALERT_HEADER = "Partie en cours";
-	private static final String EXIT_GAME_ALERT_CONTENT = "Vous allez quitter une partie en cours.\nVoulez-vous continuer ?";
 
 	@FXML
 	private BorderPane tableView;
@@ -43,15 +33,6 @@ public class TableController {
 	public void setData(InterImplDataTable interImplDataTable, User user) throws IOException {
 		this.interImplDataTable = interImplDataTable;
 		this.user = user;
-		this.stage = (Stage) tableView.getScene().getWindow();
-
-		this.stage.setOnCloseRequest(new EventHandler<WindowEvent>() {
-		    @Override
-		    public void handle(WindowEvent event) {
-		    	event.consume();
-		    	setExitModal(stage);
-		    }
-		});
 
 		Utility.bindPrefProperties(tableCenterView, tableView.widthProperty().multiply(100 - 2 * PANELS_PERCENTAGE), tableView.heightProperty());
 		initChat();
@@ -66,21 +47,6 @@ public class TableController {
 		if(this.interImplDataTable.getActualTable().getGameState().getState() == State.PRESTART) {
 			new PlayerWaitingAlert(interImplDataTable, user, stage);
 		}
-	}
-
-	private void setExitModal(Stage stage) {
-		Alert alert = new Alert(AlertType.CONFIRMATION);
-    	alert.setHeaderText(EXIT_GAME_ALERT_HEADER);
-    	alert.setContentText(EXIT_GAME_ALERT_CONTENT);
-    	alert.initStyle(StageStyle.UNDECORATED);
-
-    	Optional<ButtonType> result = alert.showAndWait();
-    	if (result.get() == ButtonType.OK){
-    		interImplDataTable.quitGame();
-    		stage.close();
-    	} else {
-    		alert.close();
-    	}
 	}
 
 	// Chat view's initialization
