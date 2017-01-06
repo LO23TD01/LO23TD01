@@ -56,7 +56,7 @@ public class PlayerStatsController extends PlayerController {
 	}
 
     public void setData(InterImplDataTable interImplDataTable, User user) {
-    	super.setData(interImplDataTable.getActualTable().getGameState(), user);
+    	super.setData(interImplDataTable, user);
     	setUser(user);
     }
 

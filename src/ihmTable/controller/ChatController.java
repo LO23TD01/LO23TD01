@@ -34,7 +34,6 @@ public class ChatController {
 
     private static final DateFormat DATE_FORMAT = new SimpleDateFormat("HH:mm:ss");
 
-
     @FXML
     private BorderPane chatView;
 
@@ -94,13 +93,18 @@ public class ChatController {
                 ListCell<ChatMessage> cell = new ListCell<ChatMessage>(){
                     @Override
                     protected void updateItem(ChatMessage chatMessage, boolean bln) {
-                        super.updateItem(chatMessage, bln);
-                    	if (chatMessage != null) {
-                            VBox messageCell = getMessageCell(chatMessage);
-                            setGraphic(messageCell);
-                        } else {
-                            setGraphic(null);
-                        }
+                    	super.updateItem(chatMessage, bln);
+                    	Platform.runLater(new Runnable() {
+                			@Override
+                			public void run() {
+                            	if (chatMessage != null) {
+                                    VBox messageCell = getMessageCell(chatMessage);
+                                    setGraphic(messageCell);
+                                } else {
+                                    setGraphic(null);
+                                }
+                			}
+                		});
                     }
                 };
                 return cell;
@@ -174,8 +178,7 @@ public class ChatController {
 
 	private void setPrefProperties() {
 		Utility.bindPrefProperties(chatLeftContainer, chatView.widthProperty().multiply(0.7), chatView.heightProperty().subtract(messageControlContainer.heightProperty()));
-		Utility.bindPrefProperties(chatRightContainer, chatView.widthProperty().multiply(0.3), chatView.heightProperty().subtract(messageControlContainer.heightProperty()));
-//		listMessages.prefWidthProperty().bind(chatView.widthProperty().multiply(0.4));
-//		listMessages.prefHeightProperty().bind(chatView.heightProperty());
+		Utility.bindPrefProperties(chatRightContainer, chatView.widthProperty().multiply(0.3), chatView.heightProperty());
+		messageArea.prefWidthProperty().bind(chatLeftContainer.widthProperty().subtract(sendButton.prefWidthProperty()));
 	}
 }

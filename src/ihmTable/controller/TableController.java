@@ -18,7 +18,6 @@ import javafx.stage.Stage;
 public class TableController {
 
 	public static final double PANELS_PERCENTAGE = 0.20;
-	public static final double MENU_HEIGHT_PERCENTAGE = 0.05;
 
 	@FXML
 	private BorderPane tableView;
@@ -28,7 +27,6 @@ public class TableController {
 
 	private InterImplDataTable interImplDataTable;
 	private User user;
-	private Stage stage;
 
 	public void setData(InterImplDataTable interImplDataTable, User user) throws IOException {
 		this.interImplDataTable = interImplDataTable;
@@ -45,7 +43,7 @@ public class TableController {
 
 		//Waiting for other players in prestart state
 		if(this.interImplDataTable.getActualTable().getGameState().getState() == State.PRESTART) {
-			new PlayerWaitingAlert(interImplDataTable, user, stage);
+			new PlayerWaitingAlert(interImplDataTable, user, (Stage) tableView.getScene().getWindow());
 		}
 	}
 
@@ -66,7 +64,6 @@ public class TableController {
 	private void initTableCenter(PlayerStatsController playerStatsController) throws IOException {
 		FXMLLoader tableCenterLoader = new FXMLLoader(getClass().getResource("/ihmTable/resources/view/TableCenter.fxml"));
 		Pane tableCenter = tableCenterLoader.load();
-		Utility.bindPrefProperties(tableCenter, tableCenterView.widthProperty(), tableCenterView.heightProperty().multiply(100 - MENU_HEIGHT_PERCENTAGE - PANELS_PERCENTAGE));
 		setPosition(tableCenter, Position.center);
 		TableCenterController tableCenterController = (TableCenterController) tableCenterLoader.getController();
 		tableCenterController.setData(interImplDataTable, user, playerStatsController);
@@ -99,7 +96,6 @@ public class TableController {
 	private void initMenu() throws IOException {
 		FXMLLoader menuLoader = new FXMLLoader(getClass().getResource("/ihmTable/resources/view/Menu.fxml"));
 		Pane menu = menuLoader.load();
-		Utility.bindPrefProperties(menu, tableCenterView.widthProperty(), tableCenterView.heightProperty().multiply(MENU_HEIGHT_PERCENTAGE));
 		setPosition(menu, Position.top);
 		MenuController menuController = (MenuController) menuLoader.getController();
 	}

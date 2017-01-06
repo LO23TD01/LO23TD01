@@ -9,7 +9,7 @@
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.HBox?>
 
-<BorderPane fx:id="chatView" stylesheets="@../css/style.css" xmlns="http://javafx.com/javafx/8.0.60" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ihmTable.controller.ChatController">
+<BorderPane id="chat-view" fx:id="chatView" stylesheets="@../css/style.css" xmlns="http://javafx.com/javafx/8.0.60" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ihmTable.controller.ChatController">
    <center>
       <BorderPane fx:id="chatLeftContainer" BorderPane.alignment="CENTER">
          <center>
@@ -20,10 +20,10 @@
             </ScrollPane>
          </center>
          <bottom>
-            <HBox fx:id="messageControlContainer" BorderPane.alignment="CENTER">
+            <HBox id="message-control-container" fx:id="messageControlContainer" BorderPane.alignment="CENTER">
                <children>
                   <TextArea fx:id="messageArea" />
-                  <Button fx:id="sendButton" maxHeight="1.7976931348623157E308" mnemonicParsing="false" text="Envoyer" />
+                  <Button fx:id="sendButton" maxHeight="1.7976931348623157E308" mnemonicParsing="false" styleClass="dark-blue-button" />
                </children>
             </HBox>
          </bottom>
@@ -37,6 +37,6 @@
       </AnchorPane>
    </right>
    <top>
-      <Label fx:id="chatTitle" maxWidth="1.7976931348623157E308" text="Chat" BorderPane.alignment="CENTER" />
+      <Label maxWidth="1.7976931348623157E308" styleClass="top-header" text="Chat" BorderPane.alignment="CENTER" />
    </top>
 </BorderPane>
