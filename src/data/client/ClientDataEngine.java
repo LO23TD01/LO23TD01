@@ -436,26 +436,33 @@ public class ClientDataEngine implements InterfaceDataNetwork {
 	@Override
 	public void  changeTurnState(TurnState s)
 	{
-		getActualTable().getGameState().setTurnState(s);
 		if(s==TurnState.WINNER_TIE_ROUND)
 
 		{
-			getActualTable().getGameState().setWinners(getActualTable().getGameState().getRules().getWinner(getActualTable().getGameState().getDataList()));
-			List<PlayerData> newList = new ArrayList<PlayerData>();
-			for (User u : getActualTable().getGameState().getWinners())
-				newList.add(new PlayerData(u));
-			getActualTable().getGameState().setActualPlayer(getActualTable().getGameState().getWinners().get(0));
-			getActualTable().getGameState().setFirstPlayer(getActualTable().getGameState().getWinners().get(0));
+//			//Done in Exaequocase
+//			getActualTable().getGameState().setWinners(getActualTable().getGameState().getRules().getWinner(getActualTable().getGameState().getDataList()));
+//			List<PlayerData> newList = new ArrayList<PlayerData>();
+//			for (User u : getActualTable().getGameState().getWinners())
+//				newList.add(new PlayerData(u));
+//			if(getActualTable().getGameState().getWinners().size()>0){
+//				getActualTable().getGameState().setActualPlayer(getActualTable().getGameState().getWinners().get(0));
+//				getActualTable().getGameState().setFirstPlayer(getActualTable().getGameState().getWinners().get(0));
+//			}
 		}
 		else if(s==TurnState.LOSER_TIE_ROUND)
 		{
-			getActualTable().getGameState().setLosers(getActualTable().getGameState().getRules().getLoser(getActualTable().getGameState().getDataList()));
-			List<PlayerData> newList = new ArrayList<PlayerData>();
-			for (User u : getActualTable().getGameState().getLosers())
-				newList.add(new PlayerData(u));
-			getActualTable().getGameState().setActualPlayer(getActualTable().getGameState().getLosers().get(0));
-			getActualTable().getGameState().setFirstPlayer(getActualTable().getGameState().getLosers().get(0));
+//			//Done in Exaequocase
+//			getActualTable().getGameState().setLosers(getActualTable().getGameState().getRules().getLoser(getActualTable().getGameState().getDataList()));
+//			List<PlayerData> newList = new ArrayList<PlayerData>();
+//			for (User u : getActualTable().getGameState().getLosers())
+//				newList.add(new PlayerData(u));
+//			if(getActualTable().getGameState().getLosers().size()>0){
+//				getActualTable().getGameState().setActualPlayer(getActualTable().getGameState().getLosers().get(0));
+//				getActualTable().getGameState().setFirstPlayer(getActualTable().getGameState().getLosers().get(0));
+//			}
 		}
+		else
+			getActualTable().getGameState().setTurnState(s);
 	}
 
 	@Override

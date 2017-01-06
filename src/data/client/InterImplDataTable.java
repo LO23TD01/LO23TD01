@@ -93,7 +93,7 @@ public InterImplDataTable(ClientDataEngine dataEngine, UserRole actualRole,
  	public PlayerData getBest(){
  		if(this.getActualTable()==null)
  			;//exception
- 		boolean tie =(this.getActualTable().getGameState().getTurnState()!=TurnState.WINNER_TIE_ROUND && this.getActualTable().getGameState().getTurnState()!=TurnState.LOSER_TIE_ROUND);
+ 		boolean tie =(this.getActualTable().getGameState().getTurnState()==TurnState.WINNER_TIE_ROUND || this.getActualTable().getGameState().getTurnState()==TurnState.LOSER_TIE_ROUND);
  		User winner = (tie? this.getActualTable().getGameState().getRules().getWinner(this.getActualTable().getGameState().getDataTieList()).get(0)
  				: this.getActualTable().getGameState().getRules().getWinner(this.getActualTable().getGameState().getDataList()).get(0));
  			return this.getActualTable().getGameState().getData(winner, tie);
@@ -103,7 +103,7 @@ public InterImplDataTable(ClientDataEngine dataEngine, UserRole actualRole,
  		public PlayerData getWorst(){
  			if(this.getActualTable()==null)
  				;//exception
- 			boolean tie =(this.getActualTable().getGameState().getTurnState()!=TurnState.WINNER_TIE_ROUND && this.getActualTable().getGameState().getTurnState()!=TurnState.LOSER_TIE_ROUND);
+ 			boolean tie =(this.getActualTable().getGameState().getTurnState()==TurnState.WINNER_TIE_ROUND || this.getActualTable().getGameState().getTurnState()==TurnState.LOSER_TIE_ROUND);
  			User loser = (tie? this.getActualTable().getGameState().getRules().getLoser(this.getActualTable().getGameState().getDataTieList()).get(0)
  					: this.getActualTable().getGameState().getRules().getLoser(this.getActualTable().getGameState().getDataList()).get(0));
  				return this.getActualTable().getGameState().getData(loser, tie);
