@@ -8,9 +8,9 @@
 <?import javafx.scene.shape.Circle?>
 <?import javafx.scene.text.Font?>
 
-<HBox fx:id="playerView" alignment="TOP_CENTER" stylesheets="@../css/style.css" xmlns="http://javafx.com/javafx/8.0.60" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ihmTable.controller.PlayerController">
+<HBox id="player-view" fx:id="playerView" alignment="TOP_CENTER" stylesheets="@../css/style.css" xmlns="http://javafx.com/javafx/8.0.60" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ihmTable.controller.PlayerController">
    <children>
-      <Label fx:id="tokens" maxWidth="1.7976931348623157E308" prefHeight="50.0" prefWidth="50.0" text="0" textFill="WHITE">
+      <Label fx:id="tokens" maxWidth="1.7976931348623157E308" prefHeight="50.0" prefWidth="50.0" styleClass="tokens" text="0" textFill="WHITE">
          <font>
             <Font name="System Bold" size="14.0" />
          </font>
@@ -20,7 +20,7 @@
       </Label>
       <VBox fx:id="centerContainer" alignment="CENTER">
          <children>
-            <Circle fx:id="avatarContainer" fill="WHITE" radius="30.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="2.0" />
+            <Circle fx:id="avatarContainer" fill="WHITE" radius="30.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="2.0" styleClass="avatar-container" />
             <Label fx:id="playerName" alignment="CENTER" maxHeight="-Infinity" maxWidth="1.7976931348623157E308" text="Unknown" />
          </children>
       </VBox>

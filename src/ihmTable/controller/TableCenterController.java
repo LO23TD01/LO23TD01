@@ -21,6 +21,7 @@ public class TableCenterController {
     @FXML
     private GridPane tableCenterView;
 
+    private InterImplDataTable interImplDataTable;
     private GameTable gameTable;
     private DiceLauncherController diceLaunchController;
 	private HashMap<User, Pane> playerViews;
@@ -47,6 +48,7 @@ public class TableCenterController {
 	 * @throws IOException
 	 */
 	public void setData(InterImplDataTable interImplDataTable, User user, PlayerStatsController playerStatsController) throws IOException {
+		this.interImplDataTable = interImplDataTable;
 		this.gameTable = interImplDataTable.getActualTable();
 		this.diceLaunchController.setData(interImplDataTable, user);
 		this.playersList = this.gameTable.getPlayerList();
@@ -100,7 +102,7 @@ public class TableCenterController {
 			FXMLLoader playerLoader = new FXMLLoader(getClass().getResource("/ihmTable/resources/view/Player.fxml"));
 			Pane player = playerLoader.load();
 			PlayerController playerController = playerLoader.getController();
-			playerController.setData(this.gameTable.getGameState(), user, this.playerStatsController);
+			playerController.setData(this.interImplDataTable, user, this.playerStatsController);
 			this.playerViews.put(user, player);
 			//depending on the player number a position is given in the grid
 			switch(playersCount) {

@@ -4,6 +4,7 @@ import java.io.IOException;
 
 import data.GameState;
 import data.User;
+import data.client.InterImplDataTable;
 import ihmTable.util.Utility;
 import javafx.application.Platform;
 import javafx.fxml.FXML;
@@ -15,6 +16,10 @@ import javafx.scene.paint.ImagePattern;
 import javafx.scene.shape.Circle;
 
 public class PlayerController extends PlayerDiceController {
+
+	private static final String TURN_OF = "turn-of";
+	private static final String BEST_SCORE = "best-score";
+	private static final String SCORE_TO_BEAT = "score-to-beat";
 
 	@FXML
     private HBox playerView;
@@ -34,20 +39,23 @@ public class PlayerController extends PlayerDiceController {
 	protected User user;
 	private GameState gameState;
 
+	private InterImplDataTable interImplDataTable;
+
 	public void initialize() throws IOException {
 		super.initialize();
 		this.tokens.setText("0");
 		setPrefProperties();
 	}
 
-	public void setData(GameState gameState, User user) {
-		this.gameState = gameState;
+	public void setData(InterImplDataTable interImplDataTable, User user) {
+		this.interImplDataTable = interImplDataTable;
+		this.gameState = interImplDataTable.getActualTable().getGameState();
 		this.gameState.actualPlayerProperty().addListener((observable, oldValue, newValue) -> onActualPlayerChange(newValue));
 		setUser(user);
 	}
 
-	public void setData(GameState gameState, User user, PlayerStatsController playerStatsController) {
-		setData(gameState, user);
+	public void setData(InterImplDataTable interImplDataTable, User user, PlayerStatsController playerStatsController) {
+		setData(interImplDataTable, user);
 		playerView.addEventHandler(MouseEvent.MOUSE_CLICKED, event -> playerStatsController.setUser(user));
 	}
 
@@ -59,6 +67,14 @@ public class PlayerController extends PlayerDiceController {
 
 	private void updatePlayerData() {
 		super.setPlayerData(this.gameState.getData(this.user, false));
+		avatarContainer.getStyleClass().removeAll(TURN_OF, BEST_SCORE, SCORE_TO_BEAT);
+		if(this.user.isSame(this.gameState.getActualPlayer())) {
+			avatarContainer.getStyleClass().add(TURN_OF);
+		} else if(this.user.isSame(interImplDataTable.getBest().getPlayer())) {
+			avatarContainer.getStyleClass().add(BEST_SCORE);
+		} else if(this.user.isSame(interImplDataTable.getWorst().getPlayer())) {
+			avatarContainer.getStyleClass().add(SCORE_TO_BEAT);
+		}
 		updateTokens();
 	}
 

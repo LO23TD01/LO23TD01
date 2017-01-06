@@ -1,16 +1,83 @@
-#tokens {
+.label {
+	-fx-text-fill: white;
+	-fx-font-size: 12px;
+	-fx-alignment: center;
+}
+
+.panel {
+	-fx-background-color: #2d353c;
+}
+
+.top-header {
+	-fx-background-color: #242a30;
+	-fx-pref-height: 55px;
+}
+
+.header {
+	-fx-background-color: #242a30;
+	-fx-pref-height: 25px;
+}
+
+.dark-blue-button {
+    -fx-background-color:
+        #090a0c,
+        linear-gradient(#38424b 0%, #1f2429 20%, #191d22 100%),
+        linear-gradient(#20262b, #191d22),
+        radial-gradient(center 50% 0%, radius 100%, rgba(114,131,148,0.9), rgba(255,255,255,0));
+    -fx-background-radius: 5,4,3,5;
+    -fx-background-insets: 0,1,2,0;
+    -fx-effect: dropshadow( three-pass-box , rgba(0,0,0,0.6) , 5, 0.0 , 0 , 1 );
+    -fx-padding: 10 20 10 20;
+    -fx-text-fill: white;
+	-fx-text-fill: linear-gradient(white, #d0d0d0);
+}
+
+.dark-blue-button .label {
+	-fx-text-fill: linear-gradient(white, #d0d0d0);
+}
+
+.h1 {
+	-fx-font-size: 36px;
+}
+
+.h2 {
+	-fx-font-size: 24px;
+}
+
+.h3 {
+	-fx-font-size: 18px;
+}
+
+.tokens {
 	-fx-background-image: url("../png/JetonOk.png");
 	-fx-background-size: cover;
 }
 
-#lostScore {
-	-fx-background-image: url("../png/JetonLoss.png");
-	-fx-background-size: cover;
+.row {
+	-fx-padding: 5;
+	-fx-spacing: 4;
 }
 
+.row.alt {
+	-fx-background-color: #1a2229;
+}
+
+.label.turn-of {
+	-fx-text-fill: #348fe2;
+}
+
+.label.best-score {
+	-fx-text-fill: #00acac;
+}
+
+.label.score-to-beat {
+	-fx-text-fill: #ff5b57;
+}
+
+/* --------- */
 /* DICE */
 .dice {
-	-fx-border-radius: 5px;
+	-fx-border-radius: 6px;
 	-fx-border-width: 2px;
 	-fx-border-color: black;
 	-fx-border-style: solid;
@@ -52,157 +119,70 @@
 }
 
 .dice.selected {
-	-fx-border-color: green;
+	-fx-border-color: red;
+}
+
+/* --------- */
+/* TABLE */
+#table-view {
+	-fx-background-color: #d9e0e7;
+}
+
+/* --------- */
+/* MENU */
+#menu-view #game-button.dark-blue-button, #menu-view #game-button .context-menu {
+	-fx-pref-width: 103px;
+}
+
+#menu-view #game-button.dark-blue-button {
+	-fx-background-radius: 0;
+	-fx-background-insets: 0;
+	-fx-effect: null;
+}
+
+#menu-view #game-button .context-menu {
+	-fx-background-color: #38424b;
+}
+
+#menu-view #game-button .item {
+	-fx-effect: dropshadow( one-pass-box , rgba(0,0,0,0.9) , 1, 0.0 , 0 , 1 );
 }
 
 /* --------- */
 /* CHAT */
-#chatTitle {
-	-fx-alignment: center;
-	-fx-text-fill: white;
-	-fx-background-color: #393939;
-	-fx-font-size: 20;
+#chat-view #message-control-container {
+	-fx-pref-height: 50px;
 }
 
-#chatView, #listMessages{
-	-fx-background-color: darkgray;
-	-fx-text-fill: white;
+#chat-view .dark-blue-button {
+	-fx-pref-width: 24px;
+	-fx-background-image: url('../png/enter.png');
+    -fx-background-repeat: no-repeat;
+    -fx-background-position: 50%;
 }
 
-#listUsers {
-   -fx-background-color: white;
-   -fx-border-color: #666;
-   -fx-border-width: 2px;
+/* --------- */
+/* PLAYER */
+.avatar-container.best-score {
+	-fx-stroke: #00acac;
 }
 
-#messageControlContainer {
-	-fx-pref-height: 40px;
-	-fx-spacing: 5px;
+.avatar-container.score-to-beat {
+	-fx-stroke: #ff5b57;
 }
 
-#messageArea {
-   -fx-background-color: white;
-}
-
-#sendButton {
-   -fx-background-color: white;
-}
-
-/* -------- */
-/* RULES */
-#rulesBox {
-   -fx-background-color: linear-gradient(to bottom right, #545454, #545454);
-   -fx-text-fill: white;
-   -fx-pref-width: 300px;
-   -fx-pref-height: 840px;
-}
-
-#rulesTitle{
-	-fx-alignment: center;
-	-fx-background-color: #393939;
-	-fx-text-fill: white;
-	-fx-font-size: 20px;
-}
-
-.rulesItem {
-   -fx-background-color: black;
-   -fx-text-fill: #133924;
-}
-
-.rulesArea {
-   -fx-background-color: linear-gradient(to bottom right, #545454, derive(#545454, 25%));
-}
-
-/*------------- */
-/*   MENU     */
-#menuView {
-	-fx-background-color: #393939;
-}
-
-/*---------- */
-/* TABLE */
-#tableView {
-	-fx-background-color: #4e4e4e;
+.avatar-container.turn-of {
+	-fx-stroke: #348fe2;
 }
 
 /* --------- */
 /* DICE LAUNCHER */
-#diceLauncherView {
-	-fx-background-color: #6fa8dc;
+#dice-launcher-view {
+	-fx-background-color: #616d7d;
 	-fx-background-radius: 100px;
 	-fx-border-radius: 100px;
 	-fx-border-style: solid;
 	-fx-border-color: black;
 	-fx-spacing: 5px;
 	-fx-alignment: center;
-}
-
-#diceLauncherView #launchButton {
-	-fx-background-color:
-        darkgrey,
-        linear-gradient(black, darkgrey),
-        linear-gradient( derive(#ffd08b , 40%) 0%, derive(#ffd08b , 0%) 49%, derive(#ffd08b, 0%) 50%, derive(#ffd08b, 40%)  100%);
-    -fx-background-radius: 30;
-    -fx-text-fill: black;
-    -fx-font-size: 14px;
-}
-
-/*---------- */
-/* Bottom Containers */
-#playerStatsView, #gameStatsView {
-	-fx-background-color: #393939;
-	-fx-border-color: black;
-	-fx-border-width: 1;
-}
-
-#playerStatsView .label, #gameStatsView .label {
-	-fx-text-fill: white;
-	-fx-font-size: 14px;
-}
-
-/*  ----------- */
-/* Player Stats */
-#playerRightContainer, #playerRightContainer {
-	-fx-border-color: black;
-    -fx-border-width: 0 1 0 0;
-}
-
-#stats {
-	-fx-background-color : #222222;
-}
-
-#titleLabelPlayer, #labelStats{
-	-fx-background-color: linear-gradient( #999 , #777);
-    -fx-text-fill: black;
-	-fx-border-color: black;
-    -fx-border-width: 0 0 2 0;
-}
-
-/* ------------ */
-/* Game Stats */
-#gameStatsView #phaseTitle {
-	-fx-font-size: 18px;
-}
-
-#gameStatsView .hbox {
-	-fx-padding: 5;
-	-fx-spacing: 4;
-}
-
-#gameStatsView .hbox.odd {
-	-fx-background-color: #4e4e4e;
-	-fx-border-color: darkgrey;
-	-fx-border-width: 1 0 1 0;
-}
-
-#gameStatsView #turnOf {
-	-fx-text-fill: #6aa3ff;
-}
-
-#gameStatsView #bestScore, #gameStatsView #bestScorePlayer {
-	-fx-text-fill: #50c94b;
-}
-
-#gameStatsView #scoreToBeat,  #gameStatsView #scoreToBeatPlayer{
-	-fx-text-fill: #ff7171;
 }

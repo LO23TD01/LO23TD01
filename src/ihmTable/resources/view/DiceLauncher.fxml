@@ -4,9 +4,9 @@
 <?import javafx.scene.layout.TilePane?>
 <?import javafx.scene.layout.VBox?>
 
-<VBox fx:id="diceLauncherView" stylesheets="@../css/style.css" xmlns="http://javafx.com/javafx/8.0.60" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ihmTable.controller.DiceLauncherController">
+<VBox id="dice-launcher-view" fx:id="diceLauncherView" alignment="CENTER" stylesheets="@../css/style.css" xmlns="http://javafx.com/javafx/8.0.60" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ihmTable.controller.DiceLauncherController">
    <children>
       <TilePane fx:id="diceContainer" alignment="CENTER" hgap="5.0" prefColumns="3" prefRows="1" />
-      <Button fx:id="launchButton" mnemonicParsing="false" text="Lancer" />
+      <Button fx:id="launchButton" mnemonicParsing="false" styleClass="dark-blue-button" text="Lancer" />
    </children>
 </VBox>
