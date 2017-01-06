@@ -9,7 +9,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.geometry.Orientation;
 import javafx.scene.layout.TilePane;
 
-public class PlayerDiceController {
+public abstract class PlayerDiceController {
 
 	private static final String DICE_FXML = "/ihmTable/resources/view/Dice.fxml";
 
@@ -33,12 +33,19 @@ public class PlayerDiceController {
 	protected void setPlayerData(PlayerData playerData) {
 		this.playerData = playerData;
 		addDiceListeners();
+//		updateDiceViews();
 	}
 
 	private void addDiceListeners() {
-		this.playerData.d1Property().addListener((observable, oldValue, newValue) -> onDiceChange(this.diceController1, newValue));
-		this.playerData.d2Property().addListener((observable, oldValue, newValue) -> onDiceChange(this.diceController2, newValue));
-		this.playerData.d3Property().addListener((observable, oldValue, newValue) -> onDiceChange(this.diceController3, newValue));
+		this.playerData.d1Property().addListener((observable, oldValue, newValue) -> this.diceController1.setValue(newValue.intValue()));
+		this.playerData.d2Property().addListener((observable, oldValue, newValue) -> this.diceController2.setValue(newValue.intValue()));
+		this.playerData.d3Property().addListener((observable, oldValue, newValue) -> this.diceController3.setValue(newValue.intValue()));
+	}
+
+	protected void updateDiceViews() {
+		this.diceController1.setValue(this.playerData.d1Property().getValue());
+		this.diceController2.setValue(this.playerData.d2Property().getValue());
+		this.diceController3.setValue(this.playerData.d3Property().getValue());
 	}
 
 	/**
@@ -52,15 +59,6 @@ public class PlayerDiceController {
 		this.diceContainer.getChildren().add(diceLoader.load());
 		DiceController diceController = (DiceController) diceLoader.getController();
 		return diceController;
-	}
-
-	/**
-	 * Update the dice's view when the dice's value changes
-	 * @param diceController the controller of the dice's view
-	 * @param newValue the new dice's value
-	 */
-	private void onDiceChange(DiceController diceController, Number newValue) {
-		diceController.setValue(newValue.intValue());
 	}
 
 	private void setDiceProperties(ObservableValue<? extends Number> widthProperty, ObservableValue<? extends Number> heightProperty) {

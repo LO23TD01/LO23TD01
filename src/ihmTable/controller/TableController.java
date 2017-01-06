@@ -56,8 +56,10 @@ public class TableController {
 		Utility.bindPrefProperties(tableCenterView, tableView.widthProperty().multiply(100 - 2 * PANELS_PERCENTAGE), tableView.heightProperty());
 		initChat();
 		initRules();
-		initTableCenter();
-		initBottom();
+		Pane bottomContainer = initBottom();
+		PlayerStatsController playerStatsController = initPlayerStats(bottomContainer);
+		initGameStats(bottomContainer);
+		initTableCenter(playerStatsController);
 		initMenu();
 
 		//Waiting for other players in prestart state
@@ -95,33 +97,36 @@ public class TableController {
 	}
 
 	// TableCenterView view's initialization
-	private void initTableCenter() throws IOException {
+	private void initTableCenter(PlayerStatsController playerStatsController) throws IOException {
 		FXMLLoader tableCenterLoader = new FXMLLoader(getClass().getResource("/ihmTable/resources/view/TableCenter.fxml"));
 		Pane tableCenter = tableCenterLoader.load();
 		Utility.bindPrefProperties(tableCenter, tableCenterView.widthProperty(), tableCenterView.heightProperty().multiply(100 - MENU_HEIGHT_PERCENTAGE - PANELS_PERCENTAGE));
 		setPosition(tableCenter, Position.center);
 		TableCenterController tableCenterController = (TableCenterController) tableCenterLoader.getController();
-		tableCenterController.setData(interImplDataTable, user);
+		tableCenterController.setData(interImplDataTable, user, playerStatsController);
 	}
 
 	// PlayerStats view's initialization
-	private Pane initPlayerStats(Pane parent) throws IOException {
+	private PlayerStatsController initPlayerStats(Pane parent) throws IOException {
 		FXMLLoader playerStatsLoader = new FXMLLoader(getClass().getResource("/ihmTable/resources/view/PlayerStats.fxml"));
 		Pane playerStats = playerStatsLoader.load();
+		AnchorPane.setLeftAnchor(playerStats, 0.0);
+		parent.getChildren().add(playerStats);
 		Utility.bindPrefProperties(playerStats, parent.widthProperty().multiply(0.5), parent.heightProperty());
 		PlayerStatsController playerStatsController = playerStatsLoader.getController();
 		playerStatsController.setData(interImplDataTable, user);
-		return playerStats;
+		return playerStatsController;
 	}
 
 	// GameStats view's initialization
-	private Pane initGameStats(Pane parent) throws IOException {
+	private void initGameStats(Pane parent) throws IOException {
 		FXMLLoader gameStatsLoader = new FXMLLoader(getClass().getResource("/ihmTable/resources/view/GameStats.fxml"));
 		Pane gameStats = gameStatsLoader.load();
+		AnchorPane.setRightAnchor(gameStats, 0.0);
+		parent.getChildren().add(gameStats);
 		Utility.bindPrefProperties(gameStats, parent.widthProperty().multiply(0.5), parent.heightProperty());
 		GameStatsController gameStatsController = gameStatsLoader.getController();
 		gameStatsController.setData(interImplDataTable);
-		return gameStats;
 	}
 
 	// Menu view's initialization
@@ -134,14 +139,10 @@ public class TableController {
 	}
 
 	// Bottom view's initialization
-	private void initBottom() throws IOException {
+	private Pane initBottom() throws IOException {
 		AnchorPane bottomContainer = new AnchorPane();
-		Pane playerStats = initPlayerStats(bottomContainer);
-		AnchorPane.setLeftAnchor(playerStats, 0.0);
-		Pane gameStats = initGameStats(bottomContainer);
-		AnchorPane.setRightAnchor(gameStats, 0.0);
-		bottomContainer.getChildren().addAll(playerStats, gameStats);
 		setPosition(getCollapsiblePane(bottomContainer, Position.bottom), Position.bottom);
+		return bottomContainer;
 	}
 
 	private void setPosition(Pane pane, Position position) {

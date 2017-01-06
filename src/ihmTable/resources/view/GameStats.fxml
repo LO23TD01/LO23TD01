@@ -54,8 +54,18 @@
       </HBox>
       <HBox>
          <children>
-            <Label maxHeight="1.7976931348623157E308" text="Enjeu :" />
-            <Label fx:id="chips" maxHeight="1.7976931348623157E308" text="0" />
+            <Label maxHeight="1.7976931348623157E308" text="Jetons en jeu : " />
+            <Label fx:id="turnChips" maxHeight="1.7976931348623157E308" text="0" />
+         </children>
+         <styleClass>
+            <String fx:value="hbox" />
+            <String fx:value="even" />
+         </styleClass>
+      </HBox>
+      <HBox>
+         <children>
+            <Label maxHeight="1.7976931348623157E308" text="Jetons restants :" />
+            <Label fx:id="stackChips" maxHeight="1.7976931348623157E308" text="0" />
          </children>
          <styleClass>
             <String fx:value="hbox" />
