@@ -8,20 +8,16 @@
 <?import javafx.scene.shape.Circle?>
 <?import javafx.scene.text.Font?>
 
-<HBox fx:id="playerView" alignment="CENTER" stylesheets="@../css/style.css" xmlns="http://javafx.com/javafx/8.0.60" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ihmTable.controller.PlayerController">
+<HBox fx:id="playerView" alignment="TOP_CENTER" stylesheets="@../css/style.css" xmlns="http://javafx.com/javafx/8.0.60" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ihmTable.controller.PlayerController">
    <children>
-      <VBox fx:id="leftContainer" alignment="TOP_CENTER">
-         <children>
-            <Label fx:id="tokens" maxWidth="1.7976931348623157E308" prefHeight="50.0" prefWidth="50.0" text="0" textFill="WHITE">
-               <font>
-                  <Font name="System Bold" size="14.0" />
-               </font>
-               <padding>
-                  <Insets left="14.0" />
-               </padding>
-            </Label>
-         </children>
-      </VBox>
+      <Label fx:id="tokens" maxWidth="1.7976931348623157E308" prefHeight="50.0" prefWidth="50.0" text="0" textFill="WHITE">
+         <font>
+            <Font name="System Bold" size="14.0" />
+         </font>
+         <padding>
+            <Insets left="14.0" />
+         </padding>
+      </Label>
       <VBox fx:id="centerContainer" alignment="CENTER">
          <children>
             <Circle fx:id="avatarContainer" fill="WHITE" radius="30.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="2.0" />

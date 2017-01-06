@@ -4,6 +4,7 @@ import java.util.Arrays;
 
 import data.GameState;
 import data.State;
+import data.User;
 import data.client.InterImplDataTable;
 import javafx.application.Platform;
 import javafx.fxml.FXML;
@@ -30,7 +31,10 @@ public class GameStatsController {
 	private Label scoreToBeatPlayer;
 
 	@FXML
-	private Label chips;
+	private Label turnChips;
+
+	@FXML
+	private Label stackChips;
 
 	private GameState gameState;
 	private InterImplDataTable interImplDataTable;
@@ -45,7 +49,7 @@ public class GameStatsController {
 		this.bestScorePlayer.setText("Unknown");
 		this.scoreToBeat.setText("0 0 0");
 		this.scoreToBeatPlayer.setText("Unknown");
-		this.chips.setText("0");
+		this.stackChips.setText("0");
 	}
 
 	/**
@@ -56,6 +60,7 @@ public class GameStatsController {
 		this.interImplDataTable = interImplDataTable;
 		this.gameState = this.interImplDataTable.getActualTable().getGameState();
 		addListeners();
+		onChipStackChange(this.gameState.getChipStack());
 	}
 
 	/**
@@ -63,24 +68,24 @@ public class GameStatsController {
 	 */
 	private void addListeners() {
 		this.gameState.stateProperty().addListener((observable, oldValue, newValue) -> onStateChange(newValue));
-		this.gameState.actualPlayerProperty().addListener(event -> onActualPlayerChange());
+		this.gameState.actualPlayerProperty().addListener((observable, oldValue, newValue) -> onActualPlayerChange(newValue));
 		this.gameState.chipStackProperty().addListener((observable, oldValue, newValue) -> onChipStackChange(newValue));
 	}
 
 	/**
 	 * Update the view when the actual player changes
+	 * @param actualPlayer the new actual player
 	 */
-	private void onActualPlayerChange() {
+	private void onActualPlayerChange(User actualPlayer) {
 		Platform.runLater(new Runnable() {
 			@Override
 			public void run() {
-				turnOf.setText(gameState.getData(gameState.getActualPlayer(), false).getPlayer().getSame(gameState.getPlayerList()).getPublicData().getNickName());
-				if(!gameState.getDataTieList().isEmpty()) {
-					bestScore.setText(Arrays.toString(interImplDataTable.getBest().getDices()));
-					bestScorePlayer.setText(interImplDataTable.getBest().getPlayer().getPublicData().getNickName());
-					scoreToBeat.setText(Arrays.toString(interImplDataTable.getWorst().getDices()));
-					scoreToBeatPlayer.setText(interImplDataTable.getWorst().getPlayer().getPublicData().getNickName());
-				}
+				turnOf.setText(actualPlayer.getPublicData().getNickName());
+				bestScore.setText(Arrays.toString(interImplDataTable.getBest().getDices()));
+				bestScorePlayer.setText(interImplDataTable.getBest().getPlayer().getPublicData().getNickName());
+				scoreToBeat.setText(Arrays.toString(interImplDataTable.getWorst().getDices()));
+				scoreToBeatPlayer.setText(interImplDataTable.getWorst().getPlayer().getPublicData().getNickName());
+				turnChips.setText(String.valueOf(interImplDataTable.getValueCurrentTurn()));
 			}
 		});
 	}
@@ -106,7 +111,7 @@ public class GameStatsController {
 		Platform.runLater(new Runnable() {
 			@Override
 			public void run() {
-				chips.setText(String.valueOf(newValue));
+				stackChips.setText(String.valueOf(newValue));
 			}
 		});
 	}

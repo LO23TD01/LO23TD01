@@ -52,7 +52,7 @@
 }
 
 .dice.selected {
-	-fx-border-color: red;
+	-fx-border-color: green;
 }
 
 /* --------- */
@@ -70,7 +70,7 @@
 }
 
 #listUsers {
-   -fx-background-color:  white;
+   -fx-background-color: white;
    -fx-border-color: #666;
    -fx-border-width: 2px;
 }

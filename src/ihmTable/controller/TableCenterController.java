@@ -25,6 +25,7 @@ public class TableCenterController {
     private DiceLauncherController diceLaunchController;
 	private HashMap<User, Pane> playerViews;
 	private ObservableList<User> playersList;
+	private PlayerStatsController playerStatsController;
 
 	/**
 	 * Initialize the controller
@@ -40,14 +41,16 @@ public class TableCenterController {
 
 	/**
 	 * Set data to the controller
-	 * @param interImplDataTable Data's interface
-	 * @param user Connected user
+	 * @param interImplDataTable the Data's interface
+	 * @param user the connected user
+	 * @param playerStatsController the controller of the player stats view
 	 * @throws IOException
 	 */
-	public void setData(InterImplDataTable interImplDataTable, User user) throws IOException {
+	public void setData(InterImplDataTable interImplDataTable, User user, PlayerStatsController playerStatsController) throws IOException {
 		this.gameTable = interImplDataTable.getActualTable();
 		this.diceLaunchController.setData(interImplDataTable, user);
 		this.playersList = this.gameTable.getPlayerList();
+		this.playerStatsController = playerStatsController;
 		initPlayers();
 	}
 
@@ -59,35 +62,31 @@ public class TableCenterController {
 		for(User player : this.playersList) {
 			createPlayerView(player);
 		}
-		this.playersList.addListener(getPlayersListChangeListener());
+		this.playersList.addListener((ListChangeListener.Change<? extends User> change) -> onPlayerListChange(change));
 	}
 
 	/**
-	 * Return a listener for players list in order to update players view if a player is removed or added
-	 * @return a list change listener
+	 * Update the view when players list changes
+	 * @param change the changes occurred in players list
 	 */
-	private ListChangeListener<User> getPlayersListChangeListener() {
-		ListChangeListener<User> playersListChangeListener;
-		playersListChangeListener = change -> {
-			while(change.next()) {
-				if (change.wasAdded()) {
-					for (User addedUser : change.getAddedSubList()) {
-						try {
-							createPlayerView(addedUser);
-						} catch (IOException e) {
-							e.printStackTrace();
-						}
-					}
-				}
-				if(change.wasRemoved()) {
-					for(User removedUser : change.getRemoved()) {
-						this.tableCenterView.getChildren().remove(this.playerViews.get(removedUser.getPublicData().getUUID()));
-						this.playerViews.remove(removedUser);
+	private void onPlayerListChange(ListChangeListener.Change<? extends User> change) {
+		while(change.next()) {
+			if (change.wasAdded()) {
+				for (User addedUser : change.getAddedSubList()) {
+					try {
+						createPlayerView(addedUser);
+					} catch (IOException e) {
+						e.printStackTrace();
 					}
 				}
 			}
-		};
-		return playersListChangeListener;
+			if(change.wasRemoved()) {
+				for(User removedUser : change.getRemoved()) {
+					this.tableCenterView.getChildren().remove(this.playerViews.get(removedUser.getPublicData().getUUID()));
+					this.playerViews.remove(removedUser);
+				}
+			}
+		}
 	}
 
 	/**
@@ -101,7 +100,7 @@ public class TableCenterController {
 			FXMLLoader playerLoader = new FXMLLoader(getClass().getResource("/ihmTable/resources/view/Player.fxml"));
 			Pane player = playerLoader.load();
 			PlayerController playerController = playerLoader.getController();
-			playerController.setData(this.gameTable.getGameState(), user);
+			playerController.setData(this.gameTable.getGameState(), user, this.playerStatsController);
 			this.playerViews.put(user, player);
 			//depending on the player number a position is given in the grid
 			switch(playersCount) {
