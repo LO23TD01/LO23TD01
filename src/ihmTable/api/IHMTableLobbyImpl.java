@@ -23,7 +23,7 @@ public class IHMTableLobbyImpl implements IHMTableLobby {
 	private static final String EXIT_GAME_ALERT_HEADER = "Partie en cours";
 	private static final String EXIT_GAME_ALERT_CONTENT = "Vous allez quitter une partie en cours.\nVoulez-vous continuer ?";
 
-	private InterImplDataTable interImplDataTable;
+	private static InterImplDataTable interImplDataTable;
 	private static Stage stage;
 
 	public void displayTable(InterImplDataTable interImplDataTable, User user) throws IOException {
@@ -55,7 +55,7 @@ public class IHMTableLobbyImpl implements IHMTableLobby {
 		tableController.setData(interImplDataTable, user);
 	}
 
-	private void showExitModal() {
+	public static void showExitModal() {
 		Alert alert = new Alert(AlertType.CONFIRMATION);
     	alert.setHeaderText(EXIT_GAME_ALERT_HEADER);
     	alert.setContentText(EXIT_GAME_ALERT_CONTENT);

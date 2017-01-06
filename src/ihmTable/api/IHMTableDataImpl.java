@@ -24,7 +24,12 @@ public class IHMTableDataImpl implements IHMTableData {
 
 	@Override
 	public void closeTable(String message) {
-		showErrorAlert(message);
+		Platform.runLater(new Runnable() {
+			@Override
+			public void run() {
+				showErrorAlert(message);
+			}
+		});
 	}
 
 	private void showErrorAlert(String message) {
