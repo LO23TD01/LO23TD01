@@ -18,9 +18,9 @@ public class EndGameTimer extends TimerTask{
 	}
 
 	public void run() {
-	    if(table.getSame(engine.getTableList()).getGameState().getState()==State.END)
+	    if(table.getSame(engine.getTableList())!=null && table.getSame(engine.getTableList()).getGameState().getState()==State.END)
 	    	engine.dropTable(table);
-	   	this.cancel();
+	   	//this.cancel();
 	}
 
 }

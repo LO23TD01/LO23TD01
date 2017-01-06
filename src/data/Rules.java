@@ -73,7 +73,7 @@ public class Rules {
 		}
 
 		public int valeur() {
-			if (this.dice[2] == 4 && this.dice[1] == 2 && this.dice[0] == 1) //421
+			if (this.dice[0] == 4 && this.dice[1] == 2 && this.dice[2] == 1) //421
 			{
 				return 10;
 			}
@@ -188,6 +188,7 @@ public class Rules {
 		for(PlayerData p : l)
 			listDice.add(new DiceThrow(p.getPlayer(),p.getDices()));
 		Collections.sort(listDice);
+		Collections.reverse(listDice);
 
 		if(listDice.get(0).valeur()==1 && listDice.get(listDice.size()-1).isNenette())
 			Collections.reverse(listDice);
@@ -252,7 +253,18 @@ public class Rules {
 		case FIXED_DISCHARGE:
 			return true;
 		case CONSTRAINED_DISCHARGE:
-			return this.canReroll(l, actualPlayer, firstPlayer, isDischarge);
+			PlayerData actualPlayerData = null;
+			for(PlayerData p : l)
+			{
+				if(p.getPlayer().isSame(actualPlayer))
+					actualPlayerData=p;
+			}
+			if(actualPlayerData==null)
+			{
+				System.out.println("Failed to find Data : Rules.java");
+				return false;
+			}
+			return (actualPlayerData.getRerollCount()==0 || (!(actualPlayer.isSame(firstPlayer)) && this.canReroll(l, actualPlayer, firstPlayer, isDischarge)));
 		default:
 			// throw new Exception("Etat Incoherent : Rules.java");
 			return false;

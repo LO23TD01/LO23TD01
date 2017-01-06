@@ -284,12 +284,12 @@ public class ClientDataEngine implements InterfaceDataNetwork {
 		getActualTable().getGameState().getData(u, false).setDices(dices);
 		getActualTable().getGameState().getData(u, false).setRerollCount(getActualTable().getGameState().getData(u, false).getRerollCount()+1);
 
-		//fix pour la Selection
-		List<Boolean>  newList = new ArrayList<Boolean>();
-		newList.add(false);
-		newList.add(false);
-		newList.add(false);
-		this.setSelectionList(newList);
+//		//fix pour la Selection
+//		List<Boolean>  newList = new ArrayList<Boolean>();
+//		newList.add(false);
+//		newList.add(false);
+//		newList.add(false);
+//		this.setSelectionList(newList);
 
 		getActualTable().getGameState().debugDisplay();
 	}
@@ -322,7 +322,10 @@ public class ClientDataEngine implements InterfaceDataNetwork {
 		// TODO : Vérifier que ce soit la bonne méthode appelée car il y a aussi GameState.nextTurn(User)
 		//
 		User currentUser = new User(getProfileManager().getCurrentProfile());
+//		if(currentUser.isSame(getActualTable().getGameState().getActualPlayer()))
+//			getActualTable().getGameState().setActualPlayer(null);
 		getActualTable().getGameState().setActualPlayer(currentUser.getSame(getActualTable().getGameState().getPlayerList()));
+
 	}
 
 	@Override
@@ -365,6 +368,15 @@ public class ClientDataEngine implements InterfaceDataNetwork {
 	@Override
 	public void hasWon(User u) {
 		getActualTable().getGameState().setWinnerGame(u);
+
+		//cahngement statiqitues profile
+		User actualUser = new User(this.profileManager.getCurrentProfile());
+		if(u.isSame(actualUser))
+		{
+			Profile newProfile = new Profile(this.profileManager.getCurrentProfile());
+			newProfile.setNbGameWon(newProfile.getNbGameWon()+1);
+			this.interfaceMain.changeMyProfile(newProfile);
+		}
 	}
 
 	@Override
@@ -373,6 +385,16 @@ public class ClientDataEngine implements InterfaceDataNetwork {
 		this.getActualTable().startVote();
 		this.setVoteText("Voulez-vous recommencer la partie ?");
 		getActualTable().getGameState().setLoserGame(u);
+
+
+		//cahngement statiqitues profile
+		User actualUser = new User(this.profileManager.getCurrentProfile());
+		if(u.isSame(actualUser))
+		{
+			Profile newProfile = new Profile(this.profileManager.getCurrentProfile());
+			newProfile.setNbGameLost(newProfile.getNbGameLost()+1);
+			this.interfaceMain.changeMyProfile(newProfile);
+		}
 	}
 
 	@Override
@@ -534,6 +556,10 @@ public class ClientDataEngine implements InterfaceDataNetwork {
 
 	public final void setVoteText(final String voteText) {
 		this.voteTextProperty().set(voteText);
+	}
+
+	public InterImplDataMain getInterfaceMain() {
+		return interfaceMain;
 	}
 
 

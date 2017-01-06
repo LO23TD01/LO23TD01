@@ -62,17 +62,23 @@ public class DiceLauncherController extends PlayerDiceController {
 	 * Update the view and add listeners to dice properties when the actual player changes
 	 */
 	private void onActualPlayerChange(){
-		User actualPlayer = this.gameState.getActualPlayer();
-		setDisableDiceLauncher(!this.localUser.isSame(actualPlayer));
-		setPlayerData(this.gameState.getData(actualPlayer, false));
+		if(this.gameState.getActualPlayer()!=null)
+		{
+			User actualPlayer = this.gameState.getActualPlayer();
+			setDisableDiceLauncher(!this.localUser.isSame(actualPlayer));
+			setPlayerData(this.gameState.getData(actualPlayer, false));
 
-		//TODO voir avec Data comment gérer la sélection des dés (rerollCount toujours à 0)
-		if(this.playerData.getRerollCount() == 1) {
-			setDiceSelectionOptions(true, false);
-		} else if(this.playerData.getRerollCount() > 1) {
-			setDiceSelectable(true);
-		} else {
-			setDiceSelectionOptions(false, true);
+			if(this.localUser.isSame(actualPlayer))
+				setDiceSelectable(true);
+
+//			//TODO voir avec Data comment gérer la sélection des dés (rerollCount toujours à 0)
+//			if(this.playerData.getRerollCount() == 1) {
+//				setDiceSelectionOptions(true, false);
+//			} else if(this.playerData.getRerollCount() > 1) {
+//				setDiceSelectable(true);
+//			} else {
+//				setDiceSelectionOptions(false, true);
+//			}
 		}
 	}
 
@@ -98,7 +104,7 @@ public class DiceLauncherController extends PlayerDiceController {
 	private void setDisableDiceLauncher(boolean disable) {
 		diceLauncherView.setDisable(disable);
 		if(disable) {
-			setDiceSelectionOptions(false, false);
+			setDiceSelectable(false);
 		}
 		Platform.runLater(new Runnable() {
 			@Override

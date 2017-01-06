@@ -178,7 +178,7 @@ public class ServerDataEngine implements InterfaceDataNetwork {
 							this.tableList.remove(tableFull);
 							 this.comServer.refreshTableList(getUUIDList(this.usersList),this.tableList);
 					 }
-					if(tableFull.getPlayerList().size()==0)
+					 else if(tableFull.getPlayerList().size()==0)
 					{
 						//kick les spec
 						for(User u : tableFull.getAllList())
@@ -380,7 +380,7 @@ public class ServerDataEngine implements InterfaceDataNetwork {
 								else
 									r3 = pData.getDices()[2];
 //								//debug egalite
-//								if(tableFull.getGameState().getState()==State.CHARGING)
+//								if(tableFull.getGameState().getState()==State.SELECTION)
 //								{
 //								r1=1;
 //								r2=2;
@@ -852,10 +852,7 @@ public class ServerDataEngine implements InterfaceDataNetwork {
 				}
 			}
 
-			if (tableFull.getGameState().getWinners().size() == 1) // un seul
-																	// winner la
-																	// solution
-																	// facile
+			if (tableFull.getGameState().getWinners().size() == 1) // un seul winner la solution facile
 			{
 				tableFull.getGameState().setTurnState(TurnState.LOSER_TIE_ROUND);
 				this.comServer.changeTurnState(getUUIDList(tableFull.getAllList()), TurnState.LOSER_TIE_ROUND);
@@ -863,17 +860,11 @@ public class ServerDataEngine implements InterfaceDataNetwork {
 												// sans trop de souci.
 				return;
 			}
-			else if (tableFull.getGameState().getDataTieList().stream().filter(d -> d.getRerollCount() == 0).count() != 0) // alors
-																														// on
-																														// n'a
-																														// pas
-																														// fini
-																														// de
-																														// distribuer
+			else if (tableFull.getGameState().getDataTieList().stream().filter(d -> d.getRerollCount() == 0).count() != 0) // alors onn'a pas fini de distribuer
 			{
+				tableFull.getGameState().setActualPlayer(tableFull.getGameState().getNextPlayer());
 				this.comServer.startTurn(getUUIDList(tableFull.getAllList()),
 						tableFull.getGameState().getActualPlayer().getPublicData().getUUID(), false);
-				tableFull.getGameState().setActualPlayer(tableFull.getGameState().getNextPlayer());
 			} else {
 				// on recalcule les winners
 				tableFull.getGameState().setWinners(
@@ -935,9 +926,9 @@ public class ServerDataEngine implements InterfaceDataNetwork {
 																														// de
 																														// distribuer
 			{
+				tableFull.getGameState().setActualPlayer(tableFull.getGameState().getNextPlayer());
 				this.comServer.startTurn(getUUIDList(tableFull.getAllList()),
 						tableFull.getGameState().getActualPlayer().getPublicData().getUUID(), false);
-				tableFull.getGameState().setActualPlayer(tableFull.getGameState().getNextPlayer());
 			} else {
 				// on recalcule les losers
 				tableFull.getGameState().setLosers(

@@ -89,7 +89,7 @@ public class Profile implements Serializable {
 		this.nbGameAbandonned = new SimpleIntegerProperty();
 		this.client = new SimpleObjectProperty<Client>();
 	}
-	
+
 	public Profile(String login, String nickname, String psw, String firstName, String surName, int age) {
 		this.uuid = new SimpleObjectProperty<UUID>(UUID.randomUUID());
 		this.login = new SimpleStringProperty(login);
@@ -104,7 +104,7 @@ public class Profile implements Serializable {
 		this.nbGameAbandonned = new SimpleIntegerProperty();
 		this.client = new SimpleObjectProperty<Client>();
 	}
-	
+
 	// Constructeur appelé lors de la 1ère création du profile, l'UUID est généré (normalement)
 	public Profile(String login, String psw) {
 		this.uuid = new SimpleObjectProperty<UUID>(UUID.randomUUID());
@@ -137,6 +137,22 @@ public class Profile implements Serializable {
 		this.client = new SimpleObjectProperty<Client>(client);
 	}
 
+	//constructeur en copie, pour cahgner  une seule valeur dedans
+	public Profile(Profile p) {
+		this.uuid = new SimpleObjectProperty<UUID>(p.getUUID());
+		this.login = new SimpleStringProperty(p.getLogin());
+		this.nickName = new SimpleStringProperty(p.getNickName());
+		this.psw = new SimpleStringProperty(p.getPsw());
+		this.firstName = new SimpleStringProperty(p.getFirstName());
+		this.surName = new SimpleStringProperty(p.getSurName());
+		this.age = new SimpleIntegerProperty(p.getAge());
+		this.avatar = new SimpleObjectProperty<Image>(p.getAvatar());
+		this.nbGameWon = new SimpleIntegerProperty(p.getNbGameWon());
+		this.nbGameLost = new SimpleIntegerProperty(p.getNbGameLost());
+		this.nbGameAbandonned = new SimpleIntegerProperty(p.getNbGameAbandonned());
+		this.client = new SimpleObjectProperty<Client>(p.getClient());
+	}
+
 	/*
 	 *
 	 * Methods
@@ -144,7 +160,7 @@ public class Profile implements Serializable {
 	 *
 	 */
 
-    // Convention de nommage d'un profile : 
+    // Convention de nommage d'un profile :
 	// Il se trouve forcément dans le dossier MesProfiles
 	// nom du fichier : login-psw.xml
 	public void Xmlise() {
@@ -158,11 +174,11 @@ public class Profile implements Serializable {
 			marshaller.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, true);
 
 			// Création du dossier si inexistant.
-			new File("MesProfiles").mkdir(); 
-			
+			new File("MesProfiles").mkdir();
+
 			// Nom du fichier
 			String path = "MesProfiles\\"+login.get()+"-"+psw.get()+".xml";
-			
+
 			// Do the marshal operation
 			FileOutputStream FopS = new FileOutputStream(path);
 			marshaller.marshal(this, FopS);
@@ -179,11 +195,11 @@ public class Profile implements Serializable {
 	 *
 	 *
 	 */
-	
+
 	public final ObjectProperty<UUID> uuidProperty() {
 		return this.uuid;
 	}
-	
+
 	public final UUID getUUID() {
 		return this.uuidProperty().get();
 	}
