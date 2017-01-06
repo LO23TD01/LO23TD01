@@ -19,6 +19,7 @@ import data.User;
 import data.UserRole;
 import IHM_MAIN.src.IHMLobbyAPI;
 import data.Vote;
+import ihmTable.api.IHMTableDataImpl;
 //import ihmTable.api.IHMTableLobbyImpl;
 import javafx.application.Platform;
 import javafx.beans.property.ObjectProperty;
@@ -417,6 +418,7 @@ public class ClientDataEngine implements InterfaceDataNetwork {
 	@Override
 	public void kicked(String s) {
 		this.actualTable.set(null);
+		new IHMTableDataImpl().closeTable(s);
 	}
 
 	@Override
