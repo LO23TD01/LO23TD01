@@ -1,5 +1,7 @@
 package ihmTable.controller;
 
+import data.client.InterImplDataTable;
+import ihmTable.api.IHMTableLobbyImpl;
 import ihmTable.util.Utility;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
@@ -15,9 +17,6 @@ public class MenuController {
 	@FXML
     private MenuButton gameButton;
 
-	@FXML
-    private MenuItem informationItem;
-
     @FXML
     private MenuItem quitItem;
 
@@ -27,6 +26,11 @@ public class MenuController {
 
     public void initialize() {
     	setPrefProperties();
+    	this.quitItem.setOnAction(event -> IHMTableLobbyImpl.showExitModal());
+    }
+
+    public void setData(InterImplDataTable interImplDataTable) {
+    	this.title.setText(interImplDataTable.getActualTable().getName());
     }
 
     private void setPrefProperties() {

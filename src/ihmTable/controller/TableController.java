@@ -98,6 +98,7 @@ public class TableController {
 		Pane menu = menuLoader.load();
 		setPosition(menu, Position.top);
 		MenuController menuController = (MenuController) menuLoader.getController();
+		menuController.setData(interImplDataTable);
 	}
 
 	// Bottom view's initialization

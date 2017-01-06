@@ -9,7 +9,6 @@
    <children>
       <MenuButton id="game-button" fx:id="gameButton" maxHeight="1.7976931348623157E308" mnemonicParsing="false" styleClass="dark-blue-button" text="Partie">
         <items>
-            <MenuItem fx:id="informationItem" mnemonicParsing="false" text="Informations" />
             <MenuItem fx:id="quitItem" mnemonicParsing="false" text="Quitter" />
         </items>
       </MenuButton>
