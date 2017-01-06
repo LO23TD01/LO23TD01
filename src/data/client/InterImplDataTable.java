@@ -9,6 +9,7 @@ import data.Parameters;
 import data.PlayerData;
 import data.Profile;
 import data.Rules;
+import data.State;
 //import data.State;
 import data.TurnState;
 import data.User;
@@ -155,7 +156,15 @@ public InterImplDataTable(ClientDataEngine dataEngine, UserRole actualRole,
 
 		if(this.actualTable.get() != null)
 		{
-			//la table sert à rien et fait planter ... GG
+			// cahngement statiqitues profile
+			if ((this.getActualTable().getGameState().getState() != State.PRESTART)
+					&& (this.getActualTable().getGameState().getState() != State.END)) {
+
+				Profile newProfile = new Profile(this.dataEngine.getProfileManager().getCurrentProfile());
+				newProfile.setNbGameAbandonned(newProfile.getNbGameAbandonned() + 1);
+				this.dataEngine.getInterfaceMain().changeMyProfile(newProfile);
+			}
+
 			this.dataEngine.getComClientInterface().quit(this.dataEngine.getProfileManager().getCurrentProfile().getUUID(), this.actualTable.get().getUid());
 			this.setActualTable(null);
 		}
