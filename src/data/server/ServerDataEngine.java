@@ -163,9 +163,13 @@ public class ServerDataEngine implements InterfaceDataNetwork {
 			 if(tableFull==null)
 				 this.comServer.raiseException(user.getPublicData().getUUID(),"L'utilisateur est à une table qui n'existe pas. La table doit exister pour quitter la table..");
 			 else{
+				 	boolean actuelQuit = userFull.isSame(tableFull.getGameState().getActualPlayer());
 					tableFull.disconnect(userFull);
 					userFull.setActualTable(null);
+					this.comServer.playerQuitGame(getUUIDList(tableFull.getAllList()), userFull.getPublicData().getUUID());
 					 this.comServer.refreshTableList(getUUIDList(this.usersList),this.tableList);
+					 if(actuelQuit)
+						 gameEngine(tableFull,false);
 					 if(tableFull.getGameState().getState() != State.PRESTART && tableFull.getPlayerList().size()<2)
 					 {
 							//kick les spec
@@ -190,16 +194,12 @@ public class ServerDataEngine implements InterfaceDataNetwork {
 						this.tableList.remove(tableFull);
 						 this.comServer.refreshTableList(getUUIDList(this.usersList),this.tableList);
 					}
-					else
-					{
-						if(tableFull.getCreator().isSame(user))
+					else if(tableFull.getCreator().isSame(user))
 						{
 							//changer creator
 							tableFull.setCreator(tableFull.getPlayerList().get(0));
 							this.askQuitTable(tableFull);
 						}
-						this.comServer.playerQuitGame(getUUIDList(tableFull.getAllList()), userFull.getPublicData().getUUID());
-					 }
 				}
 		 }
 	}
