@@ -5,7 +5,9 @@ import java.io.IOException;
 import data.User;
 import data.client.InterImplDataTable;
 import ihmTable.util.Utility;
+import javafx.application.Platform;
 import javafx.beans.binding.Bindings;
+import javafx.collections.ListChangeListener;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
 import javafx.scene.control.Tooltip;
@@ -27,7 +29,7 @@ public class PlayerStatsController extends PlayerController {
 	@FXML
     private VBox centerContainer;
 
-    @FXML
+	@FXML
     private VBox rightContainer;
 
     @FXML
@@ -48,6 +50,8 @@ public class PlayerStatsController extends PlayerController {
     @FXML
     private Label informationText;
 
+    private User localUser;
+
     public void initialize() throws IOException {
     	super.initialize();
 		this.wonGames.setTooltip(new Tooltip(WON_GAMES_TOOLTIP));
@@ -55,20 +59,44 @@ public class PlayerStatsController extends PlayerController {
 		this.leftGames.setTooltip(new Tooltip(LEFT_GAMES_TOOLTIP));
 	}
 
+    @Override
     public void setData(InterImplDataTable interImplDataTable, User user) {
     	super.setData(interImplDataTable, user);
-    	setUser(user);
+    	this.localUser = user;
+    	this.interImplDataTable.getActualTable().getPlayerList().addListener((ListChangeListener.Change<? extends User> change) -> onPlayerListChanges(change));
     }
 
-    protected void setUser(User user) {
-    	super.setUser(user);
-    	updateView();
+    @Override
+    protected void updateView() {
+    	if(this.gameState.getData(this.user, false) != null) {
+    		super.updateView();
+    		this.rightContainer.setVisible(true);
+    		this.rightContainer.setManaged(true);
+    	} else {
+    		this.rightContainer.setVisible(false);
+    		this.rightContainer.setManaged(false);
+    		updatePlayerView();
+    	}
+    	updateStatsView();
     }
 
-    private void updateView() {
+    private void updateStatsView() {
     	this.wonGames.setText(String.valueOf(user.getPublicData().getNbGameWon()));
     	this.lostGames.setText(String.valueOf(user.getPublicData().getNbGameLost()));
     	this.leftGames.setText(String.valueOf(user.getPublicData().getNbGameAbandonned()));
+    }
+
+    private void onPlayerListChanges(ListChangeListener.Change<? extends User> change) {
+    	change.next();
+    	if(change.getRemoved().contains(user)) {
+    		Platform.runLater(new Runnable() {
+				@Override
+			    public void run() {
+					setUser(localUser);
+
+				}
+			});
+    	}
     }
 
     @Override
@@ -78,8 +106,8 @@ public class PlayerStatsController extends PlayerController {
 		Utility.bindPrefProperties(leftContainer, playerStatsView.widthProperty().multiply(0.2), playerStatsView.heightProperty().multiply(0.7));
 		Utility.bindPrefProperties(centerContainer, playerStatsView.widthProperty().multiply(0.4), playerStatsView.heightProperty().multiply(0.7));
 		Utility.bindPrefProperties(rightContainer, playerStatsView.widthProperty().multiply(0.4), playerStatsView.heightProperty().multiply(0.7));
-		Utility.bindPrefProperties(gameStatsTitle, centerContainer.widthProperty(), centerContainer.widthProperty().multiply(0.1));
-		Utility.bindPrefProperties(diceContainer, centerContainer.widthProperty(), centerContainer.heightProperty().multiply(0.4));
-		Utility.bindPrefProperties(tokens, Bindings.min(centerContainer.widthProperty(), centerContainer.heightProperty().multiply(0.4)), Bindings.min(centerContainer.widthProperty(), centerContainer.heightProperty().multiply(0.4)));
+		Utility.bindPrefProperties(gameStatsTitle, rightContainer.widthProperty(), rightContainer.widthProperty().multiply(0.1));
+		Utility.bindPrefProperties(diceContainer, rightContainer.widthProperty(), rightContainer.heightProperty().multiply(0.4));
+		Utility.bindPrefProperties(tokens, Bindings.min(rightContainer.widthProperty(), rightContainer.heightProperty().multiply(0.4)), Bindings.min(rightContainer.widthProperty(), rightContainer.heightProperty().multiply(0.4)));
     }
 }

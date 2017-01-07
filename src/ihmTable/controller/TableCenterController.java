@@ -84,8 +84,15 @@ public class TableCenterController {
 			}
 			if(change.wasRemoved()) {
 				for(User removedUser : change.getRemoved()) {
-					this.tableCenterView.getChildren().remove(this.playerViews.get(removedUser.getPublicData().getUUID()));
-					this.playerViews.remove(removedUser);
+					Pane viewToRemove = playerViews.get(removedUser);
+					Platform.runLater(new Runnable() {
+						@Override
+					    public void run() {
+							tableCenterView.getChildren().remove(viewToRemove);
+
+						}
+					});
+					playerViews.remove(removedUser);
 				}
 			}
 		}

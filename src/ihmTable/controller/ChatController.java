@@ -82,6 +82,7 @@ public class ChatController {
 		this.spectators = gameTable.getSpectatorList();
 		this.users.addAll(players);
 		this.users.addAll(spectators);
+		this.listUsers.setItems(users);
 		bindListMessages();
 		bindListUsers();
 	}
@@ -137,14 +138,21 @@ public class ChatController {
                 @Override
                 protected void updateItem(User user, boolean bln) {
                     super.updateItem(user, bln);
-                    if (user != null) {
-                    	Platform.runLater(new Runnable() {
-						    @Override
-						    public void run() {
-						    	setText(user.getPublicData().getNickName());
-						    }
-						});
-                    }
+                    Platform.runLater(new Runnable() {
+                    	@Override
+                    	public void run() {
+                    		if (user != null) {
+                    			if(user.isIsSpectating()) {
+                    				setText(user.getPublicData().getNickName() + " (spec)");
+                    			} else {
+                    				setText(user.getPublicData().getNickName());
+                    			}
+
+                    		} else {
+                    			setText(null);
+                    		}
+                    	}
+                    });
                 }
             };
         });
@@ -164,7 +172,6 @@ public class ChatController {
 		};
 		players.addListener(usersChangeListener);
 		spectators.addListener(usersChangeListener);
-		listUsers.setItems(users);
 	}
 
 	private void bindListMessages() {

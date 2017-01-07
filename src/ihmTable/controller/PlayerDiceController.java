@@ -32,7 +32,9 @@ public abstract class PlayerDiceController {
 
 	protected void setPlayerData(PlayerData playerData) {
 		this.playerData = playerData;
-		addDiceListeners();
+		if(this.playerData != null) {
+			addDiceListeners();
+		}
 //		updateDiceViews();
 	}
 

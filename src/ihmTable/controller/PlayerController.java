@@ -36,10 +36,9 @@ public class PlayerController extends PlayerDiceController {
     @FXML
     protected Label playerName;
 
+    protected InterImplDataTable interImplDataTable;
 	protected User user;
-	private GameState gameState;
-
-	private InterImplDataTable interImplDataTable;
+	protected GameState gameState;
 
 	public void initialize() throws IOException {
 		super.initialize();
@@ -50,7 +49,6 @@ public class PlayerController extends PlayerDiceController {
 	public void setData(InterImplDataTable interImplDataTable, User user) {
 		this.interImplDataTable = interImplDataTable;
 		this.gameState = interImplDataTable.getActualTable().getGameState();
-		this.gameState.actualPlayerProperty().addListener((observable, oldValue, newValue) -> onActualPlayerChange(newValue));
 		setUser(user);
 	}
 
@@ -61,31 +59,41 @@ public class PlayerController extends PlayerDiceController {
 
 	protected void setUser(User user) {
 		this.user = user;
+		updateView();
+	}
+
+	protected void updateView() {
+		this.gameState.actualPlayerProperty().addListener((observable, oldValue, newValue) -> onActualPlayerChange(newValue));
 		updatePlayerData();
 		updatePlayerView();
+		updateDiceViews();
+		updateTokens();
 	}
 
 	private void updatePlayerData() {
 		super.setPlayerData(this.gameState.getData(this.user, false));
-		avatarContainer.getStyleClass().removeAll(TURN_OF, BEST_SCORE, SCORE_TO_BEAT);
-		if(this.user.isSame(this.gameState.getActualPlayer())) {
-			avatarContainer.getStyleClass().add(TURN_OF);
-		} else if(this.user.isSame(interImplDataTable.getBest().getPlayer())) {
-			avatarContainer.getStyleClass().add(BEST_SCORE);
-		} else if(this.user.isSame(interImplDataTable.getWorst().getPlayer())) {
-			avatarContainer.getStyleClass().add(SCORE_TO_BEAT);
-		}
-		updateTokens();
 	}
 
 	private void onActualPlayerChange(User actualPlayer) {
 		updatePlayerData();
+		updateAvatarStyle();
 	}
 
-	private void updatePlayerView() {
+	protected void updatePlayerView() {
 		this.playerName.setText(this.user.getPublicData().getNickName());
 		this.avatarContainer.setFill(new ImagePattern(Utility.getPlayerAvatar(this.user)));
-		updateDiceViews();
+		updateAvatarStyle();
+	}
+
+	private void updateAvatarStyle() {
+		this.avatarContainer.getStyleClass().removeAll(TURN_OF, BEST_SCORE, SCORE_TO_BEAT);
+		if(this.user.isSame(this.gameState.getActualPlayer())) {
+			this.avatarContainer.getStyleClass().add(TURN_OF);
+		} else if(this.user.isSame(this.interImplDataTable.getBest().getPlayer())) {
+			this.avatarContainer.getStyleClass().add(BEST_SCORE);
+		} else if(this.user.isSame(this.interImplDataTable.getWorst().getPlayer())) {
+			this.avatarContainer.getStyleClass().add(SCORE_TO_BEAT);
+		}
 	}
 
 	private void updateTokens() {

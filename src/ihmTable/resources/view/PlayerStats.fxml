@@ -31,7 +31,7 @@
       </VBox>
    </left>
    <center>
-      <VBox fx:id="rightContainer" alignment="TOP_CENTER" BorderPane.alignment="CENTER">
+      <VBox fx:id="centerContainer" alignment="TOP_CENTER" BorderPane.alignment="CENTER">
          <children>
             <Label alignment="CENTER" maxWidth="1.7976931348623157E308" text="Globales">
                <styleClass>
@@ -81,7 +81,7 @@
       </VBox>
    </center>
    <right>
-      <VBox fx:id="centerContainer" alignment="TOP_CENTER" BorderPane.alignment="CENTER">
+      <VBox fx:id="rightContainer" alignment="TOP_CENTER" BorderPane.alignment="CENTER">
          <children>
             <Label fx:id="gameStatsTitle" alignment="CENTER" maxWidth="1.7976931348623157E308" text="Jeu">
                <styleClass>
