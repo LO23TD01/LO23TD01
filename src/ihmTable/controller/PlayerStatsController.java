@@ -68,7 +68,7 @@ public class PlayerStatsController extends PlayerController {
 
     @Override
     protected void updateView() {
-    	if(this.gameState.getData(this.user, false) != null) {
+    	if(this.playerData != null) {
     		super.updateView();
     		this.rightContainer.setVisible(true);
     		this.rightContainer.setManaged(true);
@@ -93,7 +93,6 @@ public class PlayerStatsController extends PlayerController {
 				@Override
 			    public void run() {
 					setUser(localUser);
-
 				}
 			});
     	}

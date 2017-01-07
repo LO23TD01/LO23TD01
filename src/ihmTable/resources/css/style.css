@@ -76,6 +76,18 @@
 	-fx-text-fill: #ff5b57;
 }
 
+.avatar-container.best-score {
+	-fx-stroke: #00acac;
+}
+
+.avatar-container.score-to-beat {
+	-fx-stroke: #ff5b57;
+}
+
+.avatar-container.turn-of {
+	-fx-stroke: #348fe2;
+}
+
 /* --------- */
 /* DICE */
 .dice {
@@ -165,17 +177,10 @@
 
 /* --------- */
 /* PLAYER */
-.avatar-container.best-score {
-	-fx-stroke: #00acac;
+#player-view .label {
+	-fx-text-fill: black;
 }
 
-.avatar-container.score-to-beat {
-	-fx-stroke: #ff5b57;
-}
-
-.avatar-container.turn-of {
-	-fx-stroke: #348fe2;
-}
 
 /* --------- */
 /* DICE LAUNCHER */
