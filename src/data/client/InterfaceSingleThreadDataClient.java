@@ -27,7 +27,7 @@ public class InterfaceSingleThreadDataClient implements InterfaceDataNetwork {
 	//le seul et unique constructeur appelée UNE SEULE FOIS (pour avoir qu'un seul thread hein;)
 	public InterfaceSingleThreadDataClient(ClientDataEngine client)
 	{
-		this.es =  Executors.newSingleThreadExecutor();
+		this.es =  Executors.newSingleThreadExecutor(new DaemonThreadFactory());
 		this.client = client;
 	}
 	
