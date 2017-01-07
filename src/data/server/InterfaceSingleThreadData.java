@@ -9,6 +9,7 @@ import data.GameTable;
 import data.Parameters;
 import data.Profile;
 import data.User;
+import data.server.DaemonThreadFactory;
 
 public class InterfaceSingleThreadData implements InterfaceDataNetwork {
 
@@ -18,7 +19,7 @@ public class InterfaceSingleThreadData implements InterfaceDataNetwork {
 	//le seul et unique constructeur appelée UNE SEULE FOIS (pour avoir qu'un seul thread hein;)
 	public InterfaceSingleThreadData(ServerDataEngine server)
 	{
-		this.es =  Executors.newSingleThreadExecutor();
+		this.es =  Executors.newSingleThreadExecutor(new DaemonThreadFactory());
 		this.server = server;
 	}
 
