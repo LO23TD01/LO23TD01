@@ -59,21 +59,28 @@ public class Rules {
 		}
 
 		public boolean isSuite() {
-			if (this.dice[0] == (this.dice[1] - 1) && this.dice[0] == (this.dice[2] - 2)) {
+			if (this.dice[2] == (this.dice[1] - 1) && this.dice[2] == (this.dice[0] - 2)) {
 				return true;
 			}
 			return false;
 		}
 
 		public boolean isNenette() {
-			if (this.dice[0] == 2 && this.dice[0] ==2 && this.dice[0] ==1) {
+			if (this.dice[0] == 2 && this.dice[1] ==2 && this.dice[2] ==1) {
+				return true;
+			}
+			return false;
+		}
+
+		public boolean is421() {
+			if (this.dice[2] == 4 && this.dice[1] == 2 && this.dice[0] == 1){
 				return true;
 			}
 			return false;
 		}
 
 		public int valeur() {
-			if (this.dice[0] == 4 && this.dice[1] == 2 && this.dice[2] == 1) //421
+			if  (is421())
 			{
 				return 10;
 			}
@@ -101,6 +108,10 @@ public class Rules {
 			else if (this.valeur() > lancerDes2.valeur()) {
 				return 1;
 			} else if (this.valeur() < lancerDes2.valeur()) {
+				return -1;
+			} else if (this.is421() && !lancerDes2.is421()) {
+				return 1;
+			} else if (!this.is421() && lancerDes2.is421()) {
 				return -1;
 			} else if (this.isPaireAs() && !lancerDes2.isPaireAs()) {
 				return 1;
@@ -189,8 +200,8 @@ public class Rules {
 		List<DiceThrow> listDice = new ArrayList<DiceThrow>();
 		for(PlayerData p : l)
 			listDice.add(new DiceThrow(p.getPlayer(),p.getDices()));
-		Collections.sort(listDice);
-		Collections.reverse(listDice);
+		Collections.sort(listDice); //ordre croissant de valeur
+		Collections.reverse(listDice); //ordre decroissant
 
 		if(listDice.get(0).valeur()==1 && listDice.get(listDice.size()-1).isNenette())
 			Collections.reverse(listDice);
@@ -243,29 +254,26 @@ public class Rules {
 		{
 			return actualPlayerData.getRerollCount() ==0;
 		}
-
-
-
 	}
 
 	public boolean hasToReroll(List<PlayerData> l, User actualPlayer, User firstPlayer, boolean isDischarge) {
+		PlayerData actualPlayerData = null;
+		for(PlayerData p : l)
+		{
+			if(p.getPlayer().isSame(actualPlayer))
+				actualPlayerData=p;
+		}
+		if(actualPlayerData==null)
+		{
+			System.out.println("Failed to find Data : Rules.java");
+			return false;
+		}
 		switch (this.variant.get()) {
 		case FREE_DISCHARGE:
-			return false;
+			return (actualPlayerData.getRerollCount()==0);
 		case FIXED_DISCHARGE:
 			return true;
 		case CONSTRAINED_DISCHARGE:
-			PlayerData actualPlayerData = null;
-			for(PlayerData p : l)
-			{
-				if(p.getPlayer().isSame(actualPlayer))
-					actualPlayerData=p;
-			}
-			if(actualPlayerData==null)
-			{
-				System.out.println("Failed to find Data : Rules.java");
-				return false;
-			}
 			return (actualPlayerData.getRerollCount()==0 || (!(actualPlayer.isSame(firstPlayer)) && this.canReroll(l, actualPlayer, firstPlayer, isDischarge)));
 		default:
 			// throw new Exception("Etat Incoherent : Rules.java");
