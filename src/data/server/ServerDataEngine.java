@@ -338,6 +338,7 @@ public class ServerDataEngine implements InterfaceDataNetwork {
 				 	PlayerData pData = new PlayerData(tableFull.getGameState().getData(userFull, tie));
 					boolean isFirstRoll = (pData.getRerollCount() == 0);
 					boolean isStop = !(d1 || d2 || d3);
+					boolean isFullRoll = (d1 && d2 && d3);
 					boolean canReroll,hasToReroll;
 					if(tie)
 					{
@@ -362,6 +363,10 @@ public class ServerDataEngine implements InterfaceDataNetwork {
 					 if(hasToReroll && isStop)
 					 {
 						 this.comServer.raiseException(uuid,"Le joueur ne peux pas s'arreter. Il est obligï¿½ de rejouer.");
+					 }
+					 else if(isFirstRoll && !isFullRoll)
+					 {
+						 this.comServer.raiseException(uuid,"Le joueur doit lancer tous les dés lors de son premier lancer.");
 					 }
 					 else
 					 {
@@ -596,6 +601,7 @@ public class ServerDataEngine implements InterfaceDataNetwork {
 					}
 					else
 					{
+						tableFull.getGameState().setDataList(tableFull.getGameState().getDataList().stream().filter(d -> d.getChip() != 0).collect(Collectors.toList()));
 						tableFull.getGameState().setState(State.DISCHARGING);
 						this.comServer.changeState(getUUIDList(tableFull.getAllList()), State.DISCHARGING);
 					}
@@ -651,6 +657,7 @@ public class ServerDataEngine implements InterfaceDataNetwork {
 						tableFull.getGameState().setState(State.END);
 						this.comServer.changeState(getUUIDList(tableFull.getAllList()), State.END);
 					}
+					tableFull.getGameState().setDataList(tableFull.getGameState().getDataList().stream().filter(d -> d.getChip() != 0).collect(Collectors.toList()));
 
 				}
 				tableFull.getGameState().nextTurn(pDataL.getPlayer());
@@ -805,15 +812,7 @@ public class ServerDataEngine implements InterfaceDataNetwork {
 																	// doit
 																	// arreter
 			{
-				if (tableFull.getGameState().getDataList().stream().filter(d -> d.getRerollCount() == 0).count() != 0) // et
-																														// que
-																														// l'
-																														// on
-																														// n'a
-																														// pas
-																														// fini
-																														// de
-																														// distribuer
+				if (tableFull.getGameState().getDataList().stream().filter(d -> (d.getRerollCount() == 0 && (tableFull.getGameState().getState()!=State.DISCHARGING || d.getChip()!=0))).count() != 0)
 				{
 					// on change le joueur
 					tableFull.getGameState().setActualPlayer(tableFull.getGameState().getNextPlayer());

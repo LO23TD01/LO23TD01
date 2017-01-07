@@ -103,19 +103,35 @@ public class GameState {
 	public PlayerData getData(User u, boolean tie) {
 		if (!tie) {
 			// if(u.getSame(this.playerList)==null)
-			// throw new Exception("Le joueur n'appartient pas � cette partie. Le joueur doit appartient � cette partie pour obtenir ses donn�es.");
-			// else if(u.getSame(this.dataList.stream().map(d->d.getPlayer()).collect(Collectors.toList()))==null)
-			// throw new Exception("La donn�e du joueur n'existe pas. Le joueur doit avoir des donn�es pour les recuperer.");
-			PlayerData data = this.dataList.stream().filter(d -> u.isSame(d.getPlayer())).findFirst().get();
-			return data;
+			// throw new Exception("Le joueur n'appartient pas � cette partie.
+			// Le joueur doit appartient � cette partie pour obtenir ses
+			// donn�es.");
+			// else
+			// if(u.getSame(this.dataList.stream().map(d->d.getPlayer()).collect(Collectors.toList()))==null)
+			// throw new Exception("La donn�e du joueur n'existe pas. Le
+			// joueur doit avoir des donn�es pour les recuperer.");
+			try {
+				PlayerData data = this.dataList.stream().filter(d -> u.isSame(d.getPlayer())).findFirst().get();
+				return data;
+			} catch (Exception e) {
+				return null;
+			}
 		} else {
 			// if(u.getSame(this.playerList)==null)
-			// throw new Exception("Le joueur n'appartient pas � cette partie. Le joueur doit appartient � cette partie pour obtenir ses donn�es.");
+			// throw new Exception("Le joueur n'appartient pas � cette partie.
+			// Le joueur doit appartient � cette partie pour obtenir ses
+			// donn�es.");
 			// TODO verifier que le TIE existe
-			// else if(u.getSame(this.dataTieList.stream().map(d->d.getPlayer()).collect(Collectors.toList()))==null)
-			// throw new Exception("La donn�e du joueur n'existe pas. Le joueur doit avoir des donn�es pour les recuperer.");
-			PlayerData data = this.dataTieList.stream().filter(d -> u.isSame(d.getPlayer())).findFirst().get();
-			return data;
+			// else
+			// if(u.getSame(this.dataTieList.stream().map(d->d.getPlayer()).collect(Collectors.toList()))==null)
+			// throw new Exception("La donn�e du joueur n'existe pas. Le
+			// joueur doit avoir des donn�es pour les recuperer.");
+			try {
+				PlayerData data = this.dataTieList.stream().filter(d -> u.isSame(d.getPlayer())).findFirst().get();
+				return data;
+			} catch (Exception e) {
+				return null;
+			}
 		}
 
 	}
@@ -196,7 +212,9 @@ public class GameState {
 				return playerList.get(nextIndex);
 			case DISCHARGING:
 				nextIndex = (this.playerList.indexOf(this.actualPlayer.getValue()) + 1) % this.playerList.size();
-				while (this.getData(this.playerList.get(nextIndex), false).getChip() == 0)
+
+				while (this.getData(this.playerList.get(nextIndex), false)==null //car datalist ne contient plus tous les joueurs
+						|| this.getData(this.playerList.get(nextIndex), false).getChip() == 0)
 					nextIndex = (nextIndex + 1) % this.playerList.size();
 				return this.playerList.get(nextIndex);
 			case END:
