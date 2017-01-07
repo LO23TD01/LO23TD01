@@ -59,12 +59,12 @@ public class PlayerController extends PlayerDiceController {
 
 	protected void setUser(User user) {
 		this.user = user;
+		updatePlayerData();
 		updateView();
 	}
 
 	protected void updateView() {
 		this.gameState.actualPlayerProperty().addListener((observable, oldValue, newValue) -> onActualPlayerChange(newValue));
-		updatePlayerData();
 		updatePlayerView();
 		updateDiceViews();
 		updateTokens();
@@ -77,6 +77,9 @@ public class PlayerController extends PlayerDiceController {
 	private void onActualPlayerChange(User actualPlayer) {
 		updatePlayerData();
 		updateAvatarStyle();
+		if(this.playerData != null) {
+			updateTokens();
+		}
 	}
 
 	protected void updatePlayerView() {
@@ -90,9 +93,9 @@ public class PlayerController extends PlayerDiceController {
 		if(this.user.isSame(this.gameState.getActualPlayer())) {
 			this.avatarContainer.getStyleClass().add(TURN_OF);
 		} else if(this.user.isSame(this.interImplDataTable.getBest().getPlayer())) {
-			this.avatarContainer.getStyleClass().add(BEST_SCORE);
-		} else if(this.user.isSame(this.interImplDataTable.getWorst().getPlayer())) {
 			this.avatarContainer.getStyleClass().add(SCORE_TO_BEAT);
+		} else if(this.user.isSame(this.interImplDataTable.getWorst().getPlayer())) {
+			this.avatarContainer.getStyleClass().add(BEST_SCORE);
 		}
 	}
 

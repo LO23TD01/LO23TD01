@@ -150,7 +150,7 @@ public class ChatController {
                     	@Override
                     	public void run() {
                     		if (user != null) {
-                    			if(user.isIsSpectating()) {
+                    			if(user.getSame(spectators) != null) {
                     				setText(user.getPublicData().getNickName() + " (spec)");
                     			} else {
                     				setText(user.getPublicData().getNickName());
