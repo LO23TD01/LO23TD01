@@ -18,6 +18,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.ListCell;
 import javafx.scene.control.ListView;
 import javafx.scene.control.TextArea;
+import javafx.scene.control.Tooltip;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
@@ -32,7 +33,9 @@ import javafx.util.Callback;
 
 public class ChatController {
 
-    private static final DateFormat DATE_FORMAT = new SimpleDateFormat("HH:mm:ss");
+    private static final String MESSAGE_CONTROL_CONTAINER_TOOLTIP = "Le chat n'est pas autorisé aux spectateurs";
+
+	private static final DateFormat DATE_FORMAT = new SimpleDateFormat("HH:mm:ss");
 
     @FXML
     private BorderPane chatView;
@@ -83,6 +86,11 @@ public class ChatController {
 		this.users.addAll(players);
 		this.users.addAll(spectators);
 		this.listUsers.setItems(users);
+		if(user.getSame(localChat.getVoicedUserList()) == null) {
+			this.messageArea.setDisable(true);
+			this.sendButton.setDisable(true);
+			Tooltip.install(this.messageControlContainer, new Tooltip(MESSAGE_CONTROL_CONTAINER_TOOLTIP));
+		}
 		bindListMessages();
 		bindListUsers();
 	}
