@@ -52,7 +52,7 @@
 	-fx-background-image: url("../png/JetonOk.png");
 	-fx-background-size: cover;
 	-fx-alignment: center-left;
-	-fx-padding: 0 0 0 18px;
+	-fx-padding: 0 0 0 15px;
 }
 
 .row {

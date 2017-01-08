@@ -8,6 +8,7 @@ import data.client.InterImplDataTable;
 import ihmTable.util.Utility;
 import javafx.application.Platform;
 import javafx.fxml.FXML;
+import javafx.geometry.Insets;
 import javafx.scene.control.Label;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.HBox;
@@ -109,8 +110,8 @@ public class PlayerController extends PlayerDiceController {
 	}
 
 	protected void setPrefProperties() {
-		Utility.bindPrefProperties(centerContainer, playerView.widthProperty().multiply(0.2), playerView.heightProperty());
-		Utility.bindPrefProperties(diceContainer, playerView.widthProperty().multiply(0.2), playerView.heightProperty());
-		Utility.bindPrefProperties(tokens, playerView.widthProperty().multiply(0.12), playerView.widthProperty().multiply(0.12));
+		Utility.bindPrefProperties(centerContainer, playerView.widthProperty().multiply(0.1), playerView.heightProperty());
+		Utility.bindPrefProperties(diceContainer, playerView.widthProperty().multiply(0.1), playerView.heightProperty());
+//		Utility.bindPrefProperties(tokens, playerView.widthProperty().multiply(0.12), playerView.widthProperty().multiply(0.12));
 	}
 }
