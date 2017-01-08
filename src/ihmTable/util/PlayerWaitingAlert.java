@@ -25,30 +25,115 @@ import javafx.scene.shape.Rectangle;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 
+/**
+ * Class to display a dialog when waiting for players. Extends {@link Alert}
+ *
+ * @see Alert
+ */
 public class PlayerWaitingAlert extends Alert {
 
+	/**
+	 * The text for players
+	 */
 	private static final String PLAYERS_TEXT = "Joueurs : ";
+	/**
+	 * The text for spectators
+	 */
 	private static final String SPECTATORS_TEXT = "Spectateurs";
+	/**
+	 * The text for chat
+	 */
 	private static final String CHAT_TEXT = "Chat";
+	/**
+	 * The text for the title
+	 */
 	private static final String HEADER = "En attente";
+	/**
+	 * The text for start button
+	 */
 	private static final String BUTTON_START_TEXT = "Démarrer";
+	/**
+	 * The text for quit button
+	 */
 	private static final String BUTTON_QUIT_TEXT = "Quitter";
+	/**
+	 * The text for rules
+	 */
 	private static final String RULES_TEXT = "Règles : ";
+	/**
+	 * The text for chips
+	 */
 	private static final String CHIPS_TEXT = "Jetons : ";
 
+	/**
+	 * The interface with data
+	 *
+	 * @see InterImplDataTable
+	 */
 	private InterImplDataTable interImplDataTable;
+	/**
+	 * The game table
+	 *
+	 * @see GameTable
+	 */
 	private GameTable gameTable;
+	/**
+	 * The local user
+	 *
+	 * @see User
+	 */
 	private User user;
+	/**
+	 * The parameters of the table
+	 *
+	 * @see Parameters
+	 */
 	private Parameters parameters;
+	/**
+	 * Map containing all the players view
+	 */
 	private HashMap<UUID, Rectangle> playerViews;
+	/**
+	 * List containing all the players
+	 */
 	private ObservableList<User> players;
+	/**
+	 * The stage containing the table
+	 *
+	 * @see Stage
+	 */
 	private Stage stage;
+	/**
+	 * The main container for dialog content
+	 */
 	private VBox vBox;
+	/**
+	 * The container for players' avatar view
+	 */
 	private HBox playersHBox;
+	/**
+	 * The button start of the dialog
+	 */
 	private ButtonType buttonStart;
+	/**
+	 * The button quit of dialog
+	 */
 	private ButtonType buttonQuit;
+	/**
+	 * Listener to get any changes of the game state change
+	 */
 	private InvalidationListener listener;
 
+	/**
+	 * Create the waiting dialog
+	 * @param interImplDataTable the interface with data
+	 * @param user the local user
+	 * @param stage the stage of the table
+	 *
+	 * @see PlayerWaitingAlert#interImplDataTable
+	 * @see PlayerWaitingAlert#user
+	 * @see PlayerWaitingAlert#stage
+	 */
 	public PlayerWaitingAlert(InterImplDataTable interImplDataTable, User user, Stage stage) {
 		super(AlertType.INFORMATION);
 		this.initStyle(StageStyle.UNDECORATED);
@@ -78,6 +163,11 @@ public class PlayerWaitingAlert extends Alert {
 		initButtons();
 	}
 
+	/**
+	 * Display all the parameters of the table
+	 *
+	 * @see PlayerWaitingAlert#parameters
+	 */
 	private void displayTableParameters() {
 		addLabel(gameTable.getName().toUpperCase());
 		addLabel(RULES_TEXT + parameters.getRules().getVariant().name());
@@ -87,10 +177,19 @@ public class PlayerWaitingAlert extends Alert {
 		addLabel(PLAYERS_TEXT + parameters.getNbPlayerMin() + " à " + parameters.getNbPlayerMin());
 	}
 
+	/**
+	 * Add a text the view
+	 * @param text the text which should be added
+	 */
 	private void addLabel(String text) {
 		vBox.getChildren().add(new Label(text));
 	}
 
+	/**
+	 * Add a checkbox to the view
+	 * @param text the text for the checkbox
+	 * @param isAuthorized whether is the value authorized
+	 */
 	private void addCheckBox(String text, boolean isAuthorized) {
 		CheckBox checkBox = new CheckBox(text);
 		checkBox.setDisable(true);
@@ -102,6 +201,11 @@ public class PlayerWaitingAlert extends Alert {
 		}
 	}
 
+	/**
+	 * Action performed when the user click on start button
+	 *
+	 * @see PlayerWaitingAlert#buttonStart
+	 */
 	private void start() {
 		gameTable.getGameState().stateProperty().removeListener(listener);
 		if (user.isSame(gameTable.getCreator())) {
@@ -115,11 +219,19 @@ public class PlayerWaitingAlert extends Alert {
 		});
 	}
 
+	/**
+	 * Action performed when the user click on quit button
+	 *
+	 * @see PlayerWaitingAlert#buttonQuit
+	 */
 	private void quit() {
 		this.interImplDataTable.quitGame();
 		this.stage.close();
 	}
 
+	/**
+	 * Initialize the container of the players view and update it when a new player arrives or a player leaves
+	 */
 	private void initPlayersHBox() {
 		for (User user : gameTable.getPlayerList()) {
 			Rectangle rectangle = getPlayerAvatar(user);
@@ -164,6 +276,12 @@ public class PlayerWaitingAlert extends Alert {
 		players.addListener(playersChangeListener);
 	}
 
+	/**
+	 * Initialize the start button and quit button
+	 *
+	 * @see PlayerWaitingAlert#buttonStart
+	 * @see PlayerWaitingAlert#buttonQuit
+	 */
 	private void initButtons() {
 		this.buttonStart = new ButtonType(BUTTON_START_TEXT);
 		this.buttonQuit = new ButtonType(BUTTON_QUIT_TEXT);
@@ -185,6 +303,11 @@ public class PlayerWaitingAlert extends Alert {
 		}
 	}
 
+	/**
+	 * Return the given player's avatar
+	 * @param user the player
+	 * @return the avatar
+	 */
 	private Rectangle getPlayerAvatar(User user) {
 		Rectangle rectangle = new Rectangle(20, 30);
 		rectangle.setFill(new ImagePattern(Utility.getPlayerAvatar(user)));

@@ -16,16 +16,48 @@ import javafx.geometry.VPos;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Pane;
 
+/**
+ * Controller of the table center view
+ */
 public class TableCenterController {
 
+    /**
+     * GridPane of the view which will include the diceLauncher's and all player's view
+     *
+     * @see DiceLauncherController
+     * @see PlayerController
+     */
     @FXML
     private GridPane tableCenterView;
 
+    /**
+     * Data's interface
+     * @see InterImplDataTable
+     */
     private InterImplDataTable interImplDataTable;
+    /**
+     * The game table
+     *
+     * @see GameTable
+     */
     private GameTable gameTable;
-    private DiceLauncherController diceLaunchController;
+    /**
+     * The dice launcher controller
+     *
+     * @see DiceLauncherController
+     */
+    private DiceLauncherController diceLauncherController;
+	/**
+	 * Map which will container all the players' view
+	 */
 	private HashMap<User, Pane> playerViews;
+	/**
+	 * Players' list of the the table
+	 */
 	private ObservableList<User> playersList;
+	/**
+	 * Controller of the playerStats view of the table
+	 */
 	private PlayerStatsController playerStatsController;
 
 	/**
@@ -37,7 +69,7 @@ public class TableCenterController {
 		//DiceLaucher creation
 		FXMLLoader diceLauncherLoader = new FXMLLoader(getClass().getResource("/ihmTable/resources/view/DiceLauncher.fxml"));
 		addToTableCenterView(diceLauncherLoader.load(), 1, 1, VPos.CENTER, HPos.CENTER);
-		this.diceLaunchController = diceLauncherLoader.getController();
+		this.diceLauncherController = diceLauncherLoader.getController();
 	}
 
 	/**
@@ -50,7 +82,7 @@ public class TableCenterController {
 	public void setData(InterImplDataTable interImplDataTable, User user, PlayerStatsController playerStatsController) throws IOException {
 		this.interImplDataTable = interImplDataTable;
 		this.gameTable = interImplDataTable.getActualTable();
-		this.diceLaunchController.setData(interImplDataTable, user);
+		this.diceLauncherController.setData(interImplDataTable, user);
 		this.playersList = this.gameTable.getPlayerList();
 		this.playerStatsController = playerStatsController;
 		initPlayers();

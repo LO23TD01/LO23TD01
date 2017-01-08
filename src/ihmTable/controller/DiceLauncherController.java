@@ -11,19 +11,48 @@ import javafx.scene.control.Button;
 import javafx.scene.layout.TilePane;
 import javafx.scene.layout.VBox;
 
+/**
+ * Controller which manages the dice launcher view and inherit from PlayerDiceController
+ *
+ * @see PlayerDiceController
+ */
 public class DiceLauncherController extends PlayerDiceController {
 
+	/**
+	 * The main view of the dice launcher
+	 */
 	@FXML
 	private VBox diceLauncherView;
 
+	/**
+	 * The container of the dice
+	 */
 	@FXML
     private TilePane diceContainer;
 
+    /**
+     * The launch button
+     */
     @FXML
     private Button launchButton;
 
+	/**
+	 * The data interface
+	 *
+	 * @see InterImplDataTable
+	 */
 	private InterImplDataTable interImplDataTable;
+	/**
+	 * The game state
+	 *
+	 * @see GameState
+	 */
 	private GameState gameState;
+	/**
+	 * The local user
+	 *
+	 * @see User
+	 */
 	private User localUser;
 
 	/**
@@ -68,21 +97,12 @@ public class DiceLauncherController extends PlayerDiceController {
 			setDisableDiceLauncher(!this.localUser.isSame(actualPlayer));
 			setPlayerData(this.gameState.getData(actualPlayer, false));
 
-			if(this.localUser.isSame(actualPlayer))
+			if(this.localUser.isSame(actualPlayer)) {
 				setDiceSelectable(true);
-
-//			//TODO voir avec Data comment gérer la sélection des dés (rerollCount toujours à 0)
-//			if(this.playerData.getRerollCount() == 1) {
-//				setDiceSelectionOptions(true, false);
-//			} else if(this.playerData.getRerollCount() > 1) {
-//				setDiceSelectable(true);
-//			} else {
-//				setDiceSelectionOptions(false, true);
-//			}
+			}
 		}
 	}
 
-	//TODO à remove car selection des dés non pris en compte par Data
 	/**
 	 * Inform Data when a dice has been selected or unselected
 	 */
@@ -119,16 +139,6 @@ public class DiceLauncherController extends PlayerDiceController {
 	}
 
 	/**
-	 * Set all the dice as selectable or not and as selected or not according to the parameters
-	 * @param selectable whether the dice are selectable
-	 * @param selected whether the dice are selected
-	 */
-	private void setDiceSelectionOptions(boolean selectable, boolean selected) {
-		setDiceSelectable(selectable);
-		setDiceSelected(selected);
-	}
-
-	/**
 	 * Set all the dice as selectable or not according to the parameter
 	 * @param selectable whether the dice are selectable
 	 */
@@ -136,15 +146,5 @@ public class DiceLauncherController extends PlayerDiceController {
 		this.diceController1.setSelectable(selectable);
 		this.diceController2.setSelectable(selectable);
 		this.diceController3.setSelectable(selectable);
-	}
-
-	/**
-	 * Set all the dice as selected or not according to the parameter
-	 * @param selected whether the dice are selected
-	 */
-	private void setDiceSelected(boolean selected) {
-		this.diceController1.setSelected(selected);
-		this.diceController2.setSelected(selected);
-		this.diceController3.setSelected(selected);
 	}
 }

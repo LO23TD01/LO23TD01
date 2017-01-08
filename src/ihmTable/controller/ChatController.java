@@ -31,44 +31,133 @@ import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
 import javafx.util.Callback;
 
+/**
+ * Controller class which manages Chat view
+ */
 public class ChatController {
 
+    /**
+     * Tooltip message displayed when messageArea and sendButton are disabled
+     *
+     * @see ChatController#messageArea
+     * @see ChatController#sendButton
+     */
     private static final String MESSAGE_CONTROL_CONTAINER_TOOLTIP = "Le chat n'est pas autorisé aux spectateurs";
 
+	/**
+	 * Date format used to display dates
+	 */
 	private static final DateFormat DATE_FORMAT = new SimpleDateFormat("HH:mm:ss");
 
+    /**
+     * General chat view
+     */
     @FXML
     private BorderPane chatView;
 
+    /**
+     * List view displaying all messages
+     *
+     * @see ListView
+     */
     @FXML
     private ListView<ChatMessage> listMessages;
 
+    /**
+     * Input field for messages
+     */
     @FXML
     private TextArea messageArea;
 
+    /**
+     * Button to send messages
+     */
     @FXML
     private Button sendButton;
 
+    /**
+     * List view displaying all users
+     *
+     * @see ListView
+     */
     @FXML
     private ListView<User> listUsers;
 
+    /**
+     * Container of messageArea and sendButton
+     *
+     * @see ChatController#messageArea
+     * @see ChatController#sendButton
+     */
     @FXML
     private HBox messageControlContainer;
 
+    /**
+     * Left container of chatView including listMessages and messageControlContainer
+     *
+     * @see ChatController#chatView
+     * @see ChatController#listMessages
+     * @see ChatController#messageControlContainer
+     */
     @FXML
     private BorderPane chatLeftContainer;
 
+    /**
+     * Right container of chatView including listUsers
+     *
+     * @see ChatController#chatView
+     * @see ChatController#listUsers
+     */
     @FXML
     private AnchorPane chatRightContainer;
 
+    /**
+     * Interface with Data
+     */
     private InterImplDataTable interImplDataTable;
+    /**
+     * Chat object of Data used to populate listMessages
+     *
+     * @see Chat
+     * @see ChatController#listMessages
+     */
     private Chat localChat;
+    /**
+     * Local user
+     *
+     * @see User
+     */
     private User user;
+    /**
+     * ObservableList containing all users connected to the table including players and spectators
+     *
+     * @see ObservableList
+     * @see ChatController#players
+     * @see ChatController#spectators
+     */
     private ObservableList<User> users;
+    /**
+     * ObservableList containing all players of the table
+     *
+     * @see ObservableList
+     */
     private ObservableList<User> players;
+    /**
+     * ObservableList containing all spectators of the table
+     *
+     * @see ObservableList
+     */
     private ObservableList<User> spectators;
+    /**
+     * Controller of playerStats view
+     *
+     * @see PlayerStatsController
+     */
     private PlayerStatsController playerStatsController;
 
+    /**
+     * Initialize the controller
+     */
     public void initialize() {
     	initListMessagesCellFactory();
     	initListUsersCellFactory();
@@ -76,6 +165,12 @@ public class ChatController {
     	sendButton.setOnAction(event -> onSendButtonClick());
     }
 
+    /**
+     * Set data to the controller
+     * @param interImplDataTable the Data's interface
+     * @param user the local user
+     * @param playerStatsController the controller of playerStats' view
+     */
     public void setData(InterImplDataTable interImplDataTable, User user, PlayerStatsController playerStatsController) {
 		this.interImplDataTable = interImplDataTable;
 		GameTable gameTable = interImplDataTable.getActualTable();
@@ -97,6 +192,11 @@ public class ChatController {
 		bindListUsers();
 	}
 
+	/**
+	 * Customize cells of listMessages
+	 *
+	 * @see ChatController#listMessages
+	 */
 	private void initListMessagesCellFactory() {
 		listMessages.setCellFactory(new Callback<ListView<ChatMessage>, ListCell<ChatMessage>>(){
             @Override
@@ -123,7 +223,13 @@ public class ChatController {
         });
 	}
 
-	//return a custom cell for chatMessage
+	/**
+	 * Provide a customized view for a given chatMessage
+	 * @param chatMessage the chat message for which the view is need
+	 * @return the view of the given ChatMessage
+	 *
+	 * @see ChatMessage
+	 */
 	private VBox getMessageCell(ChatMessage chatMessage) {
 		VBox vbox = new VBox();
 		HBox hbox = new HBox();
@@ -142,6 +248,11 @@ public class ChatController {
 		return vbox;
 	}
 
+	/**
+	 * Customize cells of listUsers
+	 *
+	 * @see ChatController#listUsers
+	 */
 	private void initListUsersCellFactory() {
 		listUsers.setCellFactory((p) -> {
             return new ListCell<User>(){
@@ -168,6 +279,14 @@ public class ChatController {
         });
 	}
 
+	/**
+	 * Bind listUsers to users in order to update it whenever there is any changes in players and spectators
+	 *
+	 *  @see ChatController#listUsers
+	 *  @see ChatController#users
+	 *  @see ChatController#players
+	 *  @see ChatController#spectators
+	 */
 	private void bindListUsers() {
 		//If there is any changes on players or spectators lists, update users list
 		ListChangeListener<User> usersChangeListener;
@@ -185,15 +304,29 @@ public class ChatController {
 		listUsers.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> playerStatsController.setUser(newValue));
 	}
 
+	/**
+	 * Bind listMessages to localChat messages
+	 *
+	 * @see ChatController#listMessages
+	 * @see ChatController#localChat
+	 */
 	private void bindListMessages() {
 		listMessages.setItems(localChat.getMessageList());
 	}
 
+	/**
+	 * Perform action when sendButton is clicked
+	 *
+	 * @see ChatController#sendButton
+	 */
 	private void onSendButtonClick() {
 		interImplDataTable.sendMessage(new ChatMessage(user, messageArea.getText()));
 		messageArea.clear();
 	}
 
+	/**
+	 * Set pref properties (width and height) in order to resize the different elements when the view is resized
+	 */
 	private void setPrefProperties() {
 		Utility.bindPrefProperties(chatLeftContainer, chatView.widthProperty().multiply(0.7), chatView.heightProperty().subtract(messageControlContainer.heightProperty()));
 		Utility.bindPrefProperties(chatRightContainer, chatView.widthProperty().multiply(0.3), chatView.heightProperty());

@@ -18,16 +18,38 @@ import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 import javafx.stage.WindowEvent;
 
+/**
+ * Implementation of {@link IHMTableData}
+ */
 public class IHMTableLobbyImpl implements IHMTableLobby {
 
+	/**
+	 * Title of the exit dialog
+	 */
 	private static final String EXIT_GAME_ALERT_HEADER = "Partie en cours";
+	/**
+	 * Content of the exit dialog
+	 */
 	private static final String EXIT_GAME_ALERT_CONTENT = "Vous allez quitter une partie en cours.\nVoulez-vous continuer ?";
 
+	/**
+	 * Interface with data
+	 *
+	 * @see InterImplDataTable
+	 */
 	private static InterImplDataTable interImplDataTable;
+	/**
+	 * The stage
+	 *
+	 * @see Stage
+	 */
 	private static Stage stage;
 
-	public void displayTable(InterImplDataTable interImplDataTable, User user) throws IOException {
-		this.interImplDataTable = interImplDataTable;
+	/**
+	 * @see ihmTable.api.IHMTableLobby#displayTable(data.client.InterImplDataTable, data.User)
+	 */
+	public void displayTable(InterImplDataTable dataInterface, User user) throws IOException {
+		interImplDataTable = dataInterface;
 
 		// Loading table
 		FXMLLoader tableLoader = new FXMLLoader(getClass().getResource("/ihmTable/resources/view/Table.fxml"));
@@ -55,6 +77,9 @@ public class IHMTableLobbyImpl implements IHMTableLobby {
 		tableController.setData(interImplDataTable, user);
 	}
 
+	/**
+	 * Display a dialog when trying to exit the table
+	 */
 	public static void showExitModal() {
 		Alert alert = new Alert(AlertType.CONFIRMATION);
     	alert.setHeaderText(EXIT_GAME_ALERT_HEADER);
@@ -70,6 +95,12 @@ public class IHMTableLobbyImpl implements IHMTableLobby {
     	}
 	}
 
+	/**
+	 * Return the stage
+	 * @return the stage
+	 *
+	 * @see IHMTableLobbyImpl#stage
+	 */
 	public static Stage getStage() {
 		return stage;
 	}
