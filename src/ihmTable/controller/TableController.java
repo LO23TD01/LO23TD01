@@ -33,12 +33,12 @@ public class TableController {
 		this.user = user;
 
 		Utility.bindPrefProperties(tableCenterView, tableView.widthProperty().multiply(100 - 2 * PANELS_PERCENTAGE), tableView.heightProperty());
-		initChat();
 		initRules();
 		Pane bottomContainer = initBottom();
 		PlayerStatsController playerStatsController = initPlayerStats(bottomContainer);
 		initGameStats(bottomContainer);
 		initTableCenter(playerStatsController);
+		initChat(playerStatsController);
 		initMenu();
 
 		//Waiting for other players in prestart state
@@ -48,11 +48,11 @@ public class TableController {
 	}
 
 	// Chat view's initialization
-	private void initChat() throws IOException {
+	private void initChat(PlayerStatsController playerStatsController) throws IOException {
 		FXMLLoader chatLoader = new FXMLLoader(getClass().getResource("/ihmTable/resources/view/Chat.fxml"));
 		setPosition(getCollapsiblePane(chatLoader.load(), Position.right), Position.right);
 		ChatController chatController = (ChatController) chatLoader.getController();
-		chatController.setData(interImplDataTable, user);
+		chatController.setData(interImplDataTable, user, playerStatsController);
 	}
 
 	// Rules view's initialization
