@@ -15,19 +15,50 @@ import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
 
+/**
+ * Controller of the table view
+ */
 public class TableController {
 
+	/**
+	 * Percentage of the panel
+	 */
 	public static final double PANELS_PERCENTAGE = 0.20;
 
+	/**
+	 * The main container of the table view
+	 */
 	@FXML
 	private BorderPane tableView;
 
+	/**
+	 * The center container of the table view
+	 */
 	@FXML
 	private BorderPane tableCenterView;
 
+	/**
+	 * The interface with data
+	 *
+	 * @see InterImplDataTable
+	 */
 	private InterImplDataTable interImplDataTable;
+	/**
+	 * The local user
+	 *
+	 * @see User
+	 */
 	private User user;
 
+	/**
+	 * Set the data of the controller
+	 * @param interImplDataTable the interface with data
+	 * @param user the local user
+	 * @throws IOException
+	 *
+	 * @see TableController#interImplDataTable
+	 * @see TableController#user
+	 */
 	public void setData(InterImplDataTable interImplDataTable, User user) throws IOException {
 		this.interImplDataTable = interImplDataTable;
 		this.user = user;
@@ -47,7 +78,13 @@ public class TableController {
 		}
 	}
 
-	// Chat view's initialization
+	/**
+	 * Initialize the chat view
+	 * @param playerStatsController the playerStatsController
+	 * @throws IOException
+	 *
+	 * @see PlayerStatsController
+	 */
 	private void initChat(PlayerStatsController playerStatsController) throws IOException {
 		FXMLLoader chatLoader = new FXMLLoader(getClass().getResource("/ihmTable/resources/view/Chat.fxml"));
 		setPosition(getCollapsiblePane(chatLoader.load(), Position.right), Position.right);
@@ -55,12 +92,21 @@ public class TableController {
 		chatController.setData(interImplDataTable, user, playerStatsController);
 	}
 
-	// Rules view's initialization
+	/**
+	 * Initialize the rules view
+	 * @throws IOException
+	 */
 	private void initRules() throws IOException {
 		setPosition(getCollapsiblePane(FXMLLoader.load(getClass().getResource("/ihmTable/resources/view/Rules.fxml")), Position.left), Position.left);
 	}
 
-	// TableCenterView view's initialization
+	/**
+	 * Initialize the table center view
+	 * @param playerStatsController the playerStatsController
+	 * @throws IOException
+	 *
+	 * @see PlayerStatsController
+	 */
 	private void initTableCenter(PlayerStatsController playerStatsController) throws IOException {
 		FXMLLoader tableCenterLoader = new FXMLLoader(getClass().getResource("/ihmTable/resources/view/TableCenter.fxml"));
 		Pane tableCenter = tableCenterLoader.load();
@@ -69,7 +115,14 @@ public class TableController {
 		tableCenterController.setData(interImplDataTable, user, playerStatsController);
 	}
 
-	// PlayerStats view's initialization
+	/**
+	 * Initialize player stats view
+	 * @param parent the parent of the payer stats view
+	 * @return the PlayerStatsController
+	 * @throws IOException
+	 *
+	 * @see PlayerStatsController
+	 */
 	private PlayerStatsController initPlayerStats(Pane parent) throws IOException {
 		FXMLLoader playerStatsLoader = new FXMLLoader(getClass().getResource("/ihmTable/resources/view/PlayerStats.fxml"));
 		Pane playerStats = playerStatsLoader.load();
@@ -81,7 +134,11 @@ public class TableController {
 		return playerStatsController;
 	}
 
-	// GameStats view's initialization
+	/**
+	 * Initialize game stats view
+	 * @param parent the parent of the payer stats view
+	 * @throws IOException
+	 */
 	private void initGameStats(Pane parent) throws IOException {
 		FXMLLoader gameStatsLoader = new FXMLLoader(getClass().getResource("/ihmTable/resources/view/GameStats.fxml"));
 		Pane gameStats = gameStatsLoader.load();
@@ -92,7 +149,10 @@ public class TableController {
 		gameStatsController.setData(interImplDataTable);
 	}
 
-	// Menu view's initialization
+	/**
+	 * Initialize the menu view
+	 * @throws IOException
+	 */
 	private void initMenu() throws IOException {
 		FXMLLoader menuLoader = new FXMLLoader(getClass().getResource("/ihmTable/resources/view/Menu.fxml"));
 		Pane menu = menuLoader.load();
@@ -101,13 +161,25 @@ public class TableController {
 		menuController.setData(interImplDataTable);
 	}
 
-	// Bottom view's initialization
+	/**
+	 * Initialize the bottom panel
+	 * @return the view of the bottom panel
+	 * @throws IOException
+	 */
 	private Pane initBottom() throws IOException {
 		AnchorPane bottomContainer = new AnchorPane();
 		setPosition(getCollapsiblePane(bottomContainer, Position.bottom), Position.bottom);
 		return bottomContainer;
 	}
 
+	/**
+	 * Add the pane to tableView or tableCenterView according to its position
+	 * @param pane the pane corresponding to the view
+	 * @param position the position of the view
+	 *
+	 * @see TableController#tableView
+	 * @see TableController#tableCenterView
+	 */
 	private void setPosition(Pane pane, Position position) {
 		switch (position) {
 		case left:
@@ -130,6 +202,13 @@ public class TableController {
 		}
 	}
 
+	/**
+	 * Return the view of a collapsible panel which include the given pane
+	 * @param pane the pane corresponding to the view
+	 * @param position the position of the panel
+	 * @return The pane corresponding to the view
+	 * @throws IOException
+	 */
 	private Pane getCollapsiblePane(Pane pane, Position position) throws IOException {
 		FXMLLoader collapsiblePanelLoader = new FXMLLoader(getClass().getResource("/ihmTable/resources/view/CollapsiblePanel.fxml"));
 		Pane panel = collapsiblePanelLoader.load();

@@ -10,33 +10,70 @@ import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
 
+/**
+ * Controller which manages the game stats view
+ */
 public class GameStatsController {
 
+	/**
+	 * The label containing the phase
+	 */
 	@FXML
 	private Label phase;
 
+	/**
+	 * The label containing the nick name of the player who should play
+	 */
 	@FXML
 	private Label turnOf;
 
+	/**
+	 * The label containing the best score
+	 */
 	@FXML
 	private Label bestScore;
 
+	/**
+	 * The label containing the nick name of the player with the best score
+	 */
 	@FXML
 	private Label bestScorePlayer;
 
+	/**
+	 * The label containing the score to beat
+	 */
 	@FXML
 	private Label scoreToBeat;
 
+	/**
+	 * The label containing the nick name of the player with the score to beat
+	 */
 	@FXML
 	private Label scoreToBeatPlayer;
 
+	/**
+	 * The label containing the value of the chips of the turn
+	 */
 	@FXML
 	private Label turnChips;
 
+	/**
+	 * The label containing the value of the remaining chips
+	 */
 	@FXML
 	private Label stackChips;
 
+	/**
+	 * The game state
+	 *
+	 * @see GameState
+	 */
 	private GameState gameState;
+	/**
+	 * The interface with Data
+	 *
+	 * @see InterImplDataTable
+	 */
 	private InterImplDataTable interImplDataTable;
 
 	/**
