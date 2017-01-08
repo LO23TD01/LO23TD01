@@ -67,6 +67,7 @@ public class ChatController {
     private ObservableList<User> users;
     private ObservableList<User> players;
     private ObservableList<User> spectators;
+    private PlayerStatsController playerStatsController;
 
     public void initialize() {
     	initListMessagesCellFactory();
@@ -75,11 +76,12 @@ public class ChatController {
     	sendButton.setOnAction(event -> onSendButtonClick());
     }
 
-    public void setData(InterImplDataTable interImplDataTable, User user) {
+    public void setData(InterImplDataTable interImplDataTable, User user, PlayerStatsController playerStatsController) {
 		this.interImplDataTable = interImplDataTable;
 		GameTable gameTable = interImplDataTable.getActualTable();
 		this.localChat = gameTable.getLocalChat();
 		this.user = user;
+		this.playerStatsController = playerStatsController;
 		this.users = FXCollections.observableArrayList();
 		this.players = gameTable.getPlayerList();
 		this.spectators = gameTable.getSpectatorList();
@@ -180,6 +182,7 @@ public class ChatController {
 		};
 		players.addListener(usersChangeListener);
 		spectators.addListener(usersChangeListener);
+		listUsers.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> playerStatsController.setUser(newValue));
 	}
 
 	private void bindListMessages() {
