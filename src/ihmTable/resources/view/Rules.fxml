@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import java.lang.String?>
 <?import javafx.scene.control.Accordion?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.TitledPane?>
@@ -7,7 +8,11 @@
 
 <VBox id="rules-view" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="800.0" styleClass="panel" stylesheets="@../css/style.css" xmlns="http://javafx.com/javafx/8.0.60" xmlns:fx="http://javafx.com/fxml/1">
    <children>
-      <Label maxWidth="1.7976931348623157E308" styleClass="top-header" text="Règles" />
+      <Label maxWidth="1.7976931348623157E308" text="Règles">
+         <styleClass>
+            <String fx:value="top-header" />
+            <String fx:value="h2" />
+         </styleClass></Label>
       <Accordion maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="745.0">
         <panes>
           <TitledPane animated="false" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" text="Règles">

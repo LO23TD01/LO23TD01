@@ -57,7 +57,7 @@ public class IHMTableLobbyImpl implements IHMTableLobby {
 
 		// Displaying the new stage
 		stage = new Stage();
-		stage.setTitle(interImplDataTable.getActualTable().getName());
+		stage.setTitle("Table " + interImplDataTable.getActualTable().getName());
 		stage.setScene(new Scene(table));
 		stage.setMinWidth(800);
 		stage.setMinHeight(600);

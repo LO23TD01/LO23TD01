@@ -52,7 +52,7 @@ public class MenuController {
 	 * @param interImplDataTable the Data's interface
      */
     public void setData(InterImplDataTable interImplDataTable) {
-    	this.title.setText(interImplDataTable.getActualTable().getName());
+    	this.title.setText("Table " + interImplDataTable.getActualTable().getName());
     }
 
     /**
