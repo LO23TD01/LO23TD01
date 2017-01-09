@@ -1,6 +1,7 @@
 package ihmTable.controller;
 
 import java.io.IOException;
+import java.util.logging.Logger;
 
 import data.State;
 import data.User;
@@ -283,10 +284,11 @@ public class TableController {
 				tableView.getChildren().clear();
 				tableCenterView.getChildren().clear();
 				tableView.setCenter(tableCenterView);
+				Logger logger = Logger.getLogger(TableController.class.getName());
 				try {
 					initializeTable();
 				} catch (IOException e) {
-					e.printStackTrace();
+					logger.warning("Exception context : " + e);
 				}
 			}
 		});

@@ -26,7 +26,7 @@ public final class Utility {
 	 * @return The image corresponding the user's avatar
 	 */
 	public static Image getPlayerAvatar(User user) {
-		Image image = null;
+		Image image;
 		java.awt.Image avatar = user.getPublicData().getAvatar();
 		if(avatar != null) {
 			image = SwingFXUtils.toFXImage(toBufferedImage(avatar), null);
