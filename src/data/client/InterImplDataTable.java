@@ -117,6 +117,19 @@ public InterImplDataTable(ClientDataEngine dataEngine, UserRole actualRole,
  		}
 
 
+ 		public void vote(boolean vote)
+ 		{
+ 			if(this.actualTable.get().getGameState().getState() == State.END)
+ 			{
+ 				if(vote) {
+ 					this.acceptReplay();
+ 				} else {
+ 					this.refuseReplay();
+ 				}
+ 			}
+ 			else
+ 				this.answerStopGame(vote);
+ 		}
 
 
 ///IMPLEMENTATION INTERFACE ICI

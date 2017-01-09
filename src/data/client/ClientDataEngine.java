@@ -80,6 +80,8 @@ public class ClientDataEngine implements InterfaceDataNetwork {
 			System.out.println("Erreur Pas de table");
 		else
 		{
+			getActualTable().setVote(false);
+			getActualTable().getVoteCasted().clear();
 			getActualTable().initializeGame();
 		}
 	}
@@ -337,7 +339,10 @@ public class ClientDataEngine implements InterfaceDataNetwork {
 	@Override
 	public void stopGame(boolean a) {
 		if(a)
+		{
 			this.setActualTable(null);
+			this.kicked("Il a été voté que la partie d'arrête.");
+		}
 		else
 			this.getActualTable().setVote(false);
 	}

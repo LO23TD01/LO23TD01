@@ -99,7 +99,7 @@ public class GameTable {
 			return true;
 		}
 		if (isPlayer &&( this.parameters.get().getNbPlayerMax() <= this.playerList.size()
-				|| !(this.gameState.get().getState() == State.PRESTART || this.gameState.get().getState() == State.END)))
+				|| !(this.gameState.get().getState() == State.PRESTART)))// || this.gameState.get().getState() == State.END)))
 			return false;
 		if (isPlayer) {
 			this.playerList.add(u);
@@ -122,11 +122,21 @@ public class GameTable {
 		{
 			this.getSpectatorList().remove(index, index+1);
 		}
+		index=-1;
+		for(int i=0; i<this.getVoteCasted().size();i++)
+		{
+			if(this.getVoteCasted().get(i).getUser().isSame(u))
+				index=i;
+		}
+		if(index != -1)
+		{
+			this.getVoteCasted().remove(index, index+1);
+		}
 		this.localChat.get().remove(u);
 		this.gameState.get().remove(u);
 			// if(this.creator.isSame(u))
 			// throw new Exception("User disconnecting from table is the creator.");
-		
+
 	}
 
 	public void startVote() {

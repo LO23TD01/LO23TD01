@@ -166,6 +166,10 @@ public class GameState {
 		User playerToRemove = user.getSame(this.playerList);
 		if(playerToRemove != null)
 		{
+			if(this.getActualPlayer().isSame(playerToRemove) && this.playerList.size() >1)
+				this.setActualPlayer(this.getNextPlayer());
+			if(this.getFirstPlayer().isSame(playerToRemove) && this.playerList.size() >1)
+				this.setFirstPlayer(this.getActualPlayer());
 			int index = this.getPlayerList().indexOf(playerToRemove);
 			if(index != -1)
 			{
@@ -180,8 +184,7 @@ public class GameState {
 					this.getDataList().remove(index, index+1);
 				}
 			}
-			if(this.getActualPlayer().isSame(playerToRemove))
-				this.setActualPlayer(this.getNextPlayer());
+
 		}
 	}
 
@@ -194,28 +197,71 @@ public class GameState {
 		if (this.turnState.get() == TurnState.WINNER_TIE_ROUND) {
 			nextIndex = this.winners.indexOf(this.actualPlayer.getValue()); // -1 si pas trouv�
 			nextIndex = (nextIndex + 1) % this.winners.size();
+
+			while (this.getData(this.winners.get(nextIndex), true)==null
+					|| this.getData(this.winners.get(nextIndex), true).getRerollCount() !=0)
+			{
+				if(this.getData(this.winners.get(nextIndex), true).getPlayer().isSame(this.getActualPlayer()))//on a fait tous les joueurs
+				{
+					//on doit prtoeger des boucle infiens
+					break;
+				}
+				nextIndex = (nextIndex + 1) % this.winners.size();
+
+			}
+
 			return this.winners.get(nextIndex);
 		} else if (this.turnState.get() == TurnState.LOSER_TIE_ROUND) {
 			nextIndex = this.losers.indexOf(this.actualPlayer.getValue()); // -1 si pas trouv�
 			nextIndex = (nextIndex + 1) % this.losers.size();
+
+			while (this.getData(this.losers.get(nextIndex), true)==null
+					|| this.getData(this.losers.get(nextIndex), true).getRerollCount() !=0)
+			{
+				if(this.getData(this.losers.get(nextIndex), true).getPlayer().isSame(this.getActualPlayer()))//on a fait tous les joueurs
+				{
+					//on doit prtoeger des boucle infiens
+					break;
+				}
+				nextIndex = (nextIndex + 1) % this.losers.size();
+
+			}
+
 			return this.losers.get(nextIndex);
 		} else {
 			switch (this.state.get()) {
 			case PRESTART:
 			case SELECTION:
 			case CHARGING: // tous les 3 les m�mes
-				int debug = this.playerList.indexOf(this.actualPlayer.getValue());
-				int a = debug +1;
-				int b = this.playerList.size();
-				nextIndex = a %b;
+				nextIndex = (this.playerList.indexOf(this.actualPlayer.getValue()) + 1) % this.playerList.size();
+
+				while (this.getData(this.playerList.get(nextIndex), false)==null
+						|| this.getData(this.playerList.get(nextIndex), false).getRerollCount() !=0)
+				{
+					if(this.getData(this.playerList.get(nextIndex), false).getPlayer().isSame(this.getActualPlayer()))//on a fait tous les joueurs
+					{
+						//on doit prtoeger des boucle infiens
+						break;
+					}
+					nextIndex = (nextIndex + 1) % this.playerList.size();
+
+				}
 				//nextIndex = (this.playerList.indexOf(this.actualPlayer) + 1) % this.playerList.size();
 				return playerList.get(nextIndex);
 			case DISCHARGING:
 				nextIndex = (this.playerList.indexOf(this.actualPlayer.getValue()) + 1) % this.playerList.size();
 
 				while (this.getData(this.playerList.get(nextIndex), false)==null //car datalist ne contient plus tous les joueurs
-						|| this.getData(this.playerList.get(nextIndex), false).getChip() == 0)
+						|| this.getData(this.playerList.get(nextIndex), false).getChip() == 0 || this.getData(this.playerList.get(nextIndex), false).getRerollCount() !=0)
+				{
+					if(this.getData(this.playerList.get(nextIndex), false).getPlayer().isSame(this.getActualPlayer()))//on a fait tous les joueurs
+					{
+						//on doit prtoeger des boucle infiens
+						break;
+					}
 					nextIndex = (nextIndex + 1) % this.playerList.size();
+
+				}
 				return this.playerList.get(nextIndex);
 			case END:
 				// TOREVIEW envoyer exception ? ca devrait pas �tre ici
