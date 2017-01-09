@@ -1,0 +1,5 @@
+projectKey=LO23TD01
+serverUrl=http://localhost:9000
+dashboardUrl=http://localhost:9000/dashboard/index/LO23TD01
+ceTaskId=AVmC0aLretDLITsHc7lY
+ceTaskUrl=http://localhost:9000/api/ce/task?id=AVmC0aLretDLITsHc7lY

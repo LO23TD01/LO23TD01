@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<profile>
+    <UUID>87822ddc-7ca2-4546-b69d-31d6aa22fac3</UUID>
+    <login>tmp</login>
+    <nickName>pseudo</nickName>
+    <psw>tmp</psw>
+    <firstName>p</firstName>
+    <surName>n</surName>
+    <age>0</age>
+    <nbGameWon>0</nbGameWon>
+    <nbGameLost>0</nbGameLost>
+    <nbGameAbandonned>5</nbGameAbandonned>
+</profile>

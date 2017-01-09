@@ -2,6 +2,7 @@ package ihmTable.controller;
 
 import java.io.IOException;
 import java.util.HashMap;
+import java.util.logging.Logger;
 
 import data.GameTable;
 import data.User;
@@ -64,7 +65,7 @@ public class TableCenterController {
 	 * Initialize the controller
 	 */
 	public void initialize() throws IOException {
-		this.playerViews = new HashMap<User, Pane>();
+		this.playerViews = new HashMap<>();
 
 		//DiceLaucher creation
 		FXMLLoader diceLauncherLoader = new FXMLLoader(getClass().getResource("/ihmTable/resources/view/DiceLauncher.fxml"));
@@ -106,11 +107,12 @@ public class TableCenterController {
 	private void onPlayerListChange(ListChangeListener.Change<? extends User> change) {
 		while(change.next()) {
 			if (change.wasAdded()) {
+				Logger logger = Logger.getLogger(TableCenterController.class.getName());
 				for (User addedUser : change.getAddedSubList()) {
 					try {
 						createPlayerView(addedUser);
 					} catch (IOException e) {
-						e.printStackTrace();
+						logger.warning("Exception context : " + e);
 					}
 				}
 			}
@@ -168,6 +170,8 @@ public class TableCenterController {
 				break;
 			case 8:
 				addToTableCenterView(player, 0, 2, VPos.TOP, HPos.RIGHT);
+				break;
+			default :
 				break;
 			}
 		}

@@ -145,7 +145,7 @@ public class PlayerWaitingAlert extends Alert {
 		this.parameters = gameTable.getParameters();
 		this.players = gameTable.getPlayerList();
 		this.stage = stage;
-		this.playerViews = new HashMap<UUID, Rectangle>();
+		this.playerViews = new HashMap<>();
 
 		//Create a lambda listener to perform a one shot listener
 		this.listener = new InvalidationListener() {
@@ -233,10 +233,10 @@ public class PlayerWaitingAlert extends Alert {
 	 * Initialize the container of the players view and update it when a new player arrives or a player leaves
 	 */
 	private void initPlayersHBox() {
-		for (User user : gameTable.getPlayerList()) {
-			Rectangle rectangle = getPlayerAvatar(user);
+		for (User userUpdate : gameTable.getPlayerList()) {
+			Rectangle rectangle = getPlayerAvatar(userUpdate);
 			this.playersHBox.getChildren().add(rectangle);
-			this.playerViews.put(user.getPublicData().getUUID(), rectangle);
+			this.playerViews.put(userUpdate.getPublicData().getUUID(), rectangle);
 		}
 
 		ListChangeListener<User> playersChangeListener;
@@ -297,7 +297,7 @@ public class PlayerWaitingAlert extends Alert {
 				quit();
 			}
 		} catch (NoSuchElementException noSuchElementException) {
-
+			 throw noSuchElementException;
 		}
 	}
 
