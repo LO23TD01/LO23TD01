@@ -2,6 +2,7 @@ package ihmTable.api;
 
 import java.util.Optional;
 
+import ihmTable.controller.TableController;
 import javafx.application.Platform;
 import javafx.scene.control.Alert;
 import javafx.scene.control.ButtonType;
@@ -28,6 +29,7 @@ public class IHMTableDataImpl implements IHMTableData {
 		Platform.runLater(new Runnable() {
 			@Override
 			public void run() {
+				TableController.closeVoteAlert();
 				IHMTableLobbyImpl.getStage().close();
 			}
 		});

@@ -178,7 +178,7 @@ public class PlayerWaitingAlert extends Alert {
 	}
 
 	/**
-	 * Add a text the view
+	 * Add a text to the view
 	 * @param text the text which should be added
 	 */
 	private void addLabel(String text) {
@@ -260,16 +260,14 @@ public class PlayerWaitingAlert extends Alert {
 
 							@Override
 							public void run() {
-								playersHBox.getChildren()
-										.remove(playerViews.remove(removedUser.getPublicData().getUUID()));
+								playersHBox.getChildren().remove(playerViews.remove(removedUser.getPublicData().getUUID()));
 							}
 
 						});
 					}
 				}
 				if (user.isSame(gameTable.getCreator())) {
-					this.getDialogPane().lookupButton(buttonStart)
-							.setDisable(players.size() < parameters.getNbPlayerMin());
+					this.getDialogPane().lookupButton(buttonStart).setDisable(players.size() < parameters.getNbPlayerMin());
 				}
 			}
 		};

@@ -8,8 +8,13 @@ import data.client.InterImplDataTable;
 import ihmTable.controller.CollapsiblePanelController.Position;
 import ihmTable.util.PlayerWaitingAlert;
 import ihmTable.util.Utility;
+import ihmTable.util.VoteAlert;
+import javafx.application.Platform;
+import javafx.beans.InvalidationListener;
+import javafx.beans.Observable;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.scene.control.ButtonType;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.Pane;
@@ -49,6 +54,16 @@ public class TableController {
 	 * @see User
 	 */
 	private User user;
+	/**
+	 * A listener to perform one shot action
+	 */
+	private InvalidationListener listener;
+	/**
+	 * The vote alert
+	 *
+	 * @see VoteAlert
+	 */
+	private static VoteAlert voteAlert;
 
 	/**
 	 * Set the data of the controller
@@ -62,8 +77,11 @@ public class TableController {
 	public void setData(InterImplDataTable interImplDataTable, User user) throws IOException {
 		this.interImplDataTable = interImplDataTable;
 		this.user = user;
+		initializeTable();
+	}
 
-		Utility.bindPrefProperties(tableCenterView, tableView.widthProperty().multiply(100 - 2 * PANELS_PERCENTAGE), tableView.heightProperty());
+	private void initializeTable() throws IOException {
+		Utility.bindPrefProperties(this.tableCenterView, this.tableView.widthProperty().multiply(100 - 2 * PANELS_PERCENTAGE), this.tableView.heightProperty());
 		initRules();
 		Pane bottomContainer = initBottom();
 		PlayerStatsController playerStatsController = initPlayerStats(bottomContainer);
@@ -74,8 +92,10 @@ public class TableController {
 
 		//Waiting for other players in prestart state
 		if(this.interImplDataTable.getActualTable().getGameState().getState() == State.PRESTART) {
-			new PlayerWaitingAlert(interImplDataTable, user, (Stage) tableView.getScene().getWindow());
+			new PlayerWaitingAlert(this.interImplDataTable, this.user, (Stage) this.tableView.getScene().getWindow());
 		}
+		voteAlert = new VoteAlert(this.interImplDataTable);
+		this.interImplDataTable.getActualTable().voteProperty().addListener((observable, oldValue, newValue) -> onVoteChange(newValue));
 	}
 
 	/**
@@ -89,7 +109,7 @@ public class TableController {
 		FXMLLoader chatLoader = new FXMLLoader(getClass().getResource("/ihmTable/resources/view/Chat.fxml"));
 		setPosition(getCollapsiblePane(chatLoader.load(), Position.right), Position.right);
 		ChatController chatController = (ChatController) chatLoader.getController();
-		chatController.setData(interImplDataTable, user, playerStatsController);
+		chatController.setData(this.interImplDataTable, this.user, playerStatsController);
 	}
 
 	/**
@@ -112,7 +132,7 @@ public class TableController {
 		Pane tableCenter = tableCenterLoader.load();
 		setPosition(tableCenter, Position.center);
 		TableCenterController tableCenterController = (TableCenterController) tableCenterLoader.getController();
-		tableCenterController.setData(interImplDataTable, user, playerStatsController);
+		tableCenterController.setData(this.interImplDataTable, this.user, playerStatsController);
 	}
 
 	/**
@@ -130,7 +150,7 @@ public class TableController {
 		parent.getChildren().add(playerStats);
 		Utility.bindPrefProperties(playerStats, parent.widthProperty().multiply(0.5), parent.heightProperty());
 		PlayerStatsController playerStatsController = playerStatsLoader.getController();
-		playerStatsController.setData(interImplDataTable, user);
+		playerStatsController.setData(this.interImplDataTable, this.user);
 		return playerStatsController;
 	}
 
@@ -146,7 +166,7 @@ public class TableController {
 		parent.getChildren().add(gameStats);
 		Utility.bindPrefProperties(gameStats, parent.widthProperty().multiply(0.5), parent.heightProperty());
 		GameStatsController gameStatsController = gameStatsLoader.getController();
-		gameStatsController.setData(interImplDataTable);
+		gameStatsController.setData(this.interImplDataTable);
 	}
 
 	/**
@@ -158,7 +178,7 @@ public class TableController {
 		Pane menu = menuLoader.load();
 		setPosition(menu, Position.top);
 		MenuController menuController = (MenuController) menuLoader.getController();
-		menuController.setData(interImplDataTable);
+		menuController.setData(this.interImplDataTable);
 	}
 
 	/**
@@ -214,10 +234,73 @@ public class TableController {
 		Pane panel = collapsiblePanelLoader.load();
 		CollapsiblePanelController panelController = (CollapsiblePanelController) collapsiblePanelLoader.getController();
 		if (position == Position.left || position == Position.right) {
-			panelController.setContent(pane, position, tableView);
+			panelController.setContent(pane, position, this.tableView);
 		} else {
-			panelController.setContent(pane, position, tableCenterView);
+			panelController.setContent(pane, position, this.tableCenterView);
 		}
 		return panel;
+	}
+
+	/**
+	 * Display a vote dialog if a new vote has been launched
+	 * @param newValue whether a new vote has been launched
+	 */
+	private void onVoteChange(boolean newValue) {
+		if(newValue) {
+			Platform.runLater(new Runnable() {
+				@Override
+				public void run() {
+					voteAlert.show();
+					//Create a lambda listener to perform a one shot listener
+					listener = new InvalidationListener() {
+						@Override
+						public void invalidated(Observable observable) {
+							onGameStateChanged();
+						}
+					};
+					interImplDataTable.getActualTable().gameStateProperty().addListener(listener);
+				}
+			});
+		} else {
+			Platform.runLater(new Runnable() {
+				@Override
+				public void run() {
+					closeVoteAlert();
+				}
+			});
+		}
+	}
+
+	/**
+	 * Reinitialize the table if the game state changes during a vote
+	 */
+	private void onGameStateChanged() {
+		Platform.runLater(new Runnable() {
+			@Override
+			public void run() {
+				closeVoteAlert();
+				interImplDataTable.getActualTable().gameStateProperty().removeListener(listener);
+				tableView.getChildren().clear();
+				tableCenterView.getChildren().clear();
+				tableView.setCenter(tableCenterView);
+				try {
+					initializeTable();
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
+			}
+		});
+	}
+
+	/**
+	 * Close the vote alert if displayed
+	 */
+	public static void closeVoteAlert() {
+		if(voteAlert != null && voteAlert.isShowing()) {
+			voteAlert.getButtonTypes().add(ButtonType.CANCEL);
+			voteAlert.close();
+			voteAlert.getButtonTypes().remove(ButtonType.CANCEL);
+			voteAlert = null;
+		}
 	}
 }
