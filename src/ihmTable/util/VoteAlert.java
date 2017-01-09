@@ -129,11 +129,7 @@ public class VoteAlert extends Alert {
 	 * @param vote whether the vote is positive
 	 */
 	private void onButtonAction(boolean vote) {
-		if(vote) {
-			this.interImplDataTable.acceptReplay();
-		} else {
-			this.interImplDataTable.refuseReplay();
-		}
+		this.interImplDataTable.vote(vote);
 		this.contentContainer.getChildren().remove(buttonsContainer);
 	}
 }

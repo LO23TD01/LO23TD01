@@ -20,6 +20,7 @@ import network.server.ComServer;
 public class ServerDataEngine implements InterfaceDataNetwork {
 	private List<User> usersList;
 	private List<GameTable> tableList;
+	private List<EndGameTimer> timerList;
 
 	private Timer time;
 	private ComServer comServer;
@@ -168,8 +169,18 @@ public class ServerDataEngine implements InterfaceDataNetwork {
 					userFull.setActualTable(null);
 					this.comServer.playerQuitGame(getUUIDList(tableFull.getAllList()), userFull.getPublicData().getUUID());
 					 this.comServer.refreshTableList(getUUIDList(this.usersList),this.tableList);
-					 if(actuelQuit)
+					 //engine en premier
+					 if(actuelQuit && (tableFull.getGameState().getState() != State.PRESTART && tableFull.getGameState().getState() != State.END))
 						 gameEngine(tableFull,false);
+					 //debloquer vote si c'est le cas
+						if(tableFull.getVote())
+						{
+							if(tableFull.getGameState().getState()== State.END)
+								this.testVoteReplay(tableFull);
+							else
+								this.testVoteStop(tableFull);
+						}
+					 //drop table vide et test createur
 					 if(tableFull.getGameState().getState() != State.PRESTART && tableFull.getPlayerList().size()<2)
 					 {
 							//kick les spec
@@ -197,8 +208,13 @@ public class ServerDataEngine implements InterfaceDataNetwork {
 					else if(tableFull.getCreator().isSame(user))
 						{
 							//changer creator
-							tableFull.setCreator(tableFull.getPlayerList().get(0));
-							this.askQuitTable(tableFull);
+							if(tableFull.getGameState().getState() == State.PRESTART || tableFull.getGameState().getState() == State.END)
+								this.dropTable(tableFull);
+							else
+							{
+								tableFull.setCreator(tableFull.getPlayerList().get(0));
+								this.askQuitTable(tableFull);
+							}
 						}
 				}
 		 }
@@ -354,12 +370,13 @@ public class ServerDataEngine implements InterfaceDataNetwork {
 						hasToReroll = tableFull.getGameState().getRules().hasToReroll(tableFull.getGameState().getDataList(),
 							userFull, tableFull.getGameState().getFirstPlayer(),tableFull.getGameState().getState()==State.DISCHARGING);
 					}
-					if(!canReroll && !isFirstRoll)
+					if(!canReroll)
 					{
-						//si le joueur clique et n'a pas le droit de cliquer/lancer
-						this.comServer.raiseException(uuid,"Le joueur ne peux pas rejouer. Il doit pouvoir rejouer pour rejouer.");
-					}
-					 else
+						//WTF erreur ?????
+						//c'ets le joueur actuel et il peux pas lancer ...
+						//on update le game alors
+						this.gameEngine(tableFull, false);
+					} else
 					 if(hasToReroll && isStop)
 					 {
 						 this.comServer.raiseException(uuid,"Le joueur ne peux pas s'arreter. Il est obligï¿½ de rejouer.");
@@ -478,22 +495,31 @@ public class ServerDataEngine implements InterfaceDataNetwork {
 					this.comServer.hasAccepted(userFull.getPublicData().getUUID(), getUUIDList(tableFull.getAllList()));
 				else
 					this.comServer.hasRefused(userFull.getPublicData().getUUID(), getUUIDList(tableFull.getAllList()));
-				if(tableFull.getVoteCasted().size()==tableFull.getPlayerList().size())
-				{
-					if(tableFull.voteResult()==true)
-					{
-						tableFull.initializeGame();
-						tableFull.setVote(false);
-						this.getComServer().replay(getUUIDList(tableFull.getAllList()));
-						this.gameEngine(tableFull, false);
-					}
-					else
-					{
-						this.dropTable(tableFull);
-					}
-				}
+				this.testVoteReplay(tableFull);
 			}
 		}
+	}
+
+	private void testVoteReplay(GameTable tableFull){
+		if(tableFull.getVoteCasted().size()==tableFull.getPlayerList().size())
+		{
+			if(tableFull.voteResult()==true)
+			{
+				tableFull.initializeGame();
+				tableFull.setVote(false);
+				for(EndGameTimer egt : this.timerList)
+				{
+					egt.deactivate(tableFull);
+				}
+				this.getComServer().replay(getUUIDList(tableFull.getAllList()));
+				this.gameEngine(tableFull, false);
+			}
+			else
+			{
+				this.dropTable(tableFull);
+			}
+		}
+
 	}
 
 	@Override
@@ -684,7 +710,9 @@ public class ServerDataEngine implements InterfaceDataNetwork {
 
 			 this.comServer.hasLost(getUUIDList(tableFull.getAllList()),pDataLoser.getPlayer().getPublicData().getUUID());
 
-			this.time.schedule(new EndGameTimer(tableFull,this),1000*2*60);
+			 EndGameTimer newTimer = new EndGameTimer(tableFull,this);
+			 this.timerList.add(newTimer);
+			this.time.schedule(newTimer,1000*2*60);
 			break;
 
 		default:
@@ -874,6 +902,10 @@ public class ServerDataEngine implements InterfaceDataNetwork {
 				tableFull.getGameState().setDataTieList(newList);
 				tableFull.getGameState().setActualPlayer(tableFull.getGameState().getWinners().get(0));
 				tableFull.getGameState().setFirstPlayer(tableFull.getGameState().getWinners().get(0));
+				if (tableFull.getGameState().getWinners().size() != 1) {
+					 this.comServer.exAequoCase(getUUIDList(tableFull.getAllList()),
+					 tableFull.getGameState().getWinners(),true);
+				}
 				gameEngine(tableFull, false);
 				return;
 			}
@@ -933,11 +965,15 @@ public class ServerDataEngine implements InterfaceDataNetwork {
 				tableFull.getGameState().setLosers(
 						tableFull.getGameState().getRules().getLoser(tableFull.getGameState().getDataTieList()));
 				List<PlayerData> newList = new ArrayList<PlayerData>();
-				for (User u : tableFull.getGameState().getWinners())
+				for (User u : tableFull.getGameState().getLosers())
 					newList.add(new PlayerData(u));
 				tableFull.getGameState().setDataTieList(newList);
 				tableFull.getGameState().setActualPlayer(tableFull.getGameState().getLosers().get(0));
 				tableFull.getGameState().setFirstPlayer(tableFull.getGameState().getLosers().get(0));
+				if (tableFull.getGameState().getLosers().size() != 1) {
+					 this.comServer.exAequoCase(getUUIDList(tableFull.getAllList()),
+					 tableFull.getGameState().getLosers(),true);
+				}
 				gameEngine(tableFull, false);
 				return;
 			}
@@ -947,9 +983,7 @@ public class ServerDataEngine implements InterfaceDataNetwork {
 			gameEngine(tableFull, false); // pour passer ï¿½ la phase suivante
 											// sans trop de souci.
 		}
-
 	}
-
 	//normalement pas appele
 	@Override
 	public void askQuitTable(UUID tableID,UUID user) {
@@ -1006,31 +1040,39 @@ public class ServerDataEngine implements InterfaceDataNetwork {
 				this.comServer.raiseException(user,"Aucun vote en cours. Un vote doit être en cours pour voter");
 			else {
 				tableFull.castVote(new Vote(userFull.getLightWeightVersion(),answer,tableFull.getLightWeightVersion()));
-				if(tableFull.getVoteCasted().size()==tableFull.getPlayerList().size()-1)
-				{
-					this.comServer.stopGame(getUUIDList(tableFull.getAllList()),tableFull.voteResult());
-					if(tableFull.voteResult()==true)
-					{
-						 for(User u : tableFull.getAllList())
-						 {
-							 User userFull2 = u.getSame(this.usersList);
-							 if(userFull2==null)
-								 this.comServer.raiseException(user,"L'utilisateur n'est pas connecté. Il faut être connecté pour se faire kick d'une table.");
-							 else
-								 userFull2.setActualTable(null);
-						 }
-						 this.tableList.remove(tableFull);
-						 //TODO Refresh table
-					}
-					else
-					{
-						tableFull.setCreator(tableFull.getPlayerList().get(0));
-						this.comServer.setCreator(getUUIDList(tableFull.getAllList()),tableFull.getCreator().getPublicData().getUUID());
-					}
-				}
+				if(answer)
+					this.comServer.hasAccepted(userFull.getPublicData().getUUID(), getUUIDList(tableFull.getAllList()));
+				else
+					this.comServer.hasRefused(userFull.getPublicData().getUUID(), getUUIDList(tableFull.getAllList()));
+				testVoteStop(tableFull);
 			}
 		}
 	}
 
+	private void testVoteStop(GameTable tableFull)
+	{
+		if(tableFull.getVoteCasted().size()==tableFull.getPlayerList().size())
+		{
+			this.comServer.stopGame(getUUIDList(tableFull.getAllList()),tableFull.voteResult());
+			if(tableFull.voteResult()==true)
+			{
+				 for(User u : tableFull.getAllList())
+				 {
+					 User userFull2 = u.getSame(this.usersList);
+					 if(userFull2==null)
+						 ;//this.comServer.raiseException(u,"L'utilisateur n'est pas connecté. Il faut être connecté pour se faire kick d'une table.");
+					 else
+						 userFull2.setActualTable(null);
+				 }
+				 this.tableList.remove(tableFull);
+				 this.comServer.refreshTableList(getUUIDList(this.usersList),this.tableList);
+			}
+			else
+			{
+				tableFull.setCreator(tableFull.getPlayerList().get(0));
+				this.comServer.setCreator(getUUIDList(tableFull.getAllList()),tableFull.getCreator().getPublicData().getUUID());
+			}
+		}
+	}
 
 }
