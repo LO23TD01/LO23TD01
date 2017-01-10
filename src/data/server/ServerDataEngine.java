@@ -37,6 +37,7 @@ public class ServerDataEngine implements InterfaceDataNetwork {
 		this.tableList = new ArrayList<>();
 		this.time = new Timer();
 		this.comServer = null;
+		this.timerList = new ArrayList<EndGameTimer>();
 	}
 
 	/*
