@@ -25,19 +25,28 @@ import data.server.InterfaceSingleThreadData;
 import network.messages.utils.BufferedImageBuilder;
 import sun.nio.ch.IOUtil;
 
+/**
+ * Message to be sent when a player connects
+ * @author lenovo
+ *
+ */
 public class ConnectionMessage implements IMessage{
 
 	private static final long serialVersionUID = -2428194153289587089L;
 	public String profile;
 	public byte[] image;
 	public UUID uuid;
-	
+
+	/**
+	 * Constructor
+	 * @param p Profile of the user connecting
+	 */
 	public ConnectionMessage(Profile p){
 		uuid = p.getUUID();
-		
+
 		Image avatar = p.getAvatar();
-		
-		//Handle image serialization 
+
+		//Handle image serialization
 		if(avatar != null){
 			image = BufferedImageBuilder.toByteArray(avatar);
 			p.setAvatar(null);
@@ -47,22 +56,26 @@ public class ConnectionMessage implements IMessage{
 			profile = FxGson.create().toJson(p);
 		}
 	}
+
+	/* (non-Javadoc)
+	 * @see network.messages.IMessage#process(data.server.InterfaceSingleThreadData)
+	 */
 	@Override
 	public void process(InterfaceSingleThreadData dataEngine) {
-		
+
 		Profile p = FxGson.create().fromJson(profile, Profile.class);
-		
+
 		//Converte bytes to Image and set the profile
 		if(image != null)
 			p.setAvatar(BufferedImageBuilder.toImage(image));
-		
+
 		dataEngine.connectUser(p);
 	}
 
+	/* (non-Javadoc)
+	 * @see network.messages.IMessage#process(data.client.InterfaceSingleThreadDataClient)
+	 */
 	@Override
-	public void process(InterfaceSingleThreadDataClient dataEngine) {
-		// TODO Auto-generated method stub
-		
-	}
+	public void process(InterfaceSingleThreadDataClient dataEngine) {}
 
 }
