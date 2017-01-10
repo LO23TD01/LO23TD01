@@ -138,13 +138,21 @@ public class VoteAlert extends Alert {
 	}
 
 	public void updateWinnerAndLooser() {
-		User winner = this.interImplDataTable.getActualTable().getGameState().getWinnerGame().getSame(this.interImplDataTable.getActualTable().getGameState().getPlayerList());
+		User winner = this.interImplDataTable.getActualTable().getGameState().getWinnerGame();
 		if(winner != null) {
+			winner = winner.getSame(this.interImplDataTable.getActualTable().getGameState().getPlayerList());
 			winnerLabel.setText("Gagnant : " + winner.getPublicData().getNickName());
+		} else {
+			winnerLabel.setVisible(false);
+			winnerLabel.setManaged(false);
 		}
-		User looser = this.interImplDataTable.getActualTable().getGameState().getLoserGame().getSame(this.interImplDataTable.getActualTable().getGameState().getPlayerList());
+		User looser = this.interImplDataTable.getActualTable().getGameState().getLoserGame();
 		if(looser != null) {
+			looser = looser.getSame(this.interImplDataTable.getActualTable().getGameState().getPlayerList());
 			looserLabel.setText("Perdant : " + looser.getPublicData().getNickName());
+		} else {
+			looserLabel.setVisible(false);
+			looserLabel.setManaged(false);
 		}
 	}
 
