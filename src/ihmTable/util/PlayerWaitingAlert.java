@@ -174,7 +174,7 @@ public class PlayerWaitingAlert extends Alert {
 		addLabel(CHIPS_TEXT + Integer.toString(parameters.getNbChip()));
 		addCheckBox(CHAT_TEXT, parameters.isAuthorizeSpecToChat());
 		addCheckBox(SPECTATORS_TEXT, parameters.isAuthorizeSpec());
-		addLabel(PLAYERS_TEXT + parameters.getNbPlayerMin() + " à " + parameters.getNbPlayerMin());
+		addLabel(PLAYERS_TEXT + parameters.getNbPlayerMin() + " à " + parameters.getNbPlayerMax());
 	}
 
 	/**

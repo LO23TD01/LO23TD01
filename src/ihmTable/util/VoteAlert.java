@@ -1,5 +1,6 @@
 package ihmTable.util;
 
+import data.User;
 import data.Vote;
 import data.client.InterImplDataTable;
 import javafx.application.Platform;
@@ -50,6 +51,14 @@ public class VoteAlert extends Alert {
 	 */
 	private HBox buttonsContainer;
 	/**
+	 * Label with winner's name
+	 */
+	private Label winnerLabel;
+	/**
+	 * Label with looser's name
+	 */
+	private Label looserLabel;
+	/**
 	 * Create the vote dialog
 	 * @param interImplDataTable the interface with data
 	 *
@@ -67,6 +76,11 @@ public class VoteAlert extends Alert {
 		contentContainer = new VBox();
 		this.getDialogPane().setContent(contentContainer);
 		contentContainer.getChildren().add(new Label("Un vote a été lancé. Voulez-vous continuer à jouer ?"));
+
+		winnerLabel = new Label("Gagnant : ");
+		contentContainer.getChildren().add(winnerLabel);
+		looserLabel = new Label("Perdant : ");
+		contentContainer.getChildren().add(looserLabel);
 
 		HBox acceptedContainer = new HBox();
 		acceptedContainer.setSpacing(5);
@@ -103,7 +117,6 @@ public class VoteAlert extends Alert {
 	 * @param change
 	 */
 	private void onVoteCastedChange(ListChangeListener.Change<? extends Vote> change) {
-		System.out.print("test 1");
 		while(change.next()) {
 			if (change.wasAdded()) {
 				for (Vote vote : change.getAddedSubList()) {
@@ -122,6 +135,17 @@ public class VoteAlert extends Alert {
 				refusedCount.setText(String.valueOf(refused));
 			}
 		});
+	}
+
+	public void updateWinnerAndLooser() {
+		User winner = this.interImplDataTable.getActualTable().getGameState().getWinnerGame().getSame(this.interImplDataTable.getActualTable().getGameState().getPlayerList());
+		if(winner != null) {
+			winnerLabel.setText("Gagnant : " + winner.getPublicData().getNickName());
+		}
+		User looser = this.interImplDataTable.getActualTable().getGameState().getLoserGame().getSame(this.interImplDataTable.getActualTable().getGameState().getPlayerList());
+		if(looser != null) {
+			looserLabel.setText("Perdant : " + looser.getPublicData().getNickName());
+		}
 	}
 
 	/**
