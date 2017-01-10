@@ -29,6 +29,7 @@ public class InterImplDataTable implements InterfaceDataIHMTable{
 	private final ObjectProperty<UserRole> actualRole;
 	private final ObservableList<Boolean> selectionList = FXCollections.observableArrayList();
 	private ObjectProperty<Profile> currentProfile; //Warning faux car utilisé par IHM
+	//aufinal votetext pas utilisé
 	private StringProperty voteText; //Warning faux car utilisé par IHM
 
 	//constructeur  de test pour ihm table
@@ -204,7 +205,7 @@ public InterImplDataTable(ClientDataEngine dataEngine, UserRole actualRole,
 
 	@Override
 	public void answerStopGame(boolean answer) {
-		this.dataEngine.getComClientInterface().answerStopGame(this.getActualTable().getUid(), answer, this.dataEngine.getProfileManager().getCurrentProfile().getUUID());
+		this.dataEngine.getComClientInterface().answerStopGame(this.getActualTable().getUid(), !answer, this.dataEngine.getProfileManager().getCurrentProfile().getUUID());
 	}
 
 
