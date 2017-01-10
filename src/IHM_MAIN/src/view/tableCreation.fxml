@@ -1,17 +1,23 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.collections.*?>
-<?import java.lang.*?>
-<?import java.net.*?>
-<?import java.util.*?>
-<?import javafx.scene.text.*?>
-<?import javafx.geometry.*?>
-<?import javafx.scene.control.*?>
-<?import javafx.scene.image.*?>
-<?import javafx.scene.layout.*?>
+<?import java.lang.Integer?>
+<?import java.lang.String?>
+<?import javafx.collections.FXCollections?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.CheckBox?>
+<?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.RowConstraints?>
+<?import javafx.scene.text.Font?>
+<?import javafx.scene.text.Text?>
 <?scenebuilder-classpath-element .?>
 
-<GridPane prefHeight="399.0" prefWidth="394.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="IHM_MAIN.src.controller.TableCreation">
+<GridPane prefHeight="399.0" prefWidth="394.0" xmlns="http://javafx.com/javafx/8.0.60" xmlns:fx="http://javafx.com/fxml/1" fx:controller="IHM_MAIN.src.controller.TableCreation">
   <columnConstraints>
     <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
     <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
@@ -47,20 +53,18 @@
             			<Integer fx:value="6" />
             			<Integer fx:value="7" />
             			<Integer fx:value="8" />
-            			<Integer fx:value="9" />
-            			<Integer fx:value="10" />
             		</FXCollections>
             	</items>
             	<value>
         			<Integer fx:value="5" />
     			</value>
             </ComboBox>
-         
+
          </children>
       </HBox>
       <HBox alignment="CENTER" GridPane.columnIndex="1" GridPane.rowIndex="2">
          <children>
-            <ComboBox fx:id="minPlayers" prefHeight="27.0" prefWidth="207.0" GridPane.columnIndex="1" GridPane.rowIndex="2">
+            <ComboBox fx:id="minPlayers" prefHeight="27.0" prefWidth="207.0" visibleRowCount="8" GridPane.columnIndex="1" GridPane.rowIndex="2">
                <items>
             		<FXCollections fx:factory="observableArrayList">
             			<Integer fx:value="2" />
@@ -74,7 +78,7 @@
         			<Integer fx:value="2" />
     			</value>
             </ComboBox>
-         	
+
          </children>
       </HBox>
       <Label prefHeight="25.0" prefWidth="260.0" text="Nombre de jetons" GridPane.rowIndex="4" />
@@ -93,7 +97,7 @@
             	<value>
         			<Integer fx:value="21" />
     			</value>
-            	
+
             </ComboBox>
          </children>
       </HBox>
@@ -130,10 +134,10 @@
             			<String fx:value="CONSTRAINED_DISCHARGE" />
             			<String fx:value="FREE_DISCHARGE" />
             		</FXCollections>
-            	</items> 
+            	</items>
             	<value>
         			<String fx:value="FIXED_DISCHARGE" />
-    			</value>	
+    			</value>
       </ComboBox>
    </children>
    <padding>
