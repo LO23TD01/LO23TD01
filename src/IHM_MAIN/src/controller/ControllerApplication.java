@@ -38,7 +38,6 @@ import data.User;
 import data.client.*;
 import data.GameTable;
 import data.Profile;
-import IHM_MAIN.src.model.ModelApplication;
 import data.client.*;
 import data.Profile;
 import data.User;
