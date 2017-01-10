@@ -5,6 +5,11 @@ import java.util.UUID;
 import data.client.ClientDataEngine;
 import data.server.ServerDataEngine;
 
+/**
+ * Message to be sent when a player is kicked
+ * @author lenovo
+ *
+ */
 public class KickedMessage implements IMessage {
 
 	private static final long serialVersionUID = 6709711021661501877L;

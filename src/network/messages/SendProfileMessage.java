@@ -15,6 +15,11 @@ import data.User;
 import data.server.ServerDataEngine;
 import network.messages.utils.BufferedImageBuilder;
 
+/**
+ * Message to be sent to send a profile to a given user
+ * @author lenovo
+ *
+ */
 public class SendProfileMessage implements IMessage{
 
 	private static final long serialVersionUID = 5676541305074045177L;
@@ -23,6 +28,11 @@ public class SendProfileMessage implements IMessage{
 	private byte[] image;
 	private UUID receiver;
 
+	/**
+	 * Constructor
+	 * @param receiver UUID of the player receiving the profile
+	 * @param profile Profile sent
+	 */
 	public SendProfileMessage(UUID receiver, Profile profile) {
 		this.receiver = receiver;
 
@@ -35,9 +45,15 @@ public class SendProfileMessage implements IMessage{
 		this.profile = FxGson.create().toJson(profile);
 	}
 
+    /* (non-Javadoc)
+     * @see network.messages.IMessage#process(data.server.ServerDataEngine)
+     */
     @Override
     public void process(ServerDataEngine dataEngine) {}
 
+    /* (non-Javadoc)
+     * @see network.messages.IMessage#process(data.client.ClientDataEngine)
+     */
     @Override
     public void process(ClientDataEngine dataEngine) {
     	Profile p = FxGson.create().fromJson(profile, Profile.class);

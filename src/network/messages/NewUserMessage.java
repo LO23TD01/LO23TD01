@@ -18,6 +18,11 @@ import data.User;
 import data.server.ServerDataEngine;
 import network.messages.utils.BufferedImageBuilder;
 
+/**
+ * Message to be sent when a new user logs in
+ * @author lenovo
+ *
+ */
 public class NewUserMessage implements IMessage {
 
 	private static final long serialVersionUID = 611407636768645351L;
@@ -25,6 +30,10 @@ public class NewUserMessage implements IMessage {
 	public String profile;
 	public byte[] image;
 
+	/**
+	 * Constructor
+	 * @param p Profile of the new user
+	 */
 	public NewUserMessage(Profile p){
 
 		//Handle image serialization
@@ -36,9 +45,15 @@ public class NewUserMessage implements IMessage {
 		profile = FxGson.create().toJson(p);
 	}
 
+	/* (non-Javadoc)
+	 * @see network.messages.IMessage#process(data.server.ServerDataEngine)
+	 */
 	@Override
 	public void process(ServerDataEngine dataEngine) {}
 
+	/* (non-Javadoc)
+	 * @see network.messages.IMessage#process(data.client.ClientDataEngine)
+	 */
 	@Override
 	public void process(ClientDataEngine dataEngine) {
 
