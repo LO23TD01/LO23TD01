@@ -1,8 +1,6 @@
 package ihmTable.util;
 
 import java.util.HashMap;
-import java.util.NoSuchElementException;
-import java.util.Optional;
 import java.util.UUID;
 
 import data.GameTable;
@@ -14,7 +12,9 @@ import javafx.beans.InvalidationListener;
 import javafx.beans.Observable;
 import javafx.collections.ListChangeListener;
 import javafx.collections.ObservableList;
+import javafx.geometry.Pos;
 import javafx.scene.control.Alert;
+import javafx.scene.control.Button;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.Label;
@@ -114,11 +114,7 @@ public class PlayerWaitingAlert extends Alert {
 	/**
 	 * The button start of the dialog
 	 */
-	private ButtonType buttonStart;
-	/**
-	 * The button quit of dialog
-	 */
-	private ButtonType buttonQuit;
+	private Button buttonStart;
 	/**
 	 * Listener to get any changes of the game state change
 	 */
@@ -214,7 +210,9 @@ public class PlayerWaitingAlert extends Alert {
 		Platform.runLater(new Runnable() {
 			@Override
 			public void run() {
+				getButtonTypes().add(ButtonType.CANCEL);
 				close();
+				getButtonTypes().remove(ButtonType.CANCEL);
 			}
 		});
 	}
@@ -226,6 +224,9 @@ public class PlayerWaitingAlert extends Alert {
 	 */
 	private void quit() {
 		this.interImplDataTable.quitGame();
+		getButtonTypes().add(ButtonType.CANCEL);
+		close();
+		getButtonTypes().remove(ButtonType.CANCEL);
 		this.stage.close();
 	}
 
@@ -267,7 +268,7 @@ public class PlayerWaitingAlert extends Alert {
 					}
 				}
 				if (user.isSame(gameTable.getCreator())) {
-					this.getDialogPane().lookupButton(buttonStart).setDisable(players.size() < parameters.getNbPlayerMin());
+					this.buttonStart.setDisable(players.size() < parameters.getNbPlayerMin());
 				}
 			}
 		};
@@ -281,24 +282,20 @@ public class PlayerWaitingAlert extends Alert {
 	 * @see PlayerWaitingAlert#buttonQuit
 	 */
 	private void initButtons() {
-		this.buttonStart = new ButtonType(BUTTON_START_TEXT);
-		this.buttonQuit = new ButtonType(BUTTON_QUIT_TEXT);
+		HBox buttonsContainer = new HBox();
+		buttonsContainer.setSpacing(10);
+		buttonsContainer.setAlignment(Pos.CENTER_RIGHT);
 		if (user.isSame(gameTable.getCreator())) {
-			this.getButtonTypes().setAll(buttonStart, buttonQuit);
-			this.getDialogPane().lookupButton(buttonStart).setDisable(players.size() != parameters.getNbPlayerMin());
-		} else {
-			this.getButtonTypes().setAll(buttonQuit);
+			this.buttonStart = new Button(BUTTON_START_TEXT);
+			this.buttonStart.setDisable(true);
+			this.buttonStart.setOnAction(event -> start());
+			buttonsContainer.getChildren().add(buttonStart);
 		}
-		Optional<ButtonType> result = this.showAndWait();
-		try {
-			if (result.get() == buttonStart) {
-				start();
-			} else {
-				quit();
-			}
-		} catch (NoSuchElementException noSuchElementException) {
-			 throw noSuchElementException;
-		}
+		Button buttonQuit = new Button(BUTTON_QUIT_TEXT);
+		buttonQuit.setOnAction(event -> quit());
+		buttonsContainer.getChildren().add(buttonQuit);
+		vBox.getChildren().add(buttonsContainer);
+		this.getButtonTypes().setAll(new ButtonType[0]);
 	}
 
 	/**

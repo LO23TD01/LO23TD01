@@ -93,7 +93,9 @@ public class TableController {
 		voteAlert = new VoteAlert(this.interImplDataTable);
 		//Waiting for other players in prestart state
 		if(this.interImplDataTable.getActualTable().getGameState().getState() == State.PRESTART) {
-			new PlayerWaitingAlert(this.interImplDataTable, this.user, (Stage) this.tableView.getScene().getWindow());
+			PlayerWaitingAlert playerWaitingAlert = new PlayerWaitingAlert(this.interImplDataTable, this.user, (Stage) this.tableView.getScene().getWindow());
+			playerWaitingAlert.show();
+
 		}
 		this.interImplDataTable.getActualTable().voteProperty().addListener((observable, oldValue, newValue) -> onVoteChange(newValue));
 	}
