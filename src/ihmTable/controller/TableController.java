@@ -89,12 +89,11 @@ public class TableController {
 		initTableCenter(playerStatsController);
 		initChat(playerStatsController);
 		initMenu();
-
+		voteAlert = new VoteAlert(this.interImplDataTable);
 		//Waiting for other players in prestart state
 		if(this.interImplDataTable.getActualTable().getGameState().getState() == State.PRESTART) {
 			new PlayerWaitingAlert(this.interImplDataTable, this.user, (Stage) this.tableView.getScene().getWindow());
 		}
-		voteAlert = new VoteAlert(this.interImplDataTable);
 		this.interImplDataTable.getActualTable().voteProperty().addListener((observable, oldValue, newValue) -> onVoteChange(newValue));
 	}
 
@@ -250,6 +249,7 @@ public class TableController {
 			Platform.runLater(new Runnable() {
 				@Override
 				public void run() {
+					voteAlert.updateWinnerAndLooser();
 					voteAlert.show();
 					//Create a lambda listener to perform a one shot listener
 					listener = new InvalidationListener() {

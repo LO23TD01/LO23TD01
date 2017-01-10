@@ -254,7 +254,7 @@ public class GameState {
 				while (this.getData(this.playerList.get(nextIndex), false)==null //car datalist ne contient plus tous les joueurs
 						|| this.getData(this.playerList.get(nextIndex), false).getChip() == 0 || this.getData(this.playerList.get(nextIndex), false).getRerollCount() !=0)
 				{
-					if(this.getData(this.playerList.get(nextIndex), false).getPlayer().isSame(this.getActualPlayer()))//on a fait tous les joueurs
+					if(this.getData(this.playerList.get(nextIndex), false)!=null && this.getData(this.playerList.get(nextIndex), false).getPlayer().isSame(this.getActualPlayer()))//on a fait tous les joueurs
 					{
 						//on doit prtoeger des boucle infiens
 						break;
