@@ -15,7 +15,7 @@ public class WaitingWindow{
 	Stage stage;
 	public WaitingWindow(Window parent) {	
 		try {
-			FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("./view/Loading.fxml"));
+			FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/IHM_MAIN/src/view/Loading.fxml"));
 			AnchorPane root;
 			root = (AnchorPane) fxmlLoader.load();
 			Scene new_scene = new Scene(root);

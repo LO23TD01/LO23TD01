@@ -42,7 +42,7 @@ public class IHMLobbyAPI {
 		controller.setProfile(profile);
 		controller.disableButtonsAndFields();*/
 		try {
- 			FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("./view/GestionProfil.fxml"));
+ 			FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/IHM_MAIN/src/view/GestionProfil.fxml"));
  			AnchorPane root;
 			root = (AnchorPane) fxmlLoader.load();
  			//Window parent = createGame.getScene().getWindow();

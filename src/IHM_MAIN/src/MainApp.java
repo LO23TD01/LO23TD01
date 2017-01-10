@@ -13,7 +13,13 @@ import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
 
+import java.io.File;
 import java.io.IOException;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+
+import com.sun.org.apache.bcel.internal.classfile.Field;
+
 import data.client.*;
 
 import javafx.event.ActionEvent;
@@ -128,7 +134,7 @@ public class MainApp extends Application {
 
 	private void openMain(){
 		try {
-			FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("./view/mainWindow.fxml"));
+			FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/IHM_MAIN/src/view/mainWindow.fxml"));
 			BorderPane root;
 			root = (BorderPane) fxmlLoader.load();
 
@@ -172,7 +178,8 @@ public class MainApp extends Application {
 
 	private void openRegister(){
 		try {
-			FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("./view/registerWindow.fxml"));
+
+			FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/IHM_MAIN/src/view/registerWindow.fxml"));
 			AnchorPane root;
 			root = (AnchorPane) fxmlLoader.load();
 

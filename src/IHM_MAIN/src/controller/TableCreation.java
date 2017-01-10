@@ -70,7 +70,7 @@ public class TableCreation{
 				throw new Exception("Erreur Système: Impossible de charger le profil local");
 			
 		Stage stage = (Stage) tableName.getScene().getWindow();
-		FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("../view/Loading.fxml"));
+		FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/IHM_MAIN/src/view/Loading.fxml"));
 		AnchorPane root;
 		root = (AnchorPane) fxmlLoader.load();
 		Scene new_scene = new Scene(root);

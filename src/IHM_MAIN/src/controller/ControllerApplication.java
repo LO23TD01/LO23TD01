@@ -137,10 +137,9 @@ public class ControllerApplication {
 				Parent root;
 				try {
 					/*==>After merge*/
-					FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("../view/tableCreation.fxml"));
+					FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/IHM_MAIN/src/view/tableCreation.fxml"));
 
 					root = fxmlLoader.load();
-					//root = FXMLLoader.load(getClass().getResource("../view/tableCreation.fxml"));
 					TableCreation controller = (TableCreation) fxmlLoader.getController();
 					controller.setInterfaceData(this.interImplDataMain);
 
@@ -258,7 +257,7 @@ public class ControllerApplication {
 	        if (diff < 300){
 	     		//Parent root;
 	     		try {
-	     			FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("../view/joinTable.fxml"));
+	     			FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/IHM_MAIN/src/view/joinTable.fxml"));
 	     			AnchorPane root;
 	    			root = (AnchorPane) fxmlLoader.load();
 	     			Window parent = createGame.getScene().getWindow();
