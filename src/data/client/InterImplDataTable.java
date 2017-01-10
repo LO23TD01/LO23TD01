@@ -205,7 +205,7 @@ public InterImplDataTable(ClientDataEngine dataEngine, UserRole actualRole,
 
 	@Override
 	public void answerStopGame(boolean answer) {
-		this.dataEngine.getComClientInterface().answerStopGame(this.getActualTable().getUid(), !answer, this.dataEngine.getProfileManager().getCurrentProfile().getUUID());
+		this.dataEngine.getComClientInterface().answerStopGame(this.getActualTable().getUid(), answer, this.dataEngine.getProfileManager().getCurrentProfile().getUUID());
 	}
 
 

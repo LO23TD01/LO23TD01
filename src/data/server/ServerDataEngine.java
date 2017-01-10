@@ -1055,7 +1055,7 @@ public class ServerDataEngine implements InterfaceDataNetwork {
 		if(tableFull.getVoteCasted().size()==tableFull.getPlayerList().size())
 		{
 			this.comServer.stopGame(getUUIDList(tableFull.getAllList()),tableFull.voteResult());
-			if(tableFull.voteResult()==true)
+			if(tableFull.voteResult()==false)
 			{
 				 for(User u : tableFull.getAllList())
 				 {
